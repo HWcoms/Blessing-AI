@@ -142,3 +142,21 @@ src/audio/app_audio.tsv
 src/audio/app_audio.txt
 
 src/audio/app_audio.vtt
+
+src/whisper-large-v2-ct2/config.json
+
+src/whisper-large-v2-ct2/model.bin
+
+src/whisper-large-v2-ct2/tokenizer.json
+
+src/whisper-large-v2-ct2/vocabulary.txt
+
+src/whisper-small-ct2/config.json
+
+src/whisper-small-ct2/model.bin
+
+src/whisper-small-ct2/vocabulary.txt
+
+src/MoeGoe/models/G_latest.pth
+
+src/MoeGoe/models/moegoe_config.json

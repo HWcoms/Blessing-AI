@@ -1,0 +1,3 @@
+models 폴더에 학습모델, moegoe_config.json 파일 첨부
+
+in this folder, put trained vits model and moegoe_config.json files
