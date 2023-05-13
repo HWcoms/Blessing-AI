@@ -1,13 +1,11 @@
 from scipy.io.wavfile import write
 import os
 import sys
-sys.path.append('MoeGoe/')
-from mel_processing import spectrogram_torch
-from text import text_to_sequence, _clean_text
-from models import SynthesizerTrn
-import utils
-import commons
-import sys
+from .mel_processing import spectrogram_torch
+from .text import text_to_sequence, _clean_text
+from .models import SynthesizerTrn
+from . import utils
+from . import commons
 import re
 from torch import no_grad, LongTensor
 from pathlib import Path

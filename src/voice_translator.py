@@ -83,22 +83,45 @@ client_secret = PAPAGO_AUTH_SECRET      # 개발자센터에서 발급받은 Cli
 url = "https://openapi.naver.com/v1/papago/n2mt"
 
 #If text language is ja -> no translate, but if other source_lang -> translate to ja
-def PapagoTrans(string, source_lang = 'ko', target_lang = 'ja'):
+def PapagoTrans(string, source_lang = 'ko', target_lang = 'ja', trans_lang = 'ko'):
+    ko_string = None
+    ja_string = None
+    
     if(source_lang == 'ja'):
-        return string
-            
+        ja_string = string
+    
+    if (source_lang == 'ko'):
+        ko_string = string
+                
+    
     source_lang_name = languages.get(alpha2=source_lang).name
     traget_lang_name = languages.get(alpha2=target_lang).name
     
     #Papago Translate       
     encText = urllib.parse.quote(string)    
     print("인식언어: ",source_lang_name, "목표언어: ", traget_lang_name)
-    data = "source="+source_lang+"&target="+target_lang+"&text=" + encText
     
     request = urllib.request.Request(url)
     request.add_header("X-Naver-Client-Id",client_id)
     request.add_header("X-Naver-Client-Secret",client_secret)
     
+    data = None
+    if (ja_string == None):
+        data = "source="+source_lang+"&target="+target_lang+"&text=" + encText
+        ja_string = translate(request, data)
+    
+    if (ko_string == None):
+        data = "source="+source_lang+"&target="+trans_lang+"&text=" + encText
+        ko_string = translate(request, data)
+    
+    
+    print("ja:",ja_string)
+    print("ko:",ko_string)
+        
+    return ja_string, ko_string
+        
+
+def translate(request, data):
     try:
         response = urllib.request.urlopen(request, data=data.encode("utf-8"))
     except Exception as e:
@@ -117,9 +140,9 @@ def PapagoTrans(string, source_lang = 'ko', target_lang = 'ja'):
         str = des['message']['result']['translatedText']
         
         return str
+    
     else:
-        print("Error Code:" + rescode)
-        
+        print("Error Code:" + rescode)   
 
 
 def on_press_key(_):
@@ -169,8 +192,7 @@ def on_release_key(_):
         if USE_DEEPL:
             translated_speech = translator.translate_text(eng_speech, target_lang=TARGET_LANGUAGE)
         else:
-            eng_speach = PapagoTrans(eng_speech, speech_lang)
-            translated_speech = eng_speach
+            translated_speech, subtitle_speech = PapagoTrans(eng_speech, speech_lang)
             #translated_speech = translator.translate(eng_speech, dest=TARGET_LANGUAGE).text
 
         if LOGGING:

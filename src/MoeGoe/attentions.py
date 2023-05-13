@@ -3,9 +3,9 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-import commons
+from . import commons
 
-from modules_moegoe import LayerNorm
+from .modules_moegoe import LayerNorm
    
 
 class Encoder(nn.Module):
