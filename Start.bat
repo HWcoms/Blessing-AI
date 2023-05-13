@@ -1,11 +1,11 @@
 ::[Bat To Exe Converter]
 ::
 ::YAwzoRdxOk+EWAjk
-::fBw5plQjdCyDJGyX8VAjFDNjTwuPL1eWB7sb/en86saCo108fd4saozn1LGbMu9T+UTpdNgk1XU6
+::fBw5plQjdCyDJGyX8VAjFDNjTwuPL1eYCrAP++H16Kemi3EORuEDcYzU5rqLNfIcqlbleJdj33lV+A==
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
-::cxAkpRVqdFKZSDk=
+::cxAkpRVqdFKZSjk=
 ::cBs/ulQjdF+5
 ::ZR41oxFsdFKZSDk=
 ::eBoioBt6dFKZSDk=
@@ -26,18 +26,13 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCyDJGyX8VAjFDNjTwuPL1eWB7sb/en86saCo108fd4saozn+524L+kQ7wvhbZNN
+::Zh4grVQjdCyDJGyX8VAjFDNjTwuPL1eYCrAP++H16Kemi3E8fdQwcYzelLGWJYA=
 ::YB416Ek+ZG8=
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
 @echo off
 
-tasklist /fi "imagename eq run.exe" | find /i "run.exe" > nul
-
-if %errorlevel% neq 0 (
-    start "" "C:\Users\HWcoms\Downloads\VoiceVox\windows-nvidia\run.exe"
-)
-
+cd src
 python voice_translator.py
 pause

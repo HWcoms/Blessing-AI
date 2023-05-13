@@ -67,6 +67,8 @@ load_dotenv()
 
 USE_DEEPL = getenv('USE_DEEPL', 'False').lower() in ('true', '1', 't')
 DEEPL_AUTH_KEY = getenv('DEEPL_AUTH_KEY')
+PAPAGO_AUTH_ID = getenv('PAPAGO_AUTH_ID')
+PAPAGO_AUTH_SECRET = getenv('PAPAGO_AUTH_SECRET')
 TARGET_LANGUAGE = getenv('TARGET_LANGUAGE_CODE')
 MIC_ID = int(getenv('MICROPHONE_ID'))
 RECORD_KEY = getenv('MIC_RECORD_KEY')
@@ -76,8 +78,8 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 
 #papago
-client_id = "S1o3ymX0XvUNGrUM4Pjv" # 개발자센터에서 발급받은 Client ID 값
-client_secret = "hI9TezkcUv" # 개발자센터에서 발급받은 Client Secret 값
+client_id = PAPAGO_AUTH_ID      # 개발자센터에서 발급받은 Client ID 값
+client_secret = PAPAGO_AUTH_SECRET      # 개발자센터에서 발급받은 Client Secret 값
 url = "https://openapi.naver.com/v1/papago/n2mt"
 
 #If text language is ja -> no translate, but if other source_lang -> translate to ja
