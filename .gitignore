@@ -122,3 +122,23 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+docs/ENV.md
+
+docs/INSTALLATION.md
+
+src/audio/app_audio.wav
+
+src/audio/mic.wav
+
+src/audio/tts.wav
+
+src/audio/app_audio.json
+
+src/audio/app_audio.srt
+
+src/audio/app_audio.tsv
+
+src/audio/app_audio.txt
+
+src/audio/app_audio.vtt
