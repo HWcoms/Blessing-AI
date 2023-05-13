@@ -50,4 +50,4 @@ faster-whisper==0.5.1
 Flask==2.3.2
 iso-639==0.4.5
 numpy==1.24.3
-openai-whisper==20230314
+#openai-whisper==20230314

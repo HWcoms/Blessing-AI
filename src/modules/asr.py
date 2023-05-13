@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 
 import json
-import whisper
+# import whisper
 from faster_whisper import WhisperModel
 
 load_dotenv()
@@ -21,11 +21,13 @@ SAMPLE_EN_FILEPATH = Path(__file__).resolve().parent.parent / r'audio\samples\en
 # model = whisper.load_model(WHISPER_MODEL)     #original whisper
 
 # Faster whistper
-module_folder_path = Path(__file__).resolve().parent
-whisper_small_ct2_path = str(module_folder_path / '..' / 'whisper-small-ct2')
-whisper_large_v2_path = str(module_folder_path / '..' / 'whisper-large-v2-ct2')
+# module_folder_path = Path(__file__).resolve().parent
+# whisper_small_ct2_path = str(module_folder_path / '..' / 'whisper-small-ct2')
+# whisper_large_v2_path = str(module_folder_path / '..' / 'whisper-large-v2-ct2')
+# WHISPER_MODEL = whisper_large_v2_path
 
-WHISPER_MODEL = whisper_large_v2_path
+# Faster whistper (without path define)
+WHISPER_MODEL = 'large-v2'
 model = WhisperModel(WHISPER_MODEL, device="cuda", compute_type="float16")
 
 def whisper_process(audio_data, tsk, lang):
