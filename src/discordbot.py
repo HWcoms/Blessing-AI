@@ -2,8 +2,12 @@ from discord.ext import commands
 import discord
 import time
 
-BOT_TOKEN = "MTEwNjg4MTQ3Mzg4NzM1NDkyMA.GnJyMI.zDem2-TA8XVOtqKNOnNAeVMGQd_VDV7K78zBmw" #Discord Bot Token
-CHANNEL_ID = 1043860127054319621 #Discord Text Channel
+from os import getenv
+from dotenv import load_dotenv
+load_dotenv()
+
+BOT_TOKEN = getenv('D_BOT_TOKEN') #Discord Bot Token
+CHANNEL_ID = int(getenv('D_CHANNEL_ID')) #Discord Text Channel
 
 bot = commands.Bot(command_prefix="!", intents= discord.Intents.all())
 
