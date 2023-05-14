@@ -7,10 +7,7 @@ from urllib.parse import urlencode
 import requests
 from dotenv import load_dotenv
 
-from modules.audio_to_device import play_voice
-
-import sys
-sys.path.append('../MoeGoe')
+from .audio_to_device import play_voice
 from MoeGoe.MoeGoe import speech_text
 
 load_dotenv()
