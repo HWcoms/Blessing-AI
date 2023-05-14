@@ -16,7 +16,10 @@ Set to _False_ if you want to disable logging.
 
 this program is using NaverPapago translotor. more Information is here (https://developers.naver.com/products/papago/nmt/nmt.md)  
 put Client ID to PAPAGO_AUTH_ID, Client Secret to PAPAGO_AUTH_SECRET  
-if you want to change translator to other, change definition of method `PapagoTrans()` in `voice_translator.py`  
+if you want to change translator to other, change definition of method `DoTranslate()` in `voice_translator.py`  
+
+## Discord Bot Key (optional)
+if you want to use discord bot, 1.create a new bot 2. put bot_token and channel_id of your server's text-channel
 
 ## Push to talk key
 

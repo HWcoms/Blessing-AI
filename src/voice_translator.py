@@ -56,9 +56,11 @@ from dotenv import load_dotenv
 from modules.asr import speech_to_text
 from modules.tts import speak
 
+# from iso639 import languages
+# import urllib.request
+# import json
+from modules.translator import DoTranslate
 from iso639 import languages
-import urllib.request
-import json
 
 from MoeGoe.MoeGoe import * #not sure preimport works
 
@@ -67,9 +69,7 @@ load_dotenv()
 
 USE_DEEPL = getenv('USE_DEEPL', 'False').lower() in ('true', '1', 't')
 DEEPL_AUTH_KEY = getenv('DEEPL_AUTH_KEY')
-PAPAGO_AUTH_ID = getenv('PAPAGO_AUTH_ID')
-PAPAGO_AUTH_SECRET = getenv('PAPAGO_AUTH_SECRET')
-TARGET_LANGUAGE = getenv('TARGET_LANGUAGE_CODE')
+
 MIC_ID = int(getenv('MICROPHONE_ID'))
 RECORD_KEY = getenv('MIC_RECORD_KEY')
 LOGGING = getenv('LOGGING', 'False').lower() in ('true', '1', 't')
@@ -77,73 +77,7 @@ MIC_AUDIO_PATH = Path(__file__).resolve().parent / r'audio/mic.wav'
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 
-#papago
-client_id = PAPAGO_AUTH_ID      # 개발자센터에서 발급받은 Client ID 값
-client_secret = PAPAGO_AUTH_SECRET      # 개발자센터에서 발급받은 Client Secret 값
-url = "https://openapi.naver.com/v1/papago/n2mt"
-
-#If text language is ja -> no translate, but if other source_lang -> translate to ja
-def PapagoTrans(string, source_lang = 'ko', target_lang = 'ja', trans_lang = 'ko'):
-    ko_string = None
-    ja_string = None
-    
-    if(source_lang == 'ja'):
-        ja_string = string
-    
-    if (source_lang == 'ko'):
-        ko_string = string
-                
-    
-    source_lang_name = languages.get(alpha2=source_lang).name
-    traget_lang_name = languages.get(alpha2=target_lang).name
-    
-    #Papago Translate       
-    encText = urllib.parse.quote(string)    
-    print("인식언어: ",source_lang_name, "목표언어: ", traget_lang_name)
-    
-    request = urllib.request.Request(url)
-    request.add_header("X-Naver-Client-Id",client_id)
-    request.add_header("X-Naver-Client-Secret",client_secret)
-    
-    data = None
-    if (ja_string == None):
-        data = "source="+source_lang+"&target="+target_lang+"&text=" + encText
-        ja_string = translate(request, data)
-    
-    if (ko_string == None):
-        data = "source="+source_lang+"&target="+trans_lang+"&text=" + encText
-        ko_string = translate(request, data)
-    
-    
-    print("ja:",ja_string)
-    print("ko:",ko_string)
-        
-    return ja_string, ko_string
-        
-
-def translate(request, data):
-    try:
-        response = urllib.request.urlopen(request, data=data.encode("utf-8"))
-    except Exception as e:
-        print(f'파파고 API 접속 오류: {e}')
-        
-        return "パパゴの APIが翻訳に失敗しました"
-            
-    rescode = response.getcode()
-    
-    if(rescode==200):
-        response_body = response.read()
-        result = response_body.decode('utf-8')
-        des = json.loads(result)
-        #print(des['message']['result']['translatedText'])
-        
-        str = des['message']['result']['translatedText']
-        
-        return str
-    
-    else:
-        print("Error Code:" + rescode)   
-
+TARGET_LANGUAGE = getenv('TARGET_LANGUAGE_CODE')
 
 def on_press_key(_):
     print("녹음 버튼 누름")
@@ -192,7 +126,7 @@ def on_release_key(_):
         if USE_DEEPL:
             translated_speech = translator.translate_text(eng_speech, target_lang=TARGET_LANGUAGE)
         else:
-            translated_speech, subtitle_speech = PapagoTrans(eng_speech, speech_lang)
+            translated_speech = DoTranslate(eng_speech, speech_lang)
             #translated_speech = translator.translate(eng_speech, dest=TARGET_LANGUAGE).text
 
         if LOGGING:
@@ -205,8 +139,8 @@ def on_release_key(_):
         
     else:
         #print('No speech detected.')
-        print('목소리를 감지할수 없거나 VoiceVox에 연결이 불가능합니다.')
-        translated_speech = PapagoTrans("목소리를 감지를 할수가 없거나 보이스복스에 연결을 할 수 없습니다.")
+        print('목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.')
+        translated_speech = DoTranslate("목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.")
         speak(translated_speech, TARGET_LANGUAGE)
         
 
