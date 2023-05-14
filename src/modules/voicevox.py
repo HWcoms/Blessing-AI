@@ -10,6 +10,9 @@ from dotenv import load_dotenv
 from .audio_to_device import play_voice
 from MoeGoe.MoeGoe import speech_text
 
+#discord bot feature
+from discordbot import SendDiscordMessage
+
 load_dotenv()
 
 # Audio devices
@@ -51,6 +54,9 @@ def speak_jp(sentence):
 
     # play voice to app mic input and speakers/headphones
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
+    
+    SendDiscordMessage(sentence)
+    
     [t.start() for t in threads]
     [t.join() for t in threads]
     
