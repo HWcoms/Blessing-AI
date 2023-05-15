@@ -5,6 +5,7 @@ import json
 from os import getenv
 from dotenv import load_dotenv
 load_dotenv()
+import googletrans
 
 PAPAGO_AUTH_ID = getenv('PAPAGO_AUTH_ID')
 PAPAGO_AUTH_SECRET = getenv('PAPAGO_AUTH_SECRET')
@@ -40,9 +41,11 @@ def papago_translate(request, data):
      try:
           response = urllib.request.urlopen(request, data=data.encode("utf-8"))
      except Exception as e:
-          print(f'파파고 API 접속 오류: {e}')
+          print(f'파파고 API 접속 오류: {e}, 구글번역 시도중.')
           
-          return "パパゴの APIが翻訳に失敗しました"
+          #use google translate
+          return google_translate(data)
+          # return "パパゴの APIが翻訳に失敗しました"
                
      rescode = response.getcode()
      
@@ -58,3 +61,28 @@ def papago_translate(request, data):
      
      else:
           print("Error Code:" + rescode)   
+          
+#when papago fails, Try google translate
+def google_translate(data):
+     source, target, text = extract_query_string(data)
+     text = urllib.parse.unquote(text) 
+     ##translate
+     translator = googletrans.Translator()
+     result = translator.translate(text, dest=target)
+     
+     return result.text
+
+#Get infos from query
+def extract_query_string(query_string):
+     variables = query_string.split('&')
+     variable_dict = {}
+
+     for variable in variables:
+          key, value = variable.split('=')
+          variable_dict[key] = value
+
+     source = variable_dict.get('source')
+     target = variable_dict.get('target')
+     text = variable_dict.get('text')
+
+     return source, target, text
