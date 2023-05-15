@@ -8,7 +8,6 @@ load_dotenv()
 
 PAPAGO_AUTH_ID = getenv('PAPAGO_AUTH_ID')
 PAPAGO_AUTH_SECRET = getenv('PAPAGO_AUTH_SECRET')
-TARGET_LANGUAGE = getenv('TARGET_LANGUAGE_CODE')
 
 #papago
 client_id = PAPAGO_AUTH_ID      # 개발자센터에서 발급받은 Client ID 값

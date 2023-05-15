@@ -160,3 +160,5 @@ src/whisper-small-ct2/vocabulary.txt
 src/MoeGoe/models/G_latest.pth
 
 src/MoeGoe/models/moegoe_config.json
+
+Voice_Settings.txt
