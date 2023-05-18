@@ -6,14 +6,6 @@ import json
 
 load_dotenv()
 
-def SendDiscordMessage(message):
-     payload['content'] = message
-     
-     r = requests.post(dsend_message_url, data=payload, headers=header)
-     
-     
-     import requests
-
 # For local streaming, the websockets are hosted without ssl - http://
 HOST = getenv('TEXTGENERATION_URL')
 URI = f'{HOST}/api/v1/generate'

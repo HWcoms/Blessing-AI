@@ -15,6 +15,7 @@ from MoeGoe.MoeGoe import speech_text
 
 #discord bot feature
 from discordbot import SendDiscordMessage
+from discordbot import ExcuteDiscordWebhook
 from .translator import DoTranslate
 
 load_dotenv()
@@ -65,11 +66,13 @@ def speak_jp(sentence):
     USE_D_BOT = settings_json["discord_bot"]
     # getenv('USE_D_BOT').lower() in ('true', '1', 't')
     
-    print(USE_D_BOT)
+    # print(USE_D_BOT)
     
     if(USE_D_BOT):
         ko_sentence = DoTranslate(sentence,'ja','ko')
-        SendDiscordMessage(ko_sentence)
+        
+        # SendDiscordMessage(ko_sentence)
+        ExcuteDiscordWebhook(ko_sentence)
     
     [t.start() for t in threads]
     [t.join() for t in threads]
