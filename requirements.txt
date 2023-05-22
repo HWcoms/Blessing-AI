@@ -52,3 +52,4 @@ iso-639==0.4.5
 numpy==1.24.3
 #openai-whisper==20230314
 discord.py
+BeautifulSoup4

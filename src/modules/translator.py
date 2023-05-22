@@ -25,7 +25,7 @@ def DoTranslate(string, source_lang = 'ko', target_lang = 'ja'):
      
      #Papago Translate       
      encText = urllib.parse.quote(string)    
-     print("인식언어: ",source_lang_name, "목표언어: ", traget_lang_name)
+     # print("인식언어: ",source_lang_name, "목표언어: ", traget_lang_name)
      
      request = urllib.request.Request(url)
      request.add_header("X-Naver-Client-Id",client_id)

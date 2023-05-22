@@ -162,3 +162,6 @@ src/MoeGoe/models/G_latest.pth
 src/MoeGoe/models/moegoe_config.json
 
 Voice_Settings.txt
+
+oobabooga webui.lnk
+Start_with_oobabooga.bat

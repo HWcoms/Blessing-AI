@@ -64,6 +64,8 @@ from iso639 import languages
 
 from MoeGoe.MoeGoe import * #not sure preimport works
 
+#LanguageModel
+from LangAIComm import generate_reply
 
 load_dotenv()
 
@@ -78,6 +80,39 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 
 TARGET_LANGUAGE = getenv('TARGET_LANGUAGE_CODE')
+
+
+def Do_Generate(eng_speech, speech_lang):
+    if eng_speech:
+        if USE_DEEPL:
+            translated_speech = translator.translate_text(eng_speech, target_lang=TARGET_LANGUAGE)
+        else:
+            translated_speech = DoTranslate(eng_speech, speech_lang, 'en')
+            #translated_speech = translator.translate(eng_speech, dest=TARGET_LANGUAGE).text
+
+        if LOGGING:
+            source_lang_name = languages.get(alpha2=speech_lang).name
+            # print(f'{source_lang_name}: {eng_speech}')
+            print(f'User: {translated_speech}')
+        
+        bot_reply = generate_reply(translated_speech)
+        # bot_trans_speech = DoTranslate(bot_reply,'en',target_lang=TARGET_LANGUAGE)
+        
+        if LOGGING:
+            print(f'Bot: {bot_reply}')
+        
+        # print("speak 함수 실행")
+        
+        speak(bot_reply, TARGET_LANGUAGE)
+        # speak(bot_trans_speech, TARGET_LANGUAGE)
+        # print("speak 함수 끝")
+        
+    else:
+        #print('No speech detected.')
+        print('목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.')
+        translated_speech = DoTranslate("목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.", target_lang='ja')
+        speak(translated_speech, TARGET_LANGUAGE)
+         
 
 def on_press_key(_):
     print("녹음 버튼 누름")
@@ -122,26 +157,7 @@ def on_release_key(_):
         print('Too many requests to process at once')
         return
 
-    if eng_speech:
-        if USE_DEEPL:
-            translated_speech = translator.translate_text(eng_speech, target_lang=TARGET_LANGUAGE)
-        else:
-            translated_speech = DoTranslate(eng_speech, speech_lang)
-            #translated_speech = translator.translate(eng_speech, dest=TARGET_LANGUAGE).text
-
-        if LOGGING:
-            source_lang_name = languages.get(alpha2=speech_lang).name
-            print(f'{source_lang_name}: {eng_speech}')
-            print(f'Translated: {translated_speech}')
-        # print("speak 함수 실행")
-        speak(translated_speech, TARGET_LANGUAGE)
-        # print("speak 함수 끝")
-        
-    else:
-        #print('No speech detected.')
-        print('목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.')
-        translated_speech = DoTranslate("목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.")
-        speak(translated_speech, TARGET_LANGUAGE)
+    Do_Generate(eng_speech,speech_lang)
         
 
 if __name__ == '__main__':

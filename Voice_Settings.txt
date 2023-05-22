@@ -1,8 +1,9 @@
 {
-     "discord_bot": false,
+     "discord_bot": true,
+     "max_token": 200,
 	"voice_id": 0,
      "voice_speed": 0.8,
-     "voice_volume": 0.5,
+     "voice_volume": 0.3,
      "intonation_scale": 1.5,
      "pre_phoneme_length": 1.0,
      "post_phoneme_length": 1.0

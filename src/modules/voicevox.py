@@ -18,6 +18,9 @@ from discordbot import SendDiscordMessage
 from discordbot import ExcuteDiscordWebhook
 from .translator import DoTranslate
 
+#romaji to japanese
+from modules.convert_roma_ja import replace_eng_jp_words
+
 load_dotenv()
 
 # Audio devices
@@ -57,7 +60,11 @@ def speak_jp(sentence):
     audio_volume = settings_json["voice_volume"]
     
     # synthesize voice as wav file
-    speech_text(sentence, speaker_id, audio_volume)
+    bot_trans_speech = DoTranslate(sentence,'en',target_lang='ja')
+    # print("번역전 텍스트: ", sentence)
+    
+    bot_trans_speech = replace_eng_jp_words(bot_trans_speech)    ##romaji to japanese
+    speech_text(bot_trans_speech, speaker_id, audio_volume)
 
     # play voice to app mic input and speakers/headphones
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
@@ -69,7 +76,7 @@ def speak_jp(sentence):
     # print(USE_D_BOT)
     
     if(USE_D_BOT):
-        ko_sentence = DoTranslate(sentence,'ja','ko')
+        ko_sentence = DoTranslate(sentence,'en','ko')
         
         # SendDiscordMessage(ko_sentence)
         ExcuteDiscordWebhook(ko_sentence)
