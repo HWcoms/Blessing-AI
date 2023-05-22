@@ -65,10 +65,31 @@ To generate prompt from user's input(voice) and get result, **I'm using oobaboog
 ## Usage
 
 ### 1. Run Language Model Interface
-Go to oobabooga/text-generation-webui folder installed, run `start-webui.bat`  
+Go to oobabooga/text-generation-webui folder installed, open cmd at current folder
+use below commands that you can run Interface while activate conda, please see this as reference. - https://github.com/oobabooga/text-generation-webui#starting-the-web-ui  
+```
+conda activate textgen
+cd text-generation-webui
+python server.py --api
+```
+
 Please load your language model and character from webUI  
-Or add start options in `start-web.bat` file.  
+Or add start options at behind where `python server.py --api`. --api is necessary because of Blessing-AI is using it.
 more information here (https://github.com/oobabooga/text-generation-webui#basic-settings)  
+
+If you want to make batch file here's my example **(optional)**  
+```
+::start-webui.bat
+@echo off
+
+@echo Starting the web UI...
+
+call activate "E:\CondaProject\oobaTextGenUI\oobabooga_windows\installer_files\env" <- Location of your Conda Env
+
+call python server.py --auto-devices --chat --verbose --wbits 4 --groupsize 128 --model_type LLaMA --model pygmalion-7b-4bit-128g-cuda --character "Kato Megumi" --api
+
+pause
+```
 
 ### 2. Run Blessing-AI (3 options)
 - Run as executable file (recommended)  
@@ -87,7 +108,8 @@ more information here (https://github.com/oobabooga/text-generation-webui#basic-
 
 Wait for loading, when loading is done, program says ```'record ready...'```  
 Then, hold 'v' key while speaking through your mic.
-If you release the key program detect your voice to text and AI will speak in Japanese(Translate with Naver Papago API) what you said - I'll use Language model to make chatbot AI later (TODO)  
+If you release the key program detect your voice to text and AI will reply  
+currently, it won't working because there's no character's information and ChatLog file In this repository. but will be fix In future (TODO)
 Currently, you can only use record while record is ready, I'll update it later that can able to listen your voice any state. (TODO)  
 
 ## License
