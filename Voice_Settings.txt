@@ -1,5 +1,5 @@
 {
-     "discord_bot": true,
+     "discord_bot": false,
      "max_token": 200,
 	"voice_id": 0,
      "voice_speed": 0.8,
