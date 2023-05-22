@@ -19,7 +19,7 @@ from discordbot import ExcuteDiscordWebhook
 from .translator import DoTranslate
 
 #romaji to japanese
-from modules.convert_roma_ja import replace_eng_jp_words
+from modules.convert_roma_ja import english_to_katakana
 
 load_dotenv()
 
@@ -63,7 +63,7 @@ def speak_jp(sentence):
     bot_trans_speech = DoTranslate(sentence,'en',target_lang='ja')
     # print("번역전 텍스트: ", sentence)
     
-    bot_trans_speech = replace_eng_jp_words(bot_trans_speech)    ##romaji to japanese
+    bot_trans_speech = english_to_katakana(bot_trans_speech)    ##romaji to japanese
     speech_text(bot_trans_speech, speaker_id, audio_volume)
 
     # play voice to app mic input and speakers/headphones
