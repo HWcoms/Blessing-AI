@@ -6,20 +6,23 @@ First, copy [.env.sample](../.env.sample) to .env by running the following comma
 
 Now open .env in a text editor of your choice and update the variables. Below is a more detailed description of each environment variable
 
-## Logging 
+## Logging
 
 This variable can be set to either _True_ or _False_. Set to _True_ if you would like to see more detailed logging from the terminal when running the python scripts.  
 Set to _False_ if you want to disable logging.
 
-
 ## Papago Translator Key
+
+**If there's no Papago Auth ID and Secret, program will try to translate using Google Translator**  
 
 this program is using NaverPapago translotor. more Information is here (https://developers.naver.com/products/papago/nmt/nmt.md)  
 put Client ID to PAPAGO_AUTH_ID, Client Secret to PAPAGO_AUTH_SECRET  
+
 if you want to change translator to other, change definition of method `DoTranslate()` in `voice_translator.py`  
 
 ## Discord Bot Key (optional)
-if you want to use discord bot, 1.create a new bot 2. put bot_token and channel_id of your server's text-channel
+
+if you want to use discord bot, 1.create a new Webhook 2. put webhook_token and channel_id of your server's text-channel
 
 ## Push to talk key
 
@@ -27,10 +30,29 @@ The key to hold down when you want your voice to be recorded and translated. E.g
 
 ## Audio Device Ids
 
+I will change the code that automatically detect user's device if there's nothing set (TODO)
+
 Here is where you will enter the IDs for the various audio devices that the program will be using.  
 This is required for python to know which audio device to listen from or play audio to.  
 Run [get_audio_device_ids.py](../src/modules/get_audio_device_ids.py) in order to obtain the id for your audio devices.  
 The output from running this command may be truncated but do your best to select the correct id for the audio device.  
+
+## Edit Voice Settings file
+
+At root folder (Blessing-AI/), You can find ***Voice_settings.txt***. You can change the settings through it while program is running.
+
+program will load this text file as json so Do not destroy the structure.
+
+```
+"discord_bot": false,         <- use discord bot?
+"max_token": 200,            <- max tokens for bot's reply
+"voice_id": 0,                      <- moegoe_config's voice id (set it 0, if you're not sure)
+"voice_speed": 0.8,                         <- TTS voice speed
+"voice_volume": 0.3,                       <- TTS voice volume
+"intonation_scale": 1.5,                  <-unused
+"pre_phoneme_length": 1.0,         <-unused
+"post_phoneme_length": 1.0        <-unused
+```
 
 <!-- ## Voicevox Settings
 
@@ -62,7 +84,7 @@ SACRIFICIAL_COLOR is the color that will be considered transparent. This is for 
 SACRIFICIAL_COLOR can be set to the same color as SUBTITLE_BG_COLOR so that subtitles will not have a background color.
 SUBTITLE_COLOR shouldn't be set to the same color as SACRIFICIAL_COLOR as this will cause your subtitles to be invisible.
  -->
- 
+
 ## Finish
 
 You are finally done setting up your environment variables. To start running **Blessing AI**, go to [usage](../README.md#Usage).
