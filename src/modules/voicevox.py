@@ -1,26 +1,20 @@
-import time
+import json
 from os import getenv
-import os
 from pathlib import Path
 from threading import Thread
 from urllib.parse import urlencode
 
 import requests
-from dotenv import load_dotenv
-
-import json
-
-from .audio_to_device import play_voice
 from MoeGoe.MoeGoe import speech_text
 from MoeGoe.MoeGoe import speech_text_ko
-
-#discord bot feature
-from discordbot import SendDiscordMessage
+# discord bot feature
 from discordbot import ExcuteDiscordWebhook
-from .translator import DoTranslate
-
-#romaji to japanese
+from dotenv import load_dotenv
+# romaji to japanese
 from modules.convert_roma_ja import english_to_katakana
+
+from .audio_to_device import play_voice
+from .translator import DoTranslate
 
 load_dotenv()
 
@@ -40,13 +34,13 @@ INTONATION_SCALE = float(getenv('INTONATION_SCALE'))
 PRE_PHONEME_LENGTH = float(getenv('PRE_PHONEME_LENGTH'))
 POST_PHONEME_LENGTH = float(getenv('POST_PHONEME_LENGTH'))
 
-
 TTS_WAV_PATH = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
+
 def speak_jp(sentence):
-    settings_json = read_text_file( Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')        
+    settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
     # settings_json = read_text_file('C:/Users/HWcoms/Blessing-AI/Voice_Settings.txt')
-    
+
     # print("========TTS 설정=========")
     # print("디스코드 봇: ", settings_json["discord_bot"])
     # print("TTS 보이스 ID: ", settings_json["voice_id"])
@@ -56,71 +50,72 @@ def speak_jp(sentence):
     # print("PRE_PHONEME_LENGTH: ", settings_json["pre_phoneme_length"])
     # print("POST_PHONEME_LENGTH: ", settings_json["post_phoneme_length"])
     # print("====================\n")
-    
-    speaker_id = settings_json["voice_id"]  #id
+
+    speaker_id = settings_json["voice_id"]  # id
     audio_volume = settings_json["voice_volume"]
-    
+
     # synthesize voice as wav file
-    bot_trans_speech = DoTranslate(sentence,'en',target_lang='ja')
+    bot_trans_speech = DoTranslate(sentence, 'en', target_lang='ja')
     # print("번역전 텍스트: ", sentence)
-    
-    bot_trans_speech = english_to_katakana(bot_trans_speech)    ##romaji to japanese
+
+    bot_trans_speech = english_to_katakana(bot_trans_speech)  ##romaji to japanese
     speech_text(bot_trans_speech, speaker_id, audio_volume)
 
     # play voice to app mic input and speakers/headphones
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
-    
-    #DISCORD BOT
+
+    # DISCORD BOT
     USE_D_BOT = settings_json["discord_bot"]
     # getenv('USE_D_BOT').lower() in ('true', '1', 't')
-    
+
     # print(USE_D_BOT)
-    
-    if(USE_D_BOT):
-        ko_sentence = DoTranslate(sentence,'en','ko')
-        
+
+    if (USE_D_BOT):
+        ko_sentence = DoTranslate(sentence, 'en', 'ko')
+
         # SendDiscordMessage(ko_sentence)
         ExcuteDiscordWebhook(ko_sentence)
-    
+
     [t.start() for t in threads]
     [t.join() for t in threads]
-    
+
+
 # wip - just testing
 def speak_ko(sentence):
-    settings_json = read_text_file( Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')        
-    
-    speaker_id = 4 #settings_json["voice_id"]  #id
+    settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
+
+    speaker_id = 4  # settings_json["voice_id"]  #id
     audio_volume = settings_json["voice_volume"]
-    
+
     # synthesize voice as wav file
-    bot_trans_speech = DoTranslate(sentence,'en',target_lang='ko')
+    bot_trans_speech = DoTranslate(sentence, 'en', target_lang='ko')
     # print("번역전 텍스트: ", sentence)
-    
+
     # bot_trans_speech = english_to_katakana(bot_trans_speech)    #TODO: eng to korean
     speech_text_ko(bot_trans_speech, speaker_id, audio_volume * 0.3)
 
     # play voice to app mic input and speakers/headphones
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
-    
-    #DISCORD BOT
+
+    # DISCORD BOT
     USE_D_BOT = settings_json["discord_bot"]
     # getenv('USE_D_BOT').lower() in ('true', '1', 't')
-    
+
     # print(USE_D_BOT)
-    
-    if(USE_D_BOT):
+
+    if (USE_D_BOT):
         ko_sentence = bot_trans_speech
-        
+
         # SendDiscordMessage(ko_sentence)
         ExcuteDiscordWebhook(ko_sentence)
-    
+
     [t.start() for t in threads]
     [t.join() for t in threads]
 
 
 def speak_jp_VoiceVox(sentence):
-    settings_json = read_text_file( Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')      
-    
+    settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
+
     print("========TTS 설정=========")
     print("TTS 보이스 ID: ", settings_json["voice_id"])
     print("TTS 스피드: ", settings_json["voice_speed"])
@@ -129,9 +124,9 @@ def speak_jp_VoiceVox(sentence):
     print("PRE_PHONEME_LENGTH: ", settings_json["pre_phoneme_length"])
     print("POST_PHONEME_LENGTH: ", settings_json["post_phoneme_length"])
     print("====================\n")
-    
-    voice_Dyna_id = settings_json["voice_id"]  #id
-    
+
+    voice_Dyna_id = settings_json["voice_id"]  # id
+
     params_encoded = urlencode({'text': sentence, 'speaker': voice_Dyna_id})
     r = requests.post(f'{BASE_URL}/audio_query?{params_encoded}')
 
@@ -140,13 +135,13 @@ def speak_jp_VoiceVox(sentence):
         return
 
     voicevox_query = r.json()
-    
+
     voicevox_query['speedScale'] = settings_json["voice_speed"]
     voicevox_query['volumeScale'] = settings_json["voice_volume"]
     voicevox_query['intonationScale'] = settings_json["intonation_scale"]
     voicevox_query['prePhonemeLength'] = settings_json["pre_phoneme_length"]
     voicevox_query['postPhonemeLength'] = settings_json["post_phoneme_length"]
-    
+
     # voicevox_query['speedScale'] = SPEED_SCALE
     # voicevox_query['volumeScale'] = VOLUME_SCALE
     # voicevox_query['intonationScale'] = INTONATION_SCALE
@@ -154,7 +149,7 @@ def speak_jp_VoiceVox(sentence):
     # voicevox_query['postPhonemeLength'] = POST_PHONEME_LENGTH
 
     # synthesize voice as wav file
-    
+
     params_encoded = urlencode({'speaker': voice_Dyna_id})
     r = requests.post(f'{BASE_URL}/synthesis?{params_encoded}', json=voicevox_query)
 
@@ -165,24 +160,26 @@ def speak_jp_VoiceVox(sentence):
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
     [t.start() for t in threads]
     [t.join() for t in threads]
-    
+
     print("준비완료")
+
 
 def read_text_file(filename):
     # 텍스트 파일 읽기
     with open(filename, 'r') as file:
         data = file.read()
-        
+
     data = data.strip()
-    
+
     # JSON 변환
     try:
         json_data = json.loads(data)
     except json.JSONDecodeError:
         print("Invalid JSON format in the text file.")
         return None
-    
+
     return json_data
+
 
 if __name__ == '__main__':
     # test if voicevox is up and running

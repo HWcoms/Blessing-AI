@@ -14,7 +14,7 @@ from .asr import speech_to_text
 APP_OUTPUT_ID = int(getenv('AUX_OUTPUT_ID'))
 RECORD_TIMEOUT = int(getenv('RECORD_TIMEOUT'))
 PHRASE_TIMEOUT = float(getenv('PHRASE_TIMEOUT'))
-#INPUT_LANGUAGE = getenv('TARGET_LANGUAGE_CODE')
+# INPUT_LANGUAGE = getenv('TARGET_LANGUAGE_CODE')
 INPUT_LANGUAGE = getenv('ko')
 LOGGING = getenv("LOGGING", 'False').lower() in ('true', '1', 't')
 APP_AUDIO_WAV_PATH = Path(__file__).resolve().parent.parent / r'audio\app_audio.wav'
@@ -22,7 +22,7 @@ APP_AUDIO_WAV_PATH = Path(__file__).resolve().parent.parent / r'audio\app_audio.
 
 def request_thread(queue, phrase_time, now):
     try:
-        translation, trans_language = speech_to_text(APP_AUDIO_WAV_PATH, 'transcribe','any')
+        translation, trans_language = speech_to_text(APP_AUDIO_WAV_PATH, 'transcribe', 'any')
     except requests.exceptions.JSONDecodeError:
         # Whisper is not thread-safe, see https://github.com/openai/whisper/discussions/296
         # However, if we do not want a single request to block future audio, just catch the error
@@ -35,7 +35,8 @@ def request_thread(queue, phrase_time, now):
         if LOGGING:
             delay = (datetime.utcnow() - now).total_seconds()
             if phrase_time:
-                print(f'Previous time: {phrase_time.time().strftime("%H:%M:%S")}, Now: {now.time().strftime("%H:%M:%S")}, Delay: {delay}, Translation: {translation}')
+                print(
+                    f'Previous time: {phrase_time.time().strftime("%H:%M:%S")}, Now: {now.time().strftime("%H:%M:%S")}, Delay: {delay}, Translation: {translation}')
             else:
                 print(f'Now: {now.time()}, Delay: {delay}, Translation: {translation}')
 
@@ -63,7 +64,7 @@ def translate_audio(translation_queue):
     phrase_time = None
     # Current raw audio bytes.
     last_sample = bytes()
-    
+
     while True:
         now = datetime.utcnow()
 
@@ -89,7 +90,7 @@ def translate_audio(translation_queue):
 
             # translate japanese audio to english and push to translation queue in thread
             # TODO: Add a Mutex to ensure request is not to Whisper simultaneously??
-            
+
             Thread(target=request_thread, args=[translation_queue, prev_phrase_time, now], daemon=True).start()
 
         else:

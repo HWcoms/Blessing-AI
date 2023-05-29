@@ -1,10 +1,7 @@
-from os import getenv
+import json
 from pathlib import Path
 
-import requests
 from dotenv import load_dotenv
-
-import json
 # import whisper
 from faster_whisper import WhisperModel
 
@@ -15,8 +12,7 @@ load_dotenv()
 SAMPLE_JP_FILEPATH = Path(__file__).resolve().parent.parent / r'audio\samples\japanese_speech_sample.wav'
 SAMPLE_EN_FILEPATH = Path(__file__).resolve().parent.parent / r'audio\samples\english_speech_sample.wav'
 
-
-#whisper
+# whisper
 # WHISPER_MODEL = 'base'  #model
 # model = whisper.load_model(WHISPER_MODEL)     #original whisper
 
@@ -30,32 +26,34 @@ SAMPLE_EN_FILEPATH = Path(__file__).resolve().parent.parent / r'audio\samples\en
 WHISPER_MODEL = 'large-v2'
 model = WhisperModel(WHISPER_MODEL, device="cuda", compute_type="float16")
 
+
 def whisper_process(audio_data, tsk, lang):
     temp_path = r"{}".format(audio_data)
     # print("음성인식 시작")
     if tsk == 'transcribe':
-#       audio_data.save(TRANSCRIBE_FILENAME)
-        if(lang == 'any'):
+        #       audio_data.save(TRANSCRIBE_FILENAME)
+        if (lang == 'any'):
             print("SubTitle Mode: any language")
             # result = model.transcribe(temp_path, task=tsk, fp16=False)
             result, info = model.transcribe(temp_path)
-        else:   
-            print("Voice Mode: ", lang)   
+        else:
+            print("Voice Mode: ", lang)
             # result = model.transcribe(temp_path, language=lang, task=tsk, fp16=False)
             result, info = model.transcribe(temp_path, language=lang)
 
         result = concatenate_strings(result)
-    #     print("음성인식 끝")
+        #     print("음성인식 끝")
         return result, info
 
     elif tsk == 'translate':
-#       audio_data.save(TRANSLATE_FILENAME)
-      result = model.translate(temp_path, language='ja', task='translate', fp16=False)
-      return json.dumps(result)
-    
+        #       audio_data.save(TRANSLATE_FILENAME)
+        result = model.translate(temp_path, language='ja', task='translate', fp16=False)
+        return json.dumps(result)
+
     else:
-      return 'Record not found', 400
-  
+        return 'Record not found', 400
+
+
 def speech_to_text(filepath, task, language):
     try:
         result, lang_info = whisper_process(filepath, task, language)
@@ -70,12 +68,14 @@ def speech_to_text(filepath, task, language):
     # return json_result['text'].strip(), json_result['language'].strip()
     return result, lang_info.language
 
+
 def concatenate_strings(results):
     concatenated_string = ""
     for segment in results:
         # print(segment)
         concatenated_string += segment.text.strip() + " "
     return concatenated_string
+
 
 # def speech_to_text(filepath, task, language, mode):
 #     try:
@@ -98,7 +98,6 @@ def concatenate_strings(results):
 #         return None
 
 #     return r.json()['text'].strip()
-
 
 
 if __name__ == '__main__':

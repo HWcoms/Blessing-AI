@@ -12,14 +12,15 @@ hyperparameter. Some cleaners are English-specific. You'll typically want to use
      the symbols in symbols.py to match your data).
 '''
 
-
 # Regular expression matching whitespace:
 
 
 import re
+
+import eng_to_ipa as ipa
 import inflect
 from unidecode import unidecode
-import eng_to_ipa as ipa
+
 _inflect = inflect.engine()
 _comma_number_re = re.compile(r'([0-9][0-9\,]+[0-9])')
 _decimal_number_re = re.compile(r'([0-9]+\.[0-9]+)')
@@ -49,7 +50,6 @@ _abbreviations = [(re.compile('\\b%s\\.' % x[0], re.IGNORECASE), x[1]) for x in 
     ('col', 'colonel'),
     ('ft', 'fort'),
 ]]
-
 
 # List of (ipa, lazy ipa) pairs:
 _lazy_ipa = [(re.compile('%s' % x[0]), x[1]) for x in [
@@ -154,7 +154,7 @@ def normalize_numbers(text):
 
 
 def mark_dark_l(text):
-    return re.sub(r'l([^aeiouæɑɔəɛɪʊ ]*(?: |$))', lambda x: 'ɫ'+x.group(1), text)
+    return re.sub(r'l([^aeiouæɑɔəɛɪʊ ]*(?: |$))', lambda x: 'ɫ' + x.group(1), text)
 
 
 def english_to_ipa(text):

@@ -123,6 +123,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# IDE
+.idea/
+.vscode/
+
 docs/ENV-1.md
 
 docs/INSTALLATION.md
@@ -165,3 +169,4 @@ Voice_Settings.txt
 
 oobabooga webui.lnk
 Start_with_oobabooga.bat
+

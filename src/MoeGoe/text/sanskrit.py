@@ -1,6 +1,6 @@
 import re
-from indic_transliteration import sanscript
 
+from indic_transliteration import sanscript
 
 # List of (iast, ipa) pairs:
 _iast_to_ipa = [(re.compile('%s' % x[0]), x[1]) for x in [
@@ -58,5 +58,5 @@ def devanagari_to_ipa(text):
     for regex, replacement in _iast_to_ipa:
         text = re.sub(regex, replacement, text)
     text = re.sub('(.)[`ː]*ḥ', lambda x: x.group(0)
-                  [:-1]+'h'+x.group(1)+'*', text)
+                                         [:-1] + 'h' + x.group(1) + '*', text)
     return text

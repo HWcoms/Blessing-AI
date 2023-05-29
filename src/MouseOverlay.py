@@ -1,4 +1,5 @@
 import time
+
 import pygame
 
 # Define the size of the overlay window
@@ -13,6 +14,7 @@ font = pygame.font.SysFont('calibri', 30)
 
 # Define the initial position of the overlay window
 x, y = 0, 0
+
 
 # Define the function to show the overlay window
 def show_overlay(button):
@@ -38,6 +40,7 @@ def show_overlay(button):
         pygame.display.update()
         # Wait a short time to create the animation effect
         time.sleep(0.01)
+
 
 # Define the function to check for mouse clicks
 def check_click():
@@ -66,6 +69,7 @@ def check_click():
                     # Show the current message
                     show_overlay(button)
                     previous_text = font.render(f"Button {button} clicked!", True, (255, 255, 255))
+
 
 # Start the program
 check_click()

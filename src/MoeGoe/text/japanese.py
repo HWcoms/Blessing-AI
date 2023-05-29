@@ -1,7 +1,7 @@
 import re
-from unidecode import unidecode
-import pyopenjtalk
 
+import pyopenjtalk
+from unidecode import unidecode
 
 # Regular expression matching Japanese without punctuation marks:
 _japanese_characters = re.compile(
@@ -127,7 +127,7 @@ def get_real_hatsuon(text):
 def japanese_to_ipa(text):
     text = japanese_to_romaji_with_accent(text).replace('...', '…')
     text = re.sub(
-        r'([aiueo])\1+', lambda x: x.group(0)[0]+'ː'*(len(x.group(0))-1), text)
+        r'([aiueo])\1+', lambda x: x.group(0)[0] + 'ː' * (len(x.group(0)) - 1), text)
     text = get_real_sokuon(text)
     text = get_real_hatsuon(text)
     for regex, replacement in _romaji_to_ipa:
@@ -148,6 +148,6 @@ def japanese_to_ipa3(text):
     text = japanese_to_ipa2(text).replace('n^', 'ȵ').replace(
         'ʃ', 'ɕ').replace('*', '\u0325').replace('#', '\u031a')
     text = re.sub(
-        r'([aiɯeo])\1+', lambda x: x.group(0)[0]+'ː'*(len(x.group(0))-1), text)
+        r'([aiɯeo])\1+', lambda x: x.group(0)[0] + 'ː' * (len(x.group(0)) - 1), text)
     text = re.sub(r'((?:^|\s)(?:ts|tɕ|[kpt]))', r'\1ʰ', text)
     return text

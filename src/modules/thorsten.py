@@ -4,7 +4,6 @@ from threading import Thread
 
 import requests
 from dotenv import load_dotenv
-
 from modules.audio_to_device import play_voice
 
 load_dotenv()
@@ -12,7 +11,6 @@ load_dotenv()
 # Audio devices
 SPEAKERS_INPUT_ID = int(getenv('VOICEMEETER_INPUT_ID'))
 APP_INPUT_ID = int(getenv('CABLE_INPUT_ID'))
-
 
 # Voicevox settings
 TTS_WAV_PATH = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
