@@ -12,6 +12,7 @@ import json
 
 from .audio_to_device import play_voice
 from MoeGoe.MoeGoe import speech_text
+from MoeGoe.MoeGoe import speech_text_ko
 
 #discord bot feature
 from discordbot import SendDiscordMessage
@@ -84,7 +85,37 @@ def speak_jp(sentence):
     [t.start() for t in threads]
     [t.join() for t in threads]
     
+# wip - just testing
+def speak_ko(sentence):
+    settings_json = read_text_file( Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')        
     
+    speaker_id = 4 #settings_json["voice_id"]  #id
+    audio_volume = settings_json["voice_volume"]
+    
+    # synthesize voice as wav file
+    bot_trans_speech = DoTranslate(sentence,'en',target_lang='ko')
+    # print("번역전 텍스트: ", sentence)
+    
+    # bot_trans_speech = english_to_katakana(bot_trans_speech)    #TODO: eng to korean
+    speech_text_ko(bot_trans_speech, speaker_id, audio_volume * 0.3)
+
+    # play voice to app mic input and speakers/headphones
+    threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
+    
+    #DISCORD BOT
+    USE_D_BOT = settings_json["discord_bot"]
+    # getenv('USE_D_BOT').lower() in ('true', '1', 't')
+    
+    # print(USE_D_BOT)
+    
+    if(USE_D_BOT):
+        ko_sentence = bot_trans_speech
+        
+        # SendDiscordMessage(ko_sentence)
+        ExcuteDiscordWebhook(ko_sentence)
+    
+    [t.start() for t in threads]
+    [t.join() for t in threads]
 
 
 def speak_jp_VoiceVox(sentence):

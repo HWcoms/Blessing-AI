@@ -47,7 +47,7 @@ def run(prompt):
           'temperature': 0.72,
           'top_p': 0.73,
           'typical_p': 1,
-          'repetition_penalty': 1.1,
+          'repetition_penalty': 1.17,
           'top_k': 0,
           'min_length': 0,
           'no_repeat_ngram_size': 0,
@@ -69,7 +69,7 @@ def run(prompt):
 
      if response.status_code == 200:
           result = response.json()['results'][0]['text']
-          # print(tmp_str)
+          # print(result)
           trimmed_string = trim_until_newline(result)
           return trimmed_string
 
@@ -121,7 +121,7 @@ def generate_reply(string):
      return result_text 
 
 
-## Example usage
-# if __name__ == '__main__':
-#      # generate_reply ("good togo!")
-#      # print(HOST)
+# Example usage
+if __name__ == '__main__':
+     print(generate_reply ("what is your name??"))
+     print(HOST)

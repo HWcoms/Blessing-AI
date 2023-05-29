@@ -1,5 +1,6 @@
 from iso639 import languages
 import urllib.request
+from urllib.error import HTTPError
 import json
 
 from os import getenv
@@ -40,11 +41,28 @@ def DoTranslate(string, source_lang = 'ko', target_lang = 'ja'):
 def papago_translate(request, data):
      try:
           response = urllib.request.urlopen(request, data=data.encode("utf-8"))
-     except Exception as e:
+     except HTTPError as e:
+          if(e.code == 400):
+               if(e.headers['apigw-error'] == '084'):
+                    print("unsupported Language: "+ '\033[31m' + f"[{data}]" + '\033[0m')
+                    return "I just said dumb things that my mic can't understand."
+                    #TODO: RETURN ERROR STRING AND GO TO READY MODE
+          elif(e.code == 401):
+               print("Authorization failed.")
+          elif(e.code == 404):
+               print("Wrong URL for API request.")
+          elif(e.code == 429):
+               print("Rate Limit Exceeded.")
+               return google_translate(data) 
+                              
           print(f'파파고 API 접속 오류: {e}, 구글번역 시도중.')
+          
+          # print(e.reason)
+          # print(e.headers) #get apigw-error code
           
           #use google translate
           return google_translate(data)
+          # return "I just said dumb things that my mic can't understand."
           # return "パパゴの APIが翻訳に失敗しました"
                
      rescode = response.getcode()
@@ -60,7 +78,8 @@ def papago_translate(request, data):
           return str
      
      else:
-          print("Error Code:" + rescode)   
+          print("Error Code:" + rescode)
+          
           
 #when papago fails, Try google translate
 def google_translate(data):
@@ -86,3 +105,8 @@ def extract_query_string(query_string):
      text = variable_dict.get('text')
 
      return source, target, text
+
+
+#testing translate
+if __name__ == '__main__':
+     print(DoTranslate("Hello",'en','ko'))

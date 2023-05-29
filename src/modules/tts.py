@@ -1,5 +1,6 @@
 from .thorsten import speak_de
 from .voicevox import speak_jp
+from .voicevox import speak_ko
 
 
 # Text-to-Speech, feel free to add your own function or add more languages
@@ -11,7 +12,7 @@ def speak(sentence, language_code):
     # French
     elif language_code == 'ko':
         # Write your own function to play your TTS audio
-        pass
+        speak_ko(sentence)
 
     # Chinese
     elif language_code == 'zh':
