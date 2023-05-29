@@ -11,6 +11,14 @@ Now open .env in a text editor of your choice and update the variables. Below is
 This variable can be set to either _True_ or _False_. Set to _True_ if you would like to see more detailed logging from the terminal when running the python scripts.  
 Set to _False_ if you want to disable logging.
 
+## TextGen API Url
+
+If you run Language Model Interface (oobabooga/text-generation-webui) In Local,  
+<span style="color: red;">TEXTGENERATION_URL = </span> http://localhost:5000
+
+In Cloud,  
+<span style="color: red;">TEXTGENERATION_URL = </span>[ <u>your_public_Url</u>](screenshots/ColabApiServerUrl.png)
+
 ## Papago Translator Key
 
 **If there's no Papago Auth ID and Secret, program will try to translate using Google Translator**  
@@ -36,6 +44,13 @@ Here is where you will enter the IDs for the various audio devices that the prog
 This is required for python to know which audio device to listen from or play audio to.  
 Run [get_audio_device_ids.py](../src/modules/get_audio_device_ids.py) in order to obtain the id for your audio devices.  
 The output from running this command may be truncated but do your best to select the correct id for the audio device.  
+
+## Target Language code
+
+Here is what language will be spoken by TTS program.  
+`TARGET_LANGUAGE_CODE=ja` - `ja` is default  
+Also it supports korean. just replace `ja` to `ko`  
+`en` is not supported yet, I'll update it later...  
 
 ## Edit Voice Settings file
 

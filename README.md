@@ -7,12 +7,16 @@ Please note that this project is currently under development and may not be feat
 
 ## Table of Contents
 
-- [Installation](#installation-windows) 
-- [Setting Env](#setting-env-file)
-- [Install Language Model/Interface](#install-language-model--interface)
-- [Usage](#usage)
-  - [How to use](#how-to-use-in-program)
-- [License](#license)
+- [Installation](#installation-windows)  
+- [Setting Env](#setting-env-file)  
+- [Install Language Model/Interface](#install-language-model--interface)  
+  - [In Cloud](#1-run-text-gen-on-cloud-optional)  
+  - [In Local](#1-install-languagemodel-interface-local)  
+- [Usage](#usage)  
+  - [1. Run Language Model Interface](#1-run-language-model-interface-local)  
+  - [2. Run Blessing AI](#2-run-blessing-ai-3-options)  
+  - [How to use](#how-to-use-in-program)  
+- [License](#license)  
 
 ## Installation (Windows)
 
@@ -55,20 +59,37 @@ I'm using Python 3.10.6 (https://www.python.org/downloads/release/python-3106/)
 
 ## Setting Env file
 
-**If you don't do setting your env file, program won't work)**  
+ :warning: **If you don't do setting your env file, program won't work)** :warning:  
 This env is setting file contains Translator API key, Audio device ID, keyboard key settings. as Default, these settings are blank. so you should insert them following under document.  
 go to [Env](docs/ENV.md) Document.  
 
 ## Install Language Model / Interface
 
-### Install LanguageModel Interface
+
+### 1. Run Text-Gen on Cloud (Optional)  
+:pushpin: **If you don't have a decent GPU and trying to run this on Cloud, Try this Option.  
+Also You don't need to follow (Local) steps below**  
+- Using Google Colab, you can able to manage Large Language models has 13B parameters  
+  ([Google Colab Link](https://colab.research.google.com/drive/1VwEONZNajP4WGwJ8bw55MODHQ_yq1hpJ?usp=sharing))
+  ![](docs/screenshots/ColabApiServerUrl.png?raw=true)
+  
+  In .env setting file, Copy and Paste the Url to  
+  ```diff
+  TEXTGENERATION_URL =                #Paste Url Here (no need to add Quotation mark)
+  ``` 
+  
+  Check more information in [Env](https://github.com/HWcomss/Blessing-AI/blob/main/docs/ENV.md#textgen-api-url) document  
+  
+  Also if you want to use other Cloud services or Language models, Check [this video](https://www.youtube.com/watch?v=TP2yID7Ubr4&t=2s) by Aitrepreneur
+
+### 1. Install LanguageModel Interface (Local)  
 
 To generate prompt from user's input(voice) and get result, **I'm using oobabooga/text-generation-webui**  
 
 - Please follow the installation from here  
   https://github.com/oobabooga/text-generation-webui#installation  
 
-### Download Language Model
+### 2. Download Language Model (local)  
 
 - Download any Language Model. I'm using Pygmlion-7b-4bit model  
   https://github.com/oobabooga/text-generation-webui#downloading-models  
@@ -76,8 +97,9 @@ To generate prompt from user's input(voice) and get result, **I'm using oobaboog
   https://huggingface.co/TehVenom/Pygmalion-7b-4bit-Q4_1-GGML  
 
 ## Usage
+**If you are running Text Genartion Web UI On Google colab, Skip to [2. Run Blessing-AI](#2-run-blessing-ai-3-options)**  
 
-### 1. Run Language Model Interface
+### 1. Run Language Model Interface (Local)
 
 Go to oobabooga/text-generation-webui folder installed, open cmd at current folder
 use below commands that you can run Interface while activate conda, please see this as reference. - https://github.com/oobabooga/text-generation-webui#starting-the-web-ui  
