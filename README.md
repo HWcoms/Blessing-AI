@@ -55,7 +55,7 @@ I'm using Python 3.10.6 (https://www.python.org/downloads/release/python-3106/)
   To download this model https://drive.google.com/file/d/1Qcr6OpnuZGc3Vw54kdV8-k9TTijiDTsF/view?usp=share_link  
   In zip file there are 2 files (G_latest.pth, moegoe_config.json).  
   
-  Locate to [src/Models/models/Voice/](src/Models/Voice/) folder, Create a folder that same name as your character.json file name.  and paste vits model files in the folder.
+  Locate to [src/Models/models/Voice/](src/Models/Voice/) folder, Create a folder that same name as your character.json file name and put vits model files in the folder.
   
   for example, if you have a `Kato Megumi.json` character file in  [src/Models/models/Characters/](src/Models/Characters/) folder, then create a folder `Kato Megumi`in Voice folder and paste `G_latest.pth`,`moegoe_config.json` files In the created folder.
 
