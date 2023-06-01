@@ -37,6 +37,31 @@ POST_PHONEME_LENGTH = float(getenv('POST_PHONEME_LENGTH'))
 TTS_WAV_PATH = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
 
+def load_tts_setting():
+    # Load Voice_Settings.txt
+    settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
+    # settings_json = read_text_file('C:/Users/HWcoms/Blessing-AI/Voice_Settings.txt')
+
+    # print("========TTS 설정=========")
+    # print("디스코드 봇: ", settings_json["discord_bot"])
+    # print("TTS 보이스 ID: ", settings_json["voice_id"])
+    # print("TTS 스피드: ", settings_json["voice_speed"])
+    # print("TTS 볼륨: ", settings_json["voice_volume"])
+    # print("INTONATION_SCALE: ", settings_json["intonation_scale"])
+    # print("PRE_PHONEME_LENGTH: ", settings_json["pre_phoneme_length"])
+    # print("POST_PHONEME_LENGTH: ", settings_json["post_phoneme_length"])
+    # print("====================\n")
+
+    character_name = settings_json["character_name"]
+    voice_id = settings_json["voice_id"]  # id
+    voice_volume = settings_json["voice_volume"]
+
+    # DISCORD BOT
+    USE_D_BOT = settings_json["discord_bot"]
+
+    return character_name, voice_id, voice_volume, USE_D_BOT
+
+
 def speak_jp(sentence):
     settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
     # settings_json = read_text_file('C:/Users/HWcoms/Blessing-AI/Voice_Settings.txt')
@@ -51,26 +76,19 @@ def speak_jp(sentence):
     # print("POST_PHONEME_LENGTH: ", settings_json["post_phoneme_length"])
     # print("====================\n")
 
-    speaker_id = settings_json["voice_id"]  # id
-    audio_volume = settings_json["voice_volume"]
+    character_name, voice_id, voice_volume, USE_D_BOT = load_tts_setting()
+
+    # print("번역전 텍스트: ", sentence)
+    bot_trans_speech = DoTranslate(sentence, 'en', target_lang='ja')    # Translate reply
+    bot_trans_speech = english_to_katakana(bot_trans_speech)            # romaji to japanese
 
     # synthesize voice as wav file
-    bot_trans_speech = DoTranslate(sentence, 'en', target_lang='ja')
-    # print("번역전 텍스트: ", sentence)
-
-    bot_trans_speech = english_to_katakana(bot_trans_speech)  ##romaji to japanese
-    speech_text(bot_trans_speech, speaker_id, audio_volume)
+    speech_text(character_name, bot_trans_speech, 'ja', voice_id, voice_volume)
 
     # play voice to app mic input and speakers/headphones
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
 
-    # DISCORD BOT
-    USE_D_BOT = settings_json["discord_bot"]
-    # getenv('USE_D_BOT').lower() in ('true', '1', 't')
-
-    # print(USE_D_BOT)
-
-    if (USE_D_BOT):
+    if USE_D_BOT:
         ko_sentence = DoTranslate(sentence, 'en', 'ko')
 
         # SendDiscordMessage(ko_sentence)
@@ -84,26 +102,19 @@ def speak_jp(sentence):
 def speak_ko(sentence):
     settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
 
-    speaker_id = 4  # settings_json["voice_id"]  #id
-    audio_volume = settings_json["voice_volume"]
+    character_name, voice_id, voice_volume, USE_D_BOT = load_tts_setting()
+
+    # print("번역전 텍스트: ", sentence)
+    bot_trans_speech = DoTranslate(sentence, 'en', target_lang='ko')    # Translate reply
+    # bot_trans_speech = english_to_katakana(bot_trans_speech)          # TODO: eng to korean
 
     # synthesize voice as wav file
-    bot_trans_speech = DoTranslate(sentence, 'en', target_lang='ko')
-    # print("번역전 텍스트: ", sentence)
-
-    # bot_trans_speech = english_to_katakana(bot_trans_speech)    #TODO: eng to korean
-    speech_text_ko(bot_trans_speech, speaker_id, audio_volume * 0.3)
+    speech_text(character_name, bot_trans_speech, 'ko', voice_id, audio_volume * 0.3)
 
     # play voice to app mic input and speakers/headphones
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
 
-    # DISCORD BOT
-    USE_D_BOT = settings_json["discord_bot"]
-    # getenv('USE_D_BOT').lower() in ('true', '1', 't')
-
-    # print(USE_D_BOT)
-
-    if (USE_D_BOT):
+    if USE_D_BOT:
         ko_sentence = bot_trans_speech
 
         # SendDiscordMessage(ko_sentence)
@@ -183,5 +194,7 @@ def read_text_file(filename):
 
 if __name__ == '__main__':
     # test if voicevox is up and running
+
+    # print(load_tts_setting())
     print('Voicevox attempting to speak now...')
     speak_jp('むかしあるところに、ジャックという男の子がいました。ジャックはお母さんと一緒に住んでいました。')

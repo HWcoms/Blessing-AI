@@ -1,3 +1,4 @@
+#Main Program
 certifi==2022.12.7
 cffi==1.15.1
 chardet==3.0.4
@@ -28,6 +29,8 @@ soundfile==0.12.1
 SpeechRecognition==3.9.0
 typing-extensions==4.5.0
 urllib3==1.26.14
+
+#MoeGoe
 numba
 librosa
 scipy
@@ -46,6 +49,8 @@ indic_transliteration
 num_thai
 opencc
 audonnx
+
+#etc
 faster-whisper==0.5.1
 Flask==2.3.2
 iso-639==0.4.5

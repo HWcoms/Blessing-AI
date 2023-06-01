@@ -27,6 +27,15 @@ language = "日本語"
 
 out_file_path = "models\demo.wav"
 
+# Pre-define variables
+# hps_ms = None
+# n_speakers = None
+# n_symbols = None
+# speakers = None
+# use_f0 = None
+# emotion_embedding = None
+# net_g_ms = None
+
 
 def ex_print(text, escape=False):
     if escape:
@@ -119,8 +128,13 @@ def voice_conversion():
     return audio, out_path
 
 
-def speech_text(msg, spk_id, audio_volume):
-    msg = language_marks[language] + msg + language_marks[language]
+def speech_text(character_name, msg, lang, spk_id, audio_volume):
+    #Load model path
+    hps_ms, n_speakers, n_symbols, speakers, use_f0, emotion_embedding, net_g_ms = load_model(character_name)
+
+    if lang == 'ja':
+        msg = language_marks[language] + msg + language_marks[language]
+
     print(msg)
 
     if n_symbols != 0:
@@ -481,7 +495,6 @@ def speech_text_ko(msg, spk_id, audio_volume):
 
 
 if __name__ == 'MoeGoe.MoeGoe':
-
     print()
     print("moe goe loaded by other")
     print()
@@ -491,30 +504,81 @@ if __name__ == 'MoeGoe.MoeGoe':
     else:
         escape = False
 
-    code_path = os.path.dirname(os.path.realpath(__file__))
-    model = os.path.join(code_path, "models/G_latest.pth")
-    config = os.path.join(code_path, "models/moegoe_config.json")
+    # code_path = os.path.dirname(os.path.realpath(__file__))
+    # model = os.path.join(code_path, "models/G_latest.pth")
+    # config = os.path.join(code_path, "models/moegoe_config.json")
     out_file_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
-    hps_ms = utils.get_hparams_from_file(config)
-    n_speakers = hps_ms.data.n_speakers if 'n_speakers' in hps_ms.data.keys() else 0
-    n_symbols = len(hps_ms.symbols) if 'symbols' in hps_ms.keys() else 0
-    speakers = hps_ms.speakers if 'speakers' in hps_ms.keys() else ['0']
-    use_f0 = hps_ms.data.use_f0 if 'use_f0' in hps_ms.data.keys() else False
-    emotion_embedding = hps_ms.data.emotion_embedding if 'emotion_embedding' in hps_ms.data.keys() else False
 
-    net_g_ms = SynthesizerTrn(
-        n_symbols,
-        hps_ms.data.filter_length // 2 + 1,
-        hps_ms.train.segment_size // hps_ms.data.hop_length,
-        n_speakers=n_speakers,
-        emotion_embedding=emotion_embedding,
-        **hps_ms.model)
-    _ = net_g_ms.eval()
-    utils.load_checkpoint(model, net_g_ms)
+    #
+    # hps_ms = utils.get_hparams_from_file(config)
+    # n_speakers = hps_ms.data.n_speakers if 'n_speakers' in hps_ms.data.keys() else 0
+    # n_symbols = len(hps_ms.symbols) if 'symbols' in hps_ms.keys() else 0
+    # speakers = hps_ms.speakers if 'speakers' in hps_ms.keys() else ['0']
+    # use_f0 = hps_ms.data.use_f0 if 'use_f0' in hps_ms.data.keys() else False
+    # emotion_embedding = hps_ms.data.emotion_embedding if 'emotion_embedding' in hps_ms.data.keys() else False
+    #
+    # net_g_ms = SynthesizerTrn(
+    #     n_symbols,
+    #     hps_ms.data.filter_length // 2 + 1,
+    #     hps_ms.train.segment_size // hps_ms.data.hop_length,
+    #     n_speakers=n_speakers,
+    #     emotion_embedding=emotion_embedding,
+    #     **hps_ms.model)
+    # _ = net_g_ms.eval()
+    # utils.load_checkpoint(model, net_g_ms)
+
+
+def load_model(character_name):
+    current_folder = os.path.dirname(os.path.abspath(__file__))  # Blessing-AI\src\MoeGoe
+    model_folder = os.path.join(os.path.dirname(current_folder), "models", "voice")
+    # config = os.path.join(code_path, "models/moegoe_config.json")
+    # out_file_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
+
+    voice_folder = None
+    model_file = None
+    config_file = None
+
+    hps_load = None
+    n_speakers_load = None
+    n_symbols_load = None
+    speakers_load = None
+    use_f0_load = None
+    emotion_embedding_load = None
+    net_g_ms_load = None
+
+    for fname in os.listdir(model_folder):
+        path = os.path.join(model_folder, fname)
+        if os.path.isdir(path):
+            if character_name.lower() in fname.lower():
+                voice_folder = path
+
+    if voice_folder:
+        model_file = os.path.join(voice_folder, "G_latest.pth")
+        config_file = os.path.join(voice_folder, "moegoe_config.json")
+        print("tts model loaded: ", model_file)
+
+        hps_load = utils.get_hparams_from_file(config_file)
+        n_speakers_load = hps_load.data.n_speakers if 'n_speakers' in hps_load.data.keys() else 0
+        n_symbols_load = len(hps_load.symbols) if 'symbols' in hps_load.keys() else 0
+        speakers_load = hps_load.speakers if 'speakers' in hps_load.keys() else ['0']
+        use_f0_load = hps_load.data.use_f0 if 'use_f0' in hps_load.data.keys() else False
+        emotion_embedding_load = hps_load.data.emotion_embedding if 'emotion_embedding' in hps_load.data.keys() else False
+
+        net_g_ms_load = SynthesizerTrn(
+            n_symbols_load,
+            hps_load.data.filter_length // 2 + 1,
+            hps_load.train.segment_size // hps_load.data.hop_length,
+            n_speakers=n_speakers_load,
+            emotion_embedding=emotion_embedding_load,
+            **hps_load.model)
+        _ = net_g_ms_load.eval()
+        utils.load_checkpoint(model_file, net_g_ms_load)
+
+    return hps_load, n_speakers_load, n_symbols_load, speakers_load, use_f0_load, emotion_embedding_load, net_g_ms_load
+
 
 if __name__ == '__main__':
-
     if '--escape' in sys.argv:
         escape = True
     else:
@@ -540,4 +604,4 @@ if __name__ == '__main__':
     _ = net_g_ms.eval()
     utils.load_checkpoint(model, net_g_ms)
 
-    speech_text("ショッピングなど多数のサービスを展開。")
+    # speech_text("ショッピングなど多数のサービスを展開。")

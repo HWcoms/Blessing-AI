@@ -6,8 +6,9 @@ from urllib.error import HTTPError
 from dotenv import load_dotenv
 from iso639 import languages
 
-load_dotenv()
 import googletrans
+
+load_dotenv()
 
 PAPAGO_AUTH_ID = getenv('PAPAGO_AUTH_ID')
 PAPAGO_AUTH_SECRET = getenv('PAPAGO_AUTH_SECRET')
@@ -83,7 +84,7 @@ def papago_translate(request, data):
         print("Error Code:" + rescode)
 
 
-# when papago fails, Try google translate
+# when papago fails, Try Google Translate
 def google_translate(data):
     source, target, text = extract_query_string(data)
     text = urllib.parse.unquote(text)

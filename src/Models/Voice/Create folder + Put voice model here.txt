@@ -1,0 +1,2 @@
+create folder and put voice model here.
+- Blessing-AI/src/Models/voice/{character name}/G_latest.pth, moegoe_config.json 

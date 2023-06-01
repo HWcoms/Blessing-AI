@@ -170,3 +170,6 @@ Voice_Settings.txt
 oobabooga webui.lnk
 Start_with_oobabooga.bat
 
+
+src/Models/Voice/*
+src/Models/ChatLog/*
