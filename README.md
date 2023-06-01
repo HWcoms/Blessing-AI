@@ -53,8 +53,12 @@ I'm using Python 3.10.6 (https://www.python.org/downloads/release/python-3106/)
 
 - Currently I'm using an Anime Character 'Kato Megumi' VITS model from 'Saekano' (CV: Kiyono Yasuno (安野 希世乃))  
   To download this model https://drive.google.com/file/d/1Qcr6OpnuZGc3Vw54kdV8-k9TTijiDTsF/view?usp=share_link  
-  In zip file there are 2 files (G_latest.pth, moegoe_config.json). Paste these files in [src/MoeGoe/models](src/MoeGoe/models) folder  
+  In zip file there are 2 files (G_latest.pth, moegoe_config.json).  
   
+  Locate to [src/Models/models/Voice/](src/Models/Voice/) folder, Create a folder that same name as your character.json file name.  and paste vits model files in the folder.
+  
+  for example, if you have a `Kato Megumi.json` character file in  [src/Models/models/Characters/](src/Models/Characters/) folder, then create a folder `Kato Megumi`in Voice folder and paste `G_latest.pth`,`moegoe_config.json` files In the created folder.
+
   ![](docs/screenshots/MoeGoeModels.png?raw=true)
 
 ## Setting Env file
@@ -65,31 +69,33 @@ go to [Env](docs/ENV.md) Document.
 
 ## Install Language Model / Interface
 
+### 1. Run Text-Gen on Cloud (Optional)
 
-### 1. Run Text-Gen on Cloud (Optional)  
 :pushpin: **If you don't have a decent GPU and trying to run this on Cloud, Try this Option.  
 Also You don't need to follow (Local) steps below**  
+
 - Using Google Colab, you can able to manage Large Language models has 13B parameters  
   ([Google Colab Link](https://colab.research.google.com/drive/1VwEONZNajP4WGwJ8bw55MODHQ_yq1hpJ?usp=sharing))
   ![](docs/screenshots/ColabApiServerUrl.png?raw=true)
   
   In .env setting file, Copy and Paste the Url to  
+  
   ```diff
   TEXTGENERATION_URL =                #Paste Url Here (no need to add Quotation mark)
-  ``` 
+  ```
   
   Check more information in [Env](https://github.com/HWcomss/Blessing-AI/blob/main/docs/ENV.md#textgen-api-url) document  
   
   Also if you want to use other Cloud services or Language models, Check [this video](https://www.youtube.com/watch?v=TP2yID7Ubr4&t=2s) by Aitrepreneur
 
-### 1. Install LanguageModel Interface (Local)  
+### 1. Install LanguageModel Interface (Local)
 
 To generate prompt from user's input(voice) and get result, **I'm using oobabooga/text-generation-webui**  
 
 - Please follow the installation from here  
   https://github.com/oobabooga/text-generation-webui#installation  
 
-### 2. Download Language Model (local)  
+### 2. Download Language Model (local)
 
 - Download any Language Model. I'm using Pygmlion-7b-4bit model  
   https://github.com/oobabooga/text-generation-webui#downloading-models  
@@ -97,6 +103,7 @@ To generate prompt from user's input(voice) and get result, **I'm using oobaboog
   https://huggingface.co/TehVenom/Pygmalion-7b-4bit-Q4_1-GGML  
 
 ## Usage
+
 **If you are running Text Genartion Web UI On Google colab, Skip to [2. Run Blessing-AI](#2-run-blessing-ai-3-options)**  
 
 ### 1. Run Language Model Interface (Local)
