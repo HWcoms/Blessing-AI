@@ -24,7 +24,7 @@ token_request_url = f'{HOST}/api/v1/token-count'
 
 trim_string = '\n'
 
-character_name = 'Kato Megumi'
+character_name = None  # 'Kato Megumi'
 
 
 ## load voice_settings.txt
@@ -148,7 +148,7 @@ def build_pygmalion_style_context(data):
 
 
 def load_chatlog(file_path):
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf8') as file:
         data = file.read()
 
     data = data.strip()
@@ -205,15 +205,6 @@ def load_text_file(file_path):
         return ""
 
 
-def save_text_file(file_path, content):
-    try:
-        with open(file_path, 'w', encoding='utf-8') as file:
-            file.write(content)
-            # print(f"File '{file_path}' saved successfully.")
-    except Exception as e:
-        print(f"An error occurred while saving the file: {str(e)}")
-
-
 def trim_until_newline(string):
     # string = string.decode()
 
@@ -228,9 +219,18 @@ def clean_lines(string):
     return string.replace('\n', ' ')
 
 
+def get_character_name():
+    settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
+
+    result = settings_json["character_name"]
+    return result
+
+
 ## Generate
 def generate_reply(string):
     # Define file name that contains prompt
+    character_name = get_character_name()
+
     character_file_path = character_name + '.json'
 
     # Load Character
@@ -244,9 +244,9 @@ def generate_reply(string):
     chat_str = load_chatlog(chatlog_file_path)
 
     if chat_str.strip() == '':
-        chat_str = user_input                   # Chatlog is empty
+        chat_str = user_input  # Chatlog is empty
     else:
-        chat_str = chat_str + '\n' + user_input        # Chatlog is not empty
+        chat_str = chat_str + '\n' + user_input  # Chatlog is not empty
 
     # remove unecessary \n
     trim_str = re.sub(r"\n(?![a-zA-Z])", "", chat_str)
@@ -262,7 +262,7 @@ def generate_reply(string):
     result_text = clean_lines(result_text)
 
     save_text_file(chatlog_file_path, chat_str + result_text)
-
+    # print(file_content + result_text)
     return result_text
 
 
@@ -328,4 +328,5 @@ if __name__ == '__main__':
     print(generate_reply("I'm HWcoms"))
     # print(HOST)
 
+    # print(get_character_name())
     # print(count_tokens(context))
