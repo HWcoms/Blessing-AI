@@ -1,5 +1,7 @@
 {
     "character_name": "Kato Megumi",
+    "tts_character_name": "Kato Megumi",
+    "tts_language": "ja",
     "discord_bot": false,
     "max_token": 200,
     "voice_id": 0,

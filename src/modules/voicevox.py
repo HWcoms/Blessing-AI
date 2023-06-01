@@ -37,85 +37,28 @@ POST_PHONEME_LENGTH = float(getenv('POST_PHONEME_LENGTH'))
 TTS_WAV_PATH = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
 
-def load_tts_setting():
-    # Load Voice_Settings.txt
-    settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
-    # settings_json = read_text_file('C:/Users/HWcoms/Blessing-AI/Voice_Settings.txt')
-
-    # print("========TTS 설정=========")
-    # print("디스코드 봇: ", settings_json["discord_bot"])
-    # print("TTS 보이스 ID: ", settings_json["voice_id"])
-    # print("TTS 스피드: ", settings_json["voice_speed"])
-    # print("TTS 볼륨: ", settings_json["voice_volume"])
-    # print("INTONATION_SCALE: ", settings_json["intonation_scale"])
-    # print("PRE_PHONEME_LENGTH: ", settings_json["pre_phoneme_length"])
-    # print("POST_PHONEME_LENGTH: ", settings_json["post_phoneme_length"])
-    # print("====================\n")
-
-    character_name = settings_json["character_name"]
-    voice_id = settings_json["voice_id"]  # id
-    voice_volume = settings_json["voice_volume"]
-
-    # DISCORD BOT
-    USE_D_BOT = settings_json["discord_bot"]
-
-    return character_name, voice_id, voice_volume, USE_D_BOT
-
-
-def speak_jp(sentence):
-    settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
-    # settings_json = read_text_file('C:/Users/HWcoms/Blessing-AI/Voice_Settings.txt')
-
-    # print("========TTS 설정=========")
-    # print("디스코드 봇: ", settings_json["discord_bot"])
-    # print("TTS 보이스 ID: ", settings_json["voice_id"])
-    # print("TTS 스피드: ", settings_json["voice_speed"])
-    # print("TTS 볼륨: ", settings_json["voice_volume"])
-    # print("INTONATION_SCALE: ", settings_json["intonation_scale"])
-    # print("PRE_PHONEME_LENGTH: ", settings_json["pre_phoneme_length"])
-    # print("POST_PHONEME_LENGTH: ", settings_json["post_phoneme_length"])
-    # print("====================\n")
-
-    character_name, voice_id, voice_volume, USE_D_BOT = load_tts_setting()
-
+def speak(sentence, language_code, character_name, tts_character_name, voice_id, voice_volume, use_d_bot):
     # print("번역전 텍스트: ", sentence)
-    bot_trans_speech = DoTranslate(sentence, 'en', target_lang='ja')    # Translate reply
-    bot_trans_speech = english_to_katakana(bot_trans_speech)            # romaji to japanese
+    bot_trans_speech = DoTranslate(sentence, 'en', language_code)    # Translate reply
+    if language_code == 'ja':
+        bot_trans_speech = english_to_katakana(bot_trans_speech)            # romaji to japanese
+    elif language_code == 'ko':
+        bot_trans_speech = bot_trans_speech                                 # TODO: eng to korean
+        voice_volume = voice_volume * 0.3
 
     # synthesize voice as wav file
-    speech_text(character_name, bot_trans_speech, 'ja', voice_id, voice_volume)
+    # speech_text("character_name", bot_trans_speech, language_code, voice_id, voice_volume)
+    speech_text(tts_character_name, bot_trans_speech, language_code, voice_id, voice_volume)
 
     # play voice to app mic input and speakers/headphones
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
 
-    if USE_D_BOT:
-        ko_sentence = DoTranslate(sentence, 'en', 'ko')
-
-        # SendDiscordMessage(ko_sentence)
-        ExcuteDiscordWebhook(ko_sentence)
-
-    [t.start() for t in threads]
-    [t.join() for t in threads]
-
-
-# wip - just testing
-def speak_ko(sentence):
-    settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
-
-    character_name, voice_id, voice_volume, USE_D_BOT = load_tts_setting()
-
-    # print("번역전 텍스트: ", sentence)
-    bot_trans_speech = DoTranslate(sentence, 'en', target_lang='ko')    # Translate reply
-    # bot_trans_speech = english_to_katakana(bot_trans_speech)          # TODO: eng to korean
-
-    # synthesize voice as wav file
-    speech_text(character_name, bot_trans_speech, 'ko', voice_id, audio_volume * 0.3)
-
-    # play voice to app mic input and speakers/headphones
-    threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
-
-    if USE_D_BOT:
-        ko_sentence = bot_trans_speech
+    if use_d_bot:
+        # Do translate to korean, if it's not 'ko'
+        if language_code != 'ko':
+            ko_sentence = DoTranslate(sentence, 'en', 'ko')
+        else:
+            ko_sentence = bot_trans_speech
 
         # SendDiscordMessage(ko_sentence)
         ExcuteDiscordWebhook(ko_sentence)

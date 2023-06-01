@@ -219,17 +219,9 @@ def clean_lines(string):
     return string.replace('\n', ' ')
 
 
-def get_character_name():
-    settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
-
-    result = settings_json["character_name"]
-    return result
-
-
 ## Generate
-def generate_reply(string):
+def generate_reply(string, character_name):
     # Define file name that contains prompt
-    character_name = get_character_name()
 
     character_file_path = character_name + '.json'
 
