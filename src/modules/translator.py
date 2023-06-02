@@ -21,7 +21,7 @@ url = "https://openapi.naver.com/v1/papago/n2mt"
 
 # If text language is ja -> no translate, but if other source_lang -> translate to ja
 def DoTranslate(string, source_lang='ko', target_lang='ja'):
-    if (source_lang == target_lang):
+    if source_lang == target_lang:
         return string
 
     source_lang_name = languages.get(alpha2=source_lang).name
@@ -45,16 +45,16 @@ def papago_translate(request, data):
     try:
         response = urllib.request.urlopen(request, data=data.encode("utf-8"))
     except HTTPError as e:
-        if (e.code == 400):
-            if (e.headers['apigw-error'] == '084'):
+        if e.code == 400:
+            if e.headers['apigw-error'] == '084':
                 print("unsupported Language: " + '\033[31m' + f"[{data}]" + '\033[0m')
                 return "I just said dumb things that my mic can't understand."
                 # TODO: RETURN ERROR STRING AND GO TO READY MODE
-        elif (e.code == 401):
+        elif e.code == 401:
             print("Authorization failed.")
-        elif (e.code == 404):
+        elif e.code == 404:
             print("Wrong URL for API request.")
-        elif (e.code == 429):
+        elif e.code == 429:
             print("Rate Limit Exceeded.")
             return google_translate(data)
 
@@ -70,7 +70,7 @@ def papago_translate(request, data):
 
     rescode = response.getcode()
 
-    if (rescode == 200):
+    if rescode == 200:
         response_body = response.read()
         result = response_body.decode('utf-8')
         des = json.loads(result)

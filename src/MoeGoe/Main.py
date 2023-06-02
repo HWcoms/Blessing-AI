@@ -239,7 +239,7 @@ def load_model(character_name):
     return hps_load, n_speakers_load, n_symbols_load, speakers_load, use_f0_load, emotion_embedding_load, net_g_ms_load
 
 
-if __name__ == 'MoeGoe.MoeGoe':
+if __name__ == 'MoeGoe.Main':
     print()
     print("moe goe loaded by other")
     print()
@@ -279,24 +279,26 @@ if __name__ == '__main__':
     else:
         escape = False
 
-    model = "models/G_latest.pth"
-    config = "models/moegoe_config.json"
+    print("this is __main__")
 
-    hps_ms = utils.get_hparams_from_file(config)
-    n_speakers = hps_ms.data.n_speakers if 'n_speakers' in hps_ms.data.keys() else 0
-    n_symbols = len(hps_ms.symbols) if 'symbols' in hps_ms.keys() else 0
-    speakers = hps_ms.speakers if 'speakers' in hps_ms.keys() else ['0']
-    use_f0 = hps_ms.data.use_f0 if 'use_f0' in hps_ms.data.keys() else False
-    emotion_embedding = hps_ms.data.emotion_embedding if 'emotion_embedding' in hps_ms.data.keys() else False
-
-    net_g_ms = SynthesizerTrn(
-        n_symbols,
-        hps_ms.data.filter_length // 2 + 1,
-        hps_ms.train.segment_size // hps_ms.data.hop_length,
-        n_speakers=n_speakers,
-        emotion_embedding=emotion_embedding,
-        **hps_ms.model)
-    _ = net_g_ms.eval()
-    utils.load_checkpoint(model, net_g_ms)
+    # model = "models/G_latest.pth"
+    # config = "models/moegoe_config.json"
+    #
+    # hps_ms = utils.get_hparams_from_file(config)
+    # n_speakers = hps_ms.data.n_speakers if 'n_speakers' in hps_ms.data.keys() else 0
+    # n_symbols = len(hps_ms.symbols) if 'symbols' in hps_ms.keys() else 0
+    # speakers = hps_ms.speakers if 'speakers' in hps_ms.keys() else ['0']
+    # use_f0 = hps_ms.data.use_f0 if 'use_f0' in hps_ms.data.keys() else False
+    # emotion_embedding = hps_ms.data.emotion_embedding if 'emotion_embedding' in hps_ms.data.keys() else False
+    #
+    # net_g_ms = SynthesizerTrn(
+    #     n_symbols,
+    #     hps_ms.data.filter_length // 2 + 1,
+    #     hps_ms.train.segment_size // hps_ms.data.hop_length,
+    #     n_speakers=n_speakers,
+    #     emotion_embedding=emotion_embedding,
+    #     **hps_ms.model)
+    # _ = net_g_ms.eval()
+    # utils.load_checkpoint(model, net_g_ms)
 
     # speech_text("ショッピングなど多数のサービスを展開。")

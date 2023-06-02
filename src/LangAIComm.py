@@ -317,7 +317,7 @@ def check_chatlog(character_name):
 
 # Example usage
 if __name__ == '__main__':
-    print(generate_reply("I'm HWcoms"))
+    print(generate_reply("I'm HWcoms", "Kato Megumi"))
     # print(HOST)
 
     # print(get_character_name())

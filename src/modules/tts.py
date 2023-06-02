@@ -1,6 +1,6 @@
 from .thorsten import speak_de
-from .voicevox import speak_jp
-from .voicevox import speak_ko
+from src.voicevox import speak_jp
+from src.voicevox import speak_ko
 
 
 # Text-to-Speech, feel free to add your own function or add more languages

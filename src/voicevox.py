@@ -5,16 +5,15 @@ from threading import Thread
 from urllib.parse import urlencode
 
 import requests
-from MoeGoe.MoeGoe import speech_text
-from MoeGoe.MoeGoe import speech_text_ko
+from MoeGoe.Main import speech_text
 # discord bot feature
 from discordbot import ExcuteDiscordWebhook
 from dotenv import load_dotenv
 # romaji to japanese
 from modules.convert_roma_ja import english_to_katakana
 
-from .audio_to_device import play_voice
-from .translator import DoTranslate
+from modules.audio_to_device import play_voice
+from modules.translator import DoTranslate
 
 load_dotenv()
 
@@ -140,4 +139,4 @@ if __name__ == '__main__':
 
     # print(load_tts_setting())
     print('Voicevox attempting to speak now...')
-    speak_jp('むかしあるところに、ジャックという男の子がいました。ジャックはお母さんと一緒に住んでいました。')
+    # speak('むかしあるところに、ジャックという男の子がいました。ジャックはお母さんと一緒に住んでいました。','ja')

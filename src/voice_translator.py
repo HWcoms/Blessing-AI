@@ -2,47 +2,7 @@ from datetime import datetime
 from threading import Thread
 from time import sleep
 
-load_ready = False
 start_time = datetime.utcnow()
-
-load_emote_index = 3
-
-
-def loading_emote():
-    global load_emote_index
-    str = ''
-
-    for i in range(load_emote_index):
-        str += '.'
-
-    for i in range(3 - load_emote_index):
-        str += ' '
-
-    if (load_emote_index > 2):
-        load_emote_index = 0
-        # print(load_emote_index)
-    else:
-        # print(load_emote_index,end="")
-        load_emote_index += 1
-
-    return str
-
-
-def voice_ready(str):
-    print(f"\r{str}{loading_emote()}          ", end="")
-
-
-def loading(str):
-    while (load_ready == False):
-        delta_t = (datetime.utcnow() - start_time)
-        print(f"\r{str}{loading_emote()} [{delta_t.total_seconds()} sec]          ", end="")
-        sleep(0.05)
-
-    print()
-
-
-t_loading = Thread(target=loading, args=["Initiating"])
-t_loading.start()
 
 import wave
 from os import getenv
@@ -55,15 +15,13 @@ import requests
 from dotenv import load_dotenv
 
 from modules.asr import speech_to_text
-from modules.voicevox import speak
+from voicevox import speak
 
-# from iso639 import languages
 # import urllib.request
-# import json
 from modules.translator import DoTranslate
 from iso639 import languages
 
-from MoeGoe.MoeGoe import *  # not sure preimport works
+from MoeGoe.Main import *  # not sure preimport works
 
 # LanguageModel
 from LangAIComm import generate_reply
@@ -82,6 +40,36 @@ LOGGING = getenv('LOGGING', 'False').lower() in ('true', '1', 't')
 MIC_AUDIO_PATH = Path(__file__).resolve().parent / r'audio/mic.wav'
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
+
+print("loaded all")
+delta_t = (datetime.utcnow() - start_time)
+print(f"[{delta_t.total_seconds()}] sec")
+
+load_emote_index = 3
+
+
+def loading_emote():
+    global load_emote_index
+    append_str = ''
+
+    for i in range(load_emote_index):
+        append_str += '.'
+
+    for i in range(3 - load_emote_index):
+        append_str += ' '
+
+    if load_emote_index > 2:
+        load_emote_index = 0
+        # print(load_emote_index)
+    else:
+        # print(load_emote_index,end="")
+        load_emote_index += 1
+
+    return append_str
+
+
+def voice_ready(ready_str):
+    print(f"\r{ready_str}{loading_emote()}          ", end="")
 
 
 def load_tts_setting():
@@ -133,7 +121,6 @@ def Do_Generate(eng_speech, speech_lang):
             # print(f'{source_lang_name}: {eng_speech}')
             print(f'User: {translated_speech}')
 
-
         bot_reply = generate_reply(translated_speech, character_name)
         # bot_trans_speech = DoTranslate(bot_reply,'en',target_lang=tts_language)
 
@@ -150,11 +137,11 @@ def Do_Generate(eng_speech, speech_lang):
         # print('No speech detected.')
         print('목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.')
         translated_speech = DoTranslate("목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.", target_lang='ja')
-        speak(translated_speech, tts_language)
+        speak(translated_speech, tts_language, character_name, tts_character_name, voice_id, voice_volume, USE_D_BOT)
 
 
 def on_press_key(_):
-    print("녹음 버튼 누름")
+    voice_ready("녹음 버튼 누름")
 
     global frames, recording, stream
     if not recording:
@@ -169,7 +156,7 @@ def on_press_key(_):
 
 
 def on_release_key(_):
-    print("녹음 완료")
+    print("\n녹음 완료")
     global recording, stream
     recording = False
     stream.stop_stream()
@@ -199,9 +186,42 @@ def on_release_key(_):
     Do_Generate(eng_speech, speech_lang)
 
 
-if __name__ == '__main__':
-    load_ready = True
+if __name__ == 'voice_translator':
+    p = pyaudio.PyAudio()
 
+    # get channels and sampling rate of mic
+    mic_info = p.get_device_info_by_index(MIC_ID)
+    MIC_CHANNELS = mic_info['maxInputChannels']
+    MIC_SAMPLING_RATE = int(mic_info['defaultSampleRate'])
+
+    frames = []
+    recording = False
+    stream = None
+
+    # Set DeepL or Google Translator
+    # if USE_DEEPL:
+    #     translator = deepl.Translator(DEEPL_AUTH_KEY)
+    # else:
+    #     translator = googletrans.Translator()
+    #
+    # keyboard.on_press_key(RECORD_KEY, on_press_key)
+    # keyboard.on_release_key(RECORD_KEY, on_release_key)
+    #
+    # try:
+    #     while True:
+    #         if recording and stream:
+    #             data = stream.read(CHUNK)
+    #             frames.append(data)
+    #         else:
+    #             sleep(0.5)
+    #             voice_ready("record ready")
+    #
+    #
+    #
+    # except KeyboardInterrupt:
+    #     print('Closing voice translator.')
+
+if __name__ == '__main__':
     p = pyaudio.PyAudio()
 
     # get channels and sampling rate of mic
@@ -227,7 +247,7 @@ if __name__ == '__main__':
             if recording and stream:
                 data = stream.read(CHUNK)
                 frames.append(data)
-            else:
+            elif not recording and not stream:
                 sleep(0.5)
                 voice_ready("record ready")
 
