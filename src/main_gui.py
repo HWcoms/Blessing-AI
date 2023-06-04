@@ -9,7 +9,7 @@ import customtkinter
 value = 0
 
 # pre-define
-global _adm
+_adm = None
 
 
 def progress_bar(cur_progress, total):
@@ -151,41 +151,51 @@ def mic_switch_event():
     print("switch toggled, current value:", mic_switch_var.get())
 
 
-def load_device_info():
-    import aud_device_manager as adm
+def update_combobox(mic_val, spk_val):
+    global mic_selector_combo
+    global speaker_selector_combo
 
+    mic_selector_combo.set(mic_val)
+    speaker_selector_combo.set(spk_val)
+
+
+# Get list str from combobox, set default selectors to default
+def init_device_selector():
+    # import aud_device_manager as adm
     global _adm
-    _adm = adm.AudioDevice()
+    if _adm is None:
+        import aud_device_manager as adm
+        _adm = adm.AudioDevice()
 
-    str_device_list = str(_adm.get_all_device())
-
-    # Split the string by new lines
-    str_device_list = str_device_list.split('\n')
-
-    # Remove leading/trailing white spaces and store in a list
-    result_str_list = [line.strip() for line in str_device_list]
-
-    mic_list = []
-    speaker_list = []
-
-    #
-    for item in result_str_list:
-        if "(2 in, 0 out)" in item:
-            # Mics
-            mic_list.append(item)
-        if "(0 in, 2 out)" in item:
-            # Speakers
-            speaker_list.append(item)
-    return mic_list, speaker_list
-
-
-def init_device_selector(mic_list, spk_list):
-    import aud_device_manager as adm
-
-    global _adm
-    _adm = adm.AudioDevice()
+    _adm.load_device_info("compact")
     _adm.init_selected_device()
-    mic, spk = _adm.get_selected_device()
+    mic, spk = _adm.get_selected_devices()
+    print(mic)
+    if isinstance(mic, tuple):
+        mic = mic[0]
+    if isinstance(spk, tuple):
+        spk = spk[0]
+
+    mic_name = mic.name
+    spk_name = spk.name
+
+    return mic_name, spk_name
+
+
+def set_device_selector(mic=None, spk=None):
+    global _adm
+    if _adm is None:
+        import aud_device_manager as adm
+        _adm = adm.AudioDevice()
+
+    mic_selected, spk_selected = None, None
+
+    if mic is not None:
+        # search infos in list
+        mic_selected = _adm.set_selected_mic(mic)
+    if spk is not None:
+        spk_selected = _adm.set_selected_speaker(spk)
+
     if isinstance(mic, tuple):
         mic = mic[0]
     if isinstance(spk, tuple):
@@ -193,30 +203,18 @@ def init_device_selector(mic_list, spk_list):
 
     mic_name = mic['name']
     spk_name = spk['name']
-    for item in mic_list:
-        if mic_name in item:
-            result_mic = mic_name
-            break
 
-    for item in spk_list:
-        if spk_name in item:
-            result_spk = spk_name
-            break
+    update_combobox(mic_name, spk_name)
 
-    mic_selector_var = customtkinter.StringVar(value=mic_name)
-    spk_selector_var = customtkinter.StringVar(value=spk_name)
+
+# def search_audio_device(device_name):
+#     if ()
 
 
 # Main Program GUI
 root = customtkinter.CTk()
 root.title("Blessing-AI")
 root.iconbitmap("ico/blessing-soft.ico")
-
-# Create A Main Frame
-# main_frame = customtkinter.CTkFrame(master=root)
-# main_frame.pack(pady=20, padx=60, fill="both", expand=True)
-
-# Create A Canvas
 
 # Add a Scrollbar To The Canvas
 main_frame = customtkinter.CTkScrollableFrame(master=root)
@@ -244,21 +242,50 @@ chatlogdialog = customtkinter.CTkTextbox(master=main_frame,
 chatlogdialog.configure(state="disabled")
 chatlogdialog.pack(pady=12, padx=10, fill="x")
 
+
 # Audio Settings
 
 
 # Audio Device Selector
-mic_selector_list, speaker_selector_list = load_device_info()
+def load_device_list_str():
+    global _adm
+    if _adm is None:
+        import aud_device_manager as adm
+        _adm = adm.AudioDevice()
+    selected_mic, selected_spk = init_device_selector()
+
+    mic_str_list = []
+    speaker_str_list = []
+
+    for device_info in _adm.mic_list:
+        mic_str_list.append(device_info.name)
+
+    for device_info in _adm.speaker_list:
+        speaker_str_list.append(device_info.name)
+
+    return mic_str_list, speaker_str_list, selected_mic, selected_spk
+
+
+def combobox_callback(choice):
+    print("Changed Audio Device:", choice)
+
+
+mic_selector_list, speaker_selector_list, selected_mic, selected_spk = load_device_list_str()
 
 drdown_font = ("Gulim", 14)
-mic_selector = customtkinter.CTkComboBox(master=main_frame, values=mic_selector_list,
-                                         width=500,
-                                         font=drdown_font, dropdown_font=drdown_font)
-mic_selector.pack(pady=12, padx=10)
-speaker = customtkinter.CTkComboBox(master=main_frame, values=speaker_selector_list,
-                                    width=500,
-                                    font=drdown_font, dropdown_font=drdown_font)
-speaker.pack(pady=12, padx=10)
+mic_selector_combo = customtkinter.CTkComboBox(master=main_frame, values=mic_selector_list,
+                                               width=500,
+                                               font=drdown_font, dropdown_font=drdown_font,
+                                               command=combobox_callback)
+mic_selector_combo.pack(pady=12, padx=10)
+speaker_selector_combo = customtkinter.CTkComboBox(master=main_frame, values=speaker_selector_list,
+                                                   width=500,
+                                                   font=drdown_font, dropdown_font=drdown_font,
+                                                   command=combobox_callback)
+speaker_selector_combo.pack(pady=12, padx=10)
+
+# Update after init
+update_combobox(selected_mic, selected_spk)
 
 # Mic Toggle
 mic_switch_1 = customtkinter.CTkSwitch(master=main_frame,
@@ -272,8 +299,6 @@ button = customtkinter.CTkButton(master=main_frame, command=load_chatlog)
 button.pack(pady=12, padx=10)
 checkbox = customtkinter.CTkCheckBox(master=main_frame, text="checkbox test")
 checkbox.pack(pady=12, padx=10)
-
-init_device_selector()
 
 
 def on_closing():
@@ -339,10 +364,10 @@ def load():
 
 
 # Testing main Program
-top()
+# top()
 
 # Start with Loading Program
-# load()
-# loading_root.protocol("WM_DELETE_WINDOW", on_closing)
-# loading_root.resizable(False, False)
-# loading_root.mainloop()
+load()
+loading_root.protocol("WM_DELETE_WINDOW", on_closing)
+loading_root.resizable(False, False)
+loading_root.mainloop()
