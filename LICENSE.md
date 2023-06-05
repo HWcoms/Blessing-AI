@@ -1,4 +1,4 @@
-The MIT License (MIT)
+MIT License
 
 Copyright (c) 2023 HWcoms
 
@@ -19,3 +19,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+This software uses the following open source software libraries and source code:
+
+### PySide6
+
+[LGPL - License](docs/License/lgpl-3.0.txt)
