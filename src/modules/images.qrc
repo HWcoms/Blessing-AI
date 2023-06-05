@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="Logo">
+    <file>../ico/images/blessingAILogo.png</file>
+    <file>../ico/images/blessingAILogo_emptyfill.png</file>
+  </qresource>
+</RCC>

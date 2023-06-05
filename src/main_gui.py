@@ -9,9 +9,12 @@ import customtkinter
 value = 0
 
 # pre-define
-_adm = None
+import modules.aud_device_manager as adm
+
+_adm = adm.AudioDevice("compact")
 
 
+# <editor-fold desc="[Methods] Loading Packages">
 def progress_bar(cur_progress, total):
     if cur_progress == 0:
         return 0
@@ -68,6 +71,8 @@ def background_imports():
 
 
 console_thread = threading.Thread(target=background_imports, daemon=True)
+# </editor-fold>
+
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -75,6 +80,7 @@ customtkinter.set_default_color_theme("dark-blue")
 width = 576
 height = 820
 
+# <editor-fold desc="[GUI] Loading CTK settings">
 loading_root = customtkinter.CTk()
 loading_root.title("Loading... Blessing-AI")
 loading_root.iconbitmap("ico/blessing-soft.ico")
@@ -111,6 +117,11 @@ progress.pack(pady=1, padx=10)
 
 progress_percent_label = customtkinter.CTkLabel(master=loading_frame, text="%", font=("Roboto", 16))
 progress_percent_label.pack(pady=0, padx=10)
+# </editor-fold>
+
+
+# <editor-fold desc="[GUI] Main-Program Methods">
+mic_switch_var = customtkinter.StringVar(value="on")
 
 
 def buttonf():
@@ -123,9 +134,11 @@ def buttonf():
     print(voice_translator.DoTranslate(string, 'en', 'ko'))
 
 
-mic_switch_var = customtkinter.StringVar(value="on")
+def mic_switch_event():
+    print("switch toggled, current value:", mic_switch_var.get())
 
 
+# ChatLog Button
 def load_chatlog():
     import voice_translator
     import LangAIComm
@@ -147,10 +160,7 @@ def load_chatlog():
     chatlogdialog.configure(state="disabled")
 
 
-def mic_switch_event():
-    print("switch toggled, current value:", mic_switch_var.get())
-
-
+# Device Selector
 def update_combobox(mic_val, spk_val):
     global mic_selector_combo
     global speaker_selector_combo
@@ -159,146 +169,34 @@ def update_combobox(mic_val, spk_val):
     speaker_selector_combo.set(spk_val)
 
 
-# Get list str from combobox, set default selectors to default
-def init_device_selector():
-    # import aud_device_manager as adm
-    global _adm
-    if _adm is None:
-        import aud_device_manager as adm
-        _adm = adm.AudioDevice()
+def mic_combobox_callback(choice):
+    print("Changed Mic Device:", choice)
+    set_device_selector(mic=choice)
 
-    _adm.load_device_info("compact")
-    _adm.init_selected_device()
-    mic, spk = _adm.get_selected_devices()
-    print(mic)
-    if isinstance(mic, tuple):
-        mic = mic[0]
-    if isinstance(spk, tuple):
-        spk = spk[0]
 
-    mic_name = mic.name
-    spk_name = spk.name
+def spk_combobox_callback(choice):
+    print("Changed Speaker Device:", choice)
+    set_device_selector(spk=choice)
 
-    return mic_name, spk_name
+
+def init_combobox():
+    return _adm.get_mic_name_list(), _adm.get_speaker_name_list(), _adm.selected_mic.name, _adm.selected_speaker.name
 
 
 def set_device_selector(mic=None, spk=None):
-    global _adm
-    if _adm is None:
-        import aud_device_manager as adm
-        _adm = adm.AudioDevice()
+    mic_selected = None
+    spk_selected = None
 
-    mic_selected, spk_selected = None, None
+    if mic is None:
+        mic_selected = _adm.selected_mic.name
+    else:
+        mic_selected = _adm.set_selected_mic(mic).name
+    if spk is None:
+        spk_selected = _adm.selected_speaker.name
+    else:
+        spk_selected = _adm.set_selected_speaker(spk).name
 
-    if mic is not None:
-        # search infos in list
-        mic_selected = _adm.set_selected_mic(mic)
-    if spk is not None:
-        spk_selected = _adm.set_selected_speaker(spk)
-
-    if isinstance(mic, tuple):
-        mic = mic[0]
-    if isinstance(spk, tuple):
-        spk = spk[0]
-
-    mic_name = mic['name']
-    spk_name = spk['name']
-
-    update_combobox(mic_name, spk_name)
-
-
-# def search_audio_device(device_name):
-#     if ()
-
-
-# Main Program GUI
-root = customtkinter.CTk()
-root.title("Blessing-AI")
-root.iconbitmap("ico/blessing-soft.ico")
-
-# Add a Scrollbar To The Canvas
-main_frame = customtkinter.CTkScrollableFrame(master=root)
-main_frame.pack(pady=20, padx=10, fill="both", expand=True)
-
-label = customtkinter.CTkLabel(master=main_frame, text="Blessing AI", font=("Roboto", 24))
-label.pack(pady=12, padx=10)
-
-entry1 = customtkinter.CTkEntry(master=main_frame, placeholder_text="Username", )
-entry1.pack(pady=12, padx=10)
-
-entry2 = customtkinter.CTkEntry(master=main_frame, placeholder_text="pass", show="*")
-entry2.pack(pady=12, padx=10)
-
-# Character Info
-ch_name_label = customtkinter.CTkLabel(master=main_frame, text="Character_name: ", font=("Roboto", 16))
-ch_name_label.pack(pady=12, padx=10)
-
-# ChatLog Text Box
-chatlogdialog = customtkinter.CTkTextbox(master=main_frame,
-                                         border_width=1, border_color="#aaaaaa",
-                                         width=int(width * 0.8),
-                                         height=int(height * 0.6),
-                                         activate_scrollbars=True)
-chatlogdialog.configure(state="disabled")
-chatlogdialog.pack(pady=12, padx=10, fill="x")
-
-
-# Audio Settings
-
-
-# Audio Device Selector
-def load_device_list_str():
-    global _adm
-    if _adm is None:
-        import aud_device_manager as adm
-        _adm = adm.AudioDevice()
-    selected_mic, selected_spk = init_device_selector()
-
-    mic_str_list = []
-    speaker_str_list = []
-
-    for device_info in _adm.mic_list:
-        mic_str_list.append(device_info.name)
-
-    for device_info in _adm.speaker_list:
-        speaker_str_list.append(device_info.name)
-
-    return mic_str_list, speaker_str_list, selected_mic, selected_spk
-
-
-def combobox_callback(choice):
-    print("Changed Audio Device:", choice)
-
-
-mic_selector_list, speaker_selector_list, selected_mic, selected_spk = load_device_list_str()
-
-drdown_font = ("Gulim", 14)
-mic_selector_combo = customtkinter.CTkComboBox(master=main_frame, values=mic_selector_list,
-                                               width=500,
-                                               font=drdown_font, dropdown_font=drdown_font,
-                                               command=combobox_callback)
-mic_selector_combo.pack(pady=12, padx=10)
-speaker_selector_combo = customtkinter.CTkComboBox(master=main_frame, values=speaker_selector_list,
-                                                   width=500,
-                                                   font=drdown_font, dropdown_font=drdown_font,
-                                                   command=combobox_callback)
-speaker_selector_combo.pack(pady=12, padx=10)
-
-# Update after init
-update_combobox(selected_mic, selected_spk)
-
-# Mic Toggle
-mic_switch_1 = customtkinter.CTkSwitch(master=main_frame,
-                                       switch_width=38, switch_height=20,
-                                       text="Mic Toggle", command=mic_switch_event, font=("Roboto", 16),
-                                       variable=mic_switch_var, onvalue="on", offvalue="off")
-
-mic_switch_1.pack(pady=12, padx=10)
-
-button = customtkinter.CTkButton(master=main_frame, command=load_chatlog)
-button.pack(pady=12, padx=10)
-checkbox = customtkinter.CTkCheckBox(master=main_frame, text="checkbox test")
-checkbox.pack(pady=12, padx=10)
+    update_combobox(mic_selected, spk_selected)
 
 
 def on_closing():
@@ -307,6 +205,100 @@ def on_closing():
         sys.exit()
     except Exception as e:
         print(f"Error on [GUI]: {e}")
+
+
+# </editor-fold>
+
+
+# <editor-fold desc="[GUI] Main-Program Settings">
+# Main Program GUI
+root = customtkinter.CTk()
+root.title("Blessing-AI")
+root.iconbitmap("ico/blessing-soft.ico")
+
+
+
+# Add a Scrollbar To The Canvas
+main_frame = customtkinter.CTkScrollableFrame(master=root,fg_color="blue")
+
+
+# main_frame.pack(pady=20, padx=10, fill="both", expand=True)
+# main_frame.grid(row=0, column=0,columnspan=2, padx=20, pady=(20, 0),sticky="nesw")
+
+chatlog_frame = customtkinter.CTkFrame(master=main_frame,fg_color="white")
+
+chatlog_frame.grid_rowconfigure(0, weight=1)
+chatlog_frame.grid_columnconfigure((0, 1), weight=1)
+chatlog_frame.pack(fill="both")
+
+label = customtkinter.CTkLabel(master=chatlog_frame, text="Blessing AI", font=("Roboto", 24),fg_color="yellow")
+label.grid(row=0, column=0,columnspan=2)
+
+entry1 = customtkinter.CTkEntry(master=chatlog_frame, placeholder_text="Username", )
+entry1.grid(row=1,column=0, padx=20, pady=20, sticky="ew")
+
+entry2 = customtkinter.CTkEntry(master=main_frame, placeholder_text="pass", show="*")
+entry2.grid(row=1,column=1, padx=20, pady=20, sticky="ew")
+#
+# # Character Info
+# ch_name_label = customtkinter.CTkLabel(master=main_frame, text="Character_name: ", font=("Roboto", 16))
+# ch_name_label.pack(pady=12, padx=10)
+#
+# # ChatLog Text Box
+# chatlogdialog = customtkinter.CTkTextbox(master=main_frame,
+#                                          border_width=1, border_color="#aaaaaa",
+#                                          width=int(width * 0.8),
+#                                          height=int(height * 0.6),
+#                                          activate_scrollbars=True)
+# chatlogdialog.configure(state="disabled")
+# chatlogdialog.pack(pady=12, padx=10, fill="x")
+#
+# # Audio Settings
+#
+#
+# # Audio Device Selector
+#
+# mic_selector_list, speaker_selector_list, selected_mic, selected_spk = init_combobox()
+#
+#
+# drdown_font = ("Gulim", 14)
+# mic_selector_label = customtkinter.CTkLabel(master=main_frame, text="Mic", font=("Roboto", 16))
+# mic_selector_label.pack(side="left",)
+# mic_selector_combo = customtkinter.CTkComboBox(master=main_frame, values=mic_selector_list,
+#                                                width=500,
+#                                                font=drdown_font, dropdown_font=drdown_font,
+#                                                command=mic_combobox_callback)
+# mic_selector_combo.pack(side="left")
+#
+# blank_label = customtkinter.CTkLabel(master=main_frame)
+# blank_label.pack(pady=30)
+#
+# speaker_selecto_label = customtkinter.CTkLabel(master=main_frame, text="Speaker", font=("Roboto", 16))
+# speaker_selecto_label.pack(side="left", fill="both")
+# speaker_selector_combo = customtkinter.CTkComboBox(master=main_frame, values=speaker_selector_list,
+#                                                    width=500,
+#                                                    font=drdown_font, dropdown_font=drdown_font,
+#                                                    command=spk_combobox_callback)
+# speaker_selector_combo.pack(side="left")
+#
+# # Update after init
+# update_combobox(selected_mic, selected_spk)
+#
+# # Mic Toggle
+# mic_switch_1 = customtkinter.CTkSwitch(master=main_frame,
+#                                        switch_width=38, switch_height=20,
+#                                        text="Mic Toggle", command=mic_switch_event, font=("Roboto", 16),
+#                                        variable=mic_switch_var, onvalue="on", offvalue="off")
+#
+# mic_switch_1.pack(pady=12, padx=10)
+#
+# button = customtkinter.CTkButton(master=main_frame, command=load_chatlog)
+# button.pack(pady=12, padx=10)
+# checkbox = customtkinter.CTkCheckBox(master=main_frame, text="checkbox test")
+# checkbox.pack(pady=12, padx=10)
+#
+
+# </editor-fold>
 
 
 def top():
@@ -364,10 +356,10 @@ def load():
 
 
 # Testing main Program
-# top()
+top()
 
 # Start with Loading Program
-load()
-loading_root.protocol("WM_DELETE_WINDOW", on_closing)
-loading_root.resizable(False, False)
-loading_root.mainloop()
+# load()
+# loading_root.protocol("WM_DELETE_WINDOW", on_closing)
+# loading_root.resizable(False, False)
+# loading_root.mainloop()

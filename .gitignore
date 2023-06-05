@@ -173,3 +173,9 @@ Start_with_oobabooga.bat
 
 src/Models/Voice/*
 src/Models/ChatLog/*
+
+src/ico/images/blessingAILogo_emptyfill.psd
+
+src/ico/images/blessingAILogo.psd
+
+src/*.ui

@@ -67,6 +67,7 @@ cchardet
 
 #GUI
 customtkinter
+PySide6
 
 #LoadPrompt
 Pillow
