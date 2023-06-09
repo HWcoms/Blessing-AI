@@ -12,6 +12,7 @@ from modules.ui_splash_screen_scripts import load, background_load, splash_ui_lo
 
 from modules.ui_splash_screen import Ui_QSplashScreen
 from modules.ui_main_screen import Ui_MainWindow
+from PyDracula.main import MainWindow
 
 # Main Application
 # class MainWindow(QMainWindow):
