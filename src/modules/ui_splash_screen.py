@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'splash_screenTmZLSJ.ui'
+## Form generated from reading UI file 'splash_screenzhMUaZ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -23,7 +23,7 @@ class Ui_QSplashScreen(object):
     def setupUi(self, QSplashScreen):
         if not QSplashScreen.objectName():
             QSplashScreen.setObjectName(u"QSplashScreen")
-        QSplashScreen.resize(854, 518)
+        QSplashScreen.resize(754, 418)
         self.centralwidget = QWidget(QSplashScreen)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setEnabled(True)
@@ -34,17 +34,17 @@ class Ui_QSplashScreen(object):
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(10, 10, 10, 10)
-        self.dropShadoFrame = QFrame(self.centralwidget)
-        self.dropShadoFrame.setObjectName(u"dropShadoFrame")
-        self.dropShadoFrame.setEnabled(True)
-        self.dropShadoFrame.setStyleSheet(u"QFrame {\n"
+        self.dropShadowFrame = QFrame(self.centralwidget)
+        self.dropShadowFrame.setObjectName(u"dropShadowFrame")
+        self.dropShadowFrame.setEnabled(True)
+        self.dropShadowFrame.setStyleSheet(u"QFrame {\n"
 "	background-color: rgb(56, 58, 89);\n"
 "	color: rgb(220, 220, 220);\n"
 "	border-radius: 10px\n"
 "}")
-        self.dropShadoFrame.setFrameShape(QFrame.StyledPanel)
-        self.dropShadoFrame.setFrameShadow(QFrame.Raised)
-        self.ogTitle = QLabel(self.dropShadoFrame)
+        self.dropShadowFrame.setFrameShape(QFrame.StyledPanel)
+        self.dropShadowFrame.setFrameShadow(QFrame.Raised)
+        self.ogTitle = QLabel(self.dropShadowFrame)
         self.ogTitle.setObjectName(u"ogTitle")
         self.ogTitle.setEnabled(False)
         self.ogTitle.setGeometry(QRect(0, 0, 0, 0))
@@ -54,10 +54,10 @@ class Ui_QSplashScreen(object):
         self.ogTitle.setFont(font)
         self.ogTitle.setStyleSheet(u"color: rgb(232, 84, 120);")
         self.ogTitle.setAlignment(Qt.AlignCenter)
-        self.ProgressTitle = QLabel(self.dropShadoFrame)
+        self.ProgressTitle = QLabel(self.dropShadowFrame)
         self.ProgressTitle.setObjectName(u"ProgressTitle")
         self.ProgressTitle.setEnabled(True)
-        self.ProgressTitle.setGeometry(QRect(0, -30, 841, 461))
+        self.ProgressTitle.setGeometry(QRect(20, -25, 691, 380))
         sizePolicy = QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -72,10 +72,10 @@ class Ui_QSplashScreen(object):
         self.ProgressTitle.setScaledContents(True)
         self.ProgressTitle.setAlignment(Qt.AlignCenter)
         self.ProgressTitle.setWordWrap(False)
-        self.Title_Bg = QLabel(self.dropShadoFrame)
+        self.Title_Bg = QLabel(self.dropShadowFrame)
         self.Title_Bg.setObjectName(u"Title_Bg")
         self.Title_Bg.setEnabled(True)
-        self.Title_Bg.setGeometry(QRect(0, -30, 841, 461))
+        self.Title_Bg.setGeometry(QRect(20, -25, 691, 380))
         sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
@@ -90,24 +90,24 @@ class Ui_QSplashScreen(object):
         self.Title_Bg.setScaledContents(True)
         self.Title_Bg.setAlignment(Qt.AlignCenter)
         self.Title_Bg.setWordWrap(False)
-        self.loading_message = QLabel(self.dropShadoFrame)
+        self.loading_message = QLabel(self.dropShadowFrame)
         self.loading_message.setObjectName(u"loading_message")
-        self.loading_message.setGeometry(QRect(225, 440, 391, 61))
+        self.loading_message.setGeometry(QRect(170, 345, 391, 61))
         font1 = QFont()
         font1.setFamilies([u"Noto Sans"])
-        font1.setPointSize(13)
+        font1.setPointSize(12)
         self.loading_message.setFont(font1)
         self.loading_message.setStyleSheet(u"QLabel {\n"
 "	background-color: transparent;\n"
 "}")
         self.loading_message.setAlignment(Qt.AlignCenter)
-        self.percentage_text = QLabel(self.dropShadoFrame)
+        self.percentage_text = QLabel(self.dropShadowFrame)
         self.percentage_text.setObjectName(u"percentage_text")
         self.percentage_text.setEnabled(True)
-        self.percentage_text.setGeometry(QRect(360, 410, 111, 61))
+        self.percentage_text.setGeometry(QRect(315, 325, 111, 61))
         font2 = QFont()
         font2.setFamilies([u"Noto Sans"])
-        font2.setPointSize(16)
+        font2.setPointSize(12)
         font2.setBold(True)
         self.percentage_text.setFont(font2)
         self.percentage_text.setStyleSheet(u"QLabel {\n"
@@ -120,7 +120,7 @@ class Ui_QSplashScreen(object):
         self.ProgressTitle.raise_()
         self.loading_message.raise_()
 
-        self.verticalLayout.addWidget(self.dropShadoFrame)
+        self.verticalLayout.addWidget(self.dropShadowFrame)
 
         QSplashScreen.setCentralWidget(self.centralwidget)
 

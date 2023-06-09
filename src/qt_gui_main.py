@@ -1,48 +1,70 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QHBoxLayout, QSizePolicy
-from PySide6.QtGui import QIcon, QPixmap, QTransform
+import time
 
-from PySide6.QtCore import Qt, QPoint, QRect
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QHBoxLayout, QSizePolicy, \
+    QGraphicsDropShadowEffect
+from PySide6.QtGui import QIcon, QPixmap, QTransform, QColor
 
-# form_class = uic.loadUiType("blessingaiqt.ui")[0]
-from modules.ui_splash_screen_scripts import load, background_load
+from PySide6.QtCore import Qt, QPoint, QRect, QTimer
+
+# Loading Methods
+from modules.ui_splash_screen_scripts import load, background_load, splash_ui_load
+
 from modules.ui_splash_screen import Ui_QSplashScreen
+from modules.ui_main_screen import Ui_MainWindow
+
+# Main Application
+# class MainWindow(QMainWindow):
+#     def __init__(self):
+#         QMainWindow.__init__(self)
+#         self.ui = Ui_MainWindow()
+#         self.ui.setupUi(self)
 
 
-class SplashWindow(QMainWindow, Ui_QSplashScreen):
+# Splash Screen
+class SplashWindow(QMainWindow):
     def __init__(self):
-        super(SplashWindow, self).__init__()
-        # self.setWindowTitle("Loading Blessing-AI")    #overriding at ui_splash_screen
+        QMainWindow.__init__(self)
+        self.main = None
+        self.ui = Ui_QSplashScreen()
+        self.ui.setupUi(self)
+
+        ## UI Settings
+        ######################################################################################
         self.setWindowOpacity(0.95)
         self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground)
 
-        self.setupUi(self)
+        ## Drop Shadow Effect
+        #######################################################################################
+        self.shadow = QGraphicsDropShadowEffect(self)
+        self.shadow.setBlurRadius(20)
+        self.shadow.setXOffset(0)
+        self.shadow.setYOffset(0)
+        self.shadow.setColor(QColor(0, 0, 0, 60))
+        self.ui.dropShadowFrame.setGraphicsEffect(self.shadow)
+
+        ## Qtimer
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.progress)
+        self.timer.start(35)
+
+        ## Show
+        #######################################################################################
+        self.show()
 
     def callMainWindow(self):
-        self.hide()
-        # new_win.show()
+        self.timer.stop()
 
+        # Show Main Window
+        self.main = MainWindow()
+        self.main.show()
 
-class MainWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
+        # Close Splash Screen
+        self.close()
 
-    def initUI(self):
-        hbox = QHBoxLayout(self)
-        og_pixmap = QPixmap(u":/Logo/ico/images/blessingAILogo.png")
-        og_pixmap = og_pixmap.transformed(QTransform().scale(.3, .3))
-        pixmap = og_pixmap.copy(0, 0, 100, 200)
-        lbl = QLabel(self)
-        lbl.setPixmap(pixmap)
-
-        hbox.addWidget(lbl)
-        self.setLayout(hbox)
-
-        self.move(300, 200)
-        self.setWindowTitle('Image with PyQt')
-        self.show()
-        self.resize(854, 518)
+    def progress(self):
+        splash_ui_load(self)
 
 
 if __name__ == "__main__":
@@ -50,9 +72,13 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     window = SplashWindow()
+    # window.show()
 
-    window.show()
+    # mainWindow = MainWindow()
 
-    background_load(window)
+    # mainWindow.showMinimized()
+    # mainWindow.hide()
+    # window.background()
+    # background_load(window)
 
     exit(app.exec())

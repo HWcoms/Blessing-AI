@@ -323,13 +323,13 @@ def delta_anim(a, b, t):
     return result
 
 
-cur_progression = 0
+fake_cur_progress = 0
 
 
 def load():
     global module_size
     global cur_module_count
-    global cur_progression
+    global fake_cur_progress
     global load_thread_started
 
     if not load_thread_started:
