@@ -14,13 +14,6 @@ from modules.ui_splash_screen import Ui_QSplashScreen
 from modules.ui_main_screen import Ui_MainWindow
 from PyDracula.main import MainWindow
 
-# Main Application
-# class MainWindow(QMainWindow):
-#     def __init__(self):
-#         QMainWindow.__init__(self)
-#         self.ui = Ui_MainWindow()
-#         self.ui.setupUi(self)
-
 
 # Splash Screen
 class SplashWindow(QMainWindow):

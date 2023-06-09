@@ -56,8 +56,10 @@ class MainWindow(QMainWindow):
 
         # APP NAME
         # ///////////////////////////////////////////////////////////////
-        title = "PyDracula - Modern GUI"
-        description = "PyDracula APP - Theme with colors based on Dracula for Python."
+        title = "Blessing AI"
+        description = "Blessing AI"
+        self.ui.titleLeftDescription.setText("AI Chat Interface")
+        self.ui.titleLeftApp.setText("Blessing AI")
         # APPLY TEXTS
         self.setWindowTitle(title)
         widgets.titleRightInfo.setText(description)
@@ -65,6 +67,7 @@ class MainWindow(QMainWindow):
         # TOGGLE MENU
         # ///////////////////////////////////////////////////////////////
         widgets.toggleButton.clicked.connect(lambda: UIFunctions.toggleMenu(self, True))
+        widgets.btn_share.clicked.connect(self.buttonClick)
 
         # SET UI DEFINITIONS
         # ///////////////////////////////////////////////////////////////
@@ -146,6 +149,12 @@ class MainWindow(QMainWindow):
 
         if btnName == "btn_save":
             print("Save BTN clicked!")
+
+        if btnName == "btn_share":
+            import webbrowser
+
+            webbrowser.open('https://github.com/HWcomss/Blessing-AI')  # Go to example.com
+            print("Link BTN Clicked!")
 
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
