@@ -1,18 +1,16 @@
+import os
 import sys
-import time
 
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QHBoxLayout, QSizePolicy, \
-    QGraphicsDropShadowEffect
-from PySide6.QtGui import QIcon, QPixmap, QTransform, QColor
+from PySide6 import QtWidgets  # must need
+from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsDropShadowEffect, QMessageBox
+from PySide6.QtGui import QColor
 
-from PySide6.QtCore import Qt, QPoint, QRect, QTimer
+from PySide6.QtCore import Qt, QTimer
 
 # Loading Methods
-from modules.ui_splash_screen_scripts import load, background_load, splash_ui_load
+from modules.ui_splash_screen_scripts import splash_ui_load, init_loading_GUI
 
 from modules.ui_splash_screen import Ui_QSplashScreen
-from modules.ui_main_screen import Ui_MainWindow
-from PyDracula.main import MainWindow
 
 
 # Splash Screen
@@ -22,6 +20,8 @@ class SplashWindow(QMainWindow):
         self.main = None
         self.ui = Ui_QSplashScreen()
         self.ui.setupUi(self)
+
+        init_loading_GUI(self.ui)  # Initialize values and images from GUI components
 
         ## UI Settings
         ######################################################################################
@@ -38,7 +38,8 @@ class SplashWindow(QMainWindow):
         self.shadow.setColor(QColor(0, 0, 0, 60))
         self.ui.dropShadowFrame.setGraphicsEffect(self.shadow)
 
-        ## Qtimer
+        ## Qtimer (thread)
+        #######################################################################################
         self.timer = QTimer()
         self.timer.timeout.connect(self.progress)
         self.timer.start(35)
@@ -47,7 +48,31 @@ class SplashWindow(QMainWindow):
         #######################################################################################
         self.show()
 
+    def progress(self):
+        splash_ui_load(self)
+
+    ## Error Handler
+    #######################################################################################
+    @staticmethod
+    def error_button(button):
+        import signal
+        if button.text() == "OK":
+            os.kill(os.getpid(), signal.SIGTERM)
+
+    def error_message(self):
+        msg = QMessageBox()
+        msg.setText("<p align='center'> Failed to import module.<br>Ok to Quit Program. </p>")
+        msg.setIcon(QMessageBox.Icon.Warning)
+        # msg.setInformativeText("Informative Text")
+        msg.setWindowTitle("Error")
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.buttonClicked.connect(self.error_button)
+        msg.exec()
+
+    ## Finish Loading Handler
+    #######################################################################################
     def callMainWindow(self):
+        from PyDracula.main import MainWindow   # using loaded package
         self.timer.stop()
 
         # Show Main Window
@@ -57,22 +82,11 @@ class SplashWindow(QMainWindow):
         # Close Splash Screen
         self.close()
 
-    def progress(self):
-        splash_ui_load(self)
-
 
 if __name__ == "__main__":
     # create the application and the main window
     app = QApplication(sys.argv)
 
     window = SplashWindow()
-    # window.show()
-
-    # mainWindow = MainWindow()
-
-    # mainWindow.showMinimized()
-    # mainWindow.hide()
-    # window.background()
-    # background_load(window)
 
     exit(app.exec())

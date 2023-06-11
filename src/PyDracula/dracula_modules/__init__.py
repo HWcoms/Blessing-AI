@@ -15,23 +15,21 @@
 # ///////////////////////////////////////////////////////////////
 from PySide6.QtCore import *
 from PySide6.QtGui import *
-from PySide6.QtWidgets import *
+# from PySide6.QtWidgets import *       # imported in mian.py
 
 import sys
 import os
 
-script_path = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(script_path)
-# print(script_path)
-
 # GUI FILE
-from .ui_main import Ui_MainWindow
+from . ui_main import Ui_MainWindow
+
+from . import resources_rc  # Remove [import resources_rc] in ui_main.py!!
 
 # APP SETTINGS
-from .app_settings import Settings
+from . app_settings import Settings
 
 # IMPORT FUNCTIONS
-from .ui_functions import *
+from . ui_functions import *
 
 # APP FUNCTIONS
-from .app_functions import *
+from . app_functions import *

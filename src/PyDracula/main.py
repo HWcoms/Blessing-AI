@@ -20,17 +20,16 @@ import platform
 
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
-from PySide6.QtWidgets import QMainWindow
+from PySide6.QtWidgets import *
+from PySide6 import QtCore
 
-script_path = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(script_path)
+if __name__ != "__main__":
+    script_path = os.path.abspath(os.path.dirname(__file__))
+    sys.path.append(script_path)
 
 from dracula_modules import *
 from widgets import *
-module_path = os.path.join(script_path, "modules")
-sys.path.append(module_path)
-# from ui_main import Ui_MainWindow
-# from app_settings import Settings
+# Remove [import resources_rc] in ui_main.py!!
 
 os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100%
 
@@ -82,9 +81,10 @@ class MainWindow(QMainWindow):
 
         # LEFT MENUS
         widgets.btn_home.clicked.connect(self.buttonClick)
-        widgets.btn_widgets.clicked.connect(self.buttonClick)
-        widgets.btn_new.clicked.connect(self.buttonClick)
+        widgets.btn_config.clicked.connect(self.buttonClick)
+        widgets.btn_character.clicked.connect(self.buttonClick)
         widgets.btn_save.clicked.connect(self.buttonClick)
+        widgets.btn_exit.clicked.connect(self.buttonClick)
 
         # EXTRA LEFT BOX
         def openCloseLeftBox():
@@ -118,7 +118,7 @@ class MainWindow(QMainWindow):
 
         # SET HOME PAGE AND SELECT MENU
         # ///////////////////////////////////////////////////////////////
-        widgets.stackedWidget.setCurrentWidget(widgets.home)
+        widgets.stackedWidget.setCurrentWidget(widgets.Home_Page)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
 
     # BUTTONS CLICK
@@ -129,21 +129,25 @@ class MainWindow(QMainWindow):
         btn = self.sender()
         btnName = btn.objectName()
 
+        global widgets
+        if widgets is None:
+            widgets = self.ui
+
         # SHOW HOME PAGE
         if btnName == "btn_home":
-            widgets.stackedWidget.setCurrentWidget(widgets.home)
+            widgets.stackedWidget.setCurrentWidget(widgets.Home_Page)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # SHOW WIDGETS PAGE
-        if btnName == "btn_widgets":
-            widgets.stackedWidget.setCurrentWidget(widgets.widgets)
+        if btnName == "btn_config":
+            widgets.stackedWidget.setCurrentWidget(widgets.Config_Page)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # SHOW NEW PAGE
-        if btnName == "btn_new":
-            widgets.stackedWidget.setCurrentWidget(widgets.new_page)  # SET PAGE
+        if btnName == "btn_character":
+            widgets.stackedWidget.setCurrentWidget(widgets.Character_page)  # SET PAGE
             UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
 
@@ -153,8 +157,12 @@ class MainWindow(QMainWindow):
         if btnName == "btn_share":
             import webbrowser
 
-            webbrowser.open('https://github.com/HWcomss/Blessing-AI')  # Go to example.com
+            webbrowser.open('https://github.com/HWcomss/Blessing-AI')  # Go to Github Page
             print("Link BTN Clicked!")
+
+        if btnName == "btn_exit":
+            print("Exit BTN Clicked!")
+            QtCore.QCoreApplication.instance().quit()
 
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
