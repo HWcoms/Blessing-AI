@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2023 HWcoms
+Copyright (c) 2023 bryanlam2001
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,39 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-=======================================================================
-
-This software uses the following open source software libraries and source code:
-
-### LanguageLeapAI
-
-[LanguageLeapAI · GitHub](https://github.com/SociallyIneptWeeb/LanguageLeapAI)
-
-[MIT - License](docs/License/mit-languageleapai.txt)
-
-### Faster Whisper
-
-[faster-whisper · GitHub](https://github.com/guillaumekln/faster-whisper)
-
-[MIT - License](docs/License/mit-fasterwhisper.txt)
-
-### MoeGoe
-
-[MoeGoe · GitHub](https://github.com/CjangCjengh/MoeGoe)
-
-[MIT - License](docs/License/mit-moegoe.txt)
-
-### PySide6
-
-[PySide6 · PyPI](https://pypi.org/project/PySide6/)
-
-[LGPL - License](docs/License/lgpl-3.0.txt)
-
-### Modern_GUI_PyDracula_PySide6_or_PyQt6
-
-[PyDracula · GitHub](https://github.com/Wanderson-Magalhaes/Modern_GUI_PyDracula_PySide6_or_PyQt6)
-
-[MIT - License](docs/License/mit-pydracula.txt)
-
-=======================================================================
