@@ -219,6 +219,32 @@ def clean_lines(string):
     return string.replace('\n', ' ')
 
 
+## Get character json for GUI
+def get_character_info(character_name):
+    # Load Character
+    character_json_name = character_name + '.json'
+    character_image_name = character_name + '.png'
+    json_filepath = get_character_file(character_json_name)
+    image_filepath = get_character_file(character_image_name)
+
+    your_name, bot_name, greeting, context = load_character(json_filepath)
+
+    character_image = None
+    if os.path.exists(image_filepath):
+        print("Bot profile Image exists.")
+        character_image = image_filepath
+    else:
+        print("Bot profile Image does not exist.")
+    return your_name, bot_name, greeting, context, character_image
+
+
+def get_chatlog_info(character_name):
+    # Load ChatLog
+    chatlog_file_path = check_chatlog(character_name)
+    chat_str = load_chatlog(chatlog_file_path)
+    return chat_str
+
+
 ## Generate
 def generate_reply(string, character_name):
     # Define file name that contains prompt
@@ -317,8 +343,9 @@ def check_chatlog(character_name):
 
 # Example usage
 if __name__ == '__main__':
-    print(generate_reply("I'm HWcoms", "Kato Megumi"))
+    # print(generate_reply("I'm HWcoms", "Kato Megumi"))
     # print(HOST)
 
     # print(get_character_name())
     # print(count_tokens(context))
+    print(get_chatlog_info("Kato Megumi"))

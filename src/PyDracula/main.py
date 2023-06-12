@@ -123,6 +123,8 @@ class MainWindow(QMainWindow):
         widgets.stackedWidget.setCurrentWidget(widgets.Home_Page)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
 
+        self.load_all_info()
+
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
     # ///////////////////////////////////////////////////////////////
@@ -189,6 +191,42 @@ class MainWindow(QMainWindow):
             print('Mouse click: LEFT CLICK')
         if event.buttons() == Qt.RightButton:
             print('Mouse click: RIGHT CLICK')
+
+    # LOAD INFO EVENTS
+    # ///////////////////////////////////////////////////////////////
+    def load_all_info(self):
+        self.load_chatlog_info()
+        self.load_character_info()
+
+    def load_character_info(self):
+        from voice_translator import load_tts_setting
+        # Todo: clean return vars
+        character_name, tts_character_name, tts_language, voice_id, voice_volume, USE_D_BOT = load_tts_setting()
+
+        from LangAIComm import get_character_info
+        your_name, bot_name, greeting, context, bot_image = get_character_info(character_name)
+
+        widgets.textEdit_yourname.setText(your_name)
+        widgets.label_char_name.setText(bot_name)
+
+        if bot_image is not None:
+            # bot_pixmap = QPixmap.fromImage(bot_image)
+            widgets.label_char_img.setPixmap(QPixmap(bot_image))
+
+        widgets.textEdit_greeting.setText(greeting)
+        widgets.textEdit_context.setText(context)
+
+    def load_chatlog_info(self):
+        from voice_translator import load_tts_setting
+        # Todo: clean return vars
+        character_name, tts_character_name, tts_language, voice_id, voice_volume, USE_D_BOT = load_tts_setting()
+
+        print(f"charname {character_name}")
+        from LangAIComm import get_chatlog_info
+        chatlog_txt = get_chatlog_info(character_name)
+        print(f"chatlog {chatlog_txt}")
+
+        widgets.textEdit_chat_log.setText(chatlog_txt)
 
 
 if __name__ == "__main__":

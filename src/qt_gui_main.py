@@ -72,7 +72,7 @@ class SplashWindow(QMainWindow):
     ## Finish Loading Handler
     #######################################################################################
     def callMainWindow(self):
-        from PyDracula.main import MainWindow   # using loaded package
+        from PyDracula.main import MainWindow  # using loaded package
         self.timer.stop()
 
         # Show Main Window
