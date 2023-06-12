@@ -29,6 +29,7 @@ if __name__ != "__main__":
 
 from dracula_modules import *
 from widgets import *
+
 # Remove [import resources_rc] in ui_main.py!!
 
 os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100%
@@ -82,9 +83,9 @@ class MainWindow(QMainWindow):
 
         # LEFT MENUS
         widgets.btn_home.clicked.connect(self.buttonClick)
-        widgets.btn_config.clicked.connect(self.buttonClick)
+        widgets.btn_mic_setting.clicked.connect(self.buttonClick)
         widgets.btn_character.clicked.connect(self.buttonClick)
-        widgets.btn_save.clicked.connect(self.buttonClick)
+        widgets.btn_tts_setting.clicked.connect(self.buttonClick)
         widgets.btn_exit.clicked.connect(self.buttonClick)
 
         # EXTRA LEFT BOX
@@ -140,20 +141,23 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
-        # SHOW WIDGETS PAGE
-        if btnName == "btn_config":
-            widgets.stackedWidget.setCurrentWidget(widgets.Config_Page)
-            UIFunctions.resetStyle(self, btnName)
-            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
-
-        # SHOW NEW PAGE
+        # SHOW CHARACTER PAGE
         if btnName == "btn_character":
             widgets.stackedWidget.setCurrentWidget(widgets.Character_page)  # SET PAGE
             UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
 
-        if btnName == "btn_save":
-            print("Save BTN clicked!")
+        # SHOW MIC PAGE
+        if btnName == "btn_mic_setting":
+            widgets.stackedWidget.setCurrentWidget(widgets.Mic_Page)
+            UIFunctions.resetStyle(self, btnName)
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+
+        # SHOW TTS PAGE
+        if btnName == "btn_tts_setting":
+            widgets.stackedWidget.setCurrentWidget(widgets.TTS_Page)  # SET PAGE
+            UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
 
         if btnName == "btn_share":
             import webbrowser

@@ -916,7 +916,7 @@ Button */
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="btn_config">
+                 <widget class="QPushButton" name="btn_mic_setting">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -944,15 +944,15 @@ Button */
                    <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-image: url(:/icons/images/icons/cil-settings.png);</string>
+                   <string notr="true">background-image: url(:/icons/images/icons/cil-microphone.png);</string>
                   </property>
                   <property name="text">
-                   <string>Config</string>
+                   <string>Mic Setting</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="btn_save">
+                 <widget class="QPushButton" name="btn_tts_setting">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -980,10 +980,10 @@ Button */
                    <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-image: url(:/icons/images/icons/cil-save.png)</string>
+                   <string notr="true">background-image: url(:/icons/images/icons/cil-volume-high.png);</string>
                   </property>
                   <property name="text">
-                   <string>Save</string>
+                   <string>TTS Setting</string>
                   </property>
                  </widget>
                 </item>
@@ -1801,7 +1801,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -2477,7 +2477,7 @@ Reply</string>
                        </item>
                       </layout>
                      </widget>
-                     <widget class="QWidget" name="Config_Page">
+                     <widget class="QWidget" name="Mic_Page">
                       <property name="styleSheet">
                        <string notr="true">b</string>
                       </property>
@@ -2779,7 +2779,7 @@ Reply</string>
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>218</width>
+                                 <width>274</width>
                                  <height>218</height>
                                 </rect>
                                </property>
@@ -3313,6 +3313,17 @@ Reply</string>
                            </widget>
                           </item>
                          </layout>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                     <widget class="QWidget" name="TTS_Page">
+                      <layout class="QVBoxLayout" name="verticalLayout_22">
+                       <item>
+                        <widget class="QLabel" name="label_test">
+                         <property name="text">
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:26pt;&quot;&gt;TEST TTS PAGE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         </property>
                         </widget>
                        </item>
                       </layout>

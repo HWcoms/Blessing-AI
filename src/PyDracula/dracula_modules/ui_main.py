@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainDZvrTO.ui'
+## Form generated from reading UI file 'mainiGsrxR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -579,7 +579,7 @@ class Ui_MainWindow(object):
         self.appLayout.setContentsMargins(0, 0, 0, 0)
         self.leftMenuBg = QFrame(self.bgApp)
         self.leftMenuBg.setObjectName(u"leftMenuBg")
-        self.leftMenuBg.setMinimumSize(QSize(60, 0))
+        self.leftMenuBg.setMinimumSize(QSize(0, 0))
         self.leftMenuBg.setMaximumSize(QSize(60, 16777215))
         self.leftMenuBg.setFrameShape(QFrame.NoFrame)
         self.leftMenuBg.setFrameShadow(QFrame.Raised)
@@ -691,29 +691,29 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addWidget(self.btn_character)
 
-        self.btn_config = QPushButton(self.topMenu)
-        self.btn_config.setObjectName(u"btn_config")
-        sizePolicy1.setHeightForWidth(self.btn_config.sizePolicy().hasHeightForWidth())
-        self.btn_config.setSizePolicy(sizePolicy1)
-        self.btn_config.setMinimumSize(QSize(0, 45))
-        self.btn_config.setFont(font)
-        self.btn_config.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_config.setLayoutDirection(Qt.LeftToRight)
-        self.btn_config.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-settings.png);")
+        self.btn_mic_setting = QPushButton(self.topMenu)
+        self.btn_mic_setting.setObjectName(u"btn_mic_setting")
+        sizePolicy1.setHeightForWidth(self.btn_mic_setting.sizePolicy().hasHeightForWidth())
+        self.btn_mic_setting.setSizePolicy(sizePolicy1)
+        self.btn_mic_setting.setMinimumSize(QSize(0, 45))
+        self.btn_mic_setting.setFont(font)
+        self.btn_mic_setting.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_mic_setting.setLayoutDirection(Qt.LeftToRight)
+        self.btn_mic_setting.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-microphone.png);")
 
-        self.verticalLayout_8.addWidget(self.btn_config)
+        self.verticalLayout_8.addWidget(self.btn_mic_setting)
 
-        self.btn_save = QPushButton(self.topMenu)
-        self.btn_save.setObjectName(u"btn_save")
-        sizePolicy1.setHeightForWidth(self.btn_save.sizePolicy().hasHeightForWidth())
-        self.btn_save.setSizePolicy(sizePolicy1)
-        self.btn_save.setMinimumSize(QSize(0, 45))
-        self.btn_save.setFont(font)
-        self.btn_save.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_save.setLayoutDirection(Qt.LeftToRight)
-        self.btn_save.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-save.png)")
+        self.btn_tts_setting = QPushButton(self.topMenu)
+        self.btn_tts_setting.setObjectName(u"btn_tts_setting")
+        sizePolicy1.setHeightForWidth(self.btn_tts_setting.sizePolicy().hasHeightForWidth())
+        self.btn_tts_setting.setSizePolicy(sizePolicy1)
+        self.btn_tts_setting.setMinimumSize(QSize(0, 45))
+        self.btn_tts_setting.setFont(font)
+        self.btn_tts_setting.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_tts_setting.setLayoutDirection(Qt.LeftToRight)
+        self.btn_tts_setting.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-volume-high.png);")
 
-        self.verticalLayout_8.addWidget(self.btn_save)
+        self.verticalLayout_8.addWidget(self.btn_tts_setting)
 
         self.btn_exit = QPushButton(self.topMenu)
         self.btn_exit.setObjectName(u"btn_exit")
@@ -1321,14 +1321,14 @@ class Ui_MainWindow(object):
         self.verticalLayout_24.addLayout(self.verticalLayout_chat_log_textbox)
 
         self.stackedWidget.addWidget(self.Home_Page)
-        self.Config_Page = QWidget()
-        self.Config_Page.setObjectName(u"Config_Page")
-        self.Config_Page.setStyleSheet(u"b")
-        self.verticalLayout = QVBoxLayout(self.Config_Page)
+        self.Mic_Page = QWidget()
+        self.Mic_Page.setObjectName(u"Mic_Page")
+        self.Mic_Page.setStyleSheet(u"b")
+        self.verticalLayout = QVBoxLayout(self.Mic_Page)
         self.verticalLayout.setSpacing(10)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(10, 10, 10, 10)
-        self.row_1 = QFrame(self.Config_Page)
+        self.row_1 = QFrame(self.Mic_Page)
         self.row_1.setObjectName(u"row_1")
         self.row_1.setFrameShape(QFrame.StyledPanel)
         self.row_1.setFrameShadow(QFrame.Raised)
@@ -1411,7 +1411,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.row_1)
 
-        self.row_2 = QFrame(self.Config_Page)
+        self.row_2 = QFrame(self.Mic_Page)
         self.row_2.setObjectName(u"row_2")
         self.row_2.setMinimumSize(QSize(0, 150))
         self.row_2.setFrameShape(QFrame.StyledPanel)
@@ -1466,7 +1466,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 274, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -1529,7 +1529,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.row_2)
 
-        self.row_3 = QFrame(self.Config_Page)
+        self.row_3 = QFrame(self.Mic_Page)
         self.row_3.setObjectName(u"row_3")
         self.row_3.setMinimumSize(QSize(0, 150))
         self.row_3.setFrameShape(QFrame.StyledPanel)
@@ -1661,7 +1661,17 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.row_3)
 
-        self.stackedWidget.addWidget(self.Config_Page)
+        self.stackedWidget.addWidget(self.Mic_Page)
+        self.TTS_Page = QWidget()
+        self.TTS_Page.setObjectName(u"TTS_Page")
+        self.verticalLayout_22 = QVBoxLayout(self.TTS_Page)
+        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
+        self.label_test = QLabel(self.TTS_Page)
+        self.label_test.setObjectName(u"label_test")
+
+        self.verticalLayout_22.addWidget(self.label_test)
+
+        self.stackedWidget.addWidget(self.TTS_Page)
         self.Character_page = QWidget()
         self.Character_page.setObjectName(u"Character_page")
         self.verticalLayout_20 = QVBoxLayout(self.Character_page)
@@ -1964,7 +1974,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1977,8 +1987,8 @@ class Ui_MainWindow(object):
         self.toggleButton.setText(QCoreApplication.translate("MainWindow", u"Hide", None))
         self.btn_home.setText(QCoreApplication.translate("MainWindow", u"Home", None))
         self.btn_character.setText(QCoreApplication.translate("MainWindow", u"Character", None))
-        self.btn_config.setText(QCoreApplication.translate("MainWindow", u"Config", None))
-        self.btn_save.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+        self.btn_mic_setting.setText(QCoreApplication.translate("MainWindow", u"Mic Setting", None))
+        self.btn_tts_setting.setText(QCoreApplication.translate("MainWindow", u"TTS Setting", None))
         self.btn_exit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.toggleLeftBox.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.extraLabel.setText(QCoreApplication.translate("MainWindow", u"About", None))
@@ -2165,6 +2175,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem23.setText(QCoreApplication.translate("MainWindow", u"Line", None));
         self.tableWidget.setSortingEnabled(__sortingEnabled)
 
+        self.label_test.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:26pt;\">TEST TTS PAGE</span></p></body></html>", None))
         self.label_your_name.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Your Name</span></p></body></html>", None))
         self.textEdit_yourname.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
