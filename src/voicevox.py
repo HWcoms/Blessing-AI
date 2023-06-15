@@ -36,85 +36,37 @@ POST_PHONEME_LENGTH = float(getenv('POST_PHONEME_LENGTH'))
 TTS_WAV_PATH = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
 
-def speak(sentence, language_code, character_name, tts_character_name, voice_id, voice_volume, use_d_bot):
+def speak(sentence, settings_json):
     # print("번역전 텍스트: ", sentence)
-    bot_trans_speech = DoTranslate(sentence, 'en', language_code)    # Translate reply
+    language_code = settings_json["tts_language"]
+    voice_volume = settings_json["voice_volume"]
+    discord_print_language = settings_json["discord_print_language"]
+
+    bot_trans_speech = DoTranslate(sentence, 'en', language_code)  # Translate reply
     if language_code == 'ja':
-        bot_trans_speech = english_to_katakana(bot_trans_speech)            # romaji to japanese
+        bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
     elif language_code == 'ko':
-        bot_trans_speech = bot_trans_speech                                 # TODO: eng to korean
+        bot_trans_speech = bot_trans_speech  # TODO: eng to korean
         voice_volume = voice_volume * 0.3
 
     # synthesize voice as wav file
-    # speech_text("character_name", bot_trans_speech, language_code, voice_id, voice_volume)
-    speech_text(tts_character_name, bot_trans_speech, language_code, voice_id, voice_volume)
+    speech_text(settings_json["tts_character_name"], bot_trans_speech, language_code, settings_json["voice_id"], voice_volume)
 
     # play voice to app mic input and speakers/headphones
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
 
-    if use_d_bot:
-        # Do translate to korean, if it's not 'ko'
-        if language_code != 'ko':
-            ko_sentence = DoTranslate(sentence, 'en', 'ko')
+    if settings_json["discord_bot"]:
+        # Do translate to discord_print_langage, if it's not same as language_code
+        if language_code != discord_print_language:
+            discord_sentence = DoTranslate(sentence, 'en', discord_print_language)
         else:
-            ko_sentence = bot_trans_speech
+            discord_sentence = bot_trans_speech
 
-        # SendDiscordMessage(ko_sentence)
-        ExcuteDiscordWebhook(ko_sentence)
+        # SendDiscordMessage(discord_sentence)
+        ExcuteDiscordWebhook(discord_sentence)
 
     [t.start() for t in threads]
     [t.join() for t in threads]
-
-
-def speak_jp_VoiceVox(sentence):
-    settings_json = read_text_file(Path(__file__).resolve().parent.parent.parent / r'Voice_Settings.txt')
-
-    print("========TTS 설정=========")
-    print("TTS 보이스 ID: ", settings_json["voice_id"])
-    print("TTS 스피드: ", settings_json["voice_speed"])
-    print("TTS 볼륨: ", settings_json["voice_volume"])
-    print("INTONATION_SCALE: ", settings_json["intonation_scale"])
-    print("PRE_PHONEME_LENGTH: ", settings_json["pre_phoneme_length"])
-    print("POST_PHONEME_LENGTH: ", settings_json["post_phoneme_length"])
-    print("====================\n")
-
-    voice_Dyna_id = settings_json["voice_id"]  # id
-
-    params_encoded = urlencode({'text': sentence, 'speaker': voice_Dyna_id})
-    r = requests.post(f'{BASE_URL}/audio_query?{params_encoded}')
-
-    if r.status_code == 404:
-        print('Unable to reach Voicevox, ensure that it is running, or the VOICEVOX_BASE_URL variable is set correctly')
-        return
-
-    voicevox_query = r.json()
-
-    voicevox_query['speedScale'] = settings_json["voice_speed"]
-    voicevox_query['volumeScale'] = settings_json["voice_volume"]
-    voicevox_query['intonationScale'] = settings_json["intonation_scale"]
-    voicevox_query['prePhonemeLength'] = settings_json["pre_phoneme_length"]
-    voicevox_query['postPhonemeLength'] = settings_json["post_phoneme_length"]
-
-    # voicevox_query['speedScale'] = SPEED_SCALE
-    # voicevox_query['volumeScale'] = VOLUME_SCALE
-    # voicevox_query['intonationScale'] = INTONATION_SCALE
-    # voicevox_query['prePhonemeLength'] = PRE_PHONEME_LENGTH
-    # voicevox_query['postPhonemeLength'] = POST_PHONEME_LENGTH
-
-    # synthesize voice as wav file
-
-    params_encoded = urlencode({'speaker': voice_Dyna_id})
-    r = requests.post(f'{BASE_URL}/synthesis?{params_encoded}', json=voicevox_query)
-
-    with open(TTS_WAV_PATH, 'wb') as outfile:
-        outfile.write(r.content)
-
-    # play voice to app mic input and speakers/headphones
-    threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
-    [t.start() for t in threads]
-    [t.join() for t in threads]
-
-    print("준비완료")
 
 
 def read_text_file(filename):

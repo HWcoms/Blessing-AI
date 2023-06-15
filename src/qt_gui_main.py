@@ -1,7 +1,7 @@
 import os
 import sys
 
-from PySide6 import QtWidgets  # must need
+from PySide6 import QtWidgets  # must need # noqa
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsDropShadowEffect, QMessageBox
 from PySide6.QtGui import QColor
 

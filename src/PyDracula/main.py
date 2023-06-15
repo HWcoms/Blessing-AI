@@ -22,13 +22,20 @@ import platform
 # ///////////////////////////////////////////////////////////////
 from PySide6.QtWidgets import *
 from PySide6 import QtCore
+from PySide6.QtCore import Qt
 
+# IF MAIN THREAD IS THIS, APPEND SYS ENV PATH
 if __name__ != "__main__":
     script_path = os.path.abspath(os.path.dirname(__file__))
+    root_path = os.path.dirname(script_path)  # able to import modules in src folder
     sys.path.append(script_path)
+    sys.path.append(root_path)
 
 from dracula_modules import *
 from widgets import *
+
+# CHATLOAD
+from dracula_modules.page_messages import Chat # Chat Widget
 
 # Remove [import resources_rc] in ui_main.py!!
 
@@ -43,13 +50,18 @@ class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
 
+        # SET CUSTOM VARIABLES
+        # ///////////////////////////////////////////////////////////////
+        self.char_info_dict : dict = None
+        # [your_name, character_name, character_description, character_image, greeting, context, chat_log]
+
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         global widgets
         widgets = self.ui
-        self.ui.textBrowser.setOpenExternalLinks(True)
+        widgets.textBrowser.setOpenExternalLinks(True)
 
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
@@ -143,6 +155,8 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
+            self.chat_layout_update(self.char_info_dict)
+
         # SHOW CHARACTER PAGE
         if btnName == "btn_character":
             widgets.stackedWidget.setCurrentWidget(widgets.Character_page)  # SET PAGE
@@ -174,6 +188,28 @@ class MainWindow(QMainWindow):
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
 
+    # [GUI] LOAD CHAT
+    # ///////////////////////////////////////////////////////////////
+    def chat_layout_update(self, character_info):
+        global widgets
+        self.char_info_dict["character_description"] = "AI-Bot"
+
+        # if btn.objectName():
+        # REMOVE CHAT
+        for chat in reversed(range(self.ui.chat_layout.count())):
+            widgets.chat_layout.itemAt(chat).widget().deleteLater()
+        self.chat = None
+
+        # SET CHAT WIDGET
+        self.chat = Chat(self.char_info_dict)
+        # self.chat = Chat(btn.user_image, btn.user_name, btn.user_description, btn.objectName(), self.top_user.user_name)
+
+        # ADD WIDGET TO LAYOUT
+        widgets.chat_layout.addWidget(self.chat)
+
+        # JUMP TO CHAT PAGE
+        # widgets.app_pages.setCurrentWidget(widgets.chat)
+
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
     def resizeEvent(self, event):
@@ -195,38 +231,81 @@ class MainWindow(QMainWindow):
     # LOAD INFO EVENTS
     # ///////////////////////////////////////////////////////////////
     def load_all_info(self):
-        self.load_chatlog_info()
         self.load_character_info()
+        self.load_chatlog_info()
+        self.load_mic_info()
+
+        self.chat_layout_update(self.char_info_dict)
 
     def load_character_info(self):
-        from voice_translator import load_tts_setting
-        # Todo: clean return vars
-        character_name, tts_character_name, tts_language, voice_id, voice_volume, USE_D_BOT = load_tts_setting()
+        global widgets
+        from setting_info import SettingInfo    # noqa
+        settings_json = SettingInfo.load_settings()
 
-        from LangAIComm import get_character_info
-        your_name, bot_name, greeting, context, bot_image = get_character_info(character_name)
+        from LangAIComm import get_character_info   # noqa
+        char_dict = get_character_info(settings_json["character_name"])
+        # print(char_dict)
 
-        widgets.textEdit_yourname.setText(your_name)
-        widgets.label_char_name.setText(bot_name)
+        widgets.textEdit_yourname.setText(char_dict["your_name"])
+        widgets.label_char_name.setText(char_dict["character_name"])
+
+        bot_image = char_dict["character_image"] # TODO: check None, if there's no image
 
         if bot_image is not None:
             # bot_pixmap = QPixmap.fromImage(bot_image)
             widgets.label_char_img.setPixmap(QPixmap(bot_image))
 
-        widgets.textEdit_greeting.setText(greeting)
-        widgets.textEdit_context.setText(context)
+        widgets.textEdit_greeting.setText(char_dict["greeting"])
+        widgets.textEdit_context.setText(char_dict["context"])
+
+        self.char_info_dict = char_dict
 
     def load_chatlog_info(self):
-        from voice_translator import load_tts_setting
-        # Todo: clean return vars
-        character_name, tts_character_name, tts_language, voice_id, voice_volume, USE_D_BOT = load_tts_setting()
+        global widgets
 
-        print(f"charname {character_name}")
-        from LangAIComm import get_chatlog_info
+        if self.char_info_dict is None:
+            print("[GUI] : Chat info dict is None, now loading character info...")
+            self.load_character_info()
+
+        from setting_info import SettingInfo    # noqa
+
+        settings_json = SettingInfo.load_settings()
+        character_name = settings_json["character_name"]
+        # print(f"charname: {character_name}")
+
+        from LangAIComm import get_chatlog_info # noqa
+
         chatlog_txt = get_chatlog_info(character_name)
-        print(f"chatlog {chatlog_txt}")
+        # print(f"chatlog: {chatlog_txt}")
+        self.char_info_dict["chat_log"] = chatlog_txt
 
-        widgets.textEdit_chat_log.setText(chatlog_txt)
+        # widgets.listView_chat_log.addItem(chatlog_txt)
+        # widgets.textEdit_chat_log.setText(chatlog_txt)
+
+        ## Get Last 2 messages
+        messages = chatlog_txt.split("\n")
+
+        last_user_message = messages[-2]
+        last_bot_reply = messages[-1]
+
+        # Remove name
+        import re
+        last_user_message = processed_message = re.sub(r"^[^:]+:\s*", "", last_user_message, count=1)
+        last_bot_reply = processed_message = re.sub(r"^[^:]+:\s*", "", last_bot_reply, count=1)
+
+        # Remove index 0 blank
+        if last_user_message[0] == " ":
+            last_user_message = last_user_message[1:]
+
+        if last_bot_reply[0] == " ":
+            last_bot_reply = last_bot_reply[1:]
+
+        widgets.textEdit_user_message.setText(last_user_message)
+        widgets.textEdit_bot_reply.setText(last_bot_reply)
+
+    @staticmethod
+    def load_mic_info():
+        print()
 
 
 if __name__ == "__main__":

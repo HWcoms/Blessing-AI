@@ -1825,7 +1825,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                         </spacer>
                        </item>
                        <item>
-                        <layout class="QVBoxLayout" name="a_verticalLayout_top" stretch="0,0">
+                        <layout class="QVBoxLayout" name="verticalLayout_console" stretch="0,0,0">
                          <property name="leftMargin">
                           <number>6</number>
                          </property>
@@ -1965,56 +1965,97 @@ li.checked::marker { content: &quot;\2612&quot;; }
                           </layout>
                          </item>
                          <item>
-                          <widget class="QWidget" name="chat" native="true">
-                           <layout class="QVBoxLayout" name="verticalLayout_25">
-                            <property name="spacing">
-                             <number>0</number>
-                            </property>
-                            <property name="leftMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="topMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>0</number>
-                            </property>
-                            <item>
-                             <layout class="QVBoxLayout" name="chat_layout">
-                              <property name="spacing">
-                               <number>0</number>
-                              </property>
-                              <item>
-                               <widget class="QLabel" name="chat_widget_placeholder_2">
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>0</width>
-                                  <height>200</height>
-                                 </size>
-                                </property>
-                                <property name="text">
-                                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/user_profile/images/user_profile/cat.png&quot;/&gt;&lt;span style=&quot; font-size:24pt;&quot;&gt;place holder for chat layout&lt;/span&gt;&lt;img src=&quot;:/user_profile/images/user_profile/me.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                                </property>
-                                <property name="pixmap">
-                                 <pixmap resource="resources.qrc">:/user_profile/images/user_profile/me.png</pixmap>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignCenter</set>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </item>
-                           </layout>
+                          <widget class="QListView" name="listView_chat_log">
+                           <property name="styleSheet">
+                            <string notr="true">QListView {
+	border: 2px solid rgb(48, 50, 62);
+	border-radius: 10px;
+	color: #FFF;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color:rgb(34,36,44)
+}
+QListView:hover {
+	border: 2px solid rgb(66, 70, 86);
+}
+QListView:focus {
+	border: 2px solid rgb(85, 170, 255);
+	background-color: rgb(43, 45, 56);
+}</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QTextEdit" name="textEdit_chat_log">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="minimumSize">
+                            <size>
+                             <width>0</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>16777215</width>
+                             <height>300</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QTextEdit {
+	border: 2px solid rgb(48, 50, 62);
+	border-radius: 10px;
+	color: #FFF;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color:rgb(34,36,44)
+}
+QTextEdit:hover {
+	border: 2px solid rgb(66, 70, 86);
+}
+QTextEdit:focus {
+	border: 2px solid rgb(85, 170, 255);
+	background-color: rgb(43, 45, 56);
+}</string>
+                           </property>
+                           <property name="readOnly">
+                            <bool>true</bool>
+                           </property>
+                           <property name="html">
+                            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;coms: hi&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bot: hi coms&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;coms: hi&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bot: hi coms&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;coms: hi&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bot: hi coms&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;coms: hi&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bot: hi coms&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;coms: hi&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bot: hi coms&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;coms: hi&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bot: hi coms&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;coms: hi&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bot: hi coms&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;coms: hi&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bot: hi coms&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
                           </widget>
                          </item>
                         </layout>
                        </item>
                        <item>
-                        <layout class="QGridLayout" name="b_gridLayout_mid">
+                        <layout class="QGridLayout" name="gridLayout_3">
                          <property name="leftMargin">
                           <number>6</number>
                          </property>
@@ -2041,7 +2082,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                            <property name="maximumSize">
                             <size>
                              <width>16777215</width>
-                             <height>30</height>
+                             <height>65</height>
                             </size>
                            </property>
                            <property name="styleSheet">
@@ -2122,7 +2163,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                              <property name="sizeHint" stdset="0">
                               <size>
                                <width>20</width>
-                               <height>5</height>
+                               <height>40</height>
                               </size>
                              </property>
                             </spacer>
@@ -2149,7 +2190,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                            <property name="maximumSize">
                             <size>
                              <width>16777215</width>
-                             <height>30</height>
+                             <height>65</height>
                             </size>
                            </property>
                            <property name="baseSize">
@@ -2235,7 +2276,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                              <property name="sizeHint" stdset="0">
                               <size>
                                <width>20</width>
-                               <height>5</height>
+                               <height>40</height>
                               </size>
                              </property>
                             </spacer>
@@ -2245,7 +2286,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                         </layout>
                        </item>
                        <item>
-                        <layout class="QVBoxLayout" name="c_verticalLayout_lower">
+                        <layout class="QVBoxLayout" name="verticalLayout_chat_log_textbox">
                          <property name="leftMargin">
                           <number>6</number>
                          </property>
@@ -2255,7 +2296,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                          <item>
                           <widget class="QLabel" name="label">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -2269,27 +2310,30 @@ li.checked::marker { content: &quot;\2612&quot;; }
                            <property name="text">
                             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Message Queue&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
-                           <property name="alignment">
-                            <set>Qt::AlignCenter</set>
-                           </property>
                           </widget>
                          </item>
                          <item>
-                          <widget class="QListView" name="listView_message_queue">
+                          <widget class="QTextEdit" name="textEdit_console">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
                            <property name="minimumSize">
                             <size>
                              <width>0</width>
-                             <height>50</height>
+                             <height>30</height>
                             </size>
                            </property>
                            <property name="maximumSize">
                             <size>
                              <width>16777215</width>
-                             <height>200</height>
+                             <height>16777215</height>
                             </size>
                            </property>
                            <property name="styleSheet">
-                            <string notr="true">QListView {
+                            <string notr="true">QTextEdit {
 	border: 2px solid rgb(48, 50, 62);
 	border-radius: 10px;
 	color: #FFF;
@@ -2297,13 +2341,36 @@ li.checked::marker { content: &quot;\2612&quot;; }
 	padding-right: 10px;
 	background-color:rgb(34,36,44)
 }
-QListView:hover {
+QTextEdit:hover {
 	border: 2px solid rgb(66, 70, 86);
-}
-QListView:focus {
-	border: 2px solid rgb(85, 170, 255);
-	background-color: rgb(43, 45, 56);
 }</string>
+                           </property>
+                           <property name="readOnly">
+                            <bool>true</bool>
+                           </property>
+                           <property name="html">
+                            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Message Queue Table&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;uesename | message1 | Delete | Edit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>

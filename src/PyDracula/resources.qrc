@@ -3,6 +3,12 @@
     <file>images/images/PyDracula.png</file>
     <file>images/images/PyDracula_vertical.png</file>
   </qresource>
+  <qresource prefix="user_profile">
+    <file>images/user_profile/cat.png</file>
+    <file>images/user_profile/cat_150px.png</file>
+    <file>images/user_profile/me.png</file>
+    <file>images/user_profile/me_150px.png</file>
+  </qresource>
   <qresource prefix="icons">
     <file>images/icons/book-icon.png</file>
     <file>images/icons/cil-3d.png</file>

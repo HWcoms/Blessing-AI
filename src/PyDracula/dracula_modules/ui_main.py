@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainiGsrxR.ui'
+## Form generated from reading UI file 'mainlmOAuu.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -18,11 +18,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplication, QCheckBox,
     QComboBox, QCommandLinkButton, QFrame, QGridLayout,
     QHBoxLayout, QHeaderView, QLabel, QLayout,
-    QLineEdit, QMainWindow, QPlainTextEdit, QPushButton,
-    QRadioButton, QScrollArea, QScrollBar, QSizePolicy,
-    QSlider, QSpacerItem, QStackedWidget, QTableWidget,
-    QTableWidgetItem, QTextBrowser, QTextEdit, QVBoxLayout,
-    QWidget)
+    QLineEdit, QListView, QMainWindow, QPlainTextEdit,
+    QPushButton, QRadioButton, QScrollArea, QScrollBar,
+    QSizePolicy, QSlider, QSpacerItem, QStackedWidget,
+    QTableWidget, QTableWidgetItem, QTextBrowser, QTextEdit,
+    QVBoxLayout, QWidget)
 # import resources_rc
 
 class Ui_MainWindow(object):
@@ -579,7 +579,7 @@ class Ui_MainWindow(object):
         self.appLayout.setContentsMargins(0, 0, 0, 0)
         self.leftMenuBg = QFrame(self.bgApp)
         self.leftMenuBg.setObjectName(u"leftMenuBg")
-        self.leftMenuBg.setMinimumSize(QSize(0, 0))
+        self.leftMenuBg.setMinimumSize(QSize(60, 0))
         self.leftMenuBg.setMaximumSize(QSize(60, 16777215))
         self.leftMenuBg.setFrameShape(QFrame.NoFrame)
         self.leftMenuBg.setFrameShadow(QFrame.Raised)
@@ -1038,9 +1038,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_24.addItem(self.verticalSpacer_4)
 
-        self.verticalLayout_console = QVBoxLayout()
-        self.verticalLayout_console.setObjectName(u"verticalLayout_console")
-        self.verticalLayout_console.setContentsMargins(6, -1, 6, -1)
+        self.a_verticalLayout_top = QVBoxLayout()
+        self.a_verticalLayout_top.setObjectName(u"a_verticalLayout_top")
+        self.a_verticalLayout_top.setContentsMargins(6, -1, 6, -1)
         self.horizontalLayout_chat_log = QHBoxLayout()
         self.horizontalLayout_chat_log.setSpacing(6)
         self.horizontalLayout_chat_log.setObjectName(u"horizontalLayout_chat_log")
@@ -1099,50 +1099,45 @@ class Ui_MainWindow(object):
         self.horizontalLayout_chat_log.addWidget(self.lineEdit_token_count)
 
 
-        self.verticalLayout_console.addLayout(self.horizontalLayout_chat_log)
+        self.a_verticalLayout_top.addLayout(self.horizontalLayout_chat_log)
 
-        self.textEdit_chat_log = QTextEdit(self.Home_Page)
-        self.textEdit_chat_log.setObjectName(u"textEdit_chat_log")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.textEdit_chat_log.sizePolicy().hasHeightForWidth())
-        self.textEdit_chat_log.setSizePolicy(sizePolicy6)
-        self.textEdit_chat_log.setMinimumSize(QSize(0, 0))
-        self.textEdit_chat_log.setMaximumSize(QSize(16777215, 300))
-        self.textEdit_chat_log.setStyleSheet(u"QTextEdit {\n"
-"	border: 2px solid rgb(48, 50, 62);\n"
-"	border-radius: 10px;\n"
-"	color: #FFF;\n"
-"	padding-left: 10px;\n"
-"	padding-right: 10px;\n"
-"	background-color:rgb(34,36,44)\n"
-"}\n"
-"QTextEdit:hover {\n"
-"	border: 2px solid rgb(66, 70, 86);\n"
-"}\n"
-"QTextEdit:focus {\n"
-"	border: 2px solid rgb(85, 170, 255);\n"
-"	background-color: rgb(43, 45, 56);\n"
-"}")
-        self.textEdit_chat_log.setReadOnly(True)
+        self.chat = QWidget(self.Home_Page)
+        self.chat.setObjectName(u"chat")
+        self.verticalLayout_25 = QVBoxLayout(self.chat)
+        self.verticalLayout_25.setSpacing(0)
+        self.verticalLayout_25.setObjectName(u"verticalLayout_25")
+        self.verticalLayout_25.setContentsMargins(0, 0, 0, 0)
+        self.chat_layout = QVBoxLayout()
+        self.chat_layout.setSpacing(0)
+        self.chat_layout.setObjectName(u"chat_layout")
+        self.chat_widget_placeholder_2 = QLabel(self.chat)
+        self.chat_widget_placeholder_2.setObjectName(u"chat_widget_placeholder_2")
+        self.chat_widget_placeholder_2.setMinimumSize(QSize(0, 200))
+        self.chat_widget_placeholder_2.setPixmap(QPixmap(u":/user_profile/images/user_profile/me.png"))
+        self.chat_widget_placeholder_2.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_console.addWidget(self.textEdit_chat_log)
+        self.chat_layout.addWidget(self.chat_widget_placeholder_2)
 
 
-        self.verticalLayout_24.addLayout(self.verticalLayout_console)
+        self.verticalLayout_25.addLayout(self.chat_layout)
 
-        self.gridLayout_3 = QGridLayout()
-        self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.gridLayout_3.setContentsMargins(6, -1, 6, -1)
-        self.textEdit_bot_reply = QTextEdit(self.Home_Page)
-        self.textEdit_bot_reply.setObjectName(u"textEdit_bot_reply")
-        self.textEdit_bot_reply.setEnabled(True)
-        sizePolicy1.setHeightForWidth(self.textEdit_bot_reply.sizePolicy().hasHeightForWidth())
-        self.textEdit_bot_reply.setSizePolicy(sizePolicy1)
-        self.textEdit_bot_reply.setMinimumSize(QSize(0, 0))
-        self.textEdit_bot_reply.setMaximumSize(QSize(16777215, 65))
-        self.textEdit_bot_reply.setStyleSheet(u"QTextEdit {\n"
+
+        self.a_verticalLayout_top.addWidget(self.chat)
+
+
+        self.verticalLayout_24.addLayout(self.a_verticalLayout_top)
+
+        self.b_gridLayout_mid = QGridLayout()
+        self.b_gridLayout_mid.setObjectName(u"b_gridLayout_mid")
+        self.b_gridLayout_mid.setContentsMargins(6, -1, 6, -1)
+        self.textEdit_user_message = QTextEdit(self.Home_Page)
+        self.textEdit_user_message.setObjectName(u"textEdit_user_message")
+        self.textEdit_user_message.setEnabled(True)
+        sizePolicy1.setHeightForWidth(self.textEdit_user_message.sizePolicy().hasHeightForWidth())
+        self.textEdit_user_message.setSizePolicy(sizePolicy1)
+        self.textEdit_user_message.setMinimumSize(QSize(0, 0))
+        self.textEdit_user_message.setMaximumSize(QSize(16777215, 30))
+        self.textEdit_user_message.setStyleSheet(u"QTextEdit {\n"
 "	border: 2px solid rgb(48, 50, 62);\n"
 "	border-radius: 10px;\n"
 "	color: #FFF;\n"
@@ -1153,9 +1148,9 @@ class Ui_MainWindow(object):
 "QTextEdit:hover {\n"
 "	border: 2px solid rgb(66, 70, 86);\n"
 "}")
-        self.textEdit_bot_reply.setReadOnly(True)
+        self.textEdit_user_message.setReadOnly(True)
 
-        self.gridLayout_3.addWidget(self.textEdit_bot_reply, 0, 1, 1, 1)
+        self.b_gridLayout_mid.addWidget(self.textEdit_user_message, 0, 1, 1, 1)
 
         self.verticalLayout_23 = QVBoxLayout()
         self.verticalLayout_23.setSpacing(0)
@@ -1172,22 +1167,22 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_23.addWidget(self.label_last_user_message)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.verticalSpacer_2 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout_23.addItem(self.verticalSpacer_2)
 
 
-        self.gridLayout_3.addLayout(self.verticalLayout_23, 0, 0, 1, 1)
+        self.b_gridLayout_mid.addLayout(self.verticalLayout_23, 0, 0, 1, 1)
 
-        self.textEdit_user_message = QTextEdit(self.Home_Page)
-        self.textEdit_user_message.setObjectName(u"textEdit_user_message")
-        self.textEdit_user_message.setEnabled(True)
-        sizePolicy1.setHeightForWidth(self.textEdit_user_message.sizePolicy().hasHeightForWidth())
-        self.textEdit_user_message.setSizePolicy(sizePolicy1)
-        self.textEdit_user_message.setMinimumSize(QSize(0, 0))
-        self.textEdit_user_message.setMaximumSize(QSize(16777215, 65))
-        self.textEdit_user_message.setBaseSize(QSize(0, 0))
-        self.textEdit_user_message.setStyleSheet(u"QTextEdit {\n"
+        self.textEdit_bot_reply = QTextEdit(self.Home_Page)
+        self.textEdit_bot_reply.setObjectName(u"textEdit_bot_reply")
+        self.textEdit_bot_reply.setEnabled(True)
+        sizePolicy1.setHeightForWidth(self.textEdit_bot_reply.sizePolicy().hasHeightForWidth())
+        self.textEdit_bot_reply.setSizePolicy(sizePolicy1)
+        self.textEdit_bot_reply.setMinimumSize(QSize(0, 0))
+        self.textEdit_bot_reply.setMaximumSize(QSize(16777215, 30))
+        self.textEdit_bot_reply.setBaseSize(QSize(0, 0))
+        self.textEdit_bot_reply.setStyleSheet(u"QTextEdit {\n"
 "	border: 2px solid rgb(48, 50, 62);\n"
 "	border-radius: 10px;\n"
 "	color: #FFF;\n"
@@ -1198,9 +1193,9 @@ class Ui_MainWindow(object):
 "QTextEdit:hover {\n"
 "	border: 2px solid rgb(66, 70, 86);\n"
 "}")
-        self.textEdit_user_message.setReadOnly(True)
+        self.textEdit_bot_reply.setReadOnly(True)
 
-        self.gridLayout_3.addWidget(self.textEdit_user_message, 1, 1, 1, 1)
+        self.b_gridLayout_mid.addWidget(self.textEdit_bot_reply, 1, 1, 1, 1)
 
         self.verticalLayout_21 = QVBoxLayout()
         self.verticalLayout_21.setSpacing(0)
@@ -1217,34 +1212,33 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_21.addWidget(self.label_last_bot_reply)
 
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.verticalSpacer_3 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout_21.addItem(self.verticalSpacer_3)
 
 
-        self.gridLayout_3.addLayout(self.verticalLayout_21, 1, 0, 1, 1)
+        self.b_gridLayout_mid.addLayout(self.verticalLayout_21, 1, 0, 1, 1)
 
 
-        self.verticalLayout_24.addLayout(self.gridLayout_3)
+        self.verticalLayout_24.addLayout(self.b_gridLayout_mid)
 
-        self.verticalLayout_chat_log_textbox = QVBoxLayout()
-        self.verticalLayout_chat_log_textbox.setObjectName(u"verticalLayout_chat_log_textbox")
-        self.verticalLayout_chat_log_textbox.setContentsMargins(6, -1, 6, -1)
+        self.c_verticalLayout_lower = QVBoxLayout()
+        self.c_verticalLayout_lower.setObjectName(u"c_verticalLayout_lower")
+        self.c_verticalLayout_lower.setContentsMargins(6, -1, 6, -1)
         self.label = QLabel(self.Home_Page)
         self.label.setObjectName(u"label")
-        sizePolicy4.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy4)
+        sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy1)
         self.label.setMinimumSize(QSize(0, 0))
+        self.label.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_chat_log_textbox.addWidget(self.label)
+        self.c_verticalLayout_lower.addWidget(self.label)
 
-        self.textEdit_console = QTextEdit(self.Home_Page)
-        self.textEdit_console.setObjectName(u"textEdit_console")
-        sizePolicy6.setHeightForWidth(self.textEdit_console.sizePolicy().hasHeightForWidth())
-        self.textEdit_console.setSizePolicy(sizePolicy6)
-        self.textEdit_console.setMinimumSize(QSize(0, 30))
-        self.textEdit_console.setMaximumSize(QSize(16777215, 16777215))
-        self.textEdit_console.setStyleSheet(u"QTextEdit {\n"
+        self.listView_message_queue = QListView(self.Home_Page)
+        self.listView_message_queue.setObjectName(u"listView_message_queue")
+        self.listView_message_queue.setMinimumSize(QSize(0, 50))
+        self.listView_message_queue.setMaximumSize(QSize(16777215, 200))
+        self.listView_message_queue.setStyleSheet(u"QListView {\n"
 "	border: 2px solid rgb(48, 50, 62);\n"
 "	border-radius: 10px;\n"
 "	color: #FFF;\n"
@@ -1252,12 +1246,15 @@ class Ui_MainWindow(object):
 "	padding-right: 10px;\n"
 "	background-color:rgb(34,36,44)\n"
 "}\n"
-"QTextEdit:hover {\n"
+"QListView:hover {\n"
 "	border: 2px solid rgb(66, 70, 86);\n"
+"}\n"
+"QListView:focus {\n"
+"	border: 2px solid rgb(85, 170, 255);\n"
+"	background-color: rgb(43, 45, 56);\n"
 "}")
-        self.textEdit_console.setReadOnly(True)
 
-        self.verticalLayout_chat_log_textbox.addWidget(self.textEdit_console)
+        self.c_verticalLayout_lower.addWidget(self.listView_message_queue)
 
         self.horizontalLayout_command_button = QHBoxLayout()
         self.horizontalLayout_command_button.setSpacing(70)
@@ -1265,11 +1262,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_command_button.setContentsMargins(170, 0, 170, 0)
         self.pushButton_mute_tts = QPushButton(self.Home_Page)
         self.pushButton_mute_tts.setObjectName(u"pushButton_mute_tts")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
-        sizePolicy7.setHorizontalStretch(100)
-        sizePolicy7.setVerticalStretch(30)
-        sizePolicy7.setHeightForWidth(self.pushButton_mute_tts.sizePolicy().hasHeightForWidth())
-        self.pushButton_mute_tts.setSizePolicy(sizePolicy7)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+        sizePolicy6.setHorizontalStretch(100)
+        sizePolicy6.setVerticalStretch(30)
+        sizePolicy6.setHeightForWidth(self.pushButton_mute_tts.sizePolicy().hasHeightForWidth())
+        self.pushButton_mute_tts.setSizePolicy(sizePolicy6)
         self.pushButton_mute_tts.setMinimumSize(QSize(0, 0))
         self.pushButton_mute_tts.setMaximumSize(QSize(300, 80))
         self.pushButton_mute_tts.setStyleSheet(u"QPushButton{\n"
@@ -1283,8 +1280,8 @@ class Ui_MainWindow(object):
 
         self.pushButton_pause_reply = QPushButton(self.Home_Page)
         self.pushButton_pause_reply.setObjectName(u"pushButton_pause_reply")
-        sizePolicy7.setHeightForWidth(self.pushButton_pause_reply.sizePolicy().hasHeightForWidth())
-        self.pushButton_pause_reply.setSizePolicy(sizePolicy7)
+        sizePolicy6.setHeightForWidth(self.pushButton_pause_reply.sizePolicy().hasHeightForWidth())
+        self.pushButton_pause_reply.setSizePolicy(sizePolicy6)
         self.pushButton_pause_reply.setMinimumSize(QSize(0, 0))
         self.pushButton_pause_reply.setMaximumSize(QSize(300, 80))
         self.pushButton_pause_reply.setStyleSheet(u"QPushButton{\n"
@@ -1298,11 +1295,11 @@ class Ui_MainWindow(object):
 
         self.pushButton_stop_reply = QPushButton(self.Home_Page)
         self.pushButton_stop_reply.setObjectName(u"pushButton_stop_reply")
-        sizePolicy8 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy8.setHorizontalStretch(100)
-        sizePolicy8.setVerticalStretch(30)
-        sizePolicy8.setHeightForWidth(self.pushButton_stop_reply.sizePolicy().hasHeightForWidth())
-        self.pushButton_stop_reply.setSizePolicy(sizePolicy8)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy7.setHorizontalStretch(100)
+        sizePolicy7.setVerticalStretch(30)
+        sizePolicy7.setHeightForWidth(self.pushButton_stop_reply.sizePolicy().hasHeightForWidth())
+        self.pushButton_stop_reply.setSizePolicy(sizePolicy7)
         self.pushButton_stop_reply.setMinimumSize(QSize(0, 0))
         self.pushButton_stop_reply.setMaximumSize(QSize(300, 80))
         self.pushButton_stop_reply.setStyleSheet(u"QPushButton{\n"
@@ -1315,10 +1312,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_command_button.addWidget(self.pushButton_stop_reply)
 
 
-        self.verticalLayout_chat_log_textbox.addLayout(self.horizontalLayout_command_button)
+        self.c_verticalLayout_lower.addLayout(self.horizontalLayout_command_button)
 
 
-        self.verticalLayout_24.addLayout(self.verticalLayout_chat_log_textbox)
+        self.verticalLayout_24.addLayout(self.c_verticalLayout_lower)
 
         self.stackedWidget.addWidget(self.Home_Page)
         self.Mic_Page = QWidget()
@@ -1466,7 +1463,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 274, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -1595,8 +1592,11 @@ class Ui_MainWindow(object):
         __qtablewidgetitem23 = QTableWidgetItem()
         self.tableWidget.setItem(0, 3, __qtablewidgetitem23)
         self.tableWidget.setObjectName(u"tableWidget")
-        sizePolicy6.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
-        self.tableWidget.setSizePolicy(sizePolicy6)
+        sizePolicy8 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(0)
+        sizePolicy8.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
+        self.tableWidget.setSizePolicy(sizePolicy8)
         palette = QPalette()
         brush = QBrush(QColor(221, 221, 221, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -1974,7 +1974,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -2029,32 +2029,8 @@ class Ui_MainWindow(object):
         self.label_chat_log.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Chat Log</span></p></body></html>", None))
         self.label_token_count.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Token Count</span></p></body></html>", None))
         self.lineEdit_token_count.setText(QCoreApplication.translate("MainWindow", u"1203", None))
-        self.textEdit_chat_log.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">coms: hi</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">bot: hi coms</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">coms: hi</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text"
-                        "-indent:0px;\">bot: hi coms</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">coms: hi</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">bot: hi coms</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">coms: hi</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">bot: hi coms</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">coms: hi</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">bot: hi coms</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">coms: hi</p>\n"
-"<p style=\""
-                        " margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">bot: hi coms</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">coms: hi</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">bot: hi coms</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">coms: hi</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">bot: hi coms</p></body></html>", None))
-        self.textEdit_bot_reply.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.chat_widget_placeholder_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><img src=\":/user_profile/images/user_profile/cat.png\"/><span style=\" font-size:24pt;\">place holder for chat layout</span><img src=\":/user_profile/images/user_profile/me.png\"/></p></body></html>", None))
+        self.textEdit_user_message.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -2067,7 +2043,7 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0p"
                         "x; -qt-block-indent:0; text-indent:0px;\">I'm good</p></body></html>", None))
         self.label_last_user_message.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Last User Message</span></p></body></html>", None))
-        self.textEdit_user_message.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.textEdit_bot_reply.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -2079,31 +2055,6 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">I'm good today.</p></body></html>", None))
         self.label_last_bot_reply.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Last Bot Reply</span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Message Queue</span></p></body></html>", None))
-        self.textEdit_console.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:700;\">Message Queue Table</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-                        "\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; marg"
-                        "in-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p>\n"
-"<"
-                        "p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">uesename | message1 | Delete | Edit</p></body></html>", None))
         self.pushButton_mute_tts.setText(QCoreApplication.translate("MainWindow", u"Mute TTS", None))
         self.pushButton_pause_reply.setText(QCoreApplication.translate("MainWindow", u"Pause / Resume\n"
 "Reply", None))

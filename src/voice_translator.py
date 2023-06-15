@@ -2,8 +2,6 @@ from datetime import datetime
 from threading import Thread
 from time import sleep
 
-start_time = datetime.utcnow()
-
 import wave
 from os import getenv
 
@@ -27,25 +25,26 @@ from MoeGoe.Main import *  # not sure preimport works
 from LangAIComm import generate_reply
 
 # Load Voice Settings
-import json
+from setting_info import SettingInfo
 
-load_dotenv()
+if __name__ == '__main__':
+    load_dotenv()
 
-USE_DEEPL = getenv('USE_DEEPL', 'False').lower() in ('true', '1', 't')
-DEEPL_AUTH_KEY = getenv('DEEPL_AUTH_KEY')
+    USE_DEEPL = getenv('USE_DEEPL', 'False').lower() in ('true', '1', 't')
+    DEEPL_AUTH_KEY = getenv('DEEPL_AUTH_KEY')
 
-MIC_ID = int(getenv('MICROPHONE_ID'))
-RECORD_KEY = getenv('MIC_RECORD_KEY')
-LOGGING = getenv('LOGGING', 'False').lower() in ('true', '1', 't')
-MIC_AUDIO_PATH = Path(__file__).resolve().parent / r'audio/mic.wav'
-CHUNK = 1024
-FORMAT = pyaudio.paInt16
+    MIC_ID = int(getenv('MICROPHONE_ID'))
+    RECORD_KEY = getenv('MIC_RECORD_KEY')
+    LOGGING = getenv('LOGGING', 'False').lower() in ('true', '1', 't')
+    MIC_AUDIO_PATH = Path(__file__).resolve().parent / r'audio/mic.wav'
+    CHUNK = 1024
+    FORMAT = pyaudio.paInt16
 
-print("loaded all")
-delta_t = (datetime.utcnow() - start_time)
-print(f"[{delta_t.total_seconds()}] sec")
+    # print("loaded all")
+    # delta_t = (datetime.utcnow() - start_time)
+    # print(f"[{delta_t.total_seconds()}] sec")
 
-load_emote_index = 3
+    load_emote_index = 3
 
 
 def loading_emote():
@@ -72,46 +71,14 @@ def voice_ready(ready_str):
     print(f"\r{ready_str}{loading_emote()}          ", end="")
 
 
-def load_tts_setting():
-    # Load Voice_Settings.txt
-    settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
-
-    character_name = settings_json["character_name"]
-    tts_character_name = settings_json["tts_character_name"]
-    tts_language = settings_json["tts_language"]
-    voice_id = settings_json["voice_id"]  # id
-    voice_volume = settings_json["voice_volume"]
-
-    # DISCORD BOT
-    USE_D_BOT = settings_json["discord_bot"]
-
-    return character_name, tts_character_name, tts_language, voice_id, voice_volume, USE_D_BOT
-
-
-def read_text_file(filename):
-    # 텍스트 파일 읽기
-    with open(filename, 'r') as file:
-        setting_data = file.read()
-
-    setting_data = setting_data.strip()
-
-    # JSON 변환
-    try:
-        json_data = json.loads(setting_data)
-    except json.JSONDecodeError:
-        print("Invalid JSON format in the text file.")
-        return None
-
-    return json_data
-
-
 def Do_Generate(eng_speech, speech_lang):
     # Load Voice Settings
-    character_name, tts_character_name, tts_language, voice_id, voice_volume, USE_D_BOT = load_tts_setting()
+    settings_json = SettingInfo.load_settings()
+    bot_reply = ""
 
     if eng_speech:
         if USE_DEEPL:
-            translated_speech = translator.translate_text(eng_speech, target_lang=tts_language)
+            translated_speech = translator.translate_text(eng_speech, target_lang=settings_json["tts_language"])
         else:
             translated_speech = DoTranslate(eng_speech, speech_lang, 'en')
             # translated_speech = translator.translate(eng_speech, dest=tts_language).text
@@ -121,7 +88,7 @@ def Do_Generate(eng_speech, speech_lang):
             # print(f'{source_lang_name}: {eng_speech}')
             print(f'User: {translated_speech}')
 
-        bot_reply = generate_reply(translated_speech, character_name)
+        bot_reply = generate_reply(translated_speech, settings_json["character_name"])
         # bot_trans_speech = DoTranslate(bot_reply,'en',target_lang=tts_language)
 
         if LOGGING:
@@ -129,15 +96,15 @@ def Do_Generate(eng_speech, speech_lang):
 
         # print("speak 함수 실행")
 
-        speak(bot_reply, tts_language, character_name, tts_character_name, voice_id, voice_volume, USE_D_BOT)
         # speak(bot_trans_speech, tts_language)
         # print("speak 함수 끝")
-
     else:
         # print('No speech detected.')
         print('목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.')
         translated_speech = DoTranslate("목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.", target_lang='ja')
-        speak(translated_speech, tts_language, character_name, tts_character_name, voice_id, voice_volume, USE_D_BOT)
+
+    if bot_reply != "":
+        speak(bot_reply, settings_json)
 
 
 def on_press_key(_):
@@ -250,8 +217,6 @@ if __name__ == '__main__':
             elif not recording and not stream:
                 sleep(0.5)
                 voice_ready("record ready")
-
-
 
     except KeyboardInterrupt:
         print('Closing voice translator.')

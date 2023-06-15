@@ -204,17 +204,19 @@ def load_model(character_name):
     emotion_embedding_load = None
     net_g_ms_load = None
 
+    # find all character voice model paths
     for fname in os.listdir(model_folder):
         path = os.path.join(model_folder, fname)
         if os.path.isdir(path):
-            print(fname)
+            # print(fname)
             if character_name.lower() in fname.lower():
                 voice_folder = path
+                print(f"found character voice: {fname}")
 
     if voice_folder:
         model_file = os.path.join(voice_folder, "G_latest.pth")
         config_file = os.path.join(voice_folder, "moegoe_config.json")
-        print("tts model loaded: ", model_file)
+        # print("tts model loaded: ", model_file)
 
         hps_load = utils.get_hparams_from_file(config_file)
         n_speakers_load = hps_load.data.n_speakers if 'n_speakers' in hps_load.data.keys() else 0

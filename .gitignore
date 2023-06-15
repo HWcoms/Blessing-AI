@@ -179,3 +179,5 @@ src/ico/images/blessingAILogo_emptyfill.psd
 src/ico/images/blessingAILogo.psd
 
 src/*.ui
+
+src/PyBlackBox/*

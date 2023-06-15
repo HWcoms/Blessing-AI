@@ -127,7 +127,10 @@ def load_character(filepath):
     if 'turn_template' in data:
         turn_template = data['turn_template']
 
-    return name1, name2, greeting, context
+    result_dict = {"your_name": name1, "character_name": name2, "greeting": greeting, "context": context}
+
+    # return name1, name2, greeting, context
+    return result_dict
 
 
 def replace_character_names(text, name1, name2):
@@ -227,7 +230,7 @@ def get_character_info(character_name):
     json_filepath = get_character_file(character_json_name)
     image_filepath = get_character_file(character_image_name)
 
-    your_name, bot_name, greeting, context = load_character(json_filepath)
+    char_dict = load_character(json_filepath)
 
     character_image = None
     if os.path.exists(image_filepath):
@@ -235,7 +238,11 @@ def get_character_info(character_name):
         character_image = image_filepath
     else:
         print("Bot profile Image does not exist.")
-    return your_name, bot_name, greeting, context, character_image
+
+    # Add image path to char_dict
+    char_dict["character_image"] = character_image
+
+    return char_dict
 
 
 def get_chatlog_info(character_name):
@@ -251,15 +258,19 @@ def generate_reply(string, character_name):
 
     character_file_path = character_name + '.json'
 
+    # Load voice_settings
+    from setting_info import SettingInfo
+    settings_json = SettingInfo.load_settings()
+
     # Load Character
     filename = get_character_file(character_file_path)
-    name1, name2, greeting, context = load_character(filename)
-
-    user_input = name1 + ": " + string + "\n" + name2 + ":"
+    char_dict = load_character(filename)
 
     # Load ChatLog
     chatlog_file_path = check_chatlog(character_name)
     chat_str = load_chatlog(chatlog_file_path)
+
+    user_input = settings_json["your_name"] + ": " + string + "\n" + char_dict["character_name"] + ":"
 
     if chat_str.strip() == '':
         chat_str = user_input  # Chatlog is empty
@@ -268,11 +279,11 @@ def generate_reply(string, character_name):
 
     # remove unecessary \n
     trim_str = re.sub(r"\n(?![a-zA-Z])", "", chat_str)
-    file_content = context + chat_str
+    file_content = char_dict["context"] + chat_str
 
     # print(file_content, end='')
     try:
-        result_text = run(file_content, name1)
+        result_text = run(file_content, settings_json["your_name"])
     except Exception as e:
         print(f"Error: {e}")
         return None
@@ -343,9 +354,9 @@ def check_chatlog(character_name):
 
 # Example usage
 if __name__ == '__main__':
-    # print(generate_reply("I'm HWcoms", "Kato Megumi"))
+    print(generate_reply("I'm HWcoms", "Kato Megumi"))
     # print(HOST)
 
     # print(get_character_name())
     # print(count_tokens(context))
-    print(get_chatlog_info("Kato Megumi"))
+    # print(get_chatlog_info("Kato Megumi"))
