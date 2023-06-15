@@ -418,7 +418,7 @@ This project is built using various open-source libraries and source code. I wou
 
 </details>
 
-### [Modern GUI PyDracula · GitHub](https://github.com/Wanderson-Magalhaes/Modern_GUI_PyDracula_PySide6_or_PyQt6)
+### (GUI Templates) [PyDracula · GitHub](https://github.com/Wanderson-Magalhaes/Modern_GUI_PyDracula_PySide6_or_PyQt6) | [PyBlackBox · GitHub](https://github.com/Wanderson-Magalhaes/PyBlackBox_Qt_Widgets_PySide6_Or_PyQt6_v1.0.0)
 <details>
   <summary>MIT</summary>
 
