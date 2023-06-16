@@ -188,13 +188,12 @@ class MainWindow(QMainWindow):
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
 
-    # [GUI] LOAD CHAT
+    # [GUI] DRAW CHAT
     # ///////////////////////////////////////////////////////////////
     def chat_layout_update(self, character_info):
         global widgets
-        self.char_info_dict["character_description"] = "AI-Bot"
+        self.char_info_dict["character_description"] = "AI-Bot" # Character Description
 
-        # if btn.objectName():
         # REMOVE CHAT
         for chat in reversed(range(self.ui.chat_layout.count())):
             widgets.chat_layout.itemAt(chat).widget().deleteLater()
@@ -202,13 +201,9 @@ class MainWindow(QMainWindow):
 
         # SET CHAT WIDGET
         self.chat = Chat(self.char_info_dict)
-        # self.chat = Chat(btn.user_image, btn.user_name, btn.user_description, btn.objectName(), self.top_user.user_name)
 
         # ADD WIDGET TO LAYOUT
         widgets.chat_layout.addWidget(self.chat)
-
-        # JUMP TO CHAT PAGE
-        # widgets.app_pages.setCurrentWidget(widgets.chat)
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////

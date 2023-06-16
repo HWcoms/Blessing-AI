@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'page_messagesEjpDxJ.ui'
+## Form generated from reading UI file 'page_messagesOrGzbm.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.0.2
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -48,10 +48,10 @@ class Ui_chat_page(object):
 "	background-color: rgb(16, 17, 18);\n"
 "}\n"
 "#btn_attachment_top {	\n"
-"	background-image: url(:/icons_svg/images/icons_svg/icon_attachment.svg);\n"
+"	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_attachment.svg);\n"
 "}\n"
 "#btn_more_top {	\n"
-"	background-image: url(:/icons_svg/images/icons_svg/icon_more_options.svg);\n"
+"	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_more_options.svg);\n"
 "}\n"
 "/* BOTTOM */\n"
 "#bottom QPushButton {\n"
@@ -100,14 +100,14 @@ class Ui_chat_page(object):
 "	color: rgb(165, 165, 165);\n"
 "}\n"
 "#btn_emoticon{\n"
-"	background-image: url(:/icons_svg/images/icons_svg/icon_emoticons.svg);\n"
+"	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_emoticons.svg);\n"
 "}\n"
 "#btn_send_message{	\n"
-"	background-image: url(:/icons_svg/images/icons_svg/icon_send.svg);\n"
+"	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_send.svg);\n"
 "}\n"
 "#btn_attachment_bottom{	\n"
 "	\n"
-"	background-image: url(:/icons_svg/images/icons_svg/icon_more_options.svg);\n"
+"	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_more_options.svg);\n"
 "}")
         self.verticalLayout = QVBoxLayout(chat_page)
         self.verticalLayout.setObjectName(u"verticalLayout")

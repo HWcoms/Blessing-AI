@@ -30,19 +30,34 @@ from PySide6.QtWidgets import *
 
 # GLOBALS
 send_by = None
-
+btn_image = None
 
 # MAIN WINDOW
 # ///////////////////////////////////////////////////////////////
 class Message(QWidget):
-    def __init__(self, message, me_send):
+    def __init__(self, message, me_send, pf_image=None):
         QWidget.__init__(self)
-        global send_by
+        global send_by  # user, bot, other
         send_by = me_send
+
+        global btn_image
+        btn_image = pf_image
+
+        if send_by != 'user' and send_by != 'bot' and send_by != 'other':
+            print("[GUI] ERROR: Message(message, send_by) -> send_by argument is not supported")
+            return
 
         self.setMinimumHeight(20)
         self.setup_ui()
         self.setFixedHeight(self.layout.sizeHint().height())
+
+        from PySide6.QtWidgets import QSizePolicy, QLayout
+
+        # ADDED
+        # sp = self.sizePolicy()
+        # sp.setHorizontalPolicy(QSizePolicy.Expanding)
+        # self.setSizePolicy(sp)
+        # ADDED
 
         # SET MESSAGE
         self.message.setText(message)
@@ -52,66 +67,93 @@ class Message(QWidget):
         date_time_format = date_time.strftime("%m/%d/%Y %H:%M")
         self.data_message.setText(str(date_time_format))
 
+        self.setStyleSheet("#bg {background-color: #FFFFFF;}")  # testing bg with white
+
     def setup_ui(self):
         # LAYOUT
         self.layout = QHBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
         # FRAME BG
+        # self.spacer = QVertical
         self.bg = QFrame()
-        if send_by:
+        # self.bg.setFixedWidth(500)
+        if send_by == 'user':
             self.bg.setStyleSheet(
-                "#bg {background-color: #0e0e0f; border-radius: 10px; margin-left: 150px; } #bg:hover { background-color: #252628; }")
-        else:
+                "#bg {background-color: #0e0e0f; border-radius: 10px; margin-left: 0; } #bg:hover { background-color: #252628; }")
+        elif send_by == 'bot' or send_by == 'other':
             self.bg.setStyleSheet(
-                "#bg {background-color: #28282b; border-radius: 10px; margin-right: 150px; } #bg:hover { background-color: #252628; }")
+                "#bg {background-color: #28282b; border-radius: 10px; margin-right: 0; } #bg:hover { background-color: #252628; }")
         self.bg.setObjectName("bg")
 
         # FRAME BG
         self.btn = QPushButton()
         self.btn.setMinimumSize(40, 40)
-        self.btn.setMaximumSize(40, 40)
-        self.btn.setStyleSheet("""
-        QPushButton {
-            background-color: transparent;
-            border-radius: 20px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-image: url(:/icons_svg/images/icons_svg/icon_more_options.svg);
-        }
-        QPushButton:hover {
-            background-color: rgb(61, 62, 65);
-        }
-        QPushButton:pressed {
-            background-color: rgb(16, 17, 18);
-        }        
-        """)
+        self.btn.setMaximumSize(40, 40)     # TODO: CHANGE BTN IMAGE TO PROFILE IMAGES
+        if btn_image is None:
+            print("no button image defined")
+            self.btn.setStyleSheet("""
+                    QPushButton {
+                        background-color: transparent;
+                        border-radius: 20px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_more_options.svg);
+                    }
+                    QPushButton:hover {
+                        background-color: rgb(61, 62, 65);
+                    }
+                    QPushButton:pressed {
+                        background-color: rgb(16, 17, 18);
+                    }        
+                    """)
 
-        if send_by:
-            self.layout.addWidget(self.bg)
+
+
+        # LABEL MESSAGE
+        self.message = QLabel()
+        self.message.setText("message test")
+
+        if send_by == 'user':
+            self.message.setStyleSheet("""
+            QLabel{
+                background-color: #0e0e0f;
+                border-radius: 10px;
+                font: 500 11pt 'Segoe UI';
+            }
+            """)
+        elif send_by == 'bot' or send_by == 'other':
+            self.message.setStyleSheet("""
+            QLabel{
+                background-color: #28282b;
+                border-radius: 10px;
+                font: 500 11pt 'Segoe UI';
+            }
+            """)
+
+        self.message.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
+
+        if send_by == 'user':
+            # self.layout.addWidget(self.bg)
+            self.layout.addWidget(self.message)
             self.layout.addWidget(self.btn)
-        else:
+        elif send_by == 'bot' or send_by == 'other':
             self.layout.addWidget(self.btn)
-            self.layout.addWidget(self.bg)
+            # self.layout.addWidget(self.bg)
+            self.layout.addWidget(self.message)
 
         # LAYOUT INSIDE
         self.layout_inside = QVBoxLayout(self.bg)
         self.layout.setContentsMargins(10, 10, 10, 10)
 
         # LABEL MESSAGE 
-        self.message = QLabel()
-        self.message.setText("message test")
-        self.message.setStyleSheet("font: 500 11pt 'Segoe UI'")
-        self.message.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
-
-        # LABEL MESSAGE 
         self.data_message = QLabel()
         self.data_message.setText("date")
         self.data_message.setStyleSheet("font: 8pt 'Segoe UI'; color: #4c5154")
-        if send_by:
+        if send_by == 'user':
             self.data_message.setAlignment(Qt.AlignRight)
-        else:
+        elif send_by == 'bot' or send_by == 'other':
             self.data_message.setAlignment(Qt.AlignLeft)
 
-        self.layout_inside.addWidget(self.message)
-        self.layout_inside.addWidget(self.data_message)
+        # self.layout_inside.addWidget(self.message)
+        # self.layout_inside.addWidget(self.data_message)

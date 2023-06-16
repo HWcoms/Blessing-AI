@@ -29,9 +29,13 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-# GUI
-from dracula_modules.ui_page_messages import Ui_chat_page  # MainWindow
-from dracula_modules.message import Message  # MainWindow
+if __name__ == "__main__":
+    from ui_page_messages import Ui_chat_page  # MainWindow
+    from message import Message  # MainWindow
+else:
+    # GUI
+    from dracula_modules.ui_page_messages import Ui_chat_page  # MainWindow
+    from dracula_modules.message import Message  # MainWindow
 
 
 # MAIN WINDOW
@@ -47,22 +51,23 @@ class Chat(QWidget):
         self.page = Ui_chat_page()
         self.page.setupUi(self)
 
-        self.char_info_dict = char_dict   # for chat log
+        self.char_info_dict = char_dict  # for chat log
 
         bot_name = self.char_info_dict["character_name"]
         bot_description = self.char_info_dict["character_description"]
         bot_image = self.char_info_dict["character_image"]
 
-        ## ADDED
-        ###########################################################################
-
         try:
+            # CROP BOT PROFILE IMAGE TO 40X40 SQAURE
             if bot_image is not None:
                 # Load original profile image & set output path
                 original_image = QImage(os.path.normpath(bot_image))
                 image_directory = os.path.dirname(os.path.normpath(bot_image))
-                output_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'images', 'chatlog', 'user')
+                output_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
+                                           'cache',
+                                           'gui')
                 output_image_path = os.path.join(output_path, "profile_image_squared.png")
+                print(output_image_path)
                 # print(os.path.normpath(user_image))
                 # print(output_image_path)
 
@@ -93,10 +98,10 @@ class Chat(QWidget):
                 resized_image.save(output_image_path)
 
                 # UPDATE INFO
-                self.page.user_image.setStyleSheet("#user_image { background-image: url(\"" + output_image_path.replace("\\", "/") + "\") }")
+                self.page.user_image.setStyleSheet(
+                    "#user_image { background-image: url(\"" + output_image_path.replace("\\", "/") + "\") }")
                 # self.page.user_image.setPixmap(QPixmap(resized_image))
-                ###########################################################################
-                ## ADDED
+
             else:
                 raise Exception('no bot profile image set')
         except Exception as e:
@@ -122,18 +127,13 @@ class Chat(QWidget):
     # ENTER / RETURN SEND MESSAGE
     def enter_return_release(self, event):
         if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+            print("a")
             self.send_message_entry()
-
-    # SEND MESSAGE
-    def send_message(self, text):
-        self.message = Message(text, True)
-        self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
-        self.page.line_edit_message.setText("")
 
     # Send From Entry TextEdit
     def send_message_entry(self):
         if self.page.line_edit_message.text() != "":
-            self.message = Message(self.page.line_edit_message.text(), True)
+            self.message = Message(self.page.line_edit_message.text(), 'user')
             self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
             self.page.line_edit_message.setText("")
 
@@ -142,11 +142,22 @@ class Chat(QWidget):
                 self.page.chat_messages_layout.sizeHint().height()))
             QTimer.singleShot(15, lambda: self.scroll_to_end())
 
-    # SEND MESSAGE BY FRIEND
-    def send_by_friend(self, text):
-        self.message = Message(text, False)
+    # SEND MESSAGE BY USER
+    def send_by_user(self, text):
+        self.message = Message(text, 'user')
         self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
-        self.page.line_edit_message.setText("")
+        # self.page.line_edit_message.setText("")
+
+    # SEND MESSAGE BY FRIEND
+    def send_by_bot(self, text):
+        self.message = Message(text, 'bot')
+        self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
+        # self.page.line_edit_message.setText("")
+
+    def send_by_other(self, text):
+        self.message = Message(text, 'other')
+        self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
+        # self.page.line_edit_message.setText("")
 
     def load_chat_log(self):
         chat_log_str = self.char_info_dict["chat_log"]
@@ -160,13 +171,13 @@ class Chat(QWidget):
 
             if prefix == char_name:
                 # print(f"Bot said: {line}")
-                self.send_by_friend(line)
+                self.send_by_bot(line)
             elif prefix == your_name:
                 # print(f"You said: {line}")
-                self.send_message(line)
-            else:   # Other character    # TODO: when other character spoken, display name & other profile_image
+                self.send_by_user(line)
+            else:  # Other character    # TODO: when other character spoken, display name & other profile_image
                 # print(f"{prefix} said: {line}")
-                self.send_by_friend(line)
+                self.send_by_other(line)
 
         try:
             print(
@@ -185,3 +196,8 @@ class Chat(QWidget):
             self.scroll_bar = self.page.chat_messages.verticalScrollBar()
             self.scroll_bar.setValue(self.scroll_bar.maximum())
 
+
+if __name__ == "__main__":
+    print()
+    # C:\Users\HWcoms\Blessing-AI\cache\gui # dest folder
+    # C:\Users\HWcoms\Blessing-AI\src\PyDracula

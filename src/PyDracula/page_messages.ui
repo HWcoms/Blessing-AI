@@ -10,6 +10,18 @@
     <height>616</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -45,10 +57,10 @@
 	background-color: rgb(16, 17, 18);
 }
 #btn_attachment_top {	
-	background-image: url(:/icons_svg/images/icons_svg/icon_attachment.svg);
+	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_attachment.svg);
 }
 #btn_more_top {	
-	background-image: url(:/icons_svg/images/icons_svg/icon_more_options.svg);
+	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_more_options.svg);
 }
 /* BOTTOM */
 #bottom QPushButton {
@@ -95,14 +107,14 @@
 	color: rgb(165, 165, 165);
 }
 #btn_emoticon{
-	background-image: url(:/icons_svg/images/icons_svg/icon_emoticons.svg);
+	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_emoticons.svg);
 }
 #btn_send_message{	
-	background-image: url(:/icons_svg/images/icons_svg/icon_send.svg);
+	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_send.svg);
 }
 #btn_attachment_bottom{	
 	
-	background-image: url(:/icons_svg/images/icons_svg/icon_more_options.svg);
+	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_more_options.svg);
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -509,7 +521,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../PyBlackBox/resources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -3,12 +3,6 @@
     <file>images/images/PyDracula.png</file>
     <file>images/images/PyDracula_vertical.png</file>
   </qresource>
-  <qresource prefix="user_profile">
-    <file>images/user_profile/cat.png</file>
-    <file>images/user_profile/cat_150px.png</file>
-    <file>images/user_profile/me.png</file>
-    <file>images/user_profile/me_150px.png</file>
-  </qresource>
   <qresource prefix="icons">
     <file>images/icons/book-icon.png</file>
     <file>images/icons/cil-3d.png</file>
@@ -266,5 +260,36 @@
     <file>images/icons/icon_minimize.png</file>
     <file>images/icons/icon_restore.png</file>
     <file>images/icons/icon_settings.png</file>
+  </qresource>
+  <qresource prefix="chat/images_svg">
+    <file>images/chatlog/images_svg/logo_home.svg</file>
+    <file>images/chatlog/images_svg/logo_symbol_top.svg</file>
+    <file>images/chatlog/images_svg/text_logo.svg</file>
+  </qresource>
+  <qresource prefix="chat/icons_svg">
+    <file>images/chatlog/icons_svg/icon_add_user.svg</file>
+    <file>images/chatlog/icons_svg/icon_attachment.svg</file>
+    <file>images/chatlog/icons_svg/icon_busy.svg</file>
+    <file>images/chatlog/icons_svg/icon_close.svg</file>
+    <file>images/chatlog/icons_svg/icon_emoticons.svg</file>
+    <file>images/chatlog/icons_svg/icon_idle.svg</file>
+    <file>images/chatlog/icons_svg/icon_invisible.svg</file>
+    <file>images/chatlog/icons_svg/icon_maximize.svg</file>
+    <file>images/chatlog/icons_svg/icon_minimize.svg</file>
+    <file>images/chatlog/icons_svg/icon_more_options.svg</file>
+    <file>images/chatlog/icons_svg/icon_online.svg</file>
+    <file>images/chatlog/icons_svg/icon_restore.svg</file>
+    <file>images/chatlog/icons_svg/icon_search.svg</file>
+    <file>images/chatlog/icons_svg/icon_send.svg</file>
+    <file>images/chatlog/icons_svg/icon_settings.svg</file>
+    <file>images/chatlog/icons_svg/icon_signal.svg</file>
+  </qresource>
+  <qresource prefix="chat/images">
+    <file>images/chatlog/users/cat.png</file>
+    <file>images/chatlog/users/cat_150px.png</file>
+    <file>images/chatlog/users/me.png</file>
+    <file>images/chatlog/users/me_150px.png</file>
+    <file>images/chatlog/users/mouse.png</file>
+    <file>images/chatlog/users/mouse_150px.png</file>
   </qresource>
 </RCC>
