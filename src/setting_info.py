@@ -1,19 +1,29 @@
 import json
 from pathlib import Path
 
+settings_folder = Path(__file__).resolve().parent.parent / 'settings'
 
 class SettingInfo:
     @staticmethod
+    def load_tts_settings():
+        settings_json = read_text_file(settings_folder / 'TTS_Settings.txt')
+        return settings_json
+
+    @staticmethod
+    def load_character_settings():
+        settings_json = read_text_file(settings_folder / 'Character_Settings.txt')
+        return settings_json
+
+    @staticmethod
+    def load_other_settings():
+        settings_json = read_text_file(settings_folder / 'Other_Settings.txt')
+        return settings_json
+
+    # will be deprecated
+    @staticmethod
     def load_settings():
         # Load Voice_Settings.txt
-        settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
-
-        # character_name = settings_json["character_name"]
-        # tts_character_name = settings_json["tts_character_name"]
-        # tts_language = settings_json["tts_language"]
-        # voice_id = settings_json["voice_id"]  # id
-        # voice_volume = settings_json["voice_volume"]
-        # USE_D_BOT = settings_json["discord_bot"]  # DISCORD BOT
+        settings_json = read_text_file(settings_folder / 'Voice_Settings.txt')
 
         return settings_json
 

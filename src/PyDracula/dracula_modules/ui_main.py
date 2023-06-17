@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainlmOAuu.ui'
+## Form generated from reading UI file 'mainjIfGUR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1103,6 +1103,14 @@ class Ui_MainWindow(object):
 
         self.chat = QWidget(self.Home_Page)
         self.chat.setObjectName(u"chat")
+        self.chat.setStyleSheet(u"#chat {\n"
+"	border: 2px solid rgb(48, 50, 62);\n"
+"	border-radius: 10px;\n"
+"	color: #FFF;\n"
+"	padding-left: 10px;\n"
+"	padding-right: 10px;\n"
+"	background-color:rgb(34,36,44)\n"
+"}")
         self.verticalLayout_25 = QVBoxLayout(self.chat)
         self.verticalLayout_25.setSpacing(0)
         self.verticalLayout_25.setObjectName(u"verticalLayout_25")
@@ -2029,7 +2037,7 @@ class Ui_MainWindow(object):
         self.label_chat_log.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Chat Log</span></p></body></html>", None))
         self.label_token_count.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Token Count</span></p></body></html>", None))
         self.lineEdit_token_count.setText(QCoreApplication.translate("MainWindow", u"1203", None))
-        self.chat_widget_placeholder_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><img src=\":/user_profile/images/user_profile/cat.png\"/><span style=\" font-size:24pt;\">place holder for chat layout</span><img src=\":/user_profile/images/user_profile/me.png\"/></p></body></html>", None))
+        self.chat_widget_placeholder_2.setText("")
         self.textEdit_user_message.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

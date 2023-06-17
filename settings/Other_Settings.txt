@@ -1,0 +1,5 @@
+{
+    "discord_bot": false,
+    "discord_print_language": "ko",
+    "max_token": 200
+}

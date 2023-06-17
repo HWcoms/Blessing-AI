@@ -57,6 +57,8 @@ class Chat(QWidget):
         bot_description = self.char_info_dict["character_description"]
         bot_image = self.char_info_dict["character_image"]
 
+        # profile image [bot, user, other]
+        self.pf_img_dict: dict = {'bot': None, 'user': "mouse.png", 'other': "me.png"}
         try:
             # CROP BOT PROFILE IMAGE TO 40X40 SQAURE
             if bot_image is not None:
@@ -67,7 +69,6 @@ class Chat(QWidget):
                                            'cache',
                                            'gui')
                 output_image_path = os.path.join(output_path, "profile_image_squared.png")
-                print(output_image_path)
                 # print(os.path.normpath(user_image))
                 # print(output_image_path)
 
@@ -96,6 +97,8 @@ class Chat(QWidget):
 
                 # Save resized image to png
                 resized_image.save(output_image_path)
+
+                self.pf_img_dict['bot'] = output_image_path
 
                 # UPDATE INFO
                 self.page.user_image.setStyleSheet(
@@ -127,35 +130,37 @@ class Chat(QWidget):
     # ENTER / RETURN SEND MESSAGE
     def enter_return_release(self, event):
         if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
-            print("a")
             self.send_message_entry()
 
     # Send From Entry TextEdit
     def send_message_entry(self):
         if self.page.line_edit_message.text() != "":
-            self.message = Message(self.page.line_edit_message.text(), 'user')
+            self.send_by_user(self.page.line_edit_message.text(), self.pf_img_dict['user'])
+            # self.message = Message(self.page.line_edit_message.text(), 'user')
             self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
             self.page.line_edit_message.setText("")
+            self.message.data_message.setText(self.char_info_dict["your_name"])
 
-            # SCROLL TO END
-            QTimer.singleShot(10, lambda: self.page.messages_frame.setFixedHeight(
-                self.page.chat_messages_layout.sizeHint().height()))
-            QTimer.singleShot(15, lambda: self.scroll_to_end())
+            # # SCROLL TO END
+            # QTimer.singleShot(10, lambda: self.page.messages_frame.setFixedHeight(
+            #     self.page.chat_messages_layout.sizeHint().height()))
+            # QTimer.singleShot(15, lambda: self.scroll_to_end())
+            self.scroll_to_end()
 
     # SEND MESSAGE BY USER
-    def send_by_user(self, text):
-        self.message = Message(text, 'user')
+    def send_by_user(self, text, pf_img=None):
+        self.message = Message(text, 'user', pf_img)
         self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
         # self.page.line_edit_message.setText("")
 
     # SEND MESSAGE BY FRIEND
-    def send_by_bot(self, text):
-        self.message = Message(text, 'bot')
+    def send_by_bot(self, text, pf_img=None):
+        self.message = Message(text, 'bot', pf_img)
         self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
         # self.page.line_edit_message.setText("")
 
-    def send_by_other(self, text):
-        self.message = Message(text, 'other')
+    def send_by_other(self, text, pf_img=None):
+        self.message = Message(text, 'other', pf_img)
         self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
         # self.page.line_edit_message.setText("")
 
@@ -171,22 +176,27 @@ class Chat(QWidget):
 
             if prefix == char_name:
                 # print(f"Bot said: {line}")
-                self.send_by_bot(line)
+                self.send_by_bot(line, self.pf_img_dict['bot'])
             elif prefix == your_name:
                 # print(f"You said: {line}")
-                self.send_by_user(line)
+                self.send_by_user(line, self.pf_img_dict['user'])
             else:  # Other character    # TODO: when other character spoken, display name & other profile_image
                 # print(f"{prefix} said: {line}")
-                self.send_by_other(line)
+                self.send_by_other(line, self.pf_img_dict['other'])
+
+            # ADD Name label under message label
+            self.message.data_message.setText(prefix)
 
         try:
-            print(
-                self.page.messages_frame.setFixedHeight(
-                    self.page.chat_messages_layout.sizeHint().height()))
-            # SCROLL TO END
-            QTimer.singleShot(10, lambda: self.page.messages_frame.setFixedHeight(
-                self.page.chat_messages_layout.sizeHint().height()))
-            QTimer.singleShot(15, lambda: self.scroll_to_end())
+            # print(
+            #     self.page.messages_frame.setFixedHeight(
+            #         self.page.chat_messages_layout.sizeHint().height()))
+            # # SCROLL TO END
+            # QTimer.singleShot(10, lambda: self.page.messages_frame.setFixedHeight(
+            #     self.page.chat_messages_layout.sizeHint().height()))
+            # QTimer.singleShot(15, lambda: self.scroll_to_end())
+
+            self.scroll_to_end()
         except Exception as e:
             print("[GUI] ERROR: ", e)
 
@@ -199,5 +209,7 @@ class Chat(QWidget):
 
 if __name__ == "__main__":
     print()
+    output_image_url_test = "test"
+    print("#user_image { background-image: url(\"" + output_image_url_test.replace("\\", "/") + "\") }")
     # C:\Users\HWcoms\Blessing-AI\cache\gui # dest folder
     # C:\Users\HWcoms\Blessing-AI\src\PyDracula

@@ -1,0 +1,10 @@
+{
+    "tts_character_name": "Kato Megumi",
+    "tts_language": "ja",
+    "voice_id": 0,
+    "voice_speed": 0.8,
+    "voice_volume": 0.3,
+    "intonation_scale": 1.5,
+    "pre_phoneme_length": 1.0,
+    "post_phoneme_length": 1.0
+}

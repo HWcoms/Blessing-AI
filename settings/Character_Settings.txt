@@ -1,0 +1,4 @@
+{
+    "character_name": "Kato Megumi",
+    "your_name": "coms"
+}

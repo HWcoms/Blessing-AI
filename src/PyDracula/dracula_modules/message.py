@@ -32,6 +32,7 @@ from PySide6.QtWidgets import *
 send_by = None
 btn_image = None
 
+
 # MAIN WINDOW
 # ///////////////////////////////////////////////////////////////
 class Message(QWidget):
@@ -51,9 +52,8 @@ class Message(QWidget):
         self.setup_ui()
         self.setFixedHeight(self.layout.sizeHint().height())
 
-        from PySide6.QtWidgets import QSizePolicy, QLayout
-
         # ADDED
+        from PySide6.QtWidgets import QSizePolicy, QLayout
         # sp = self.sizePolicy()
         # sp.setHorizontalPolicy(QSizePolicy.Expanding)
         # self.setSizePolicy(sp)
@@ -67,7 +67,7 @@ class Message(QWidget):
         date_time_format = date_time.strftime("%m/%d/%Y %H:%M")
         self.data_message.setText(str(date_time_format))
 
-        self.setStyleSheet("#bg {background-color: #FFFFFF;}")  # testing bg with white
+        # self.setStyleSheet("QWidget {background-color: #FFFFFF;}")  # only changed color on message , date label (not working)
 
     def setup_ui(self):
         # LAYOUT
@@ -75,9 +75,7 @@ class Message(QWidget):
         self.layout.setContentsMargins(0, 0, 0, 0)
 
         # FRAME BG
-        # self.spacer = QVertical
         self.bg = QFrame()
-        # self.bg.setFixedWidth(500)
         if send_by == 'user':
             self.bg.setStyleSheet(
                 "#bg {background-color: #0e0e0f; border-radius: 10px; margin-left: 0; } #bg:hover { background-color: #252628; }")
@@ -89,9 +87,9 @@ class Message(QWidget):
         # FRAME BG
         self.btn = QPushButton()
         self.btn.setMinimumSize(40, 40)
-        self.btn.setMaximumSize(40, 40)     # TODO: CHANGE BTN IMAGE TO PROFILE IMAGES
+        self.btn.setMaximumSize(40, 40)  # TODO: CHANGE BTN IMAGE TO PROFILE IMAGES
         if btn_image is None:
-            print("no button image defined")
+            # print(f"{send_by}: no button image defined")
             self.btn.setStyleSheet("""
                     QPushButton {
                         background-color: transparent;
@@ -107,53 +105,92 @@ class Message(QWidget):
                         background-color: rgb(16, 17, 18);
                     }        
                     """)
+        else:
+            if '\\' not in btn_image and '/' not in btn_image:
+                # Image url from resources_rc
+                fixed_img_url = ":/chat/images/images/chatlog/users/" + btn_image
+            else:
+                # Image path from png file
+                fixed_img_url = "\"" + btn_image.replace("\\", "/") + "\""
 
+            # print(f"{send_by}: {fixed_img_url}")
 
+            self.btn.setStyleSheet(f"""
+                    QPushButton {{
+                        background-color: transparent;
+                        border-radius: 20px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-image: url({fixed_img_url});
+                    }}
+                    QPushButton:hover {{
+                        background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_more_options.svg);
+                        background-color: rgb(61, 62, 65);
+                    }}
+                    QPushButton:pressed {{
+                        background-image: transparent;
+                        background-color: rgb(16, 17, 18);
+                    }}        
+                    """)
 
         # LABEL MESSAGE
         self.message = QLabel()
         self.message.setText("message test")
 
-        if send_by == 'user':
-            self.message.setStyleSheet("""
-            QLabel{
-                background-color: #0e0e0f;
-                border-radius: 10px;
-                font: 500 11pt 'Segoe UI';
-            }
-            """)
-        elif send_by == 'bot' or send_by == 'other':
-            self.message.setStyleSheet("""
-            QLabel{
-                background-color: #28282b;
-                border-radius: 10px;
-                font: 500 11pt 'Segoe UI';
-            }
-            """)
+        # if send_by == 'user':
+        #     self.message.setStyleSheet("""
+        #     QLabel{
+        #         background-color: #0e0e0f;
+        #         border-radius: 10px;
+        #         font: 500 11pt 'Segoe UI';
+        #     }
+        #     """)
+        # elif send_by == 'bot' or send_by == 'other':
+        #     self.message.setStyleSheet("""
+        #     QLabel{
+        #         background-color: #28282b;
+        #         border-radius: 10px;
+        #         font: 500 11pt 'Segoe UI';
+        #     }
+        #     """)
 
         self.message.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
 
+        hSpacer = QSpacerItem(20, 0, QSizePolicy.Expanding, QSizePolicy.Fixed)
+
         if send_by == 'user':
-            # self.layout.addWidget(self.bg)
-            self.layout.addWidget(self.message)
+            self.layout.addItem(hSpacer)
+            self.layout.addWidget(self.bg)
+            # self.layout.addWidget(self.message)
             self.layout.addWidget(self.btn)
         elif send_by == 'bot' or send_by == 'other':
             self.layout.addWidget(self.btn)
-            # self.layout.addWidget(self.bg)
-            self.layout.addWidget(self.message)
+            self.layout.addWidget(self.bg)
+            # self.layout.addWidget(self.message)
+            self.layout.addItem(hSpacer)
 
         # LAYOUT INSIDE
         self.layout_inside = QVBoxLayout(self.bg)
         self.layout.setContentsMargins(10, 10, 10, 10)
 
-        # LABEL MESSAGE 
+        # LABEL date
+        # self.data_message = QLabel()
+        # self.data_message.setText("date")
+        # self.data_message.setStyleSheet("font: 8pt 'Segoe UI'; color: #4c5154")
+        # if send_by == 'user':
+        #     self.data_message.setAlignment(Qt.AlignRight)
+        # elif send_by == 'bot' or send_by == 'other':
+        #     self.data_message.setAlignment(Qt.AlignLeft)
+
+        # LABEL Name
         self.data_message = QLabel()
-        self.data_message.setText("date")
-        self.data_message.setStyleSheet("font: 8pt 'Segoe UI'; color: #4c5154")
+        self.data_message.setText("name")
+        self.data_message.setStyleSheet("font: bold 8pt 'Segoe UI'; color: #dae9f1")     # original #4c5154
+
         if send_by == 'user':
             self.data_message.setAlignment(Qt.AlignRight)
         elif send_by == 'bot' or send_by == 'other':
             self.data_message.setAlignment(Qt.AlignLeft)
 
-        # self.layout_inside.addWidget(self.message)
-        # self.layout_inside.addWidget(self.data_message)
+        self.layout_inside.addWidget(self.message)
+        self.layout_inside.addWidget(self.data_message)

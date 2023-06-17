@@ -2,6 +2,8 @@ import base64
 import json
 import os
 
+from setting_info import *
+
 # Load ChatLog
 from datetime import datetime
 from os import getenv
@@ -160,7 +162,9 @@ def load_chatlog(file_path):
 
 
 def run(prompt, name1):
-    settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
+
+    # settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
+    settings_json = SettingInfo.load_other_settings()
     max_token = settings_json["max_token"]
 
     request = {
@@ -259,8 +263,7 @@ def generate_reply(string, character_name):
     character_file_path = character_name + '.json'
 
     # Load voice_settings
-    from setting_info import SettingInfo
-    settings_json = SettingInfo.load_settings()
+    char_settings_json = SettingInfo.load_character_settings()
 
     # Load Character
     filename = get_character_file(character_file_path)
@@ -270,7 +273,7 @@ def generate_reply(string, character_name):
     chatlog_file_path = check_chatlog(character_name)
     chat_str = load_chatlog(chatlog_file_path)
 
-    user_input = settings_json["your_name"] + ": " + string + "\n" + char_dict["character_name"] + ":"
+    user_input = char_settings_json["your_name"] + ": " + string + "\n" + char_dict["character_name"] + ":"
 
     if chat_str.strip() == '':
         chat_str = user_input  # Chatlog is empty
@@ -283,7 +286,7 @@ def generate_reply(string, character_name):
 
     # print(file_content, end='')
     try:
-        result_text = run(file_content, settings_json["your_name"])
+        result_text = run(file_content, char_settings_json["your_name"])
     except Exception as e:
         print(f"Error: {e}")
         return None

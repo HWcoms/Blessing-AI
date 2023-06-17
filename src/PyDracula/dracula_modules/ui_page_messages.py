@@ -1,22 +1,32 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'page_messagesOrGzbm.ui'
+## Form generated from reading UI file 'page_messagesimgXjM.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import *
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QLineEdit, QPushButton, QScrollArea, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
+# import resources_rc
 
 class Ui_chat_page(object):
     def setupUi(self, chat_page):
         if not chat_page.objectName():
             chat_page.setObjectName(u"chat_page")
-        chat_page.resize(880, 616)
+        chat_page.resize(977, 616)
+        chat_page.setMinimumSize(QSize(0, 0))
+        chat_page.setMaximumSize(QSize(16777215, 16777215))
         chat_page.setStyleSheet(u"QWidget { color: rgb(165, 165, 165); }\n"
 "#chat_page{\n"
 "	background-color: rgb(0, 0, 0);	\n"
@@ -55,8 +65,8 @@ class Ui_chat_page(object):
 "}\n"
 "/* BOTTOM */\n"
 "#bottom QPushButton {\n"
-"	background-color: rgb(47, 4"
-                        "8, 50);\n"
+"	b"
+                        "ackground-color: rgb(47, 48, 50);\n"
 "	border-radius: 20px;\n"
 "	background-repeat: no-repeat;\n"
 "	background-position: center;\n"
@@ -91,9 +101,9 @@ class Ui_chat_page(object):
 "	padding-left: 15px;\n"
 "	padding-right: 15px;\n"
 "	background-repeat: none;\n"
-"	background-position: left center;\n"
-"	"
-                        "font: 10pt \"Segoe UI\";\n"
+"	background-po"
+                        "sition: left center;\n"
+"	font: 10pt \"Segoe UI\";\n"
 "	color: rgb(94, 96, 100);\n"
 "}\n"
 "#line_edit_message:focus {\n"
@@ -189,7 +199,12 @@ class Ui_chat_page(object):
         self.chat_messages.setAlignment(Qt.AlignBottom|Qt.AlignLeading|Qt.AlignLeft)
         self.messages_widget = QWidget()
         self.messages_widget.setObjectName(u"messages_widget")
-        self.messages_widget.setGeometry(QRect(0, 0, 862, 486))
+        self.messages_widget.setGeometry(QRect(0, 0, 959, 486))
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.messages_widget.sizePolicy().hasHeightForWidth())
+        self.messages_widget.setSizePolicy(sizePolicy)
         self.messages_widget.setStyleSheet(u"background: transparent")
         self.chat_layout = QVBoxLayout(self.messages_widget)
         self.chat_layout.setSpacing(0)

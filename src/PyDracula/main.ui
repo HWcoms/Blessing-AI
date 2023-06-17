@@ -1966,6 +1966,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
                          </item>
                          <item>
                           <widget class="QWidget" name="chat" native="true">
+                           <property name="styleSheet">
+                            <string notr="true">#chat {
+	border: 2px solid rgb(48, 50, 62);
+	border-radius: 10px;
+	color: #FFF;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color:rgb(34,36,44)
+}</string>
+                           </property>
                            <layout class="QVBoxLayout" name="verticalLayout_25">
                             <property name="spacing">
                              <number>0</number>
@@ -1996,10 +2006,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                  </size>
                                 </property>
                                 <property name="text">
-                                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/user_profile/images/user_profile/cat.png&quot;/&gt;&lt;span style=&quot; font-size:24pt;&quot;&gt;place holder for chat layout&lt;/span&gt;&lt;img src=&quot;:/user_profile/images/user_profile/me.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                 <string/>
                                 </property>
                                 <property name="pixmap">
-                                 <pixmap resource="resources.qrc">:/user_profile/images/user_profile/me.png</pixmap>
+                                 <pixmap>:/user_profile/images/user_profile/me.png</pixmap>
                                 </property>
                                 <property name="alignment">
                                  <set>Qt::AlignCenter</set>

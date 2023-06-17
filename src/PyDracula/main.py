@@ -235,14 +235,16 @@ class MainWindow(QMainWindow):
     def load_character_info(self):
         global widgets
         from setting_info import SettingInfo    # noqa
-        settings_json = SettingInfo.load_settings()
+        char_settings_json = SettingInfo.load_character_settings()
+        character_name = char_settings_json["character_name"]
+        user_name = char_settings_json["your_name"]
 
         from LangAIComm import get_character_info   # noqa
-        char_dict = get_character_info(settings_json["character_name"])
+        char_dict = get_character_info(character_name)
         # print(char_dict)
 
-        widgets.textEdit_yourname.setText(char_dict["your_name"])
-        widgets.label_char_name.setText(char_dict["character_name"])
+        widgets.textEdit_yourname.setText(user_name)
+        widgets.label_char_name.setText(character_name)
 
         bot_image = char_dict["character_image"] # TODO: check None, if there's no image
 
@@ -264,8 +266,9 @@ class MainWindow(QMainWindow):
 
         from setting_info import SettingInfo    # noqa
 
-        settings_json = SettingInfo.load_settings()
-        character_name = settings_json["character_name"]
+        char_settings_json = SettingInfo.load_character_settings()
+        character_name = char_settings_json["character_name"]
+        user_name = char_settings_json["your_name"]
         # print(f"charname: {character_name}")
 
         from LangAIComm import get_chatlog_info # noqa
@@ -280,23 +283,51 @@ class MainWindow(QMainWindow):
         ## Get Last 2 messages
         messages = chatlog_txt.split("\n")
 
-        last_user_message = messages[-2]
-        last_bot_reply = messages[-1]
+        last_user_message = ""
+        last_bot_reply = ""
+        count = 0
 
-        # Remove name
-        import re
-        last_user_message = processed_message = re.sub(r"^[^:]+:\s*", "", last_user_message, count=1)
-        last_bot_reply = processed_message = re.sub(r"^[^:]+:\s*", "", last_bot_reply, count=1)
+        if len(messages) >= 2:
+            for message in reversed(messages):
+                if (count >= 2):
+                    break
 
-        # Remove index 0 blank
-        if last_user_message[0] == " ":
-            last_user_message = last_user_message[1:]
+                if message.startswith(f"{character_name}:"):
+                    # last_bot_message = message.replace("Kato Megumi:", "").strip()
+                    last_bot_message = message
+                    # print(last_bot_message)
+                    count = count + 1
+                    continue
+                elif message.startswith(f"{user_name}:"):
+                    # last_user_message = message.replace("coms:", "").strip()
+                    last_user_message = message
+                    # print(last_user_message)
+                    count = count + 1
+                    continue
 
-        if last_bot_reply[0] == " ":
-            last_bot_reply = last_bot_reply[1:]
+        else:
+            print("Not enough messages in the chat log.")
 
         widgets.textEdit_user_message.setText(last_user_message)
-        widgets.textEdit_bot_reply.setText(last_bot_reply)
+        widgets.textEdit_bot_reply.setText(last_bot_message)
+        #
+        # last_user_message = messages[-2]
+        # last_bot_reply = messages[-1]
+        #
+        # # Remove name
+        # import re
+        # last_user_message = processed_message = re.sub(r"^[^:]+:\s*", "", last_user_message, count=1)
+        # last_bot_reply = processed_message = re.sub(r"^[^:]+:\s*", "", last_bot_reply, count=1)
+        #
+        # # Remove index 0 blank
+        # if last_user_message[0] == " ":
+        #     last_user_message = last_user_message[1:]
+        #
+        # if last_bot_reply[0] == " ":
+        #     last_bot_reply = last_bot_reply[1:]
+        #
+        # widgets.textEdit_user_message.setText(last_user_message)
+        # widgets.textEdit_bot_reply.setText(last_bot_reply)
 
     @staticmethod
     def load_mic_info():
