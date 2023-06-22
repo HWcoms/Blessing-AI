@@ -200,8 +200,11 @@ def run(prompt, name1):
             # print(result)
             trimmed_string = trim_until_newline(result_prompt)
             return trimmed_string
+        else:
+            print(f"Error [LangAIComm.run]: failed to request generate_reply [status_code: {response.status_code}]")
+            return None
     except Exception as e:
-        print(f"Error [Language Model API]: Failed Request \n\033[31m▲ {e}\033[0m")
+        print("\033[31m" + "Error [LangAIComm.run]: Failed to request" + "\n\033[34m" + f"▲ {e}" + "\033[0m")
         return None
 
 
@@ -291,23 +294,23 @@ def generate_reply(string, character_name):
     try:
         result_text = run(file_content, char_settings_json["your_name"])
 
-        if result_text == "" or None:
-            print("\033[31m"+"Error: No reply returned"+"\033[0m")
+        if result_text == "" or result_text is None:
+            print("\033[31m"+"Error [LangAIComm.generate_reply]: No reply returned. nothing will be update to chat_log.txt"+"\033[0m")
             return None
+
+        result_text = clean_lines(result_text)
+
+        save_text_file(chatlog_file_path, chat_str + result_text)
+        # print(file_content + result_text)
+
+        # remove blanks from left
+        if result_text[0] == ' ':
+            result_text = result_text.lstrip()
+
+        return result_text
     except Exception as e:
-        print(f"Error: {e}")
+        print("\033[31m"+f"Error [LangAIComm.generate_reply]: {e}"+"\033[0m")
         return None
-
-    result_text = clean_lines(result_text)
-
-    save_text_file(chatlog_file_path, chat_str + result_text)
-    # print(file_content + result_text)
-
-    # remove blanks from left
-    if result_text[0] == ' ':
-        result_text = result_text.lstrip()
-
-    return result_text
 
 
 def get_character_file(character_name):

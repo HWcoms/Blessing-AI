@@ -148,7 +148,6 @@ class Chat(QWidget):
             self.message.data_message.setText(self.char_info_dict["your_name"])
 
             self.generate_reply(entry_text)
-            self.mWindow.after_generate_reply()     # call method from main window [GUI]
 
             # # SCROLL TO END
             # QTimer.singleShot(10, lambda: self.page.messages_frame.setFixedHeight(
@@ -224,7 +223,12 @@ class Chat(QWidget):
 
         ai_model_language = self.chat_info_dict["ai_model_language"]
         setting_list = [None, self.char_info_dict, self.chat_info_dict]
-        gen.generate(text, setting_list)
+        reply_txt = gen.generate(text, setting_list)
+
+        if reply_txt is None or reply_txt == "":
+            print("\033[31m"+"Error [GUI/page_messages]: failed to generate reply."+"\033[0m")
+        else:
+            self.mWindow.after_generate_reply()     # call method from main window [GUI]
 
 
 if __name__ == "__main__":
