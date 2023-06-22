@@ -9,7 +9,7 @@ By selecting VoiceMeeter Input as your default playback device earlier, any desk
 By selecting A1, you are sending your desktop audio via this cable into hardware out A1 (speakers/headphones). You should be able to hear your desktop audio now.
 
 ![](screenshots/virtual_input_sect.png?raw=true)
-![](screenshots/AI voice setup for banana.png?raw=true)
+![](screenshots/AI%20voice%20setup%20for%20banana.png?raw=true)
 
 ## Application settings
 

@@ -1,6 +1,8 @@
 # Blessing-AI
 
-This python program is made for communicating prompt and result from chatbot interface (e.g oobabooga/text-generation-webui), also able to use MoeGoe TTS, voice recognition or text from User
+This python program is made for communicating prompt and result from chatbot interface (e.g oobabooga/text-generation-webui), also able to use MoeGoe TTS, voice recognition or text from User  
+
+![](docs/screenshots/Blessing%20AI%20Preview.png?raw=true)  
 
 ***Note: This project is a work in progress.***  
 Please note that this project is currently under development and may not be feature-complete or stable. Use it at your own risk, and feel free to contribute or provide feedback. We appreciate your understanding and patience as we continue to improve and enhance the project.
@@ -130,9 +132,10 @@ If you want to make batch file here's my example **(optional)**
 
 @echo Starting the web UI...
 
-call activate "E:\CondaProject\oobaTextGenUI\oobabooga_windows\installer_files\env" <- Location of your Conda Env
+:: Location of your Conda Env
+call activate "E:\CondaProject\oobaTextGenUI\oobabooga_windows\installer_files\env"
 
-call python server.py --auto-devices --chat --verbose --wbits 4 --groupsize 128 --model_type LLaMA --model pygmalion-7b-4bit-128g-cuda --character "Kato Megumi" --api
+call python server.py --auto-devices --chat --verbose --wbits 4 --groupsize 128 --model_type LLaMA --model pygmalion-7b-4bit-128g-cuda --api
 
 pause
 ```
