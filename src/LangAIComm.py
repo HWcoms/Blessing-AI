@@ -302,6 +302,11 @@ def generate_reply(string, character_name):
 
     save_text_file(chatlog_file_path, chat_str + result_text)
     # print(file_content + result_text)
+
+    # remove blanks from left
+    if result_text[0] == ' ':
+        result_text = result_text.lstrip()
+
     return result_text
 
 

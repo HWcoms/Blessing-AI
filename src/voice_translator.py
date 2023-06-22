@@ -90,7 +90,7 @@ def Do_Generate(eng_speech, speech_lang, settings_list: list = None):
     if LOGGING:
         print(log_str)
 
-    ai_model_language = other_settings["ai_model_language"]  # language that AI Model using ("pygmalion should communicate with  english")
+    ai_model_language = other_settings["ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
 
     bot_reply = ""
 
@@ -210,7 +210,7 @@ class VoiceTranslator:
         if self.logging:
             print(log_str)
 
-        ai_model_language = other_settings["ai_model_language"]  # language that AI Model using ("pygmalion should communicate with  english")
+        ai_model_language = other_settings["ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
 
         bot_reply = ""
 
@@ -219,7 +219,7 @@ class VoiceTranslator:
             translated_speech = DoTranslate(text, speech_lang, ai_model_language)
 
             if self.logging:
-                source_lang_name = languages.get(alpha2=speech_lang).name
+                # source_lang_name = languages.get(alpha2=speech_lang).name
                 # print(f'{source_lang_name}: {eng_speech}')
                 print(f'User: {translated_speech}')
 

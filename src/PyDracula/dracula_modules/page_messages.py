@@ -36,6 +36,7 @@ else:
     # GUI
     from dracula_modules.ui_page_messages import Ui_chat_page  # MainWindow
     from dracula_modules.message import Message  # MainWindow
+    # from main import MainWindow
 
 
 # MAIN WINDOW
@@ -43,6 +44,7 @@ else:
 class Chat(QWidget):
     def __init__(
             self,
+            main_window,
             char_dict,
             chat_dict
     ):
@@ -51,6 +53,7 @@ class Chat(QWidget):
         self.scroll_bar = None
         self.page = Ui_chat_page()
         self.page.setupUi(self)
+        self.mWindow = main_window
 
         self.char_info_dict = char_dict
         self.chat_info_dict = chat_dict # for chat log
@@ -145,6 +148,7 @@ class Chat(QWidget):
             self.message.data_message.setText(self.char_info_dict["your_name"])
 
             self.generate_reply(entry_text)
+            self.mWindow.after_generate_reply()     # call method from main window [GUI]
 
             # # SCROLL TO END
             # QTimer.singleShot(10, lambda: self.page.messages_frame.setFixedHeight(
@@ -212,15 +216,15 @@ class Chat(QWidget):
             self.scroll_bar.setValue(self.scroll_bar.maximum())
 
     def generate_reply(self, text):
-        from voice_translator import VoiceTranslator  # noqa
-        # from modules.translator import language_detection  # noqa
+        # from voice_translator import VoiceTranslator    # noqa
+        from generate import Generator  # noqa
 
-        voiceTr = VoiceTranslator()
+        gen = Generator()
         # text_lang_code = language_detection(text)
 
         ai_model_language = self.chat_info_dict["ai_model_language"]
         setting_list = [None, self.char_info_dict, self.chat_info_dict]
-        print(voiceTr.generate(text, setting_list))
+        gen.generate(text, setting_list)
 
 
 if __name__ == "__main__":

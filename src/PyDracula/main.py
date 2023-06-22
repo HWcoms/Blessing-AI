@@ -219,7 +219,7 @@ class MainWindow(QMainWindow):
         self.chat = None
 
         # SET CHAT WIDGET
-        self.chat = Chat(self.char_info_dict, self.chat_info_dict)
+        self.chat = Chat(self, self.char_info_dict, self.chat_info_dict)
 
         # ADD WIDGET TO LAYOUT
         widgets.chat_layout.addWidget(self.chat)
@@ -328,7 +328,7 @@ class MainWindow(QMainWindow):
 
                 if message.startswith(f"{character_name}:"):
                     # last_bot_message = message.replace("Kato Megumi:", "").strip()
-                    last_bot_message = message
+                    last_bot_reply = message
                     # print(last_bot_message)
                     count = count + 1
                     continue
@@ -338,30 +338,11 @@ class MainWindow(QMainWindow):
                     # print(last_user_message)
                     count = count + 1
                     continue
-
         else:
             print("Not enough messages in the chat log.")
 
         widgets.textEdit_user_message.setText(last_user_message)
-        widgets.textEdit_bot_reply.setText(last_bot_message)
-        #
-        # last_user_message = messages[-2]
-        # last_bot_reply = messages[-1]
-        #
-        # # Remove name
-        # import re
-        # last_user_message = processed_message = re.sub(r"^[^:]+:\s*", "", last_user_message, count=1)
-        # last_bot_reply = processed_message = re.sub(r"^[^:]+:\s*", "", last_bot_reply, count=1)
-        #
-        # # Remove index 0 blank
-        # if last_user_message[0] == " ":
-        #     last_user_message = last_user_message[1:]
-        #
-        # if last_bot_reply[0] == " ":
-        #     last_bot_reply = last_bot_reply[1:]
-        #
-        # widgets.textEdit_user_message.setText(last_user_message)
-        # widgets.textEdit_bot_reply.setText(last_bot_reply)
+        widgets.textEdit_bot_reply.setText(last_bot_reply)
 
     @staticmethod
     def load_mic_info():
@@ -376,6 +357,10 @@ class MainWindow(QMainWindow):
             from setting_info import SettingInfo  # noqa
             self.chat_info_dict.update(SettingInfo.load_other_settings())
             # print(self.chat_info_dict)
+
+    def after_generate_reply(self):
+        print("[main GUI]: generated_reply")
+        print(self.char_info_dict)
 
     # UNUSED
     # def generate_reply(self, text):

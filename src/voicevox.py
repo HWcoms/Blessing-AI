@@ -41,7 +41,7 @@ def speak(sentence, tts_settings, other_settings):
     language_code = tts_settings["tts_language"]
     voice_volume = tts_settings["voice_volume"]
     discord_print_language = other_settings["discord_print_language"]
-    ai_model_language = other_settings["ai_model_language"]     # language that AI Model using ("pygmalion should communicate with  english")
+    ai_model_language = other_settings["ai_model_language"]     # language_code that AI Model using ("pygmalion should communicate with  english")
 
     bot_trans_speech = DoTranslate(sentence, ai_model_language, language_code)  # Translate reply
     if language_code == 'ja':
