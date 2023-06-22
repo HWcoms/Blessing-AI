@@ -36,13 +36,14 @@ POST_PHONEME_LENGTH = float(getenv('POST_PHONEME_LENGTH'))
 TTS_WAV_PATH = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
 
-def speak(sentence, settings_json):
+def speak(sentence, tts_settings, other_settings):
     # print("번역전 텍스트: ", sentence)
-    language_code = settings_json["tts_language"]
-    voice_volume = settings_json["voice_volume"]
-    discord_print_language = settings_json["discord_print_language"]
+    language_code = tts_settings["tts_language"]
+    voice_volume = tts_settings["voice_volume"]
+    discord_print_language = other_settings["discord_print_language"]
+    ai_model_language = other_settings["ai_model_language"]     # language that AI Model using ("pygmalion should communicate with  english")
 
-    bot_trans_speech = DoTranslate(sentence, 'en', language_code)  # Translate reply
+    bot_trans_speech = DoTranslate(sentence, ai_model_language, language_code)  # Translate reply
     if language_code == 'ja':
         bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
     elif language_code == 'ko':
@@ -50,15 +51,15 @@ def speak(sentence, settings_json):
         voice_volume = voice_volume * 0.3
 
     # synthesize voice as wav file
-    speech_text(settings_json["tts_character_name"], bot_trans_speech, language_code, settings_json["voice_id"], voice_volume)
+    speech_text(tts_settings["tts_character_name"], bot_trans_speech, language_code, tts_settings["voice_id"], voice_volume)
 
     # play voice to app mic input and speakers/headphones
     threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
 
-    if settings_json["discord_bot"]:
+    if other_settings["discord_bot"]:
         # Do translate to discord_print_langage, if it's not same as language_code
         if language_code != discord_print_language:
-            discord_sentence = DoTranslate(sentence, 'en', discord_print_language)
+            discord_sentence = DoTranslate(sentence, ai_model_language, discord_print_language)
         else:
             discord_sentence = bot_trans_speech
 

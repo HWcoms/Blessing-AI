@@ -2,4 +2,6 @@
     "discord_bot": false,
     "discord_print_language": "ko",
     "max_token": 200
+    "ai_model_language": "en",
+    "chat_display_language": "ko"
 }

@@ -52,9 +52,17 @@ class MainWindow(QMainWindow):
 
         # SET CUSTOM VARIABLES
         # ///////////////////////////////////////////////////////////////
-        self.char_info_dict : dict = None
-        # [your_name, character_name, character_description, character_image, greeting, context, chat_log]
+        self.char_info_dict : dict = None   # [your_name, character_name,
+                                            # character_description, character_image,
+                                            # greeting, context, chatlog]
 
+        self.chat_info_dict : dict = None   # <- Contains Chatlog + other_settings.txt
+                                            # [chatlog, max_token, discord_bot,
+                                            # discord_print_language, ai_model_language]
+
+        self.tts_info_dict: dict = None     # [tts_character_name, tts_language, voice_id,
+                                            # voice_speed, voice_volume, intonation_scale,
+                                            # pre_phoneme_length, post_phoneme_length]
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
@@ -134,6 +142,9 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         widgets.stackedWidget.setCurrentWidget(widgets.Home_Page)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
+        # widgets.btn_character.setStyleSheet(UIFunctions.selectMenu(widgets.btn_character.styleSheet()))
+        # widgets.btn_mic_setting.setStyleSheet(UIFunctions.selectMenu(widgets.btn_mic_setting.styleSheet()))
+        # widgets.btn_tts_setting.setStyleSheet(UIFunctions.selectMenu(widgets.btn_tts_setting.styleSheet()))
 
         self.load_all_info()
 
@@ -155,7 +166,8 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
-            self.chat_layout_update(self.char_info_dict)
+            self.load_chatlog_info()
+            self.chat_layout_update()
 
         # SHOW CHARACTER PAGE
         if btnName == "btn_character":
@@ -163,17 +175,23 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
 
+            self.load_character_info()
+
         # SHOW MIC PAGE
         if btnName == "btn_mic_setting":
             widgets.stackedWidget.setCurrentWidget(widgets.Mic_Page)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
+            self.load_mic_info()
+
         # SHOW TTS PAGE
         if btnName == "btn_tts_setting":
             widgets.stackedWidget.setCurrentWidget(widgets.TTS_Page)  # SET PAGE
             UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
+
+            self.load_tts_info()
 
         if btnName == "btn_share":
             import webbrowser
@@ -190,9 +208,10 @@ class MainWindow(QMainWindow):
 
     # [GUI] DRAW CHAT
     # ///////////////////////////////////////////////////////////////
-    def chat_layout_update(self, character_info):
+    def chat_layout_update(self):
         global widgets
-        self.char_info_dict["character_description"] = "AI-Bot" # Character Description
+        # self.char_info_dict["character_description"]
+        # self.char_info_dict["character_description"] = "AI-Bot" # Character Description
 
         # REMOVE CHAT
         for chat in reversed(range(self.ui.chat_layout.count())):
@@ -200,7 +219,7 @@ class MainWindow(QMainWindow):
         self.chat = None
 
         # SET CHAT WIDGET
-        self.chat = Chat(self.char_info_dict)
+        self.chat = Chat(self.char_info_dict, self.chat_info_dict)
 
         # ADD WIDGET TO LAYOUT
         widgets.chat_layout.addWidget(self.chat)
@@ -226,11 +245,16 @@ class MainWindow(QMainWindow):
     # LOAD INFO EVENTS
     # ///////////////////////////////////////////////////////////////
     def load_all_info(self):
-        self.load_character_info()
-        self.load_chatlog_info()
-        self.load_mic_info()
+        self.load_character_info()  # Load Character page
+        self.load_chatlog_info()    # Load chatlog information
 
-        self.chat_layout_update(self.char_info_dict)
+        self.chat_layout_update()    # Load Home Page
+
+        self.load_mic_info()    # Load Mic page
+        self.load_tts_info()    # Load TTS page
+
+        self.load_other_info()  # Load other information
+
 
     def load_character_info(self):
         global widgets
@@ -240,11 +264,8 @@ class MainWindow(QMainWindow):
         user_name = char_settings_json["your_name"]
 
         from LangAIComm import get_character_info   # noqa
-        char_dict = get_character_info(character_name)
+        char_dict = get_character_info(character_name)  # Dict [your_name, character_name, greeting, context, character_image]
         # print(char_dict)
-
-        widgets.textEdit_yourname.setText(user_name)
-        widgets.label_char_name.setText(character_name)
 
         bot_image = char_dict["character_image"] # TODO: check None, if there's no image
 
@@ -257,6 +278,16 @@ class MainWindow(QMainWindow):
 
         self.char_info_dict = char_dict
 
+        # Force set 'char_name' and 'your_name' from 'Character_Settings.txt'
+        self.char_info_dict.update(char_settings_json)
+        # TODO: if your_name or character_name is changed in settings_txt, program don't know who is the user in chatlog_txt
+
+        widgets.textEdit_yourname.setText(user_name)
+        widgets.label_char_name.setText(character_name)
+
+        # print(self.char_info_dict)
+
+
     def load_chatlog_info(self):
         global widgets
 
@@ -264,21 +295,24 @@ class MainWindow(QMainWindow):
             print("[GUI] : Chat info dict is None, now loading character info...")
             self.load_character_info()
 
+        if self.chat_info_dict is None:
+            self.chat_info_dict = {}
+
         from setting_info import SettingInfo    # noqa
 
         char_settings_json = SettingInfo.load_character_settings()
-        character_name = char_settings_json["character_name"]
-        user_name = char_settings_json["your_name"]
+        character_name = self.char_info_dict["character_name"]
+        user_name = self.char_info_dict["your_name"]
         # print(f"charname: {character_name}")
 
         from LangAIComm import get_chatlog_info # noqa
 
         chatlog_txt = get_chatlog_info(character_name)
         # print(f"chatlog: {chatlog_txt}")
-        self.char_info_dict["chat_log"] = chatlog_txt
+        self.chat_info_dict["chatlog"] = chatlog_txt
 
-        # widgets.listView_chat_log.addItem(chatlog_txt)
-        # widgets.textEdit_chat_log.setText(chatlog_txt)
+        # widgets.listView_chatlog.addItem(chatlog_txt)
+        # widgets.textEdit_chatlog.setText(chatlog_txt)
 
         ## Get Last 2 messages
         messages = chatlog_txt.split("\n")
@@ -332,6 +366,32 @@ class MainWindow(QMainWindow):
     @staticmethod
     def load_mic_info():
         print()
+
+    @staticmethod
+    def load_tts_info():
+        print()
+
+    def load_other_info(self):
+        if self.chat_info_dict is not None:
+            from setting_info import SettingInfo  # noqa
+            self.chat_info_dict.update(SettingInfo.load_other_settings())
+            # print(self.chat_info_dict)
+
+    # UNUSED
+    # def generate_reply(self, text):
+    #
+    #     from voice_translator import VoiceTranslator   # noqa
+    #     from modules.translator import DoTranslate, language_detection
+    #
+    #     voiceTr = VoiceTranslator()
+    #     text_lang_code = language_detection(text)
+    #
+    #     ai_model_language = self.chat_info_dict["ai_model_language"]
+    #
+    #     voiceTr.Do_Generate(text, text_lang_code, list(self.tts_info_dict, self.char_info_dict, self.chat_info_dict))
+    #
+    #     self.chat_layout_update()
+
 
 
 if __name__ == "__main__":

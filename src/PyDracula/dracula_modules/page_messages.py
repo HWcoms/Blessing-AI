@@ -43,7 +43,8 @@ else:
 class Chat(QWidget):
     def __init__(
             self,
-            char_dict
+            char_dict,
+            chat_dict
     ):
         QWidget.__init__(self)
 
@@ -51,7 +52,8 @@ class Chat(QWidget):
         self.page = Ui_chat_page()
         self.page.setupUi(self)
 
-        self.char_info_dict = char_dict  # for chat log
+        self.char_info_dict = char_dict
+        self.chat_info_dict = chat_dict # for chat log
 
         bot_name = self.char_info_dict["character_name"]
         bot_description = self.char_info_dict["character_description"]
@@ -134,12 +136,15 @@ class Chat(QWidget):
 
     # Send From Entry TextEdit
     def send_message_entry(self):
-        if self.page.line_edit_message.text() != "":
-            self.send_by_user(self.page.line_edit_message.text(), self.pf_img_dict['user'])
+        entry_text = self.page.line_edit_message.text()
+        if entry_text != "":
+            self.send_by_user(entry_text, self.pf_img_dict['user'])
             # self.message = Message(self.page.line_edit_message.text(), 'user')
             self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
             self.page.line_edit_message.setText("")
             self.message.data_message.setText(self.char_info_dict["your_name"])
+
+            self.generate_reply(entry_text)
 
             # # SCROLL TO END
             # QTimer.singleShot(10, lambda: self.page.messages_frame.setFixedHeight(
@@ -165,8 +170,8 @@ class Chat(QWidget):
         # self.page.line_edit_message.setText("")
 
     def load_chat_log(self):
-        chat_log_str = self.char_info_dict["chat_log"]
-        lines = chat_log_str.strip().splitlines()
+        chatlog_str = self.chat_info_dict["chatlog"]
+        lines = chatlog_str.strip().splitlines()
         char_name = self.char_info_dict["character_name"]
         your_name = self.char_info_dict["your_name"]
 
@@ -205,6 +210,17 @@ class Chat(QWidget):
         if self.scroll_bar:
             self.scroll_bar = self.page.chat_messages.verticalScrollBar()
             self.scroll_bar.setValue(self.scroll_bar.maximum())
+
+    def generate_reply(self, text):
+        from voice_translator import VoiceTranslator  # noqa
+        # from modules.translator import language_detection  # noqa
+
+        voiceTr = VoiceTranslator()
+        # text_lang_code = language_detection(text)
+
+        ai_model_language = self.chat_info_dict["ai_model_language"]
+        setting_list = [None, self.char_info_dict, self.chat_info_dict]
+        print(voiceTr.generate(text, setting_list))
 
 
 if __name__ == "__main__":

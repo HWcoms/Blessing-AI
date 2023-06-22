@@ -1,4 +1,5 @@
 {
     "character_name": "Kato Megumi",
+    "character_description": "AI-Bot",
     "your_name": "coms"
 }

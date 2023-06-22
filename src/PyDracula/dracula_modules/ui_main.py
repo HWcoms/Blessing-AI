@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainjIfGUR.ui'
+## Form generated from reading UI file 'mainTXgrGp.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1270,15 +1270,15 @@ class Ui_MainWindow(object):
         self.horizontalLayout_command_button.setContentsMargins(170, 0, 170, 0)
         self.pushButton_mute_tts = QPushButton(self.Home_Page)
         self.pushButton_mute_tts.setObjectName(u"pushButton_mute_tts")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
-        sizePolicy6.setHorizontalStretch(100)
-        sizePolicy6.setVerticalStretch(30)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
         sizePolicy6.setHeightForWidth(self.pushButton_mute_tts.sizePolicy().hasHeightForWidth())
         self.pushButton_mute_tts.setSizePolicy(sizePolicy6)
-        self.pushButton_mute_tts.setMinimumSize(QSize(0, 0))
+        self.pushButton_mute_tts.setMinimumSize(QSize(0, 50))
         self.pushButton_mute_tts.setMaximumSize(QSize(300, 80))
         self.pushButton_mute_tts.setStyleSheet(u"QPushButton{\n"
-"	font: 16pt \"Segoe UI\";\n"
+"	font: 14pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(131, 56, 236);\n"
 "	border-radius: 5px;\n"
@@ -1286,36 +1286,72 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_command_button.addWidget(self.pushButton_mute_tts)
 
+        self.pushButton_mute_mic = QPushButton(self.Home_Page)
+        self.pushButton_mute_mic.setObjectName(u"pushButton_mute_mic")
+        sizePolicy6.setHeightForWidth(self.pushButton_mute_mic.sizePolicy().hasHeightForWidth())
+        self.pushButton_mute_mic.setSizePolicy(sizePolicy6)
+        self.pushButton_mute_mic.setMinimumSize(QSize(0, 50))
+        self.pushButton_mute_mic.setMaximumSize(QSize(300, 80))
+        self.pushButton_mute_mic.setStyleSheet(u"QPushButton{\n"
+"	font: 14pt \"Segoe UI\";\n"
+"	color: white;\n"
+"	background-color: rgb(131, 56, 236);\n"
+"	border-radius: 5px;\n"
+"}")
+
+        self.horizontalLayout_command_button.addWidget(self.pushButton_mute_mic)
+
         self.pushButton_pause_reply = QPushButton(self.Home_Page)
         self.pushButton_pause_reply.setObjectName(u"pushButton_pause_reply")
+        self.pushButton_pause_reply.setEnabled(True)
         sizePolicy6.setHeightForWidth(self.pushButton_pause_reply.sizePolicy().hasHeightForWidth())
         self.pushButton_pause_reply.setSizePolicy(sizePolicy6)
-        self.pushButton_pause_reply.setMinimumSize(QSize(0, 0))
+        self.pushButton_pause_reply.setMinimumSize(QSize(0, 50))
         self.pushButton_pause_reply.setMaximumSize(QSize(300, 80))
         self.pushButton_pause_reply.setStyleSheet(u"QPushButton{\n"
-"	font: 16pt \"Segoe UI\";\n"
+"	font: 14pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(251, 86, 7);\n"
 "	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(251, 149, 7);\n"
+"}\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(197, 66, 5);\n"
 "}")
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/images/icons/cil-media-pause.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon4.addFile(u":/icons/images/icons/cil-media-play.png", QSize(), QIcon.Normal, QIcon.On)
+        self.pushButton_pause_reply.setIcon(icon4)
 
         self.horizontalLayout_command_button.addWidget(self.pushButton_pause_reply)
 
         self.pushButton_stop_reply = QPushButton(self.Home_Page)
         self.pushButton_stop_reply.setObjectName(u"pushButton_stop_reply")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy7.setHorizontalStretch(100)
-        sizePolicy7.setVerticalStretch(30)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
         sizePolicy7.setHeightForWidth(self.pushButton_stop_reply.sizePolicy().hasHeightForWidth())
         self.pushButton_stop_reply.setSizePolicy(sizePolicy7)
-        self.pushButton_stop_reply.setMinimumSize(QSize(0, 0))
+        self.pushButton_stop_reply.setMinimumSize(QSize(0, 50))
         self.pushButton_stop_reply.setMaximumSize(QSize(300, 80))
         self.pushButton_stop_reply.setStyleSheet(u"QPushButton{\n"
-"	font: 16pt \"Segoe UI\";\n"
+"	font: 14pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(255, 0, 110);\n"
 "	border-radius: 5px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(255, 0, 166);\n"
+"}\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(200, 0, 87);\n"
 "}")
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/images/icons/cil-media-stop.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_stop_reply.setIcon(icon5)
 
         self.horizontalLayout_command_button.addWidget(self.pushButton_stop_reply)
 
@@ -1326,14 +1362,14 @@ class Ui_MainWindow(object):
         self.verticalLayout_24.addLayout(self.c_verticalLayout_lower)
 
         self.stackedWidget.addWidget(self.Home_Page)
-        self.Mic_Page = QWidget()
-        self.Mic_Page.setObjectName(u"Mic_Page")
-        self.Mic_Page.setStyleSheet(u"b")
-        self.verticalLayout = QVBoxLayout(self.Mic_Page)
+        self.Page_example = QWidget()
+        self.Page_example.setObjectName(u"Page_example")
+        self.Page_example.setStyleSheet(u"b")
+        self.verticalLayout = QVBoxLayout(self.Page_example)
         self.verticalLayout.setSpacing(10)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(10, 10, 10, 10)
-        self.row_1 = QFrame(self.Mic_Page)
+        self.row_1 = QFrame(self.Page_example)
         self.row_1.setObjectName(u"row_1")
         self.row_1.setFrameShape(QFrame.StyledPanel)
         self.row_1.setFrameShadow(QFrame.Raised)
@@ -1390,9 +1426,9 @@ class Ui_MainWindow(object):
         self.pushButton.setFont(font)
         self.pushButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.pushButton.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/images/icons/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton.setIcon(icon4)
+        icon6 = QIcon()
+        icon6.addFile(u":/icons/images/icons/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton.setIcon(icon6)
 
         self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
 
@@ -1416,7 +1452,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.row_1)
 
-        self.row_2 = QFrame(self.Mic_Page)
+        self.row_2 = QFrame(self.Page_example)
         self.row_2.setObjectName(u"row_2")
         self.row_2.setMinimumSize(QSize(0, 150))
         self.row_2.setFrameShape(QFrame.StyledPanel)
@@ -1451,9 +1487,9 @@ class Ui_MainWindow(object):
         self.commandLinkButton.setObjectName(u"commandLinkButton")
         self.commandLinkButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.commandLinkButton.setStyleSheet(u"")
-        icon5 = QIcon()
-        icon5.addFile(u":/icons/images/icons/cil-link.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton.setIcon(icon5)
+        icon7 = QIcon()
+        icon7.addFile(u":/icons/images/icons/cil-link.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton.setIcon(icon7)
 
         self.gridLayout_2.addWidget(self.commandLinkButton, 1, 6, 1, 1)
 
@@ -1471,7 +1507,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 352, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -1534,7 +1570,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.row_2)
 
-        self.row_3 = QFrame(self.Mic_Page)
+        self.row_3 = QFrame(self.Page_example)
         self.row_3.setObjectName(u"row_3")
         self.row_3.setMinimumSize(QSize(0, 150))
         self.row_3.setFrameShape(QFrame.StyledPanel)
@@ -1669,15 +1705,213 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.row_3)
 
+        self.stackedWidget.addWidget(self.Page_example)
+        self.Mic_Page = QWidget()
+        self.Mic_Page.setObjectName(u"Mic_Page")
+        self.verticalLayout_27 = QVBoxLayout(self.Mic_Page)
+        self.verticalLayout_27.setObjectName(u"verticalLayout_27")
+        self.verticalLayout_26 = QVBoxLayout()
+        self.verticalLayout_26.setObjectName(u"verticalLayout_26")
+        self.verticalLayout_26.setContentsMargins(10, -1, 10, -1)
+        self.label_2 = QLabel(self.Mic_Page)
+        self.label_2.setObjectName(u"label_2")
+
+        self.verticalLayout_26.addWidget(self.label_2)
+
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.comboBox_mic_selector = QComboBox(self.Mic_Page)
+        self.comboBox_mic_selector.addItem("")
+        self.comboBox_mic_selector.addItem("")
+        self.comboBox_mic_selector.addItem("")
+        self.comboBox_mic_selector.setObjectName(u"comboBox_mic_selector")
+        sizePolicy1.setHeightForWidth(self.comboBox_mic_selector.sizePolicy().hasHeightForWidth())
+        self.comboBox_mic_selector.setSizePolicy(sizePolicy1)
+        self.comboBox_mic_selector.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+
+        self.horizontalLayout_6.addWidget(self.comboBox_mic_selector)
+
+        self.pushButton_mic_default = QPushButton(self.Mic_Page)
+        self.pushButton_mic_default.setObjectName(u"pushButton_mic_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_mic_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_mic_default.setSizePolicy(sizePolicy4)
+        self.pushButton_mic_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_mic_default.setStyleSheet(u"QPushButton{\n"
+"	font: bold 12pt \"Segoe UI\";\n"
+"	color: white;\n"
+"	background-color: rgb(122, 137, 168);\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(163, 184, 225);\n"
+"}\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(75, 84, 103);\n"
+"}")
+
+        self.horizontalLayout_6.addWidget(self.pushButton_mic_default)
+
+
+        self.verticalLayout_26.addLayout(self.horizontalLayout_6)
+
+        self.verticalSpacer_6 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_26.addItem(self.verticalSpacer_6)
+
+        self.label_3 = QLabel(self.Mic_Page)
+        self.label_3.setObjectName(u"label_3")
+
+        self.verticalLayout_26.addWidget(self.label_3)
+
+        self.horizontalSlider_mic_threshold = QSlider(self.Mic_Page)
+        self.horizontalSlider_mic_threshold.setObjectName(u"horizontalSlider_mic_threshold")
+        self.horizontalSlider_mic_threshold.setStyleSheet(u"QSlider::groove {\n"
+"	background-color: rgb(55, 62, 76);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal {\n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border: none;\n"
+"    height: 40px;\n"
+"    width: 10px;\n"
+"    margin: -20px 0;\n"
+"    border-radius: 20px;\n"
+"    padding: -20px 0px;\n"
+"}\n"
+"QSlider::handle:horizontal:hover {\n"
+"    background-color: rgb(155, 180, 255);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:pressed {\n"
+"    background-color: rgb(65, 255, 195);\n"
+"}")
+        self.horizontalSlider_mic_threshold.setOrientation(Qt.Horizontal)
+
+        self.verticalLayout_26.addWidget(self.horizontalSlider_mic_threshold)
+
+        self.bottom_verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_26.addItem(self.bottom_verticalSpacer_5)
+
+
+        self.verticalLayout_27.addLayout(self.verticalLayout_26)
+
         self.stackedWidget.addWidget(self.Mic_Page)
         self.TTS_Page = QWidget()
         self.TTS_Page.setObjectName(u"TTS_Page")
-        self.verticalLayout_22 = QVBoxLayout(self.TTS_Page)
+        self.layoutWidget = QWidget(self.TTS_Page)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(10, 10, 1061, 551))
+        self.verticalLayout_22 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
-        self.label_test = QLabel(self.TTS_Page)
-        self.label_test.setObjectName(u"label_test")
+        self.verticalLayout_22.setContentsMargins(10, 0, 10, 0)
+        self.label_4 = QLabel(self.layoutWidget)
+        self.label_4.setObjectName(u"label_4")
 
-        self.verticalLayout_22.addWidget(self.label_test)
+        self.verticalLayout_22.addWidget(self.label_4)
+
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.comboBox_spk_selector = QComboBox(self.layoutWidget)
+        self.comboBox_spk_selector.addItem("")
+        self.comboBox_spk_selector.addItem("")
+        self.comboBox_spk_selector.addItem("")
+        self.comboBox_spk_selector.setObjectName(u"comboBox_spk_selector")
+        sizePolicy1.setHeightForWidth(self.comboBox_spk_selector.sizePolicy().hasHeightForWidth())
+        self.comboBox_spk_selector.setSizePolicy(sizePolicy1)
+        self.comboBox_spk_selector.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+
+        self.horizontalLayout_8.addWidget(self.comboBox_spk_selector)
+
+        self.pushButton_spk_default = QPushButton(self.layoutWidget)
+        self.pushButton_spk_default.setObjectName(u"pushButton_spk_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_spk_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_spk_default.setSizePolicy(sizePolicy4)
+        self.pushButton_spk_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_spk_default.setStyleSheet(u"QPushButton{\n"
+"	font: bold 12pt \"Segoe UI\";\n"
+"	color: white;\n"
+"	background-color: rgb(122, 137, 168);\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(163, 184, 225);\n"
+"}\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(75, 84, 103);\n"
+"}")
+
+        self.horizontalLayout_8.addWidget(self.pushButton_spk_default)
+
+
+        self.verticalLayout_22.addLayout(self.horizontalLayout_8)
+
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.label_5 = QLabel(self.layoutWidget)
+        self.label_5.setObjectName(u"label_5")
+
+        self.horizontalLayout_7.addWidget(self.label_5)
+
+        self.label_6 = QLabel(self.layoutWidget)
+        self.label_6.setObjectName(u"label_6")
+        sizePolicy9 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy9.setHorizontalStretch(0)
+        sizePolicy9.setVerticalStretch(0)
+        sizePolicy9.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
+        self.label_6.setSizePolicy(sizePolicy9)
+        self.label_6.setMinimumSize(QSize(50, 0))
+        self.label_6.setStyleSheet(u"QLabel {\n"
+"	border: 2px solid rgb(49, 49, 72);\n"
+"	border-radius: 10px;\n"
+"	color: #FFF;\n"
+"	padding-left: 10px;\n"
+"	padding-right: 10px;\n"
+"	background-color:rgb(34,36,44)\n"
+"}")
+
+        self.horizontalLayout_7.addWidget(self.label_6)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_7.addItem(self.horizontalSpacer_2)
+
+
+        self.verticalLayout_22.addLayout(self.horizontalLayout_7)
+
+        self.horizontalSlider_spk_volume = QSlider(self.layoutWidget)
+        self.horizontalSlider_spk_volume.setObjectName(u"horizontalSlider_spk_volume")
+        self.horizontalSlider_spk_volume.setStyleSheet(u"QSlider::groove {\n"
+"	background-color: rgb(55, 62, 76);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal {\n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border: none;\n"
+"    height: 40px;\n"
+"    width: 10px;\n"
+"    margin: -20px 0;\n"
+"    border-radius: 20px;\n"
+"    padding: -20px 0px;\n"
+"}\n"
+"QSlider::handle:horizontal:hover {\n"
+"    background-color: rgb(155, 180, 255);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:pressed {\n"
+"    background-color: rgb(65, 255, 195);\n"
+"}")
+        self.horizontalSlider_spk_volume.setMaximum(100)
+        self.horizontalSlider_spk_volume.setValue(100)
+        self.horizontalSlider_spk_volume.setOrientation(Qt.Horizontal)
+
+        self.verticalLayout_22.addWidget(self.horizontalSlider_spk_volume)
+
+        self.bottom_verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_22.addItem(self.bottom_verticalSpacer_6)
 
         self.stackedWidget.addWidget(self.TTS_Page)
         self.Character_page = QWidget()
@@ -1694,11 +1928,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_char_info_1.setObjectName(u"verticalLayout_char_info_1")
         self.label_your_name = QLabel(self.Character_page)
         self.label_your_name.setObjectName(u"label_your_name")
-        sizePolicy9 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
-        sizePolicy9.setHorizontalStretch(0)
-        sizePolicy9.setVerticalStretch(0)
-        sizePolicy9.setHeightForWidth(self.label_your_name.sizePolicy().hasHeightForWidth())
-        self.label_your_name.setSizePolicy(sizePolicy9)
+        sizePolicy10 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+        sizePolicy10.setHorizontalStretch(0)
+        sizePolicy10.setVerticalStretch(0)
+        sizePolicy10.setHeightForWidth(self.label_your_name.sizePolicy().hasHeightForWidth())
+        self.label_your_name.setSizePolicy(sizePolicy10)
         self.label_your_name.setMinimumSize(QSize(80, 30))
         self.label_your_name.setAlignment(Qt.AlignCenter)
 
@@ -1706,11 +1940,11 @@ class Ui_MainWindow(object):
 
         self.textEdit_yourname = QTextEdit(self.Character_page)
         self.textEdit_yourname.setObjectName(u"textEdit_yourname")
-        sizePolicy10 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Maximum)
-        sizePolicy10.setHorizontalStretch(0)
-        sizePolicy10.setVerticalStretch(0)
-        sizePolicy10.setHeightForWidth(self.textEdit_yourname.sizePolicy().hasHeightForWidth())
-        self.textEdit_yourname.setSizePolicy(sizePolicy10)
+        sizePolicy11 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Maximum)
+        sizePolicy11.setHorizontalStretch(0)
+        sizePolicy11.setVerticalStretch(0)
+        sizePolicy11.setHeightForWidth(self.textEdit_yourname.sizePolicy().hasHeightForWidth())
+        self.textEdit_yourname.setSizePolicy(sizePolicy11)
         self.textEdit_yourname.setMinimumSize(QSize(0, 0))
         self.textEdit_yourname.setMaximumSize(QSize(16777215, 40))
         self.textEdit_yourname.setStyleSheet(u"QTextEdit {\n"
@@ -1733,8 +1967,8 @@ class Ui_MainWindow(object):
 
         self.label_greeting = QLabel(self.Character_page)
         self.label_greeting.setObjectName(u"label_greeting")
-        sizePolicy9.setHeightForWidth(self.label_greeting.sizePolicy().hasHeightForWidth())
-        self.label_greeting.setSizePolicy(sizePolicy9)
+        sizePolicy10.setHeightForWidth(self.label_greeting.sizePolicy().hasHeightForWidth())
+        self.label_greeting.setSizePolicy(sizePolicy10)
         self.label_greeting.setMinimumSize(QSize(80, 30))
         self.label_greeting.setAlignment(Qt.AlignCenter)
 
@@ -1742,8 +1976,8 @@ class Ui_MainWindow(object):
 
         self.textEdit_greeting = QTextEdit(self.Character_page)
         self.textEdit_greeting.setObjectName(u"textEdit_greeting")
-        sizePolicy10.setHeightForWidth(self.textEdit_greeting.sizePolicy().hasHeightForWidth())
-        self.textEdit_greeting.setSizePolicy(sizePolicy10)
+        sizePolicy11.setHeightForWidth(self.textEdit_greeting.sizePolicy().hasHeightForWidth())
+        self.textEdit_greeting.setSizePolicy(sizePolicy11)
         self.textEdit_greeting.setMinimumSize(QSize(0, 0))
         self.textEdit_greeting.setMaximumSize(QSize(16777215, 100))
         self.textEdit_greeting.setStyleSheet(u"QTextEdit {\n"
@@ -1768,8 +2002,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_char_profile.setObjectName(u"verticalLayout_char_profile")
         self.label_char_img = QLabel(self.Character_page)
         self.label_char_img.setObjectName(u"label_char_img")
-        sizePolicy9.setHeightForWidth(self.label_char_img.sizePolicy().hasHeightForWidth())
-        self.label_char_img.setSizePolicy(sizePolicy9)
+        sizePolicy10.setHeightForWidth(self.label_char_img.sizePolicy().hasHeightForWidth())
+        self.label_char_img.setSizePolicy(sizePolicy10)
         self.label_char_img.setMinimumSize(QSize(200, 200))
         self.label_char_img.setLayoutDirection(Qt.LeftToRight)
         self.label_char_img.setFrameShape(QFrame.Box)
@@ -1782,8 +2016,8 @@ class Ui_MainWindow(object):
 
         self.label_char_name = QLabel(self.Character_page)
         self.label_char_name.setObjectName(u"label_char_name")
-        sizePolicy9.setHeightForWidth(self.label_char_name.sizePolicy().hasHeightForWidth())
-        self.label_char_name.setSizePolicy(sizePolicy9)
+        sizePolicy10.setHeightForWidth(self.label_char_name.sizePolicy().hasHeightForWidth())
+        self.label_char_name.setSizePolicy(sizePolicy10)
         self.label_char_name.setMinimumSize(QSize(150, 30))
         self.label_char_name.setMaximumSize(QSize(16777215, 16777215))
         self.label_char_name.setLayoutDirection(Qt.LeftToRight)
@@ -1805,8 +2039,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_char_info_2.setObjectName(u"verticalLayout_char_info_2")
         self.label_context = QLabel(self.Character_page)
         self.label_context.setObjectName(u"label_context")
-        sizePolicy9.setHeightForWidth(self.label_context.sizePolicy().hasHeightForWidth())
-        self.label_context.setSizePolicy(sizePolicy9)
+        sizePolicy10.setHeightForWidth(self.label_context.sizePolicy().hasHeightForWidth())
+        self.label_context.setSizePolicy(sizePolicy10)
         self.label_context.setMinimumSize(QSize(80, 30))
         self.label_context.setAlignment(Qt.AlignCenter)
 
@@ -1814,11 +2048,11 @@ class Ui_MainWindow(object):
 
         self.textEdit_context = QTextEdit(self.Character_page)
         self.textEdit_context.setObjectName(u"textEdit_context")
-        sizePolicy11 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
-        sizePolicy11.setHorizontalStretch(0)
-        sizePolicy11.setVerticalStretch(0)
-        sizePolicy11.setHeightForWidth(self.textEdit_context.sizePolicy().hasHeightForWidth())
-        self.textEdit_context.setSizePolicy(sizePolicy11)
+        sizePolicy12 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
+        sizePolicy12.setHorizontalStretch(0)
+        sizePolicy12.setVerticalStretch(0)
+        sizePolicy12.setHeightForWidth(self.textEdit_context.sizePolicy().hasHeightForWidth())
+        self.textEdit_context.setSizePolicy(sizePolicy12)
         self.textEdit_context.setMinimumSize(QSize(0, 0))
         self.textEdit_context.setMaximumSize(QSize(16777215, 600))
         self.textEdit_context.setStyleSheet(u"QTextEdit {\n"
@@ -1982,7 +2216,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -2063,11 +2297,10 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">I'm good today.</p></body></html>", None))
         self.label_last_bot_reply.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Last Bot Reply</span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Message Queue</span></p></body></html>", None))
-        self.pushButton_mute_tts.setText(QCoreApplication.translate("MainWindow", u"Mute TTS", None))
-        self.pushButton_pause_reply.setText(QCoreApplication.translate("MainWindow", u"Pause / Resume\n"
-"Reply", None))
-        self.pushButton_stop_reply.setText(QCoreApplication.translate("MainWindow", u"Stop Generate\n"
-"Reply", None))
+        self.pushButton_mute_tts.setText(QCoreApplication.translate("MainWindow", u"Toggle Spk", None))
+        self.pushButton_mute_mic.setText(QCoreApplication.translate("MainWindow", u"Toggle Mic", None))
+        self.pushButton_pause_reply.setText(QCoreApplication.translate("MainWindow", u"  Reply", None))
+        self.pushButton_stop_reply.setText(QCoreApplication.translate("MainWindow", u" Generate", None))
         self.labelBoxBlenderInstalation.setText(QCoreApplication.translate("MainWindow", u"FILE BOX", None))
         self.lineEdit.setText("")
         self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Type here", None))
@@ -2134,7 +2367,21 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem23.setText(QCoreApplication.translate("MainWindow", u"Line", None));
         self.tableWidget.setSortingEnabled(__sortingEnabled)
 
-        self.label_test.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:26pt;\">TEST TTS PAGE</span></p></body></html>", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Device</span></p></body></html>", None))
+        self.comboBox_mic_selector.setItemText(0, QCoreApplication.translate("MainWindow", u"Mic device 1", None))
+        self.comboBox_mic_selector.setItemText(1, QCoreApplication.translate("MainWindow", u"Mic 2", None))
+        self.comboBox_mic_selector.setItemText(2, QCoreApplication.translate("MainWindow", u"Mic 3", None))
+
+        self.pushButton_mic_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Threshold</span></p></body></html>", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Speaker Device</span></p></body></html>", None))
+        self.comboBox_spk_selector.setItemText(0, QCoreApplication.translate("MainWindow", u"Spk device 1", None))
+        self.comboBox_spk_selector.setItemText(1, QCoreApplication.translate("MainWindow", u"Spk 2", None))
+        self.comboBox_spk_selector.setItemText(2, QCoreApplication.translate("MainWindow", u"Spk 3", None))
+
+        self.pushButton_spk_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Speaker Volume</span></p></body></html>", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"50 %", None))
         self.label_your_name.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Your Name</span></p></body></html>", None))
         self.textEdit_yourname.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"

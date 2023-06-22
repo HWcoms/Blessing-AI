@@ -162,7 +162,6 @@ def load_chatlog(file_path):
 
 
 def run(prompt, name1):
-
     # settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
     settings_json = SettingInfo.load_other_settings()
     max_token = settings_json["max_token"]
@@ -193,13 +192,17 @@ def run(prompt, name1):
     # request['prompt'] = request['prompt'].encode('utf-8').decode('utf-8') #making sure to en/decode as utf-8 - sometimes prompt get changed to symbols
     request['prompt'] = request['prompt'].strip()
 
-    response = requests.post(gen_request_url, json=request)
+    try:
+        response = requests.post(gen_request_url, json=request)
 
-    if response.status_code == 200:
-        result_prompt = response.json()['results'][0]['text']
-        # print(result)
-        trimmed_string = trim_until_newline(result_prompt)
-        return trimmed_string
+        if response.status_code == 200:
+            result_prompt = response.json()['results'][0]['text']
+            # print(result)
+            trimmed_string = trim_until_newline(result_prompt)
+            return trimmed_string
+    except Exception as e:
+        print(f"Error [Language Model API]: Failed Request \n\033[31m▲ {e}\033[0m")
+        return None
 
 
 def load_text_file(file_path):
@@ -287,6 +290,10 @@ def generate_reply(string, character_name):
     # print(file_content, end='')
     try:
         result_text = run(file_content, char_settings_json["your_name"])
+
+        if result_text == "" or None:
+            print("\033[31m"+"Error: No reply returned"+"\033[0m")
+            return None
     except Exception as e:
         print(f"Error: {e}")
         return None
@@ -358,6 +365,7 @@ def check_chatlog(character_name):
 # Example usage
 if __name__ == '__main__':
     print(generate_reply("I'm HWcoms", "Kato Megumi"))
+    # print(run("hello", "coms"))
     # print(HOST)
 
     # print(get_character_name())

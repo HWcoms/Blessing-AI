@@ -181,3 +181,5 @@ src/ico/images/blessingAILogo.psd
 src/*.ui
 
 src/PyBlackBox/*
+
+textholder.py
