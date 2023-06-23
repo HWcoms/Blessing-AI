@@ -2,7 +2,7 @@
 
 This python program is made for communicating prompt and result from chatbot interface (e.g oobabooga/text-generation-webui), also able to use MoeGoe TTS, voice recognition or text from User  
 
-![](docs/screenshots/Blessing%20AI%20Preview.png?raw=true)  
+![](docs/screenshots/Blessing_AI_Preview.png?raw=true)  
 
 ***Note: This project is a work in progress.***  
 Please note that this project is currently under development and may not be feature-complete or stable. Use it at your own risk, and feel free to contribute or provide feedback. We appreciate your understanding and patience as we continue to improve and enhance the project.
