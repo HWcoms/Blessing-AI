@@ -383,7 +383,9 @@ class MainWindow(QMainWindow):
 
     def after_generate_reply(self, success = 1):
         if success == -1:
-            self.chat.scroll_to_animation()
+            self.last_scroll_value = self.chat.get_scroll_value()
+            self.chat.scroll_to_animation(last_value=self.last_scroll_value)
+            self.last_scroll_value = self.chat.get_scroll_max_value()
             return
 
         print("[main GUI]: generated_reply")
