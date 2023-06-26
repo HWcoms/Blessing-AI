@@ -148,11 +148,19 @@ pause
 - Run as Batch file  
   run ```Start.bat```
 
-- Python Program
+- Python Program  
   Run this command in the [src/](src) folder.  
   
   ```
   python voice_translator.py
+  ```
+
+- GUI Python Program (WIP)  
+  ⚠️ **This method is Working In Progress**: Currently, Text chat only works as input ⚠️  
+  Run this command in the [src/](src) folder.  
+  
+  ```
+  python qt_gui_main.py
   ```
 
 ### How to use In Program
