@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'page_messagesimgXjM.ui'
+## Form generated from reading UI file 'page_messagesRrqYqU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -60,13 +60,16 @@ class Ui_chat_page(object):
 "#btn_attachment_top {	\n"
 "	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_attachment.svg);\n"
 "}\n"
+"#btn_open_folder {\n"
+"	background-image: url(:/icons/images/icons/cil-folder-open.png);\n"
+"}\n"
 "#btn_more_top {	\n"
-"	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_more_options.svg);\n"
+"	background-image: url(:/chat/icons_svg/image"
+                        "s/chatlog/icons_svg/icon_more_options.svg);\n"
 "}\n"
 "/* BOTTOM */\n"
 "#bottom QPushButton {\n"
-"	b"
-                        "ackground-color: rgb(47, 48, 50);\n"
+"	background-color: rgb(47, 48, 50);\n"
 "	border-radius: 20px;\n"
 "	background-repeat: no-repeat;\n"
 "	background-position: center;\n"
@@ -98,11 +101,11 @@ class Ui_chat_page(object):
 "	selection-color: rgb(255, 255, 255);\n"
 "	selection-background-color: rgb(149, 199, 0);\n"
 "	border: none;\n"
-"	padding-left: 15px;\n"
+""
+                        "	padding-left: 15px;\n"
 "	padding-right: 15px;\n"
 "	background-repeat: none;\n"
-"	background-po"
-                        "sition: left center;\n"
+"	background-position: left center;\n"
 "	font: 10pt \"Segoe UI\";\n"
 "	color: rgb(94, 96, 100);\n"
 "}\n"
@@ -165,18 +168,18 @@ class Ui_chat_page(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.last_time_connected = QLabel(self.top)
-        self.last_time_connected.setObjectName(u"last_time_connected")
+        self.chat_log_filename = QLabel(self.top)
+        self.chat_log_filename.setObjectName(u"chat_log_filename")
 
-        self.horizontalLayout.addWidget(self.last_time_connected)
+        self.horizontalLayout.addWidget(self.chat_log_filename)
 
-        self.btn_attachment_top = QPushButton(self.top)
-        self.btn_attachment_top.setObjectName(u"btn_attachment_top")
-        self.btn_attachment_top.setMinimumSize(QSize(40, 40))
-        self.btn_attachment_top.setMaximumSize(QSize(40, 40))
-        self.btn_attachment_top.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_open_folder = QPushButton(self.top)
+        self.btn_open_folder.setObjectName(u"btn_open_folder")
+        self.btn_open_folder.setMinimumSize(QSize(40, 40))
+        self.btn_open_folder.setMaximumSize(QSize(40, 40))
+        self.btn_open_folder.setCursor(QCursor(Qt.PointingHandCursor))
 
-        self.horizontalLayout.addWidget(self.btn_attachment_top)
+        self.horizontalLayout.addWidget(self.btn_open_folder)
 
         self.btn_more_top = QPushButton(self.top)
         self.btn_more_top.setObjectName(u"btn_more_top")
@@ -200,11 +203,6 @@ class Ui_chat_page(object):
         self.messages_widget = QWidget()
         self.messages_widget.setObjectName(u"messages_widget")
         self.messages_widget.setGeometry(QRect(0, 0, 959, 486))
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.messages_widget.sizePolicy().hasHeightForWidth())
-        self.messages_widget.setSizePolicy(sizePolicy)
         self.messages_widget.setStyleSheet(u"background: transparent")
         self.chat_layout = QVBoxLayout(self.messages_widget)
         self.chat_layout.setSpacing(0)
@@ -294,8 +292,8 @@ class Ui_chat_page(object):
         self.user_image.setText("")
         self.user_name.setText(QCoreApplication.translate("chat_page", u"User name", None))
         self.user_description.setText(QCoreApplication.translate("chat_page", u"User description", None))
-        self.last_time_connected.setText(QCoreApplication.translate("chat_page", u"connected last time 24h ago", None))
-        self.btn_attachment_top.setText("")
+        self.chat_log_filename.setText(QCoreApplication.translate("chat_page", u"connected last time 24h ago", None))
+        self.btn_open_folder.setText("")
         self.btn_more_top.setText("")
         self.btn_emoticon.setText("")
         self.line_edit_message.setPlaceholderText(QCoreApplication.translate("chat_page", u"Message #user", None))

@@ -204,7 +204,7 @@ def run(prompt, name1):
             print(f"Error [LangAIComm.run]: failed to request generate_reply [status_code: {response.status_code}]")
             return None
     except Exception as e:
-        print("\033[31m" + "Error [LangAIComm.run]: Failed to request" + "\n\033[34m" + f"▲ {e}" + "\033[0m")
+        print("\033[31m" + "Error [LangAIComm.run]: Failed to request" + "\n\033[33m" + f"▲ {e}" + "\033[0m")
         return None
 
 
@@ -336,7 +336,7 @@ def extract_date(string):
         return None
 
 
-def check_chatlog(character_name):
+def check_chatlog(character_name, full_path=True):
     # Check Character's chat file exist
     this_dir = os.path.dirname(os.path.abspath(__file__))
     folder_path = os.path.join(this_dir, "Models", "ChatLog")
@@ -355,12 +355,21 @@ def check_chatlog(character_name):
                 latest_file_path = os.path.join(folder_path, file)
 
     if latest_file_path is not None:
+        if not full_path:
+            return os.path.basename(latest_file_path)
+
         return latest_file_path
+
+    if not full_path:
+        print("\033[31m" + "Error [LangAIComm.check_chatlog]: There's No ChatLog file to load only name.\nPlease use default [full_path] argument!" + "\033[0m")
+        return None
 
     # if file doesn't exist.
     date_string = datetime.now().strftime("%Y%m%d")
     new_file_name = f'{character_name} {date_string}.txt'
     new_file_path = os.path.join(folder_path, new_file_name)
+
+
     try:
         with open(new_file_path, 'w') as f:
             print('Could not find any Chat log... Creating New one! ' + '\033[34m' + f"[{new_file_name}]" + '\033[0m')

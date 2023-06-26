@@ -54,11 +54,12 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         self.char_info_dict : dict = None   # [your_name, character_name,
                                             # character_description, character_image,
-                                            # greeting, context, chatlog]
+                                            # greeting, context]
 
         self.chat_info_dict : dict = None   # <- Contains Chatlog + other_settings.txt
-                                            # [chatlog, max_token, discord_bot,
-                                            # discord_print_language, ai_model_language]
+                                            # [chatlog, chatlog_filename, max_token,
+                                            # discord_bot, discord_print_language,
+                                            # ai_model_language]
 
         self.tts_info_dict: dict = None     # [tts_character_name, tts_language, voice_id,
                                             # voice_speed, voice_volume, intonation_scale,
@@ -70,7 +71,8 @@ class MainWindow(QMainWindow):
         global widgets
         widgets = self.ui
         widgets.textBrowser.setOpenExternalLinks(True)
-
+        self.chat = None
+        self.last_scroll_value = -1
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -167,7 +169,9 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
             self.load_chatlog_info()
-            self.chat_layout_update()
+
+            self.last_scroll_value = self.chat.get_scroll_value()
+            self.chat_layout_update(self.last_scroll_value)
 
         # SHOW CHARACTER PAGE
         if btnName == "btn_character":
@@ -208,10 +212,23 @@ class MainWindow(QMainWindow):
 
     # [GUI] DRAW CHAT
     # ///////////////////////////////////////////////////////////////
-    def chat_layout_update(self):
+    def chat_layout_update(self, dest_scroll_value = -1):
         global widgets
         # self.char_info_dict["character_description"]
         # self.char_info_dict["character_description"] = "AI-Bot" # Character Description
+        if self.last_scroll_value == dest_scroll_value and self.last_scroll_value != -1:
+            print("\033[34m" + f"[main GUI.chat_layout_update]: scroll value is same! no need to scroll" + "\033[0m" )
+            return
+
+        if self.last_scroll_value == -1:
+            self.last_scroll_value = 0
+        elif self.chat:
+                self.last_scroll_value = self.chat.get_scroll_value()
+        else:
+            print("\033[31m" + "Error [main GUI.chat_layout_update]: failed to load chat" + "\033[0m" )
+            return 0
+
+        # print(f"[main GUI.chat_layout_update]: last_scroll_value = {last_scroll_value}")
 
         # REMOVE CHAT
         for chat in reversed(range(self.ui.chat_layout.count())):
@@ -223,6 +240,9 @@ class MainWindow(QMainWindow):
 
         # ADD WIDGET TO LAYOUT
         widgets.chat_layout.addWidget(self.chat)
+
+        # self.chat.set_scroll_value(last_scroll_value)
+        self.chat.scroll_to_animation(last_value=self.last_scroll_value, value=dest_scroll_value)
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -344,6 +364,9 @@ class MainWindow(QMainWindow):
         widgets.textEdit_user_message.setText(last_user_message)
         widgets.textEdit_bot_reply.setText(last_bot_reply)
 
+        # get chatlog filename
+        self.chat_info_dict["chatlog_filename"] = SettingInfo.get_chatlog_filename(character_name)
+
     @staticmethod
     def load_mic_info():
         print()
@@ -358,10 +381,20 @@ class MainWindow(QMainWindow):
             self.chat_info_dict.update(SettingInfo.load_other_settings())
             # print(self.chat_info_dict)
 
-    def after_generate_reply(self):
-        print("[main GUI]: generated_reply")
-        print(self.char_info_dict)
+    def after_generate_reply(self, success = 1):
+        if success == -1:
+            self.chat.scroll_to_animation()
+            return
 
+        print("[main GUI]: generated_reply")
+
+        self.load_chatlog_info()
+        self.chat_layout_update()
+        # self.chat.scroll_to_animation()
+
+    def get_chatlog_path(self):
+        from setting_info import SettingInfo    # noqa
+        return SettingInfo.get_chatlog_filename(self.char_info_dict["character_name"],True)
     # UNUSED
     # def generate_reply(self, text):
     #

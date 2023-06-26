@@ -59,6 +59,9 @@
 #btn_attachment_top {	
 	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_attachment.svg);
 }
+#btn_open_folder {
+	background-image: url(:/icons/images/icons/cil-folder-open.png);
+}
 #btn_more_top {	
 	background-image: url(:/chat/icons_svg/images/chatlog/icons_svg/icon_more_options.svg);
 }
@@ -228,14 +231,14 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="last_time_connected">
+       <widget class="QLabel" name="chat_log_filename">
         <property name="text">
          <string>connected last time 24h ago</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_attachment_top">
+       <widget class="QPushButton" name="btn_open_folder">
         <property name="minimumSize">
          <size>
           <width>40</width>

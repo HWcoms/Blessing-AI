@@ -35,6 +35,11 @@ class SettingInfo:
         settings_json = read_text_file(settings_folder / 'Other_Settings.txt')
         return settings_json
 
+    @staticmethod
+    def get_chatlog_filename(character_name, full_path=False):
+        from LangAIComm import check_chatlog
+        return check_chatlog(character_name, full_path)
+
     # will be deprecated
     @staticmethod
     def load_settings():

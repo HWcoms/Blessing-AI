@@ -19,7 +19,7 @@
 import os
 import random
 
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, QEasingCurve
 # IMPORT / GUI, SETTINGS AND WIDGETS
 # ///////////////////////////////////////////////////////////////
 # Packages
@@ -50,17 +50,19 @@ class Chat(QWidget):
     ):
         QWidget.__init__(self)
 
-        self.scroll_bar = None
         self.page = Ui_chat_page()
         self.page.setupUi(self)
         self.mWindow = main_window
 
         self.char_info_dict = char_dict
-        self.chat_info_dict = chat_dict # for chat log
+        self.chat_info_dict = chat_dict  # for chat log
 
         bot_name = self.char_info_dict["character_name"]
         bot_description = self.char_info_dict["character_description"]
         bot_image = self.char_info_dict["character_image"]
+
+        self.scroll_bar = None
+        self.scroll_anim = None
 
         # profile image [bot, user, other]
         self.pf_img_dict: dict = {'bot': None, 'user': "mouse.png", 'other': "me.png"}
@@ -117,6 +119,11 @@ class Chat(QWidget):
 
         self.page.user_name.setText(bot_name)
         self.page.user_description.setText(bot_description)
+        self.page.chat_log_filename.setText(self.chat_info_dict["chatlog_filename"])
+
+        # PROFILE BUTTONS (TOP RIGHT)
+        self.page.btn_open_folder.clicked.connect(self.buttonClick)
+        self.page.btn_more_top.clicked.connect(self.buttonClick)
 
         # CHANGE PLACEHOLDER TEXT
         format_user_name = bot_name.replace(" ", "_").replace("-", "_")
@@ -148,12 +155,6 @@ class Chat(QWidget):
             self.message.data_message.setText(self.char_info_dict["your_name"])
 
             self.generate_reply(entry_text)
-
-            # # SCROLL TO END
-            # QTimer.singleShot(10, lambda: self.page.messages_frame.setFixedHeight(
-            #     self.page.chat_messages_layout.sizeHint().height()))
-            # QTimer.singleShot(15, lambda: self.scroll_to_end())
-            self.scroll_to_end()
 
     # SEND MESSAGE BY USER
     def send_by_user(self, text, pf_img=None):
@@ -195,24 +196,55 @@ class Chat(QWidget):
             # ADD Name label under message label
             self.message.data_message.setText(prefix)
 
-        try:
-            # print(
-            #     self.page.messages_frame.setFixedHeight(
-            #         self.page.chat_messages_layout.sizeHint().height()))
-            # # SCROLL TO END
-            # QTimer.singleShot(10, lambda: self.page.messages_frame.setFixedHeight(
-            #     self.page.chat_messages_layout.sizeHint().height()))
-            # QTimer.singleShot(15, lambda: self.scroll_to_end())
-
-            self.scroll_to_end()
-        except Exception as e:
-            print("[GUI] ERROR: ", e)
+    #######################################################################################################
+    # SCROLL METHODS
+    #######################################################################################################
+    # set
+    def set_scroll_value(self, value):
+        if self.scroll_bar is None:
+            self.scroll_bar = self.page.chat_messages.verticalScrollBar()
+        self.scroll_bar.setValue(value)
 
     def scroll_to_end(self):
-        # SCROLL TO END
-        if self.scroll_bar:
+        if self.scroll_bar is None:
             self.scroll_bar = self.page.chat_messages.verticalScrollBar()
-            self.scroll_bar.setValue(self.scroll_bar.maximum())
+        self.set_scroll_value(self.get_scroll_max_value())
+
+    # get
+    def get_scroll_value(self):
+        if self.scroll_bar is None:
+            self.scroll_bar = self.page.chat_messages.verticalScrollBar()
+        return self.scroll_bar.value()
+
+    def get_scroll_max_value(self):
+        if self.scroll_bar is None:
+            self.scroll_bar = self.page.chat_messages.verticalScrollBar()
+        return self.scroll_bar.maximum()
+
+    # EMULATE SCROLL ANIMATION
+    # last_value = start_scroll_value, value = end_scrol_value, time = seconds_to_animation
+    def scroll_to_animation(self, last_value=0, value=-1, time=1):
+        try:
+            if self.scroll_bar is None:
+                self.scroll_bar = self.page.chat_messages.verticalScrollBar()
+
+            if self.scroll_anim is None:
+                self.scroll_anim = self.scroll_anim = QPropertyAnimation(self.scroll_bar, b"value")
+
+            time = time * 1000  # time: 1 -> 1000ms
+            self.scroll_anim.setDuration(time)
+            self.scroll_anim.setStartValue(last_value)
+
+            if value == -1:
+                self.scroll_anim.setEndValue(self.get_scroll_max_value())
+            else:
+                self.scroll_anim.setEndValue(value)
+            self.scroll_anim.setEasingCurve(QEasingCurve.OutQuad)
+            self.scroll_anim.start()
+        except Exception as e:
+            print("\033[31m" + "Error [page_message.scroll_to_end_animation]: " + f"{e}" + "\033[0m")
+
+    #######################################################################################################
 
     def generate_reply(self, text):
         # from voice_translator import VoiceTranslator    # noqa
@@ -225,11 +257,39 @@ class Chat(QWidget):
         setting_list = [None, self.char_info_dict, self.chat_info_dict]
         reply_txt = gen.generate(text, setting_list)
 
-        if reply_txt is None or reply_txt == "":
-            print("\033[31m"+"Error [GUI/page_messages]: failed to generate reply."+"\033[0m")
-        else:
-            self.mWindow.after_generate_reply()     # call method from main window [GUI]
+        # reply_txt = "test"
 
+        if reply_txt is None or reply_txt == "":
+            print("\033[31m" + "Error [GUI/page_messages]: failed to generate reply." + "\033[0m")
+            self.mWindow.after_generate_reply(-1)
+        else:
+            self.mWindow.after_generate_reply()  # call method from main window [GUI]
+
+    ####
+    def buttonClick(self):
+        # GET BUTTON CLICKED
+        btn = self.sender()
+        btnName = btn.objectName()
+
+        widgets = self.page
+
+        # SHOW HOME PAGE
+        if btnName == "btn_open_folder":
+            print(btnName)
+            chatlog_path = self.mWindow.get_chatlog_path()
+            # chatlog_path = os.path.dirname(chatlog_path)
+            # os.startfile(chatlog_path)
+
+            import subprocess
+            try:
+                subprocess.Popen(["explorer", "/select,", chatlog_path])
+            except Exception as e:
+                print("\033[31m" + "Error [page_messages.buttonClick]: Failed to Open Folder" + "\n\033[33m" + f"▲ {e}" + "\033[0m")
+
+
+        # SHOW CHARACTER PAGE
+        if btnName == "btn_more_top":
+            print(btnName)
 
 if __name__ == "__main__":
     print()
