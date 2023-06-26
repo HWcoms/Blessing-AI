@@ -372,9 +372,12 @@ class MainWindow(QMainWindow):
     def load_mic_info():
         print()
 
-    @staticmethod
-    def load_tts_info():
-        print()
+    def load_tts_info(self):
+        if self.tts_info_dict is None:
+            self.tts_info_dict = {}
+
+        from setting_info import SettingInfo  # noqa
+        self.tts_info_dict.update(SettingInfo.load_tts_settings())
 
     def load_other_info(self):
         if self.chat_info_dict is not None:

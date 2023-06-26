@@ -16,18 +16,18 @@ class Generator:
         tts_settings, character_settings, other_settings = None, None, None
 
         if settings_list is None or len(settings_list) == 0:
-            log_str = "[VoiceTranslator.Generate]: No loaded settings exist! loading them now..."
+            log_str = "[Generator.generate]: No loaded settings exist! loading them now..."
             settings_list = SettingInfo.load_all_settings()
 
         else:
-            log_str = "[VoiceTranslator.Generate]: Using loaded program settings from main GUI"
+            log_str = "[Generator.generate]: Using loaded program settings from main GUI"
 
         tts_settings = settings_list[0]
         character_settings = settings_list[1]
         other_settings = settings_list[2]
 
         if self.logging:
-            print(log_str)
+            print("\033[34m" + log_str + "\033[0m")
 
         # language_code that AI Model using ("pygmalion should communicate with  english")
         ai_model_language = other_settings["ai_model_language"]
@@ -49,12 +49,43 @@ class Generator:
             if self.logging:
                 print(f'Bot: {bot_reply}')
         else:
-            print('[VoiceTranslator.Generate] Error: text variable is None')
+            print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
             return None  # failed
 
         if bot_reply == "":
-            print('[VoiceTranslator.Generate] Error: text value is blank')
+            print("\031[31m" + '[Generator.Generate] Error: text value is blank' + "\033[0m")
             return None  # failed
 
         # speak(bot_reply, tts_settings, other_settings)
         return bot_reply  # success
+
+    def speak_tts(self, text, settings_list: list = None):
+        # print("speak")
+
+        # Load Program Settings
+        tts_settings, character_settings, other_settings = None, None, None
+
+        if settings_list is None or len(settings_list) == 0:
+            log_str = "[Generator.speak]: No loaded settings exist! loading them now..."
+            settings_list = SettingInfo.load_all_settings()
+
+        else:
+            log_str = "[Generator.speak]: Using loaded program settings from main GUI"
+
+        tts_settings = settings_list[0]
+        character_settings = settings_list[1]
+        other_settings = settings_list[2]
+
+        if self.logging:
+            print("\033[34m" + log_str + "\033[0m")
+
+        if text:
+            from voicevox import speak
+            speak(text, tts_settings, other_settings)
+        else:
+            print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
+            return None  # failed
+
+
+
+

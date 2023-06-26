@@ -257,7 +257,8 @@ class Chat(QWidget):
         # text_lang_code = language_detection(text)
 
         ai_model_language = self.chat_info_dict["ai_model_language"]
-        setting_list = [None, self.char_info_dict, self.chat_info_dict]
+        # setting_list = [None, self.char_info_dict, self.chat_info_dict]
+        setting_list = [self.mWindow.tts_info_dict, self.char_info_dict, self.chat_info_dict]
         reply_txt = gen.generate(text, setting_list)
 
         # reply_txt = "test"
@@ -267,6 +268,8 @@ class Chat(QWidget):
             self.mWindow.after_generate_reply(-1)
         else:
             self.mWindow.after_generate_reply()  # call method from main window [GUI]
+
+            gen.speak_tts(reply_txt, setting_list)  # tts testing
 
     ####
     def buttonClick(self):
