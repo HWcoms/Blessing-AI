@@ -57,7 +57,8 @@ class MainWindow(QMainWindow):
                                             # greeting, context]
 
         self.chat_info_dict : dict = None   # <- Contains Chatlog + other_settings.txt
-                                            # [chatlog, chatlog_filename, max_token,
+                                            # [chatlog, chatlog_filename,
+                                            # max_prompt_token, max_reply_token,
                                             # discord_bot, discord_print_language,
                                             # ai_model_language]
 

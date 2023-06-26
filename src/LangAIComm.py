@@ -77,13 +77,17 @@ def count_tokens(text):
         'tokens': -1
     }
 
-    response = requests.post(token_request_url, json=request)
+    try:
+        response = requests.post(token_request_url, json=request)
 
-    if response.status_code == 200:
-        result_tokens = response.json()['results'][0]['tokens']
-        # print(request['prompt'])
-        # print(result)
-        return result_tokens
+        if response.status_code == 200:
+            result_tokens = response.json()['results'][0]['tokens']
+            # print(request['prompt'])
+            # print(result)
+            return result_tokens
+    except Exception as e:
+        print("\033[31m" + f"Error [LangAIComm.count_tokens]: Failed to count tokens: {e}" + "\n\033[33m")
+        return None
 
 
 def load_character(filepath):
@@ -164,12 +168,12 @@ def load_chatlog(file_path):
 def run(prompt, name1):
     # settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
     settings_json = SettingInfo.load_other_settings()
-    max_token = settings_json["max_token"]
+    max_reply_token = settings_json["max_reply_token"]
 
     request = {
         "your_name": name1,
         'prompt': prompt,
-        'max_new_tokens': max_token,
+        'max_new_tokens': max_reply_token,
         'do_sample': True,
         'temperature': 0.72,
         'top_p': 0.73,
@@ -263,7 +267,7 @@ def get_chatlog_info(character_name):
 
 
 ## Generate
-def generate_reply(string, character_name):
+def generate_reply(string, character_name, max_prompt_token=2048, max_reply_token=200):
     # Define file name that contains prompt
 
     character_file_path = character_name + '.json'
@@ -287,7 +291,14 @@ def generate_reply(string, character_name):
         chat_str = chat_str + '\n' + user_input  # Chatlog is not empty
 
     # remove unecessary \n
-    trim_str = re.sub(r"\n(?![a-zA-Z])", "", chat_str)
+    # trim_str = re.sub(r"\n(?![a-zA-Z])", "", chat_str)
+    chat_str = optimize_tokens(char_dict["context"], chat_str, max_prompt_token - max_reply_token)
+    # print(max_reply_token)
+    if chat_str is None:
+        print(
+            "\033[31m" + "Error [LangAIComm.generate_reply]: Could not Optimize Chat log by Tokens" + "\033[0m")
+        return None
+
     file_content = char_dict["context"] + chat_str
 
     # print(file_content, end='')
@@ -295,7 +306,8 @@ def generate_reply(string, character_name):
         result_text = run(file_content, char_settings_json["your_name"])
 
         if result_text == "" or result_text is None:
-            print("\033[31m"+"Error [LangAIComm.generate_reply]: No reply returned. nothing will be update to chat_log.txt"+"\033[0m")
+            print(
+                "\033[31m" + "Error [LangAIComm.generate_reply]: No reply returned. nothing will be update to chat_log.txt" + "\033[0m")
             return None
 
         result_text = clean_lines(result_text)
@@ -309,7 +321,7 @@ def generate_reply(string, character_name):
 
         return result_text
     except Exception as e:
-        print("\033[31m"+f"Error [LangAIComm.generate_reply]: {e}"+"\033[0m")
+        print("\033[31m" + f"Error [LangAIComm.generate_reply]: {e}" + "\033[0m")
         return None
 
 
@@ -361,14 +373,14 @@ def check_chatlog(character_name, full_path=True):
         return latest_file_path
 
     if not full_path:
-        print("\033[31m" + "Error [LangAIComm.check_chatlog]: There's No ChatLog file to load only name.\nPlease use default [full_path] argument!" + "\033[0m")
+        print(
+            "\033[31m" + "Error [LangAIComm.check_chatlog]: There's No ChatLog file to load only name.\nPlease use default [full_path] argument!" + "\033[0m")
         return None
 
     # if file doesn't exist.
     date_string = datetime.now().strftime("%Y%m%d")
     new_file_name = f'{character_name} {date_string}.txt'
     new_file_path = os.path.join(folder_path, new_file_name)
-
 
     try:
         with open(new_file_path, 'w') as f:
@@ -377,6 +389,27 @@ def check_chatlog(character_name, full_path=True):
     except FileNotFoundError:
         print('\033[31m' + "Error: Can't make chat log file!" + '\033[0m')
         return None
+
+
+def optimize_tokens(context, dialogs, token_limit):
+    full_text = context + dialogs
+    opt_dialogs = ""
+    # return count_tokens(full_text)
+    full_text_tokens = count_tokens(full_text)
+
+    if full_text_tokens is None:
+        print(
+            "\033[31m" + "Error [LangAIComm.optimize_tokens]: Failed to count tokens, exiting function" + "\n\033[33m")
+        return None
+
+    if full_text_tokens > token_limit:
+        # print("token too long: ", full_text_tokens)
+        lines = dialogs.splitlines()[1:]
+        opt_dialogs = '\n'.join(lines)
+        return optimize_tokens(context, opt_dialogs, token_limit)
+    else:
+        # print("optimized text")
+        return dialogs
 
 
 # Example usage
@@ -388,3 +421,5 @@ if __name__ == '__main__':
     # print(get_character_name())
     # print(count_tokens(context))
     # print(get_chatlog_info("Kato Megumi"))
+    # print(count_tokens(char_data))
+    # print(optimize_tokens(char_data, chat_log_string, 843+50))

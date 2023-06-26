@@ -43,7 +43,7 @@ class Generator:
                 # print(f'{source_lang_name}: {eng_speech}')
                 print(f'User: {translated_speech}')
 
-            bot_reply = generate_reply(translated_speech, character_settings["character_name"])
+            bot_reply = generate_reply(translated_speech, character_settings["character_name"], other_settings["max_prompt_token"], other_settings["max_reply_token"])
             # bot_trans_speech = DoTranslate(bot_reply,'en',target_lang=tts_language)
 
             if self.logging:

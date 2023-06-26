@@ -250,6 +250,9 @@ class Chat(QWidget):
         # from voice_translator import VoiceTranslator    # noqa
         from generate import Generator  # noqa
 
+        # refresh other info (load max prompt/reply tokens)
+        self.mWindow.load_other_info()
+
         gen = Generator()
         # text_lang_code = language_detection(text)
 
