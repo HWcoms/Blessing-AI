@@ -180,8 +180,12 @@ class Chat(QWidget):
         your_name = self.char_info_dict["your_name"]
 
         for line in lines:
-            prefix = line.split(":")[0].strip()
-            line = line.split(":")[1].strip()
+
+            # prefix = line.split(":")[0].strip()
+            # line = line.split(":")[1].strip()
+            split_parts = line.split(":", 1)
+            prefix = split_parts[0].strip()
+            line = split_parts[1].strip()
 
             if prefix == char_name:
                 # print(f"Bot said: {line}")

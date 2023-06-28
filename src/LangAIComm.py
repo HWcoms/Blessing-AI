@@ -292,18 +292,18 @@ def generate_reply(string, character_name, max_prompt_token=2048, max_reply_toke
 
     # remove unecessary \n
     # trim_str = re.sub(r"\n(?![a-zA-Z])", "", chat_str)
-    chat_str = optimize_tokens(char_dict["context"], chat_str, max_prompt_token - max_reply_token)
+    optimized_chat_str = optimize_tokens(char_dict["context"], chat_str, max_prompt_token - max_reply_token)
     # print(max_reply_token)
-    if chat_str is None:
+    if optimized_chat_str is None:
         print(
             "\033[31m" + "Error [LangAIComm.generate_reply]: Could not Optimize Chat log by Tokens" + "\033[0m")
         return None
 
-    file_content = char_dict["context"] + chat_str
+    optimized_content = char_dict["context"] + optimized_chat_str
 
     # print(file_content, end='')
     try:
-        result_text = run(file_content, char_settings_json["your_name"])
+        result_text = run(optimized_content, char_settings_json["your_name"])
 
         if result_text == "" or result_text is None:
             print(
