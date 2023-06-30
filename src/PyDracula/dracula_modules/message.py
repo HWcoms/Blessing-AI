@@ -137,22 +137,22 @@ class Message(QWidget):
         self.message = QLabel()
         self.message.setText("message test")
 
-        # if send_by == 'user':
-        #     self.message.setStyleSheet("""
-        #     QLabel{
-        #         background-color: #0e0e0f;
-        #         border-radius: 10px;
-        #         font: 500 11pt 'Segoe UI';
-        #     }
-        #     """)
-        # elif send_by == 'bot' or send_by == 'other':
-        #     self.message.setStyleSheet("""
-        #     QLabel{
-        #         background-color: #28282b;
-        #         border-radius: 10px;
-        #         font: 500 11pt 'Segoe UI';
-        #     }
-        #     """)
+        if send_by == 'user':
+            self.message.setStyleSheet("""
+            QLabel{
+                background-color: #0e0e0f;
+                border-radius: 10px;
+                font: 500 10pt 'Segoe UI';
+            }
+            """)
+        elif send_by == 'bot' or send_by == 'other':
+            self.message.setStyleSheet("""
+            QLabel{
+                background-color: #28282b;
+                border-radius: 10px;
+                font: 500 10pt 'Segoe UI';
+            }
+            """)
 
         self.message.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
 
