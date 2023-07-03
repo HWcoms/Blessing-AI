@@ -170,6 +170,21 @@ Then, hold 'v' key while speaking through your mic.
 If you release the key program detect your voice to text and AI will reply  
 Currently, you can only use record while record is ready, I'll update it later that can able to listen your voice any state. (TODO)  
 
+## (Extension) [WIP] Sing request with RVC (Retrieval-based-Voice-Conversion)  
+extension for request singing to AI.  
+example) user: please sing never gonna give you up! -> send prompt to Language model -> bot: !sing: never gonna give you up -> this program will produce ai covered song with rvc(Retrieval-based-Voice-Conversion)  
+### Install RVC-WEBUI  
+download the RVC-beta.7z file from here and extract it using 7-Zip into a folder of your choosing. It will take around 4~8GB of space.  
+install extra_requirement_rvc  
+```
+    pip install -r extra_requirement_rvc.txt
+```
+### Download RVC trained pth files
+Download kato megumi pth file from Google drive  
+https://drive.google.com/file/d/1mEnR3GXUFGVurQTNauVrJzWC0kEcTmsN/view?usp=sharing (You can use your own pth file)  
+extract `kato megumi.zip` copy `kato megumi` folder to Blessing-AI/src/Models/rvc_model
+TODO: finish edit
+
 ## Credits
 
 This project is built using various open-source libraries and source code. I would like to express my gratitude to the following projects and individuals for their contributions:
