@@ -1,0 +1,8 @@
+parselmouth
+pyworld
+faiss
+faiss-cpu
+fairseq==0.12.2
+torchcrepe==0.0.20
+tensorboardX
+ffmpeg-python

@@ -14,7 +14,6 @@ httpx==0.13.3
 hyperframe==5.2.0
 idna==2.10
 keyboard==0.13.5
-numpy
 packaging==23.0
 PyAudio==0.2.13
 pycparser==2.21
@@ -54,8 +53,8 @@ audonnx
 faster-whisper==0.5.1
 Flask==2.3.2
 iso-639==0.4.5
-numpy==1.24.3
 #openai-whisper
+numpy<=1.23.5
 
 #Discord
 discord.py
