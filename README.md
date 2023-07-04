@@ -174,7 +174,9 @@ Currently, you can only use record while record is ready, I'll update it later t
 extension for request singing to AI.  
 example) user: please sing never gonna give you up! -> send prompt to Language model -> bot: !sing: never gonna give you up -> this program will produce ai covered song with rvc(Retrieval-based-Voice-Conversion)  
 ### Install RVC-WEBUI  
-download the RVC-beta.7z file from here and extract it using 7-Zip into a folder of your choosing. It will take around 4~8GB of space.  
+download the RVC-beta.7z file from [here](https://huggingface.co/lj1995/VoiceConversionWebUI/tree/main)   
+![](docs/screenshots/rvc-hfdownload.png?raw=true)  
+and extract it using 7-Zip into a root folder It will take around 4~8GB of space.  
 install extra_requirement_rvc  
 ```
     pip install -r extra_requirement_rvc.txt
