@@ -1,5 +1,0 @@
-{
-    "discord_bot": false,
-    "discord_print_language": "ko",
-    "chat_display_language": "ko"
-}
