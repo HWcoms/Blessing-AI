@@ -6,11 +6,21 @@ from setting_info import SettingInfo
 
 from pathlib import Path
 
+# Speak MoeGoe
+from modules.translator import DoTranslate
+from modules.convert_roma_ja import english_to_katakana
+from MoeGoe.Main import speech_text
+from threading import Thread
+# from modules.audio_to_device import play_voice
+from discordbot import SendDiscordMessage, ExcuteDiscordWebhook
+
+tts_wav_path = Path(__file__).resolve().parent / r'audio\tts.wav'
+
 
 class Generator:
     def __init__(self):
         self.logging = True
-        self.tts_wav_path = Path(__file__).resolve().parent / r'audio\tts.wav'
+        self.tts_wav_path = tts_wav_path
 
     def generate(self, text, settings_list: list = None):
         from modules.translator import DoTranslate, detect_language
@@ -76,7 +86,7 @@ class Generator:
             log_str = "[Generator.speak]: Using loaded program settings from main GUI"
 
         audio_settings = settings_list[0]
-        # character_settings = settings_list[1]   # unused
+        character_settings = settings_list[1]
         prompt_settings = settings_list[2]
         other_settings = settings_list[3]
 
@@ -85,22 +95,16 @@ class Generator:
 
         if text:
             # from voicevox import speak
-            self.speak_moegoe(text, audio_settings, prompt_settings, other_settings)
+            self.speak_moegoe(text, character_settings, audio_settings, prompt_settings, other_settings)
         else:
             print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
             return None  # failed
 
-    def speak_moegoe(self, sentence, audio_settings, prompt_settings, other_settings):
-        from modules.translator import DoTranslate
-        from modules.convert_roma_ja import english_to_katakana
-        from MoeGoe.Main import speech_text
-        from threading import Thread
-        # from modules.audio_to_device import play_voice
-        from discordbot import ExcuteDiscordWebhook
+    def speak_moegoe(self, sentence, character_settings, audio_settings, prompt_settings, other_settings):
 
         log_str = "[Generator.speak_moegoe]: "
         if self.logging:
-            print("\033[34m" + log_str)
+            print("\033[34m" + log_str + "\033[32m")
 
         spk_id = audio_settings["spk_index"]
         language_code = audio_settings["tts_language"]
@@ -124,18 +128,35 @@ class Generator:
             print("\033[0m")
 
         # play voice to app mic input and speakers/headphones
-        # threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
         threads = [Thread(target=self.play_voice, args=[spk_id])]
+        # threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
 
-        if other_settings["discord_bot"]:
+        discord_bot = other_settings["discord_bot"]
+        discord_webhook = other_settings["discord_webhook"]
+
+        if discord_bot or discord_webhook:
             # Do translate to discord_print_langage, if it's not same as language_code
             if language_code != discord_print_language:
                 discord_sentence = DoTranslate(sentence, ai_model_language, discord_print_language)
             else:
                 discord_sentence = bot_trans_speech
 
-            # SendDiscordMessage(discord_sentence)
-            ExcuteDiscordWebhook(discord_sentence)
+            if discord_bot:
+                bot_id = other_settings["discord_bot_id"]
+                channel_id = other_settings["discord_bot_channel_id"]
+
+                SendDiscordMessage(discord_sentence, bot_id, channel_id)  # Using Discord Bot
+            if discord_webhook:
+                webhook_url = other_settings["discord_webhook_url"]
+                webhook_username = other_settings["discord_webhook_username"]
+                webhook_avatar = other_settings["discord_webhook_avatar"]
+
+                if webhook_username == "":
+                    webhook_username = character_settings["character_name"]
+                if webhook_avatar == "":
+                    webhook_avatar = character_settings["character_image"]
+
+                ExcuteDiscordWebhook(discord_sentence, webhook_url, webhook_username, webhook_avatar)  # Using Webhook
 
         [t.start() for t in threads]
         [t.join() for t in threads]

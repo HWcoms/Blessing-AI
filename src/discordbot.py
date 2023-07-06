@@ -1,36 +1,21 @@
-from os import getenv
-
 import requests
-from dotenv import load_dotenv
-
-load_dotenv()
-
-# region BOT MESSAGE
-BOT_TOKEN = getenv('D_BOT_TOKEN')  # Discord Bot Token
-CHANNEL_ID = int(getenv('D_CHANNEL_ID'))  # Discord Text Channel
-
-# CHANNEL_ID =           #2nd channel to test
-
-dsend_message_url = f"https://discord.com/api/v9/channels/{CHANNEL_ID}/messages"
 
 payload = {
     'content': "silent request post without running bot in background",
     'flags': 4096
 }
 
-header = {
-    'authorization': 'Bot ' + BOT_TOKEN
-}
 
-
-def SendDiscordMessage(message):
+def SendDiscordMessage(message, bot_id, channel_id):
     payload['content'] = message
 
+    header = {
+        'authorization': 'Bot ' + bot_id
+    }
+
+    dsend_message_url = f"https://discord.com/api/v9/channels/{channel_id}/messages"
+
     r = requests.post(dsend_message_url, data=payload, headers=header)
-
-
-# SendDiscordMessage("called")
-# print(payload['content'])
 
 # endregion
 
@@ -47,12 +32,14 @@ webhook_data = {
 }
 
 
-def ExcuteDiscordWebhook(message, username=wh_username, avatar=wh_avatar):
+def ExcuteDiscordWebhook(message, webhook_url, username, avatar):
     webhook_data['content'] = message
     webhook_data['username'] = username
-    webhook_data['avatar_url'] = avatar
 
-    result = requests.post(WEBHOOK_URL, json=webhook_data)
+    if avatar is not None and avatar != "":
+        webhook_data['avatar_url'] = avatar
+
+    result = requests.post(webhook_url, json=webhook_data)
 
 # ExcuteDiscordWebhook("called")
 

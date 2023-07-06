@@ -185,7 +185,7 @@ class MainWindow(QMainWindow):
 
         # SHOW MIC PAGE
         if btnName == "btn_prompt_setting":
-            widgets.stackedWidget.setCurrentWidget(widgets.Mic_Page)
+            widgets.stackedWidget.setCurrentWidget(widgets.Prompt_Page)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -193,7 +193,7 @@ class MainWindow(QMainWindow):
 
         # SHOW AUDIO PAGE
         if btnName == "btn_audio_setting":
-            widgets.stackedWidget.setCurrentWidget(widgets.TTS_Page)  # SET PAGE
+            widgets.stackedWidget.setCurrentWidget(widgets.Audio_Page)  # SET PAGE
             UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
 
@@ -403,7 +403,7 @@ class MainWindow(QMainWindow):
             self.last_scroll_value = self.chat.get_scroll_max_value()
             return
 
-        print("[main GUI]: generated_reply")
+        print("\033[34m" + "[main GUI]: generated_reply" + "\033[0m")
 
         self.load_chatlog_info()
         self.chat_layout_update()
