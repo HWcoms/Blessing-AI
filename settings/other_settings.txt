@@ -4,9 +4,11 @@
     "discord_bot_channel_id": "your_text_channel_id",
 
     "discord_webhook": false,
-    "discord_webhook_url": "your_token",
-    "discord_webhook_username": "blank = character_name from character_settings.txt",
-    "discord_webhook_avatar": "profile picture, blank = same picture with GUI",
+    "discord_webhook_url": "your_webhook_token",
+    "discord_webhook_username": "",
+    "▲ comment": "blank: use character_name from character_settings.txt",
+    "discord_webhook_avatar": "",
+    "▲ comment": "profile pic url (only works with internet url), blank: default discord icon",
 
     "discord_print_language": "ko",
     "chat_display_language": "ko"
