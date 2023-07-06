@@ -18,6 +18,10 @@ Please note that this project is currently under development and may not be feat
   - [1. Run Language Model Interface](#1-run-language-model-interface-local)  
   - [2. Run Blessing AI](#2-run-blessing-ai-3-options)  
   - [How to use](#how-to-use-in-program)  
+- [Extension](#extension--wip)  
+  - [Song Request RVC](#song-request-with-rvc)  
+    - [Install RVC WebUI](#install-rvc-webui)  
+    - [Download RVC trained pth files](#download-rvc-trained-pth-files)  
 - [Credits](#credits)  
 - [License](#license)  
 
@@ -170,8 +174,9 @@ Then, hold 'v' key while speaking through your mic.
 If you release the key program detect your voice to text and AI will reply  
 Currently, you can only use record while record is ready, I'll update it later that can able to listen your voice any state. (TODO)  
 
-## (Extension) [WIP] Sing request with RVC (Retrieval-based-Voice-Conversion)  
-extension for request singing to AI.  
+# [Extension / WIP]
+## Song request with RVC
+extension for request singing to AI using RVC (Retrieval-based-Voice-Conversion).  
 example) user: please sing never gonna give you up! -> send prompt to Language model -> bot: !sing: never gonna give you up -> this program will produce ai covered song with rvc(Retrieval-based-Voice-Conversion)  
 ### Install RVC-WEBUI  
 download the RVC-beta.7z file from [here](https://huggingface.co/lj1995/VoiceConversionWebUI/tree/main)   
