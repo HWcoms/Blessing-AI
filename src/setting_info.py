@@ -9,30 +9,37 @@ class SettingInfo:
     def load_all_settings():
         """
             [return]
-            tts_settings
+            audio_settings
             character_settings
+            prompt_settings
             other_settings
         """
-        tts_settings = SettingInfo.load_tts_settings()
+        audio_settings = SettingInfo.load_audio_settings()
         character_settings = SettingInfo.load_character_settings()
+        prompt_settings = SettingInfo.load_prompt_settings()
         other_settings = SettingInfo.load_other_settings()
 
-        settings_list = [tts_settings, character_settings, other_settings]
+        settings_list = [audio_settings, character_settings, prompt_settings, other_settings]
         return settings_list
 
     @staticmethod
-    def load_tts_settings():
-        settings_json = read_text_file(settings_folder / 'TTS_Settings.txt')
+    def load_audio_settings():
+        settings_json = read_text_file(settings_folder / 'audio_settings.txt')
         return settings_json
 
     @staticmethod
     def load_character_settings():
-        settings_json = read_text_file(settings_folder / 'Character_Settings.txt')
+        settings_json = read_text_file(settings_folder / 'character_settings.txt')
         return settings_json
 
     @staticmethod
     def load_other_settings():
-        settings_json = read_text_file(settings_folder / 'Other_Settings.txt')
+        settings_json = read_text_file(settings_folder / 'other_settings.txt')
+        return settings_json
+
+    @staticmethod
+    def load_prompt_settings():
+        settings_json = read_text_file(settings_folder / 'prompt_settings.txt')
         return settings_json
 
     @staticmethod
@@ -44,7 +51,7 @@ class SettingInfo:
     @staticmethod
     def load_settings():
         # Load Voice_Settings.txt
-        settings_json = read_text_file(settings_folder / 'Voice_Settings.txt')
+        settings_json = read_text_file(settings_folder / 'voice_settings.txt')
 
         return settings_json
 
@@ -60,7 +67,7 @@ def read_text_file(filename):
     try:
         json_data = json.loads(setting_data)
     except json.JSONDecodeError:
-        print("Invalid JSON format in the text file.")
+        print("\033[31m" + "Invalid JSON format in the text file." + "\033[33m" + f" Please check the Syntax of setting file: '{filename}'" "\033[0m")
         return None
 
     return json_data

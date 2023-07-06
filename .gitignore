@@ -183,3 +183,5 @@ src/*.ui
 src/PyBlackBox/*
 
 textholder.py
+
+settings/unused/

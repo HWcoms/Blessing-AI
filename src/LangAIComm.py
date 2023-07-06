@@ -1,6 +1,7 @@
 import base64
 import json
 import os
+import urllib.parse
 
 from setting_info import *
 
@@ -19,10 +20,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # For local streaming, the websockets are hosted without ssl - http://
-HOST = getenv('TEXTGENERATION_URL')
-gen_request_url = f'{HOST}/api/v1/generate'
-view_request_url = f'{HOST}/api/v1/view'
-token_request_url = f'{HOST}/api/v1/token-count'
+# HOST = getenv('TEXTGENERATION_URL')
+# gen_request_url = f'{HOST}/api/v1/generate'
+# view_request_url = f'{HOST}/api/v1/view'
+# token_request_url = f'{HOST}/api/v1/token-count'
+
+# Global endpoint vars
+gen_url_endpoint = 'v1/generate'
+view_url_endpoint = 'v1/view'
+token_url_endpoint = 'v1/token-count'
+token_request_url = None
 
 trim_string = '\n'
 
@@ -76,6 +83,10 @@ def count_tokens(text):
         'prompt': text,
         'tokens': -1
     }
+    global token_request_url
+    if token_request_url is None:
+        inner_settings_json = SettingInfo.load_prompt_settings()
+        token_request_url = check_url(inner_settings_json["api_url"], token_url_endpoint)
 
     try:
         response = requests.post(token_request_url, json=request)
@@ -86,7 +97,7 @@ def count_tokens(text):
             # print(result)
             return result_tokens
     except Exception as e:
-        print("\033[31m" + f"Error [LangAIComm.count_tokens]: Failed to count tokens: {e}" + "\n\033[33m")
+        print("\033[31m" + f"Error [LangAIComm.count_tokens]: Failed to count tokens: {e}" + "\n\033[0m")
         return None
 
 
@@ -167,7 +178,8 @@ def load_chatlog(file_path):
 
 def run(prompt, name1):
     # settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
-    settings_json = SettingInfo.load_other_settings()
+    settings_json = SettingInfo.load_prompt_settings()
+    gen_request_url = check_url(settings_json["api_url"], gen_url_endpoint)
     max_reply_token = settings_json["max_reply_token"]
 
     request = {
@@ -234,6 +246,19 @@ def trim_until_newline(string):
 
 def clean_lines(string):
     return string.replace('\n', ' ')
+
+
+def check_url(base_url, endpoint):
+    if base_url.endswith('/api'):
+        merged_url = base_url + '/' + endpoint
+    elif base_url.endswith('/api/'):
+        merged_url = base_url + endpoint
+    elif base_url.endswith('/'):
+        merged_url = base_url + 'api/' + endpoint
+    else:
+        merged_url = base_url + '/api/' + endpoint
+
+    return merged_url
 
 
 ## Get character json for GUI
@@ -392,6 +417,8 @@ def check_chatlog(character_name, full_path=True):
 
 
 def optimize_tokens(context, dialogs, token_limit):
+    global token_request_url
+
     full_text = context + dialogs
     opt_dialogs = ""
     # return count_tokens(full_text)
@@ -399,24 +426,37 @@ def optimize_tokens(context, dialogs, token_limit):
 
     if full_text_tokens is None:
         print(
-            "\033[31m" + "Error [LangAIComm.optimize_tokens]: Failed to count tokens, exiting function" + "\n\033[33m")
+            "\033[31m" + "Error [LangAIComm.optimize_tokens]: Failed to count tokens, exiting function" + "\n\033[0m")
+
+        token_request_url = None
         return None
 
     if full_text_tokens > token_limit:
         # print("token too long: ", full_text_tokens)
+        print(
+            "\033[34m" + "[LangAIComm.optimize_tokens]: Requested Token is too long, Please consider make new chat log: " + "\033[33m"
+            + f"{full_text_tokens} (token counts)" + "\033[0m")
+
         lines = dialogs.splitlines()[1:]
         opt_dialogs = '\n'.join(lines)
         return optimize_tokens(context, opt_dialogs, token_limit)
     else:
         # print("optimized text")
+        token_request_url = None
+
         return dialogs
 
 
 # Example usage
 if __name__ == '__main__':
     print(generate_reply("I'm HWcoms", "Kato Megumi"))
+
+    # settings_json = SettingInfo.load_prompt_settings()
+    # print(settings_json)
+    # gen_request_url = check_url(settings_json["api_url"], gen_url_endpoint)
+    # print(gen_request_url)
+
     # print(run("hello", "coms"))
-    # print(HOST)
 
     # print(get_character_name())
     # print(count_tokens(context))

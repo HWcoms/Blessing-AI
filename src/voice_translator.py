@@ -74,7 +74,7 @@ def voice_ready(ready_str):
 def Do_Generate(eng_speech, speech_lang, settings_list: list = None):
     log_str = ""
     # Load Program Settings
-    tts_settings, character_settings, other_settings = None, None, None
+    audio_settings, character_settings, prompt_settings, other_settings = None, None, None, None
 
     if settings_list is None or len(settings_list) == 0:
         log_str = "[voice_translator/Do_Generate]: No loaded settings exist! loading them now..."
@@ -83,14 +83,15 @@ def Do_Generate(eng_speech, speech_lang, settings_list: list = None):
     else:
         log_str = "[voice_translator/Do_Generate]: Using loaded program settings from main GUI"
 
-    tts_settings = settings_list[0]
+    audio_settings = settings_list[0]
     character_settings = settings_list[1]
-    other_settings = settings_list[2]
+    prompt_settings = settings_list[2]
+    other_settings = settings_list[3]
 
     if LOGGING:
         print(log_str)
 
-    ai_model_language = other_settings["ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
+    ai_model_language = prompt_settings["ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
 
     bot_reply = ""
 
@@ -122,7 +123,7 @@ def Do_Generate(eng_speech, speech_lang, settings_list: list = None):
         translated_speech = DoTranslate("목소리를 감지할수 없거나 알 수 없는 오류가 발생했습니다.", target_lang='ja')
 
     if bot_reply != "":
-        speak(bot_reply, tts_settings, other_settings)
+        speak(bot_reply, audio_settings, prompt_settings, other_settings)
 
 
 def on_press_key(_):
@@ -186,65 +187,7 @@ if __name__ == 'voice_translator':
     # stream = None
 
 
-class VoiceTranslator:
-    def __init__(self):
-        self.logging = True
-
-    def generate(self, text, settings_list: list = None):
-        from modules.translator import DoTranslate, detect_language
-        log_str = ""
-        # Load Program Settings
-        tts_settings, character_settings, other_settings = None, None, None
-
-        if settings_list is None or len(settings_list) == 0:
-            log_str = "[VoiceTranslator.Generate]: No loaded settings exist! loading them now..."
-            settings_list = SettingInfo.load_all_settings()
-
-        else:
-            log_str = "[VoiceTranslator.Generate]: Using loaded program settings from main GUI"
-
-        tts_settings = settings_list[0]
-        character_settings = settings_list[1]
-        other_settings = settings_list[2]
-
-        if self.logging:
-            print(log_str)
-
-        ai_model_language = other_settings["ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
-
-        bot_reply = ""
-
-        if text:
-            speech_lang = detect_language(text)
-            translated_speech = DoTranslate(text, speech_lang, ai_model_language)
-
-            if self.logging:
-                # source_lang_name = languages.get(alpha2=speech_lang).name
-                # print(f'{source_lang_name}: {eng_speech}')
-                print(f'User: {translated_speech}')
-
-            bot_reply = generate_reply(translated_speech, character_settings["character_name"])
-            # bot_trans_speech = DoTranslate(bot_reply,'en',target_lang=tts_language)
-
-            if self.logging:
-                print(f'Bot: {bot_reply}')
-        else:
-            print('[VoiceTranslator.Generate] Error: text variable is None')
-            return None    # failed
-
-        if bot_reply == "":
-            print('[VoiceTranslator.Generate] Error: text value is blank')
-            return None    # failed
-
-        # speak(bot_reply, tts_settings, other_settings)
-        return bot_reply    # success
-
-
 if __name__ == '__main__':
-    # voiceTr = VoiceTranslator()
-    # voiceTr.generate("기분이 어때?")
-    # exit(0)
-
     p = pyaudio.PyAudio()
 
     # get channels and sampling rate of mic

@@ -58,13 +58,17 @@ class MainWindow(QMainWindow):
 
         self.chat_info_dict : dict = None   # <- Contains Chatlog + other_settings.txt
                                             # [chatlog, chatlog_filename,
-                                            # max_prompt_token, max_reply_token,
-                                            # discord_bot, discord_print_language,
-                                            # ai_model_language]
+                                            # discord_bot, discord_print_language
 
-        self.tts_info_dict: dict = None     # [tts_character_name, tts_language, voice_id,
-                                            # voice_speed, voice_volume, intonation_scale,
-                                            # pre_phoneme_length, post_phoneme_length]
+        # TODO: create audio_setting, prompt setting (devcices)
+        self.audio_info_dict: dict = None   # [mic_index, mic_threshold, phrase_timeout,
+
+                                            # spk_index, tts_character_name, tts_language
+                                            # voice_id, voice_speed, voice_volume,
+                                            #  intonation_scale, pre_phoneme_length, post_phoneme_length]
+
+        self.prompt_info_dict: dict = None  # [max_prompt_token, max_reply_token,
+                                            # ai_model_language]
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
@@ -106,9 +110,9 @@ class MainWindow(QMainWindow):
 
         # LEFT MENUS
         widgets.btn_home.clicked.connect(self.buttonClick)
-        widgets.btn_mic_setting.clicked.connect(self.buttonClick)
         widgets.btn_character.clicked.connect(self.buttonClick)
-        widgets.btn_tts_setting.clicked.connect(self.buttonClick)
+        widgets.btn_audio_setting.clicked.connect(self.buttonClick)
+        widgets.btn_prompt_setting.clicked.connect(self.buttonClick)
         widgets.btn_exit.clicked.connect(self.buttonClick)
 
         # EXTRA LEFT BOX
@@ -144,10 +148,7 @@ class MainWindow(QMainWindow):
         # SET HOME PAGE AND SELECT MENU
         # ///////////////////////////////////////////////////////////////
         widgets.stackedWidget.setCurrentWidget(widgets.Home_Page)
-        widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
-        # widgets.btn_character.setStyleSheet(UIFunctions.selectMenu(widgets.btn_character.styleSheet()))
-        # widgets.btn_mic_setting.setStyleSheet(UIFunctions.selectMenu(widgets.btn_mic_setting.styleSheet()))
-        # widgets.btn_tts_setting.setStyleSheet(UIFunctions.selectMenu(widgets.btn_tts_setting.styleSheet()))
+        widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))   # set pink color to menu selector
 
         self.load_all_info()
 
@@ -183,20 +184,20 @@ class MainWindow(QMainWindow):
             self.load_character_info()
 
         # SHOW MIC PAGE
-        if btnName == "btn_mic_setting":
+        if btnName == "btn_prompt_setting":
             widgets.stackedWidget.setCurrentWidget(widgets.Mic_Page)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
-            self.load_mic_info()
+            self.load_prompt_info()
 
-        # SHOW TTS PAGE
-        if btnName == "btn_tts_setting":
+        # SHOW AUDIO PAGE
+        if btnName == "btn_audio_setting":
             widgets.stackedWidget.setCurrentWidget(widgets.TTS_Page)  # SET PAGE
             UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
 
-            self.load_tts_info()
+            self.load_audio_info()
 
         if btnName == "btn_share":
             import webbrowser
@@ -271,10 +272,10 @@ class MainWindow(QMainWindow):
 
         self.chat_layout_update()    # Load Home Page
 
-        self.load_mic_info()    # Load Mic page
-        self.load_tts_info()    # Load TTS page
+        self.load_audio_info()    # Load Audio page
 
         self.load_other_info()  # Load other information
+        self.load_prompt_info() # Load prompt information
 
 
     def load_character_info(self):
@@ -370,20 +371,30 @@ class MainWindow(QMainWindow):
 
     @staticmethod
     def load_mic_info():
+
+
         print()
 
-    def load_tts_info(self):
-        if self.tts_info_dict is None:
-            self.tts_info_dict = {}
+    def load_audio_info(self):
+        if self.audio_info_dict is None:
+            self.audio_info_dict = {}
 
         from setting_info import SettingInfo  # noqa
-        self.tts_info_dict.update(SettingInfo.load_tts_settings())
+        self.audio_info_dict.update(SettingInfo.load_audio_settings())
 
     def load_other_info(self):
-        if self.chat_info_dict is not None:
-            from setting_info import SettingInfo  # noqa
-            self.chat_info_dict.update(SettingInfo.load_other_settings())
-            # print(self.chat_info_dict)
+        if self.chat_info_dict is None:
+            self.chat_info_dict = {}
+
+        from setting_info import SettingInfo  # noqa
+        self.chat_info_dict.update(SettingInfo.load_other_settings())
+
+    def load_prompt_info(self):
+        if self.prompt_info_dict is None:
+            self.prompt_info_dict = {}
+
+        from setting_info import SettingInfo  # noqa
+        self.prompt_info_dict.update(SettingInfo.load_prompt_settings())
 
     def after_generate_reply(self, success = 1):
         if success == -1:
@@ -401,21 +412,6 @@ class MainWindow(QMainWindow):
     def get_chatlog_path(self):
         from setting_info import SettingInfo    # noqa
         return SettingInfo.get_chatlog_filename(self.char_info_dict["character_name"],True)
-    # UNUSED
-    # def generate_reply(self, text):
-    #
-    #     from voice_translator import VoiceTranslator   # noqa
-    #     from modules.translator import DoTranslate, language_detection
-    #
-    #     voiceTr = VoiceTranslator()
-    #     text_lang_code = language_detection(text)
-    #
-    #     ai_model_language = self.chat_info_dict["ai_model_language"]
-    #
-    #     voiceTr.Do_Generate(text, text_lang_code, list(self.tts_info_dict, self.char_info_dict, self.chat_info_dict))
-    #
-    #     self.chat_layout_update()
-
 
 
 if __name__ == "__main__":

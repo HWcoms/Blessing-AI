@@ -188,7 +188,7 @@ def speech_text(character_name, msg, lang, spk_id, audio_volume):
 
 def load_model(character_name):
     current_folder = os.path.dirname(os.path.abspath(__file__))  # Blessing-AI\src\MoeGoe
-    model_folder = os.path.join(os.path.dirname(current_folder), "models", "voice")
+    model_folder = os.path.join(os.path.dirname(current_folder), "Models", "Voice")
     # config = os.path.join(code_path, "models/moegoe_config.json")
     # out_file_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 

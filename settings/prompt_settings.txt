@@ -1,0 +1,6 @@
+{
+    "api_url": "http://localhost:5000",
+    "max_prompt_token": 2048,
+    "max_reply_token": 200,
+    "ai_model_language": "en"
+}

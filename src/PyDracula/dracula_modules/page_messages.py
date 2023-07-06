@@ -251,18 +251,19 @@ class Chat(QWidget):
     #######################################################################################################
 
     def generate_reply(self, text):
-        # from voice_translator import VoiceTranslator    # noqa
         from generate import Generator  # noqa
 
         # refresh other info (load max prompt/reply tokens)
-        self.mWindow.load_other_info()
+        self.mWindow.load_prompt_info()
 
         gen = Generator()
         # text_lang_code = language_detection(text)
 
-        ai_model_language = self.chat_info_dict["ai_model_language"]
+        audio_info_dict = self.mWindow.audio_info_dict
+        prompt_info_dict = self.mWindow.prompt_info_dict
+
         # setting_list = [None, self.char_info_dict, self.chat_info_dict]
-        setting_list = [self.mWindow.tts_info_dict, self.char_info_dict, self.chat_info_dict]
+        setting_list = [audio_info_dict, self.char_info_dict, prompt_info_dict, self.chat_info_dict]
         reply_txt = gen.generate(text, setting_list)
 
         # reply_txt = "test"
