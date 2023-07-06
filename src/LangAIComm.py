@@ -53,7 +53,7 @@ def load_png_character(filename):
 
 def read_text_file(filename):
     # 텍스트 파일 읽기
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding='utf-8') as file:
         data = file.read()
 
     data = data.strip()

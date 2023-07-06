@@ -255,6 +255,7 @@ class Chat(QWidget):
 
         # refresh other info (load max prompt/reply tokens)
         self.mWindow.load_prompt_info()
+        self.mWindow.load_other_info()
 
         gen = Generator()
         # text_lang_code = language_detection(text)

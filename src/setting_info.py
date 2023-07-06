@@ -58,7 +58,7 @@ class SettingInfo:
 
 def read_text_file(filename):
     # 텍스트 파일 읽기
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding='utf-8') as file:
         setting_data = file.read()
 
     setting_data = setting_data.strip()
