@@ -9,7 +9,7 @@
     "discord_webhook_username": "",
     "▲ username comment": "blank: use character_name from character_settings.txt",
     "discord_webhook_avatar": "",
-    "▲ avtar comment": "profile pic url (only works with internet url), blank: default discord icon",
+    "▲ avatar comment": "profile pic url (only works with internet url), blank: default discord icon",
 
     "discord_print_language": "ko",
     "chat_display_language": "ko"

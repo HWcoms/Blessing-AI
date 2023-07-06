@@ -1801,7 +1801,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>3</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -3924,6 +3924,9 @@ QSlider::handle:horizontal:pressed {
     background-color: rgb(65, 255, 195);
 }</string>
                                    </property>
+                                   <property name="maximum">
+                                    <number>100</number>
+                                   </property>
                                    <property name="orientation">
                                     <enum>Qt::Horizontal</enum>
                                    </property>
@@ -4320,10 +4323,13 @@ QPushButton:pressed{
                                   <string notr="true"/>
                                  </property>
                                  <property name="maximum">
-                                  <number>2</number>
+                                  <number>200</number>
+                                 </property>
+                                 <property name="singleStep">
+                                  <number>0</number>
                                  </property>
                                  <property name="value">
-                                  <number>1</number>
+                                  <number>100</number>
                                  </property>
                                  <property name="orientation">
                                   <enum>Qt::Horizontal</enum>
@@ -4433,10 +4439,10 @@ QPushButton:pressed{
                                   <string notr="true"/>
                                  </property>
                                  <property name="maximum">
-                                  <number>2</number>
+                                  <number>200</number>
                                  </property>
                                  <property name="value">
-                                  <number>1</number>
+                                  <number>100</number>
                                  </property>
                                  <property name="orientation">
                                   <enum>Qt::Horizontal</enum>
@@ -4546,10 +4552,10 @@ QPushButton:pressed{
                                   <string notr="true"/>
                                  </property>
                                  <property name="maximum">
-                                  <number>2</number>
+                                  <number>200</number>
                                  </property>
                                  <property name="value">
-                                  <number>1</number>
+                                  <number>100</number>
                                  </property>
                                  <property name="orientation">
                                   <enum>Qt::Horizontal</enum>
@@ -4659,10 +4665,10 @@ QPushButton:pressed{
                                   <string notr="true"/>
                                  </property>
                                  <property name="maximum">
-                                  <number>2</number>
+                                  <number>200</number>
                                  </property>
                                  <property name="value">
-                                  <number>1</number>
+                                  <number>100</number>
                                  </property>
                                  <property name="orientation">
                                   <enum>Qt::Horizontal</enum>
@@ -4772,10 +4778,10 @@ QPushButton:pressed{
                                   <string notr="true"/>
                                  </property>
                                  <property name="maximum">
-                                  <number>2</number>
+                                  <number>200</number>
                                  </property>
                                  <property name="value">
-                                  <number>1</number>
+                                  <number>100</number>
                                  </property>
                                  <property name="orientation">
                                   <enum>Qt::Horizontal</enum>

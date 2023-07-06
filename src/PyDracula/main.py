@@ -170,9 +170,8 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
-            self.load_chatlog_info()
-
             self.last_scroll_value = self.chat.get_scroll_value()
+            # TODO: if chatlog.txt differ with chat_info_dict["chatlog"], Reload chatlog.txt
             self.chat_layout_update(self.last_scroll_value)
 
         # SHOW CHARACTER PAGE
@@ -218,9 +217,29 @@ class MainWindow(QMainWindow):
         global widgets
         # self.char_info_dict["character_description"]
         # self.char_info_dict["character_description"] = "AI-Bot" # Character Description
-        if self.last_scroll_value == dest_scroll_value and self.last_scroll_value != -1:
-            print("\033[34m" + f"[main GUI.chat_layout_update]: scroll value is same! no need to scroll" + "\033[0m" )
-            return
+
+
+        ###########################################################################
+        #   CHECK DIFFERENCE BETWEEN OLD / NOW CHATLOG
+        ###########################################################################
+        from LangAIComm import get_chatlog_info  # noqa
+        if self.char_info_dict is None:
+            print("[GUI] : Chat info dict is None, now loading character info...")
+            self.load_character_info()
+        new_chatlog_str = get_chatlog_info(self.char_info_dict["character_name"])
+
+        if self.chat_info_dict:
+            if self.chat_info_dict['chatlog'] == new_chatlog_str:
+                print("\033[34m" + f"[main GUI.chat_layout_update]: Prev / Current Content of Chatlog are same! No need to update" + "\033[0m" )
+                return
+
+            elif self.last_scroll_value == dest_scroll_value and self.last_scroll_value != -1:
+                print("\033[34m" + f"[main GUI.chat_layout_update]: scroll value is same! No need to scroll" + "\033[0m")
+                return
+        ###########################################################################
+        #   END
+        ###########################################################################
+        self.load_chatlog_info()    # Load chatlog information
 
         if self.last_scroll_value == -1:
             self.last_scroll_value = 0
@@ -232,6 +251,10 @@ class MainWindow(QMainWindow):
 
         # print(f"[main GUI.chat_layout_update]: last_scroll_value = {last_scroll_value}")
 
+
+        ###########################################################################
+        #   REFRESH CHAT
+        ###########################################################################
         # REMOVE CHAT
         for chat in reversed(range(self.ui.chat_layout.count())):
             widgets.chat_layout.itemAt(chat).widget().deleteLater()
@@ -242,6 +265,10 @@ class MainWindow(QMainWindow):
 
         # ADD WIDGET TO LAYOUT
         widgets.chat_layout.addWidget(self.chat)
+        ###########################################################################
+        #   END
+        ###########################################################################
+
 
         # self.chat.set_scroll_value(last_scroll_value)
         self.chat.scroll_to_animation(last_value=self.last_scroll_value, value=dest_scroll_value)
@@ -268,7 +295,6 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def load_all_info(self):
         self.load_character_info()  # Load Character page
-        self.load_chatlog_info()    # Load chatlog information
 
         self.chat_layout_update()    # Load Home Page
 
@@ -405,7 +431,6 @@ class MainWindow(QMainWindow):
 
         print("\033[34m" + "[main GUI]: generated_reply" + "\033[0m")
 
-        self.load_chatlog_info()
         self.chat_layout_update()
         # self.chat.scroll_to_animation()
 

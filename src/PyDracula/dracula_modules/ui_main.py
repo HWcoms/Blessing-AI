@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'maintaTdkL.ui'
+## Form generated from reading UI file 'mainMnTOCd.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -2019,6 +2019,7 @@ class Ui_MainWindow(object):
 "QSlider::handle:horizontal:pressed {\n"
 "    background-color: rgb(65, 255, 195);\n"
 "}")
+        self.horizontalSlider_mic_threshold.setMaximum(100)
         self.horizontalSlider_mic_threshold.setOrientation(Qt.Horizontal)
 
         self.verticalLayout_27.addWidget(self.horizontalSlider_mic_threshold)
@@ -2232,8 +2233,9 @@ class Ui_MainWindow(object):
         self.horizontalSlider_tts_speed = QSlider(self.scrollAreaWidgetContents_2)
         self.horizontalSlider_tts_speed.setObjectName(u"horizontalSlider_tts_speed")
         self.horizontalSlider_tts_speed.setStyleSheet(u"")
-        self.horizontalSlider_tts_speed.setMaximum(2)
-        self.horizontalSlider_tts_speed.setValue(1)
+        self.horizontalSlider_tts_speed.setMaximum(200)
+        self.horizontalSlider_tts_speed.setSingleStep(0)
+        self.horizontalSlider_tts_speed.setValue(100)
         self.horizontalSlider_tts_speed.setOrientation(Qt.Horizontal)
 
         self.verticalLayout_28.addWidget(self.horizontalSlider_tts_speed)
@@ -2299,8 +2301,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider_tts_speed_2 = QSlider(self.scrollAreaWidgetContents_2)
         self.horizontalSlider_tts_speed_2.setObjectName(u"horizontalSlider_tts_speed_2")
         self.horizontalSlider_tts_speed_2.setStyleSheet(u"")
-        self.horizontalSlider_tts_speed_2.setMaximum(2)
-        self.horizontalSlider_tts_speed_2.setValue(1)
+        self.horizontalSlider_tts_speed_2.setMaximum(200)
+        self.horizontalSlider_tts_speed_2.setValue(100)
         self.horizontalSlider_tts_speed_2.setOrientation(Qt.Horizontal)
 
         self.verticalLayout_32.addWidget(self.horizontalSlider_tts_speed_2)
@@ -2366,8 +2368,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider_tts_intonation_scale = QSlider(self.scrollAreaWidgetContents_2)
         self.horizontalSlider_tts_intonation_scale.setObjectName(u"horizontalSlider_tts_intonation_scale")
         self.horizontalSlider_tts_intonation_scale.setStyleSheet(u"")
-        self.horizontalSlider_tts_intonation_scale.setMaximum(2)
-        self.horizontalSlider_tts_intonation_scale.setValue(1)
+        self.horizontalSlider_tts_intonation_scale.setMaximum(200)
+        self.horizontalSlider_tts_intonation_scale.setValue(100)
         self.horizontalSlider_tts_intonation_scale.setOrientation(Qt.Horizontal)
 
         self.verticalLayout_33.addWidget(self.horizontalSlider_tts_intonation_scale)
@@ -2433,8 +2435,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider_pre_phoneme_length = QSlider(self.scrollAreaWidgetContents_2)
         self.horizontalSlider_pre_phoneme_length.setObjectName(u"horizontalSlider_pre_phoneme_length")
         self.horizontalSlider_pre_phoneme_length.setStyleSheet(u"")
-        self.horizontalSlider_pre_phoneme_length.setMaximum(2)
-        self.horizontalSlider_pre_phoneme_length.setValue(1)
+        self.horizontalSlider_pre_phoneme_length.setMaximum(200)
+        self.horizontalSlider_pre_phoneme_length.setValue(100)
         self.horizontalSlider_pre_phoneme_length.setOrientation(Qt.Horizontal)
 
         self.verticalLayout_35.addWidget(self.horizontalSlider_pre_phoneme_length)
@@ -2500,8 +2502,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider_post_phoneme_length = QSlider(self.scrollAreaWidgetContents_2)
         self.horizontalSlider_post_phoneme_length.setObjectName(u"horizontalSlider_post_phoneme_length")
         self.horizontalSlider_post_phoneme_length.setStyleSheet(u"")
-        self.horizontalSlider_post_phoneme_length.setMaximum(2)
-        self.horizontalSlider_post_phoneme_length.setValue(1)
+        self.horizontalSlider_post_phoneme_length.setMaximum(200)
+        self.horizontalSlider_post_phoneme_length.setValue(100)
         self.horizontalSlider_post_phoneme_length.setOrientation(Qt.Horizontal)
 
         self.verticalLayout_34.addWidget(self.horizontalSlider_post_phoneme_length)
@@ -2823,7 +2825,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
