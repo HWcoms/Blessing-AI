@@ -1,0 +1,13 @@
+{
+    "discord_bot": false,
+    "discord_bot_id": "your_bot_id",
+    "discord_bot_channel_id": "your_text_channel_id",
+
+    "discord_webhook": false,
+    "discord_webhook_token": "your_token",
+    "discord_webhook_username" = "blank = character_name from character_settings.txt",
+    "discord_webhook_avatar" = "profile picture, blank = same picture with GUI",
+
+    "discord_print_language": "ko",
+    "chat_display_language": "ko",
+}
