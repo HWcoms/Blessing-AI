@@ -76,6 +76,7 @@ class MainWindow(QMainWindow):
         global widgets
         widgets = self.ui
         widgets.textBrowser.setOpenExternalLinks(True)
+        widgets.textBrowser_google_colab_link.setOpenExternalLinks(True)
         self.chat = None
         self.last_scroll_value = -1
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
@@ -188,7 +189,7 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
-            self.load_prompt_info()
+            self.prompt_page_update()
 
         # SHOW AUDIO PAGE
         if btnName == "btn_audio_setting":
@@ -273,6 +274,16 @@ class MainWindow(QMainWindow):
         # self.chat.set_scroll_value(last_scroll_value)
         self.chat.scroll_to_animation(last_value=self.last_scroll_value, value=dest_scroll_value)
 
+    # [GUI] DRAW PROMPT PAGE
+    # ///////////////////////////////////////////////////////////////
+    def prompt_page_update(self):
+        self.load_prompt_info()
+        global widgets
+
+        widgets.lineEdit_api_url.setText(self.prompt_info_dict["api_url"])
+
+
+
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
     def resizeEvent(self, event):
@@ -283,13 +294,17 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
-        self.dragPos = event.globalPos()
+        self.dragPos = event.globalPosition()
+        # self.dragPos = event.globalPos()  # deprecated
+
+        # print(f"mouse position: {self.dragPos}")
 
         # PRINT MOUSE EVENTS
         if event.buttons() == Qt.LeftButton:
             print('Mouse click: LEFT CLICK')
         if event.buttons() == Qt.RightButton:
             print('Mouse click: RIGHT CLICK')
+
 
     # LOAD INFO EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -301,7 +316,7 @@ class MainWindow(QMainWindow):
         self.load_audio_info()    # Load Audio page
 
         self.load_other_info()  # Load other information
-        self.load_prompt_info() # Load prompt information
+        self.prompt_page_update() # Load prompt information
 
 
     def load_character_info(self):
