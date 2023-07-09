@@ -433,7 +433,7 @@ class MainWindow(QMainWindow):
             _final_url = self.prefix_url(_final_url)    # add 'http://' if there's no prefix
 
         if hide_url:
-            _final_url = self.hide_url(_final_url)  # convert _final_url to hidden_url
+            _final_url = self.hide_url(_final_url, '●')  # convert _final_url to hidden_url
 
         if _final_url is None or _final_url == "":  # if url is blank
             print("\033[31m" + "Warning [main GUI.refresh_url_widget]: " + "\033[33m" + f"url is empty: { str(component.objectName()) }" + "\033[0m")
@@ -718,7 +718,7 @@ class MainWindow(QMainWindow):
             "\033[31m" + f"Error [main GUI.convert_language_code]: \033[33m{language_input}\033[31m is not supported: " + "\033[0m")
         return None
 
-    def hide_url(self, url:str):
+    def hide_url(self, url:str, mark:str='*'):
         """
         need 1 url as string list\n
         exmaple)
@@ -728,6 +728,7 @@ class MainWindow(QMainWindow):
             returns 'http://**************'
 
         :param url: url to hide (:py:class:`str`)
+        :param mark: hide with this character, defualt: '*'
         :returns: Hidden url (:py:class:`str`)
         """
         if url is None or url == "":    # if url is blank
@@ -738,7 +739,7 @@ class MainWindow(QMainWindow):
             url_start = url.find("://") + 3
         else:
             url_start = 0
-        hidden_url = url[:url_start] + "*" * (len(url) - url_start)
+        hidden_url = url[:url_start] + mark * (len(url) - url_start)
 
         return hidden_url
 
