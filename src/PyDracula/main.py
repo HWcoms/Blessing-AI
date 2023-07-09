@@ -179,11 +179,7 @@ class MainWindow(QMainWindow):
 
         if source == widgets.lineEdit_api_url and event.type() == QEvent.Type.FocusIn:
             # print (f"source: {source}, event: {event}")
-
-            self.load_prompt_info()
-            component_peek = self.prompt_info_dict['api_url']
-
-            self.refresh_api_url(component_peek)
+            self.refresh_api_url(hide_url=False)
         elif source == widgets.lineEdit_api_url and event.type() == QEvent.Type.FocusOut:
             # print(f"source: {source}, event: {event}")
             self.refresh_api_url()
@@ -202,7 +198,7 @@ class MainWindow(QMainWindow):
 
         called_component = self.sender()
         print(
-            "\033[34m" + "called compoent: " +
+            "\033[34m" + "called component: " +
             "\033[32m" + f"{called_component.objectName()}" +
             "\033[34m" + " | Type: " +
             "\033[32m" + f"{type(called_component).__name__}"
@@ -239,10 +235,7 @@ class MainWindow(QMainWindow):
         # PROMPT SETTINGS
         #####################################################################################
         if componentName == "pushButton_view_original_url":
-            self.load_prompt_info()
-            component_peek = self.prompt_info_dict['api_url']
-
-            self.refresh_api_url(component_peek)     # peek api_url temporarily
+            self.refresh_api_url(hide_url=False)     # peek api_url temporarily
 
             print("\033[34m" + f"{componentName}: \033[32mpressed\033[0m")
             return
@@ -406,23 +399,31 @@ class MainWindow(QMainWindow):
 
         widgets.comboBox_ai_model_language.setCurrentText(ai_model_language)
 
-    def refresh_api_url(self, custom_url=None):
-        final_url = None
-        if custom_url:
-            api_url = custom_url
-            api_url_holder = [api_url]
-            self.hide_url(api_url_holder)
+    def refresh_api_url(self, hide_url:bool=True):
+        self.load_prompt_info()
 
-            final_url = api_url_holder[0]  # get url with http://
-        else:
-            api_url = self.prompt_info_dict["api_url"]
-            api_url_holder = [api_url]  # hold api_url even url changes
-            final_url = self.hide_url(api_url_holder)  # convert api_url to hidden_url
+        _widget = self.ui.lineEdit_api_url
+        _url = self.prompt_info_dict["api_url"]
 
-        if final_url is None or final_url == "":  # if url is blank
-            print("\033[31m" + "Warning [main GUI.refresh_api_url]: " + "\033[33m" + "API url is empty" + "\033[0m")
+        self.refresh_url_widget(_widget, _url, hide_url, True)
 
-        widgets.lineEdit_api_url.setText(final_url)
+    def refresh_url_widget(self, component:QObject, custom_url:str=None, hide_url:bool=True, add_prefix:bool=True):
+        _final_url = custom_url
+
+        if add_prefix:
+            _final_url = self.prefix_url(_final_url)    # add 'http://' if there's no prefix
+
+        if hide_url:
+            _final_url = self.hide_url(_final_url)  # convert _final_url to hidden_url
+
+        if _final_url is None or _final_url == "":  # if url is blank
+            print("\033[31m" + "Warning [main GUI.refresh_url_widget]: " + "\033[33m" + f"url is empty: { str(component.objectName()) }" + "\033[0m")
+
+        component.setText(_final_url)    # LineEdit or TextEdit
+
+    def refresh_discord_url(self, componet:QLineEdit, custom_url=None):
+        self.refresh_url_widget(_widget, custom_url, False)
+        pass
 
     # [GUI] DRAW EXTRA RIGHT MENU
     # ///////////////////////////////////////////////////////////////
@@ -697,30 +698,44 @@ class MainWindow(QMainWindow):
             "\033[31m" + f"Error [main GUI.convert_language_code]: \033[33m{language_input}\033[31m is not supported: " + "\033[0m")
         return None
 
-    def hide_url(self, string_list: list):
+    def hide_url(self, url:str):
         """
         need 1 url as string list\n
         exmaple)
-            url_test = ["www.google.com"]\n
+            url_test = "http://www.google.com"\n
             hide_url(url_test)
             \n\n
-            ▲ It changes\n
-            url_test[0] to 'http://www.google.com'\n
-            and returns 'http://**************'
+            returns 'http://**************'
 
-        :param string_list: 1 url as list of string
-        :returns: hidden url :py:class:`string` object.
+        :param url: url to hide (:py:class:`str`)
+        :returns: Hidden url (:py:class:`str`)
         """
-        if string_list[0] is None or string_list[0] == "":  # if url is blank
+        if url is None or url == "":    # if url is blank
             return None
 
-        if not string_list[0].startswith("http://") and not string_list[0].startswith("https://"):
-            string_list[0] = "http://" + string_list[0]
+        start_index = url.find("://")
+        if start_index != -1:
+            url_start = url.find("://") + 3
+        else:
+            url_start = 0
+        hidden_url = url[:url_start] + "*" * (len(url) - url_start)
 
-        url_start = string_list[0].find("//") + 2
-        hidden_string = string_list[0][:url_start] + "*" * (len(string_list[0]) - url_start)
+        return hidden_url
 
-        return hidden_string
+    def prefix_url(self, url:str):
+        """
+                need 1 url as string list\n
+                :param url: url to add http:// (:py:class:`str`)
+                :returns: Prefixed url (:py:class:`str`)
+        """
+        if not url or url == "":    # if url is blank
+            return None
+
+        final_url = url
+        if not url.startswith("http://") and not url.startswith("https://"):
+            final_url = "http://" + url
+
+        return final_url
 
 
 if __name__ == "__main__":
