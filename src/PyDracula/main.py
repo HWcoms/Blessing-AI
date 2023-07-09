@@ -58,7 +58,8 @@ class MainWindow(QMainWindow):
 
         self.chat_info_dict : dict = None   # <- Contains Chatlog + other_settings.txt
                                             # [chatlog, chatlog_filename,
-                                            # discord_bot, discord_print_language
+                                            # discord_bot, discord_webhook,
+                                            # discord_print_language, chat_display_language
 
         # TODO: create audio_setting, prompt setting (devcices)
         self.audio_info_dict: dict = None   # [mic_index, mic_threshold, phrase_timeout,
@@ -126,8 +127,13 @@ class MainWindow(QMainWindow):
         # EXTRA RIGHT BOX
         def openCloseRightBox():
             UIFunctions.toggleRightBox(self, True)
+            self.extra_right_menu_update()
 
         widgets.settingsTopBtn.clicked.connect(openCloseRightBox)
+
+        # UPDATE CONTENT BY COMPONENT
+        widgets.checkBox_discord_bot.clicked.connect(self.update_content_by_component)
+        widgets.checkBox_discord_webhook.clicked.connect(self.update_content_by_component)
 
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
@@ -152,6 +158,34 @@ class MainWindow(QMainWindow):
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))   # set pink color to menu selector
 
         self.load_all_info()
+
+        # print(self.convert_language_code("Japanese"))
+
+    # GUI COMPONENTS CALLBACK
+    # Post here your functions for callbacks from GUI components
+    # ///////////////////////////////////////////////////////////////
+    def update_content_by_component(self):
+        from setting_info import update_json    # noqa
+
+        # print(self.ui.checkBox_discord_bot.checkState())
+        checkbox = self.sender()
+        checkboxName = checkbox.objectName()
+
+        global widgets
+        if widgets is None:
+            widgets = self.ui
+
+        if checkboxName == "checkBox_discord_bot":
+            update_json('discord_bot', checkbox.isChecked(), 'other_settings')
+            print(f"discord_bot: {checkbox.isChecked()}")
+
+            self.extra_right_menu_update(True)
+
+        if checkboxName == "checkBox_discord_webhook":
+            update_json('discord_webhook', checkbox.isChecked(), 'other_settings')
+            print(f"discord_webhook: {checkbox.isChecked()}")
+
+            self.extra_right_menu_update(True)
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -199,12 +233,14 @@ class MainWindow(QMainWindow):
 
             self.load_audio_info()
 
+        # SHARE BUTTON FROM EXTRA LEFT MENU
         if btnName == "btn_share":
             import webbrowser
 
             webbrowser.open('https://github.com/HWcomss/Blessing-AI')  # Go to Github Page
             print("Link BTN Clicked!")
 
+        # EXIT PROGRAM
         if btnName == "btn_exit":
             print("Exit BTN Clicked!")
             QtCore.QCoreApplication.instance().quit()
@@ -280,8 +316,86 @@ class MainWindow(QMainWindow):
         self.load_prompt_info()
         global widgets
 
+        max_prompt_token = self.prompt_info_dict["max_prompt_token"]
+        max_reply_token = self.prompt_info_dict["max_reply_token"]
+        ai_model_language = self.convert_language_code(self.prompt_info_dict["ai_model_language"])
+
+
         widgets.lineEdit_api_url.setText(self.prompt_info_dict["api_url"])
 
+
+        widgets.lineEdit_max_prompt_token.setText( str(max_prompt_token) )
+        widgets.horizontalSlider_max_prompt_token.setValue(max_prompt_token)
+
+        widgets.lineEdit_max_reply_token.setText( str(max_reply_token) )
+        widgets.horizontalSlider_max_reply_token.setValue(max_reply_token)
+
+        widgets.comboBox_ai_model_language.setCurrentText(ai_model_language)
+
+    def extra_right_menu_update(self, only_color = False):
+        self.load_other_info()
+        global widgets
+
+        # INFO VARIABLES (PARENT CHECKBOX)
+        ############################################################################################
+        discord_bot = self.chat_info_dict["discord_bot"]
+        discord_webhook = self.chat_info_dict["discord_webhook"]
+
+        if not only_color:
+            # INFO VARIABLES
+            ############################################################################################
+            discord_print_language = self.convert_language_code( self.chat_info_dict["discord_print_language"] )
+            # chat_display_language = self.chat_info_dict["chat_display_language"]
+
+            # DISCORD SHARED SETTING WIDGETS
+            ############################################################################################
+            widgets.comboBox_discord_print_language.setCurrentText(discord_print_language)
+
+            # DISCORD BOT SETTING WIDGETS
+            ############################################################################################
+            widgets.checkBox_discord_bot.setChecked(discord_bot)
+
+        bot_id_widget = widgets.lineEdit_discord_bot_id
+        bot_channel_id_widget = widgets.lineEdit_discord_bot_channel_id
+
+        if not only_color:
+            # UPDATE TEXT WIDGETS
+            ############################################################################################
+            bot_id_widget.setText(self.chat_info_dict["discord_bot_id"])
+            bot_channel_id_widget.setText(self.chat_info_dict["discord_bot_channel_id"])
+
+        self.color_by_state([bot_id_widget, bot_channel_id_widget]
+                            , discord_bot)
+
+        if not only_color:
+            # DISCORD WEBHOOK SETTING WIDGETS
+            ############################################################################################
+            widgets.checkBox_discord_webhook.setChecked(discord_webhook)
+
+        webhook_url_widget = widgets.lineEdit_discord_webhook_url
+        webhook_username_widget = widgets.lineEdit_discord_webhook_username
+        webhook_avatar = widgets.lineEdit_discord_webhook_avatar
+
+        if not only_color:
+            # UPDATE TEXT WIDGETS
+            ############################################################################################
+            webhook_url_widget.setText(self.chat_info_dict["discord_webhook_url"])
+            webhook_username_widget.setText(self.chat_info_dict["discord_webhook_username"])
+            webhook_avatar.setText(self.chat_info_dict["discord_webhook_avatar"])
+
+        self.color_by_state([webhook_url_widget, webhook_username_widget, webhook_avatar]
+                            , discord_webhook)
+
+
+
+    def color_by_state(self, item_list: list, state = False):
+        if not state:
+            for item in item_list:
+                item.setStyleSheet("")
+            return
+
+        for item in item_list:
+            item.setStyleSheet("color: rgb(0, 255, 38);")
 
 
     # RESIZE EVENTS
@@ -294,8 +408,8 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
-        self.dragPos = event.globalPosition()
-        # self.dragPos = event.globalPos()  # deprecated
+        # self.dragPos = event.globalPosition()
+        self.dragPos = event.globalPos()  # deprecated
 
         # print(f"mouse position: {self.dragPos}")
 
@@ -315,7 +429,7 @@ class MainWindow(QMainWindow):
 
         self.load_audio_info()    # Load Audio page
 
-        self.load_other_info()  # Load other information
+        self.extra_right_menu_update()  # Load other information
         self.prompt_page_update() # Load prompt information
 
 
@@ -453,6 +567,30 @@ class MainWindow(QMainWindow):
         from setting_info import SettingInfo    # noqa
         return SettingInfo.get_chatlog_filename(self.char_info_dict["character_name"],True)
 
+    def convert_language_code(self, language_input):
+        """
+        convert language code to full name of language or opposite.
+
+        convert_language_code("en") -> "English"
+        convert_language_code("English") -> "en"
+        
+        :param language_input: language code or full name of language
+        :returns: An :py:class:`string` object.  
+        """
+        language_mapping = {
+            # Add more language mappings as needed
+            "English": "en",
+            "Korean": "ko",
+            "Japanese": "ja"
+        }
+        if language_input in language_mapping:
+            return language_mapping[language_input]
+        for key, value in language_mapping.items():
+            if value == language_input:
+                return key
+        print(
+            "\033[31m" + f"Error [main GUI.convert_language_code]: \033[33m{language_input}\033[31m is not supported: " + "\033[0m")
+        return None
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

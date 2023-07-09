@@ -1801,7 +1801,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>3</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -2894,8 +2894,8 @@ QSlider::handle:horizontal:pressed {
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>0</y>
-                            <width>912</width>
+                            <y>-240</y>
+                            <width>1152</width>
                             <height>811</height>
                            </rect>
                           </property>
@@ -3328,6 +3328,14 @@ QPushButton:pressed{
                                <property name="styleSheet">
                                 <string notr="true">background-color: rgb(33, 37, 43);</string>
                                </property>
+                               <property name="currentText">
+                                <string>Japanese</string>
+                               </property>
+                               <item>
+                                <property name="text">
+                                 <string>English</string>
+                                </property>
+                               </item>
                                <item>
                                 <property name="text">
                                  <string>Japanese</string>
@@ -3336,11 +3344,6 @@ QPushButton:pressed{
                                <item>
                                 <property name="text">
                                  <string>Korean</string>
-                                </property>
-                               </item>
-                               <item>
-                                <property name="text">
-                                 <string>English</string>
                                 </property>
                                </item>
                               </widget>
@@ -4041,7 +4044,7 @@ QSlider::handle:horizontal:pressed {
                                 </spacer>
                                </item>
                                <item>
-                                <widget class="QTextBrowser" name="textBrowser_2">
+                                <widget class="QTextBrowser" name="textBrowser_google_colab_link">
                                  <property name="sizePolicy">
                                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                                    <horstretch>0</horstretch>
@@ -4436,17 +4439,17 @@ QPushButton:pressed{
                                </property>
                                <item>
                                 <property name="text">
-                                 <string>EN</string>
+                                 <string>English</string>
                                 </property>
                                </item>
                                <item>
                                 <property name="text">
-                                 <string>JA</string>
+                                 <string>Japanese</string>
                                 </property>
                                </item>
                                <item>
                                 <property name="text">
-                                 <string>KO</string>
+                                 <string>Korean</string>
                                 </property>
                                </item>
                               </widget>
@@ -5434,17 +5437,17 @@ QPushButton:pressed{
                           </property>
                           <item>
                            <property name="text">
-                            <string>EN</string>
+                            <string>English</string>
                            </property>
                           </item>
                           <item>
                            <property name="text">
-                            <string>JA</string>
+                            <string>Japanese</string>
                            </property>
                           </item>
                           <item>
                            <property name="text">
-                            <string>KO</string>
+                            <string>Korean</string>
                            </property>
                           </item>
                          </widget>

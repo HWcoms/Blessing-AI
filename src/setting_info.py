@@ -67,7 +67,42 @@ def read_text_file(filename):
     try:
         json_data = json.loads(setting_data)
     except json.JSONDecodeError:
-        print("\033[31m" + "Invalid JSON format in the text file." + "\033[33m" + f" Please check the Syntax of setting file: '{filename}'" "\033[0m")
+        print(
+            "\033[31m" + "Invalid JSON format in the text file." + "\033[33m" + f" Please check the Syntax of setting file: '{filename}'" "\033[0m")
         return None
 
     return json_data
+
+
+def update_json(key_str, data, filename):
+    fixed_file_name = settings_folder / f'{filename}.txt'
+
+    # Load the JSON file
+    with open(fixed_file_name, 'r', encoding='utf-8') as file:
+        json_data = json.load(file)
+
+    # Split the key string into individual keys
+    keys = key_str.split('.')
+
+    # Traverse the JSON data to find the specified keys
+    current_dict = json_data
+    for key in keys[:-1]:
+        if key not in current_dict:
+            raise KeyError(f"[setting_info.update_json] Key '{key}' not found in JSON data.")
+        current_dict = current_dict[key]
+
+    # Update the value of the last key
+    last_key = keys[-1]
+    if last_key not in current_dict:
+        raise KeyError(f"[setting_info.update_json] Key '{last_key}' not found in JSON data.")
+    current_dict[last_key] = data
+
+    # Save the updated JSON back to the file
+    with open(fixed_file_name, 'w', encoding='utf-8') as file:
+        json.dump(json_data, file, indent="\t")
+
+
+if __name__ == "__main__":
+    print()
+    # Example usage
+    # update_json('discord_bot', False, settings_folder / 'other_settings.txt')

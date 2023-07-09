@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainkOEXLh.ui'
+## Form generated from reading UI file 'mainsIcFgg.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1573,7 +1573,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 912, 811))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -240, 1152, 811))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -2945,7 +2945,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -3081,10 +3081,11 @@ class Ui_MainWindow(object):
         self.comboBox_tts_charcter.setItemText(2, QCoreApplication.translate("MainWindow", u"Character 3", None))
 
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Language</span></p></body></html>", None))
-        self.comboBox_tts_language.setItemText(0, QCoreApplication.translate("MainWindow", u"Japanese", None))
-        self.comboBox_tts_language.setItemText(1, QCoreApplication.translate("MainWindow", u"Korean", None))
-        self.comboBox_tts_language.setItemText(2, QCoreApplication.translate("MainWindow", u"English", None))
+        self.comboBox_tts_language.setItemText(0, QCoreApplication.translate("MainWindow", u"English", None))
+        self.comboBox_tts_language.setItemText(1, QCoreApplication.translate("MainWindow", u"Japanese", None))
+        self.comboBox_tts_language.setItemText(2, QCoreApplication.translate("MainWindow", u"Korean", None))
 
+        self.comboBox_tts_language.setCurrentText(QCoreApplication.translate("MainWindow", u"Japanese", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Voice ID (Index)</span></p></body></html>", None))
         self.comboBox_tts_voice_id.setItemText(0, QCoreApplication.translate("MainWindow", u"0 - Char_name", None))
 
@@ -3123,9 +3124,9 @@ class Ui_MainWindow(object):
         self.lineEdit_max_reply_token.setText(QCoreApplication.translate("MainWindow", u"200", None))
         self.pushButton_max_reply_token_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
         self.label_27.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">AI Model Language</span></p></body></html>", None))
-        self.comboBox_ai_model_language.setItemText(0, QCoreApplication.translate("MainWindow", u"EN", None))
-        self.comboBox_ai_model_language.setItemText(1, QCoreApplication.translate("MainWindow", u"JA", None))
-        self.comboBox_ai_model_language.setItemText(2, QCoreApplication.translate("MainWindow", u"KO", None))
+        self.comboBox_ai_model_language.setItemText(0, QCoreApplication.translate("MainWindow", u"English", None))
+        self.comboBox_ai_model_language.setItemText(1, QCoreApplication.translate("MainWindow", u"Japanese", None))
+        self.comboBox_ai_model_language.setItemText(2, QCoreApplication.translate("MainWindow", u"Korean", None))
 
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt; font-weight:700;\">Recommend to set as 'EN'</span></p></body></html>", None))
         self.labelBoxBlenderInstalation.setText(QCoreApplication.translate("MainWindow", u"FILE BOX", None))
@@ -3195,9 +3196,9 @@ class Ui_MainWindow(object):
         self.tableWidget.setSortingEnabled(__sortingEnabled)
 
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Send Discord Bot Message As</span></p></body></html>", None))
-        self.comboBox_discord_print_language.setItemText(0, QCoreApplication.translate("MainWindow", u"EN", None))
-        self.comboBox_discord_print_language.setItemText(1, QCoreApplication.translate("MainWindow", u"JA", None))
-        self.comboBox_discord_print_language.setItemText(2, QCoreApplication.translate("MainWindow", u"KO", None))
+        self.comboBox_discord_print_language.setItemText(0, QCoreApplication.translate("MainWindow", u"English", None))
+        self.comboBox_discord_print_language.setItemText(1, QCoreApplication.translate("MainWindow", u"Japanese", None))
+        self.comboBox_discord_print_language.setItemText(2, QCoreApplication.translate("MainWindow", u"Korean", None))
 
         self.checkBox_discord_bot.setText(QCoreApplication.translate("MainWindow", u"Discord Bot", None))
         self.lineEdit_discord_bot_id.setText("")
