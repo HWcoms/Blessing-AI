@@ -140,6 +140,9 @@ class MainWindow(QMainWindow):
 
         # INSTALL EVENT FILTER
         widgets.lineEdit_api_url.installEventFilter(self)
+        widgets.lineEdit_discord_bot_id.installEventFilter(self)
+        widgets.lineEdit_discord_bot_channel_id.installEventFilter(self)
+        widgets.lineEdit_discord_webhook_url.installEventFilter(self)
 
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
@@ -183,6 +186,14 @@ class MainWindow(QMainWindow):
         elif source == widgets.lineEdit_api_url and event.type() == QEvent.Type.FocusOut:
             # print(f"source: {source}, event: {event}")
             self.refresh_api_url()
+
+        if (source == widgets.lineEdit_discord_bot_id or
+            source == widgets.lineEdit_discord_bot_channel_id or
+            source == widgets.lineEdit_discord_webhook_url):
+            if event.type() == QEvent.Type.FocusIn:
+                self.refresh_discord_url(source, hide_url=False)
+            elif event.type() == QEvent.Type.FocusOut:
+                self.refresh_discord_url(source)
 
         return super().eventFilter(source, event)
 
@@ -407,6 +418,14 @@ class MainWindow(QMainWindow):
 
         self.refresh_url_widget(_widget, _url, hide_url, True)
 
+    def refresh_discord_url(self, component:QLineEdit, hide_url=True):
+        self.load_other_info()
+        component_key = component.objectName().replace("lineEdit_", "")   # lineEdit_discord_bot_id
+        # print(component_key)
+        _url = self.chat_info_dict[component_key]
+
+        self.refresh_url_widget(component, _url, hide_url, False)
+
     def refresh_url_widget(self, component:QObject, custom_url:str=None, hide_url:bool=True, add_prefix:bool=True):
         _final_url = custom_url
 
@@ -421,9 +440,7 @@ class MainWindow(QMainWindow):
 
         component.setText(_final_url)    # LineEdit or TextEdit
 
-    def refresh_discord_url(self, componet:QLineEdit, custom_url=None):
-        self.refresh_url_widget(_widget, custom_url, False)
-        pass
+
 
     # [GUI] DRAW EXTRA RIGHT MENU
     # ///////////////////////////////////////////////////////////////
@@ -433,10 +450,10 @@ class MainWindow(QMainWindow):
 
         # INFO VARIABLES (PARENT CHECKBOX)
         ############################################################################################
-        discord_bot = self.chat_info_dict["discord_bot"]
-        discord_webhook = self.chat_info_dict["discord_webhook"]
-
         if not only_color:
+            discord_bot = self.chat_info_dict["discord_bot"]
+            discord_webhook = self.chat_info_dict["discord_webhook"]
+
             # INFO VARIABLES
             ############################################################################################
             # Convert 'en' -> 'English'
@@ -452,6 +469,9 @@ class MainWindow(QMainWindow):
             # DISCORD BOT SETTING WIDGETS
             ############################################################################################
             widgets.checkBox_discord_bot.setChecked(discord_bot)
+        else:
+            discord_bot = widgets.checkBox_discord_bot.isChecked()
+            discord_webhook = widgets.checkBox_discord_webhook.isChecked()
 
         bot_id_widget = widgets.lineEdit_discord_bot_id
         bot_channel_id_widget = widgets.lineEdit_discord_bot_channel_id
@@ -459,8 +479,8 @@ class MainWindow(QMainWindow):
         if not only_color:
             # UPDATE TEXT WIDGETS
             ############################################################################################
-            bot_id_widget.setText(self.chat_info_dict["discord_bot_id"])
-            bot_channel_id_widget.setText(self.chat_info_dict["discord_bot_channel_id"])
+            self.refresh_discord_url(bot_id_widget)             # Hide token
+            self.refresh_discord_url(bot_channel_id_widget)     # Hide channel id
 
         self.color_by_state([bot_id_widget, bot_channel_id_widget]
                             , discord_bot)
@@ -477,7 +497,7 @@ class MainWindow(QMainWindow):
         if not only_color:
             # UPDATE TEXT WIDGETS
             ############################################################################################
-            webhook_url_widget.setText(self.chat_info_dict["discord_webhook_url"])
+            self.refresh_discord_url(webhook_url_widget)        # Hide token
             webhook_username_widget.setText(self.chat_info_dict["discord_webhook_username"])
             webhook_avatar.setText(self.chat_info_dict["discord_webhook_avatar"])
 
@@ -521,7 +541,7 @@ class MainWindow(QMainWindow):
         focused_widget = QApplication.focusWidget()
         if isinstance(focused_widget, QLineEdit) or isinstance(focused_widget, QTextEdit):
             focused_widget.clearFocus()
-            print("\033[34m" + f"Unfocus GUI Edit:\033[32m {type(focused_widget).__name__}" + "\033[0m")
+            print("\033[34m" + f"Unfocus GUI Edit:\033[32m { focused_widget.objectName() }" + "\033[0m")
         # self.mousePressEvent(self, event)
 
 
