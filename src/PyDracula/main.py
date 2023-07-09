@@ -168,24 +168,45 @@ class MainWindow(QMainWindow):
         from setting_info import update_json    # noqa
 
         # print(self.ui.checkBox_discord_bot.checkState())
-        checkbox = self.sender()
-        checkboxName = checkbox.objectName()
+        called_component = self.sender()
+        print(
+            "\033[34m" + "called compoent: " +
+            "\033[32m" + f"{called_component.objectName()}" +
+            "\033[34m" + " | Type: " +
+            "\033[32m" + f"{type(called_component).__name__}"
+        )
 
+        checkboxName = called_component.objectName()
         global widgets
         if widgets is None:
             widgets = self.ui
 
+        component_key = None
+        component_property = None
+        setting_name = None
+
+        # OTHER SETTINGS
+        #####################################################################################
         if checkboxName == "checkBox_discord_bot":
-            update_json('discord_bot', checkbox.isChecked(), 'other_settings')
-            print(f"discord_bot: {checkbox.isChecked()}")
+            component_key = 'discord_bot'
 
             self.extra_right_menu_update(True)
 
         if checkboxName == "checkBox_discord_webhook":
-            update_json('discord_webhook', checkbox.isChecked(), 'other_settings')
-            print(f"discord_webhook: {checkbox.isChecked()}")
+            component_key = 'discord_webhook'
 
             self.extra_right_menu_update(True)
+
+        if isinstance(called_component, QCheckBox):
+            component_property = called_component.isChecked()
+            setting_name = 'other_settings'
+
+        # TODO: hide secret infos as '*'
+        #####################################################################################
+        # OTHER SETTINGS
+
+        print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}")
+        update_json(component_key, component_property, setting_name)
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -332,6 +353,8 @@ class MainWindow(QMainWindow):
 
         widgets.comboBox_ai_model_language.setCurrentText(ai_model_language)
 
+    # [GUI] DRAW EXTRA RIGHT MENU
+    # ///////////////////////////////////////////////////////////////
     def extra_right_menu_update(self, only_color = False):
         self.load_other_info()
         global widgets
@@ -344,7 +367,10 @@ class MainWindow(QMainWindow):
         if not only_color:
             # INFO VARIABLES
             ############################################################################################
+            # Convert 'en' -> 'English'
             discord_print_language = self.convert_language_code( self.chat_info_dict["discord_print_language"] )
+
+            # Unuse for now
             # chat_display_language = self.chat_info_dict["chat_display_language"]
 
             # DISCORD SHARED SETTING WIDGETS

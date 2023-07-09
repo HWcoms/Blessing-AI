@@ -273,10 +273,10 @@ def get_character_info(character_name):
 
     character_image = None
     if os.path.exists(image_filepath):
-        print("Bot profile Image exists.")
+        print("\033[34m" + "Bot profile Image exists." + "\033[0m")
         character_image = image_filepath
     else:
-        print("Bot profile Image does not exist.")
+        print("\033[31m" + "Warning: " + "\033[33m" + "Bot profile Image does not exist." + "\033[0m")
 
     # Add image path to char_dict
     char_dict["character_image"] = character_image
