@@ -138,6 +138,9 @@ class MainWindow(QMainWindow):
         widgets.pushButton_view_original_url.pressed.connect(self.update_content_by_component)
         widgets.pushButton_view_original_url.released.connect(self.released_component)
 
+        # INSTALL EVENT FILTER
+        widgets.lineEdit_api_url.installEventFilter(self)
+
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
         self.show()
@@ -164,13 +167,38 @@ class MainWindow(QMainWindow):
 
         # print(self.convert_language_code("Japanese"))
 
-    # GUI COMPONENTS CALLBACK
-    # Post here your functions for callbacks from GUI components
+    # DEFINE EVENT FILTER
+    # ///////////////////////////////////////////////////////////////
+    def eventFilter(self, source, event):
+        global widgets
+        if widgets is None:
+            widgets = self.ui
+
+        # if not event.type() == QEvent.Type.FocusIn or QEvent.Type.FocusOut:
+        #     return False
+
+        if source == widgets.lineEdit_api_url and event.type() == QEvent.Type.FocusIn:
+            # print (f"source: {source}, event: {event}")
+
+            self.load_prompt_info()
+            component_peek = self.prompt_info_dict['api_url']
+
+            self.refresh_api_url(component_peek)
+        elif source == widgets.lineEdit_api_url and event.type() == QEvent.Type.FocusOut:
+            # print(f"source: {source}, event: {event}")
+            self.refresh_api_url()
+
+        return super().eventFilter(source, event)
+
+
+    # GUI COMPONENT CALLBACK
     # ///////////////////////////////////////////////////////////////
     def update_content_by_component(self):
         from setting_info import update_json    # noqa
 
-        # print(self.ui.checkBox_discord_bot.checkState())
+        global widgets
+        if widgets is None:
+            widgets = self.ui
 
         called_component = self.sender()
         print(
@@ -181,9 +209,6 @@ class MainWindow(QMainWindow):
         )
 
         componentName = called_component.objectName()
-        global widgets
-        if widgets is None:
-            widgets = self.ui
 
         component_key = None
         component_property = None
@@ -491,6 +516,13 @@ class MainWindow(QMainWindow):
         if event.buttons() == Qt.RightButton:
             print('Mouse click: RIGHT CLICK')
 
+        # UNFOCUS LINE EDIT IF CLICK OUTSIDE
+        focused_widget = QApplication.focusWidget()
+        if isinstance(focused_widget, QLineEdit) or isinstance(focused_widget, QTextEdit):
+            focused_widget.clearFocus()
+            print("\033[34m" + f"Unfocus GUI Edit:\033[32m {type(focused_widget).__name__}" + "\033[0m")
+        # self.mousePressEvent(self, event)
+
 
     # LOAD INFO EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -689,6 +721,7 @@ class MainWindow(QMainWindow):
         hidden_string = string_list[0][:url_start] + "*" * (len(string_list[0]) - url_start)
 
         return hidden_string
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
