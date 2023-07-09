@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainsIcFgg.ui'
+## Form generated from reading UI file 'mainoxsSeu.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1573,7 +1573,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -240, 1152, 811))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1152, 811))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -2216,15 +2216,42 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_40.addLayout(self.verticalLayout_42)
 
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.lineEdit_api_url = QLineEdit(self.Prompt_Page)
         self.lineEdit_api_url.setObjectName(u"lineEdit_api_url")
         sizePolicy11.setHeightForWidth(self.lineEdit_api_url.sizePolicy().hasHeightForWidth())
         self.lineEdit_api_url.setSizePolicy(sizePolicy11)
         self.lineEdit_api_url.setMinimumSize(QSize(0, 30))
         self.lineEdit_api_url.setMaximumSize(QSize(16777215, 16777215))
+        self.lineEdit_api_url.setEchoMode(QLineEdit.Normal)
         self.lineEdit_api_url.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_40.addWidget(self.lineEdit_api_url)
+        self.horizontalLayout_6.addWidget(self.lineEdit_api_url)
+
+        self.pushButton_view_original_url = QPushButton(self.Prompt_Page)
+        self.pushButton_view_original_url.setObjectName(u"pushButton_view_original_url")
+        sizePolicy4.setHeightForWidth(self.pushButton_view_original_url.sizePolicy().hasHeightForWidth())
+        self.pushButton_view_original_url.setSizePolicy(sizePolicy4)
+        self.pushButton_view_original_url.setMinimumSize(QSize(130, 30))
+        self.pushButton_view_original_url.setStyleSheet(u"QPushButton{\n"
+"	font: bold 12pt \"Segoe UI\";\n"
+"	color: white;\n"
+"	background-color: rgb(255, 43, 43);\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(255, 114, 114);\n"
+"}\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(159, 27, 27);\n"
+"}")
+
+        self.horizontalLayout_6.addWidget(self.pushButton_view_original_url)
+
+
+        self.verticalLayout_40.addLayout(self.horizontalLayout_6)
 
         self.horizontalLayout_23 = QHBoxLayout()
         self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
@@ -2945,7 +2972,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -3115,6 +3142,7 @@ class Ui_MainWindow(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://colab.research.google.com/drive/1VwEONZNajP4WGwJ8bw55MODHQ_yq1hpJ?usp=sharing\"><span style=\" text-decoration: underline; color:#aaffff;\">Run in Cloud (Google Colab)</span></a></p></body></html>", None))
         self.lineEdit_api_url.setText(QCoreApplication.translate("MainWindow", u"http://localhost:5000", None))
         self.lineEdit_api_url.setPlaceholderText(QCoreApplication.translate("MainWindow", u"API Request Url", None))
+        self.pushButton_view_original_url.setText(QCoreApplication.translate("MainWindow", u"View URL", None))
         self.label_30.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt;\">(Example) With Colab: </span><span style=\" font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#aaffff;\">https://blessing-ai-test.trycloudflare.com/api</span></p></body></html>", None))
         self.label_25.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"right\"><span style=\" font-size:9pt;\">With local: </span><span style=\" font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#aaffff;\">http://localhost:5000</span></p></body></html>", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Max Prompt Token</span></p></body></html>", None))

@@ -135,6 +135,9 @@ class MainWindow(QMainWindow):
         widgets.checkBox_discord_bot.clicked.connect(self.update_content_by_component)
         widgets.checkBox_discord_webhook.clicked.connect(self.update_content_by_component)
 
+        widgets.pushButton_view_original_url.pressed.connect(self.update_content_by_component)
+        widgets.pushButton_view_original_url.released.connect(self.released_component)
+
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
         self.show()
@@ -168,6 +171,7 @@ class MainWindow(QMainWindow):
         from setting_info import update_json    # noqa
 
         # print(self.ui.checkBox_discord_bot.checkState())
+
         called_component = self.sender()
         print(
             "\033[34m" + "called compoent: " +
@@ -176,7 +180,7 @@ class MainWindow(QMainWindow):
             "\033[32m" + f"{type(called_component).__name__}"
         )
 
-        checkboxName = called_component.objectName()
+        componentName = called_component.objectName()
         global widgets
         if widgets is None:
             widgets = self.ui
@@ -185,14 +189,15 @@ class MainWindow(QMainWindow):
         component_property = None
         setting_name = None
 
+
         # OTHER SETTINGS
         #####################################################################################
-        if checkboxName == "checkBox_discord_bot":
+        if componentName == "checkBox_discord_bot":
             component_key = 'discord_bot'
 
             self.extra_right_menu_update(True)
 
-        if checkboxName == "checkBox_discord_webhook":
+        if componentName == "checkBox_discord_webhook":
             component_key = 'discord_webhook'
 
             self.extra_right_menu_update(True)
@@ -205,8 +210,37 @@ class MainWindow(QMainWindow):
         #####################################################################################
         # OTHER SETTINGS
 
+
+        # PROMPT SETTINGS
+        #####################################################################################
+        if componentName == "pushButton_view_original_url":
+            self.load_prompt_info()
+            component_peek = self.prompt_info_dict['api_url']
+
+            self.refresh_api_url(component_peek)     # peek api_url temporarily
+
+            print("\033[34m" + f"{componentName}: \033[32mpressed\033[0m")
+            return
+        #####################################################################################
+        # PROMPT SETTINGS
+
+
         print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}")
         update_json(component_key, component_property, setting_name)
+
+    def released_component(self):
+        called_component = self.sender()
+        componentName = called_component.objectName()
+
+        # PROMPT SETTINGS
+        #####################################################################################
+        if componentName == "pushButton_view_original_url":
+            self.refresh_api_url()  # Hide url
+
+            print("\033[34m" + f"{componentName}: \033[32mreleased\033[0m")
+            return
+        #####################################################################################
+        # PROMPT SETTINGS
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -273,10 +307,6 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def chat_layout_update(self, dest_scroll_value = -1):
         global widgets
-        # self.char_info_dict["character_description"]
-        # self.char_info_dict["character_description"] = "AI-Bot" # Character Description
-
-
         ###########################################################################
         #   CHECK DIFFERENCE BETWEEN OLD / NOW CHATLOG
         ###########################################################################
@@ -341,9 +371,7 @@ class MainWindow(QMainWindow):
         max_reply_token = self.prompt_info_dict["max_reply_token"]
         ai_model_language = self.convert_language_code(self.prompt_info_dict["ai_model_language"])
 
-
-        widgets.lineEdit_api_url.setText(self.prompt_info_dict["api_url"])
-
+        self.refresh_api_url()
 
         widgets.lineEdit_max_prompt_token.setText( str(max_prompt_token) )
         widgets.horizontalSlider_max_prompt_token.setValue(max_prompt_token)
@@ -352,6 +380,24 @@ class MainWindow(QMainWindow):
         widgets.horizontalSlider_max_reply_token.setValue(max_reply_token)
 
         widgets.comboBox_ai_model_language.setCurrentText(ai_model_language)
+
+    def refresh_api_url(self, custom_url=None):
+        final_url = None
+        if custom_url:
+            api_url = custom_url
+            api_url_holder = [api_url]
+            self.hide_url(api_url_holder)
+
+            final_url = api_url_holder[0]  # get url with http://
+        else:
+            api_url = self.prompt_info_dict["api_url"]
+            api_url_holder = [api_url]  # hold api_url even url changes
+            final_url = self.hide_url(api_url_holder)  # convert api_url to hidden_url
+
+        if final_url is None or final_url == "":  # if url is blank
+            print("\033[31m" + "Warning [main GUI.refresh_api_url]: " + "\033[33m" + "API url is empty" + "\033[0m")
+
+        widgets.lineEdit_api_url.setText(final_url)
 
     # [GUI] DRAW EXTRA RIGHT MENU
     # ///////////////////////////////////////////////////////////////
@@ -596,10 +642,11 @@ class MainWindow(QMainWindow):
     def convert_language_code(self, language_input):
         """
         convert language code to full name of language or opposite.
-
-        convert_language_code("en") -> "English"
-        convert_language_code("English") -> "en"
-        
+        \n\n
+        example)
+            convert_language_code("en") -> "English"\n
+            convert_language_code("English") -> "en"
+        \n\n
         :param language_input: language code or full name of language
         :returns: An :py:class:`string` object.  
         """
@@ -617,6 +664,31 @@ class MainWindow(QMainWindow):
         print(
             "\033[31m" + f"Error [main GUI.convert_language_code]: \033[33m{language_input}\033[31m is not supported: " + "\033[0m")
         return None
+
+    def hide_url(self, string_list: list):
+        """
+        need 1 url as string list\n
+        exmaple)
+            url_test = ["www.google.com"]\n
+            hide_url(url_test)
+            \n\n
+            ▲ It changes\n
+            url_test[0] to 'http://www.google.com'\n
+            and returns 'http://**************'
+
+        :param string_list: 1 url as list of string
+        :returns: hidden url :py:class:`string` object.
+        """
+        if string_list[0] is None or string_list[0] == "":  # if url is blank
+            return None
+
+        if not string_list[0].startswith("http://") and not string_list[0].startswith("https://"):
+            string_list[0] = "http://" + string_list[0]
+
+        url_start = string_list[0].find("//") + 2
+        hidden_string = string_list[0][:url_start] + "*" * (len(string_list[0]) - url_start)
+
+        return hidden_string
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
