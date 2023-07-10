@@ -2,15 +2,23 @@ import os
 import re
 import sys
 from pathlib import Path
+import glob
 
 from scipy.io.wavfile import write
 from torch import no_grad, LongTensor
 
-from . import commons
-from . import utils
-from .mel_processing import spectrogram_torch
-from .models import SynthesizerTrn
-from .text import text_to_sequence, _clean_text
+if __name__ != "__main__":
+    from . import commons
+    from . import utils
+    from .mel_processing import spectrogram_torch
+    from .models import SynthesizerTrn
+    from .text import text_to_sequence, _clean_text
+else:
+    import commons
+    import utils
+    from mel_processing import spectrogram_torch
+    # from models import SynthesizerTrn
+    # from text import text_to_sequence, _clean_text
 
 # import logging
 # logging.getLogger('numba').setLevel(logging.WARNING)
@@ -104,6 +112,7 @@ def get_label(text, label):
         return False, text
 
 
+"""
 def voice_conversion():
     audio_path = input('Path of an audio file to convert:\n')
     print_speakers(speakers)
@@ -127,6 +136,7 @@ def voice_conversion():
         audio = net_g_ms.voice_conversion(spec, spec_lengths, sid_src=sid_src, sid_tgt=sid_tgt)[
             0][0, 0].data.cpu().float().numpy()
     return audio, out_path
+"""
 
 
 def speech_text(character_name, msg, lang, spk_id, audio_volume):
@@ -189,8 +199,6 @@ def speech_text(character_name, msg, lang, spk_id, audio_volume):
 def load_model(character_name):
     current_folder = os.path.dirname(os.path.abspath(__file__))  # Blessing-AI\src\MoeGoe
     model_folder = os.path.join(os.path.dirname(current_folder), "Models", "Voice")
-    # config = os.path.join(code_path, "models/moegoe_config.json")
-    # out_file_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
     voice_folder = None
     model_file = None
@@ -214,8 +222,16 @@ def load_model(character_name):
                 print(f"found character voice: {fname}")
 
     if voice_folder:
-        model_file = os.path.join(voice_folder, "G_latest.pth")
-        config_file = os.path.join(voice_folder, "moegoe_config.json")
+        # Find *.pth, *.JSON files
+        model_file = os.path.join(voice_folder, "*.pth")
+        config_file = os.path.join(voice_folder, "*.json")
+
+        model_file = glob.glob(model_file)[0]
+        config_file = glob.glob(config_file)[0]
+
+        print(f"moegoe model file: {model_file}")
+        print(f"moegoe config file: {config_file}")
+
         # print("tts model loaded: ", model_file)
 
         hps_load = utils.get_hparams_from_file(config_file)
@@ -252,8 +268,6 @@ if __name__ == 'MoeGoe.Main':
         escape = False
 
     # code_path = os.path.dirname(os.path.realpath(__file__))
-    # model = os.path.join(code_path, "models/G_latest.pth")
-    # config = os.path.join(code_path, "models/moegoe_config.json")
     out_file_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
     #
@@ -274,7 +288,6 @@ if __name__ == 'MoeGoe.Main':
     # _ = net_g_ms.eval()
     # utils.load_checkpoint(model, net_g_ms)
 
-
 if __name__ == '__main__':
     if '--escape' in sys.argv:
         escape = True
@@ -283,9 +296,8 @@ if __name__ == '__main__':
 
     print("this is __main__")
 
-    # model = "models/G_latest.pth"
-    # config = "models/moegoe_config.json"
-    #
+    # print(load_model("Kamisato Ayaka"))   # test loading pth, json
+
     # hps_ms = utils.get_hparams_from_file(config)
     # n_speakers = hps_ms.data.n_speakers if 'n_speakers' in hps_ms.data.keys() else 0
     # n_symbols = len(hps_ms.symbols) if 'symbols' in hps_ms.keys() else 0
