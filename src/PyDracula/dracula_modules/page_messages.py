@@ -176,29 +176,33 @@ class Chat(QWidget):
     def load_chat_log(self):
         chatlog_str = self.chat_info_dict["chatlog"]
         lines = chatlog_str.strip().splitlines()
-        char_name = self.char_info_dict["character_name"]
-        your_name = self.char_info_dict["your_name"]
 
         for line in lines:
-
             # prefix = line.split(":")[0].strip()
             # line = line.split(":")[1].strip()
             split_parts = line.split(":", 1)
             prefix = split_parts[0].strip()
-            line = split_parts[1].strip()
+            message = split_parts[1].strip()
 
-            if prefix == char_name:
-                # print(f"Bot said: {line}")
-                self.send_by_bot(line, self.pf_img_dict['bot'])
-            elif prefix == your_name:
-                # print(f"You said: {line}")
-                self.send_by_user(line, self.pf_img_dict['user'])
-            else:  # Other character    # TODO: when other character spoken, display name & other profile_image
-                # print(f"{prefix} said: {line}")
-                self.send_by_other(line, self.pf_img_dict['other'])
+            self.message_by_prefix(prefix, message)
 
-            # ADD Name label under message label
-            self.message.data_message.setText(prefix)
+    def message_by_prefix(self, prefix, message):
+        char_name = self.char_info_dict["character_name"]
+        your_name = self.char_info_dict["your_name"]
+
+        # print(f"prefix = {prefix}, line = {message}")
+        if prefix == char_name:
+            # print(f"Bot said: {message}")
+            self.send_by_bot(message, self.pf_img_dict['bot'])
+        elif prefix == your_name:
+            # print(f"You said: {message}")
+            self.send_by_user(message, self.pf_img_dict['user'])
+        else:     # Other character    # TODO: when other character spoken, display name & other profile_image
+            # print(f"{prefix} said: {message}")
+            self.send_by_other(message, self.pf_img_dict['other'])
+
+        # ADD Name label under message label
+        self.message.data_message.setText(prefix)
 
     #######################################################################################################
     # SCROLL METHODS
@@ -254,8 +258,12 @@ class Chat(QWidget):
         from generate import Generator  # noqa
 
         # refresh other info (load max prompt/reply tokens)
-        self.mWindow.load_prompt_info()
-        self.mWindow.load_other_info()
+
+        # self.mWindow.load_prompt_info()
+        # self.mWindow.load_other_info()
+
+        # Refresh all info before generate
+        self.mWindow.load_all_info()
 
         gen = Generator()
         # text_lang_code = language_detection(text)

@@ -276,7 +276,8 @@ def get_character_info(character_name):
         print("\033[34m" + "Bot profile Image exists." + "\033[0m")
         character_image = image_filepath
     else:
-        print("\033[31m" + "Warning [LangAIComm.get_character_info]: " + "\033[33m" + "Bot profile Image does not exist." + "\033[0m")
+        print(
+            "\033[31m" + "Warning [LangAIComm.get_character_info]: " + "\033[33m" + "Bot profile Image does not exist." + "\033[0m")
 
     # Add image path to char_dict
     char_dict["character_image"] = character_image
@@ -311,13 +312,13 @@ def generate_reply(string, character_name, max_prompt_token=2048, max_reply_toke
     user_input = char_settings_json["your_name"] + ": " + string + "\n" + char_dict["character_name"] + ":"
 
     if chat_str.strip() == '':
-        chat_str = user_input  # Chatlog is empty
+        chat_str_prompt = user_input  # Chatlog is empty
     else:
-        chat_str = chat_str + '\n' + user_input  # Chatlog is not empty
+        chat_str_prompt = chat_str + '\n' + user_input  # Chatlog is not empty
 
     # remove unecessary \n
     # trim_str = re.sub(r"\n(?![a-zA-Z])", "", chat_str)
-    optimized_chat_str = optimize_tokens(char_dict["context"], chat_str, max_prompt_token - max_reply_token)
+    optimized_chat_str = optimize_tokens(char_dict["context"], chat_str_prompt, max_prompt_token - max_reply_token)
     # print(max_reply_token)
     if optimized_chat_str is None:
         print(
@@ -337,7 +338,15 @@ def generate_reply(string, character_name, max_prompt_token=2048, max_reply_toke
 
         result_text = clean_lines(result_text)
 
-        save_text_file(chatlog_file_path, chat_str + result_text)
+        # ADD PREFIXS EVERY LINES IF 'user_input' HAS MULTIPLE LINES
+        prefix_user_input = add_prefix_lines(string, char_settings_json["your_name"]) + "\n" + char_dict["character_name"] + ":"
+
+        if chat_str.strip() == '':
+            prefix_chat_str = prefix_user_input  # Chatlog is empty
+        else:
+            prefix_chat_str = chat_str + '\n' + prefix_user_input  # Chatlog is not empty
+
+        save_text_file(chatlog_file_path, prefix_chat_str + result_text)
         # print(file_content + result_text)
 
         # remove blanks from left
@@ -358,6 +367,13 @@ def get_character_file(character_name):
 
     return char_file_path
 
+
+def add_prefix_lines(string, prefix):
+    lines = string.splitlines()
+    prefixed_lines = [f'{prefix}: ' + line for line in lines]  # Add the prefix to each line
+    result = '\n'.join(prefixed_lines)  # Join the lines back into a single string
+
+    return result
 
 def extract_date(string):
     # Parse the string into a datetime object.
