@@ -138,7 +138,15 @@ class MainWindow(QMainWindow):
         widgets.pushButton_view_original_url.pressed.connect(self.update_content_by_component)
         widgets.pushButton_view_original_url.released.connect(self.released_component)
 
+        # other settings components
         widgets.comboBox_discord_print_language.currentTextChanged.connect(self.update_content_by_component)
+        widgets.lineEdit_discord_your_name.textChanged.connect(self.update_content_by_component)
+        widgets.lineEdit_discord_your_avatar.textChanged.connect(self.update_content_by_component)
+        # widgets.lineEdit_discord_bot_id.textChanged.connect(self.update_content_by_component)
+        # widgets.lineEdit_discord_bot_channel_id.textChanged.connect(self.update_content_by_component)
+        # widgets.lineEdit_discord_webhook_url.textChanged.connect(self.update_content_by_component)
+        widgets.lineEdit_discord_webhook_username.textChanged.connect(self.update_content_by_component)
+        widgets.lineEdit_discord_webhook_avatar.textChanged.connect(self.update_content_by_component)
 
         # INSTALL EVENT FILTER
         widgets.lineEdit_api_url.installEventFilter(self)
@@ -220,38 +228,41 @@ class MainWindow(QMainWindow):
         componentName = called_component.objectName()
 
         component_key = None
+        component_type = None
         component_property = None
         setting_name = None
 
 
-        # OTHER SETTINGS
+        if componentName is not None:
+            component_type, component_key = self.component_info_by_name(componentName)
+
+        # region OTHER SETTINGS
         #####################################################################################
-        if componentName == "checkBox_discord_bot":
+        if "discord_" in component_key:
             setting_name = 'other_settings'
-            component_key = 'discord_bot'
 
-            self.extra_right_menu_update(True)
-
-        if componentName == "checkBox_discord_webhook":
-            setting_name = 'other_settings'
-            component_key = 'discord_webhook'
-
-            self.extra_right_menu_update(True)
+            if component_type == "checkBox":
+                self.extra_right_menu_update(True)
 
         if isinstance(called_component, QCheckBox):
             component_property = called_component.isChecked()
 
-        if componentName == "comboBox_discord_print_language":
-            setting_name = 'other_settings'
-            component_key = "discord_print_language"
-
         if isinstance(called_component, QComboBox):
-            component_property = self.convert_language_code(called_component.currentText())
+            if "language" in component_key:
+                component_property = self.convert_language_code(called_component.currentText())
+            else:
+                component_property = called_component.currentText()
+
+        if isinstance(called_component, QLineEdit):
+            lineEdit_text = str(called_component.text())
+            if not lineEdit_text or lineEdit_text == "":
+                lineEdit_text = ""
+            component_property = lineEdit_text
         #####################################################################################
-        # OTHER SETTINGS
+        # endregion OTHER SETTINGS
 
 
-        # PROMPT SETTINGS
+        # region PROMPT SETTINGS
         #####################################################################################
         if componentName == "pushButton_view_original_url":
             self.refresh_api_url(hide_url=False)     # peek api_url temporarily
@@ -259,25 +270,27 @@ class MainWindow(QMainWindow):
             print("\033[34m" + f"{componentName}: \033[32mpressed\033[0m")
             return
         #####################################################################################
-        # PROMPT SETTINGS
+        # endregion PROMPT SETTINGS
 
-        # Error Handler
+        # region Error Handler
 
-        err_log = "\033[31m" + "Error [main GUI.update_content_by_component]: this component has no"
+        err_log = "\033[31m" + "Error [main GUI.update_content_by_component]:"
         # IF ANY INFORMATION IS NONE
-        if not componentName:
-            print(f"{err_log} componentName: \033[33m{componentName}" + "\033[0m")
+        if componentName is None:
+            print(f"{err_log} this component has no componentName: \033[33m{componentName}" + "\033[0m")
             return
-        if not component_key:
+
+        err_log = err_log + f" this \033[33m{componentName}\033[31m has no"
+        if component_key is None:
             print(f"{err_log} component_key: \033[33m{component_key}" + "\033[0m")
             return
-        if not component_property:
+        if component_property is None and component_property != "":     # ignore string as Error
             print(f"{err_log} component_property: \033[33m{component_property}" + "\033[0m")
             return
-        if not setting_name:
+        if setting_name is None:
             print(f"{err_log} setting_name: \033[33m{setting_name}" + "\033[0m")
             return
-
+        # endregion
 
         print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}")
         update_json(component_key, component_property, setting_name)
@@ -517,17 +530,21 @@ class MainWindow(QMainWindow):
 
         webhook_url_widget = widgets.lineEdit_discord_webhook_url
         webhook_username_widget = widgets.lineEdit_discord_webhook_username
-        webhook_avatar = widgets.lineEdit_discord_webhook_avatar
+        webhook_avatar_widget = widgets.lineEdit_discord_webhook_avatar
+        discord_your_name_widget = widgets.lineEdit_discord_your_name
+        discord_your_avatar_widget = widgets.lineEdit_discord_your_avatar
 
         if not only_color:
             # UPDATE TEXT WIDGETS
             ############################################################################################
             self.refresh_discord_url(webhook_url_widget)        # Hide token
             webhook_username_widget.setText(self.chat_info_dict["discord_webhook_username"])
-            webhook_avatar.setText(self.chat_info_dict["discord_webhook_avatar"])
+            webhook_avatar_widget.setText(self.chat_info_dict["discord_webhook_avatar"])
+            discord_your_name_widget.setText(self.chat_info_dict["discord_your_name"])
+            discord_your_avatar_widget.setText(self.chat_info_dict["discord_your_avatar"])
 
-        self.color_by_state([webhook_url_widget, webhook_username_widget, webhook_avatar]
-                            , discord_webhook)
+        self.color_by_state([webhook_url_widget, webhook_username_widget, webhook_avatar_widget
+                            , discord_your_name_widget, discord_your_avatar_widget], discord_webhook)
 
 
 
@@ -783,6 +800,14 @@ class MainWindow(QMainWindow):
 
         return final_url
 
+    def component_info_by_name(self, componentName_str):
+        parts = componentName_str.split('_')
+        if len(parts) > 1:
+            type_name = parts[0]
+            component_name = '_'.join(parts[1:])
+            return type_name, component_name
+        else:
+            return "\033[31m" + f"[main GUI.component_info_by_name]: Invalid input format: \033[33m{componentName_str}" + "\033[0m"
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
