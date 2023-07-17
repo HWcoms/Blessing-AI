@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainoxsSeu.ui'
+## Form generated from reading UI file 'mainjoooZn.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -17,12 +17,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplication, QCheckBox,
     QComboBox, QCommandLinkButton, QFrame, QGridLayout,
-    QHBoxLayout, QHeaderView, QLabel, QLayout,
-    QLineEdit, QListView, QMainWindow, QPlainTextEdit,
-    QPushButton, QRadioButton, QScrollArea, QScrollBar,
-    QSizePolicy, QSlider, QSpacerItem, QStackedWidget,
-    QTableWidget, QTableWidgetItem, QTextBrowser, QTextEdit,
-    QVBoxLayout, QWidget)
+    QGroupBox, QHBoxLayout, QHeaderView, QLabel,
+    QLayout, QLineEdit, QListView, QMainWindow,
+    QPlainTextEdit, QPushButton, QRadioButton, QScrollArea,
+    QScrollBar, QSizePolicy, QSlider, QSpacerItem,
+    QStackedWidget, QTableWidget, QTableWidgetItem, QTextBrowser,
+    QTextEdit, QVBoxLayout, QWidget)
 # import resources_rc
 
 class Ui_MainWindow(object):
@@ -1573,7 +1573,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1152, 811))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 912, 811))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -2163,6 +2163,9 @@ class Ui_MainWindow(object):
 "\n"
 "QSlider::handle:horizontal:pressed {\n"
 "    background-color: rgb(65, 255, 195);\n"
+"}\n"
+"QComboBox {\n"
+"	background-color: rgb(33, 37, 43);\n"
 "}")
         self.verticalLayout_39 = QVBoxLayout(self.Prompt_Page)
         self.verticalLayout_39.setObjectName(u"verticalLayout_39")
@@ -2408,7 +2411,7 @@ class Ui_MainWindow(object):
         self.comboBox_ai_model_language.setObjectName(u"comboBox_ai_model_language")
         sizePolicy1.setHeightForWidth(self.comboBox_ai_model_language.sizePolicy().hasHeightForWidth())
         self.comboBox_ai_model_language.setSizePolicy(sizePolicy1)
-        self.comboBox_ai_model_language.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.comboBox_ai_model_language.setStyleSheet(u"")
 
         self.verticalLayout_38.addWidget(self.comboBox_ai_model_language)
 
@@ -2576,7 +2579,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 352, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 274, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -2775,6 +2778,9 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.row_3)
 
         self.stackedWidget.addWidget(self.Page_example)
+        self.page = QWidget()
+        self.page.setObjectName(u"page")
+        self.stackedWidget.addWidget(self.page)
 
         self.verticalLayout_15.addWidget(self.stackedWidget)
 
@@ -2785,6 +2791,7 @@ class Ui_MainWindow(object):
         self.extraRightBox.setObjectName(u"extraRightBox")
         self.extraRightBox.setMinimumSize(QSize(0, 0))
         self.extraRightBox.setMaximumSize(QSize(0, 16777215))
+        self.extraRightBox.setStyleSheet(u"")
         self.extraRightBox.setFrameShape(QFrame.NoFrame)
         self.extraRightBox.setFrameShadow(QFrame.Raised)
         self.verticalLayout_7 = QVBoxLayout(self.extraRightBox)
@@ -2801,40 +2808,99 @@ class Ui_MainWindow(object):
 
         self.contentSettings = QFrame(self.extraRightBox)
         self.contentSettings.setObjectName(u"contentSettings")
+        self.contentSettings.setStyleSheet(u"background: transparent;\n"
+"")
         self.contentSettings.setFrameShape(QFrame.NoFrame)
         self.contentSettings.setFrameShadow(QFrame.Raised)
         self.verticalLayout_13 = QVBoxLayout(self.contentSettings)
         self.verticalLayout_13.setSpacing(0)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
-        self.verticalLayout_13.setContentsMargins(10, 10, 10, 10)
-        self.verticalLayout_41 = QVBoxLayout()
-        self.verticalLayout_41.setSpacing(7)
-        self.verticalLayout_41.setObjectName(u"verticalLayout_41")
-        self.verticalLayout_41.setContentsMargins(0, 0, 0, 10)
-        self.label_2 = QLabel(self.contentSettings)
-        self.label_2.setObjectName(u"label_2")
+        self.verticalLayout_13.setContentsMargins(6, 0, 6, 0)
+        self.scrollArea_stylesheet = QScrollArea(self.contentSettings)
+        self.scrollArea_stylesheet.setObjectName(u"scrollArea_stylesheet")
+        self.scrollArea_stylesheet.setStyleSheet(u"QLineEdit {\n"
+"	border: 2px solid rgb(48, 50, 62);\n"
+"	border-radius: 10px;\n"
+"	color: #FFF;\n"
+"	padding-left: 10px;\n"
+"	padding-right: 10px;\n"
+"	background-color:rgb(34,36,44)\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(66, 70, 86);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(85, 170, 255);\n"
+"	background-color: rgb(43, 45, 56);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal {\n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border: none;\n"
+"    height: 40px;\n"
+"    width: 10px;\n"
+"    margin: -20px 0;\n"
+"    border-radius: 20px;\n"
+"    padding: -20px 0px;\n"
+"}\n"
+"QSlider::handle:horizontal:hover {\n"
+"    background-color: rgb(155, 180, 255);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:pressed {\n"
+"    background-color: rgb(65, 255, 195);\n"
+"}\n"
+"QComboBox {\n"
+"	background-color: rgb(33, 37, 43);\n"
+"}")
+        self.scrollArea_stylesheet.setFrameShape(QFrame.NoFrame)
+        self.scrollArea_stylesheet.setFrameShadow(QFrame.Plain)
+        self.scrollArea_stylesheet.setLineWidth(0)
+        self.scrollArea_stylesheet.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.scrollArea_stylesheet.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scrollArea_stylesheet.setWidgetResizable(True)
+        self.scrollAreaWidgetContents_3 = QWidget()
+        self.scrollAreaWidgetContents_3.setObjectName(u"scrollAreaWidgetContents_3")
+        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 200, 613))
+        self.horizontalLayout_28 = QHBoxLayout(self.scrollAreaWidgetContents_3)
+        self.horizontalLayout_28.setObjectName(u"horizontalLayout_28")
+        self.verticalLayout_46 = QVBoxLayout()
+        self.verticalLayout_46.setObjectName(u"verticalLayout_46")
+        self.label_6 = QLabel(self.scrollAreaWidgetContents_3)
+        self.label_6.setObjectName(u"label_6")
 
-        self.verticalLayout_41.addWidget(self.label_2)
+        self.verticalLayout_46.addWidget(self.label_6)
 
-        self.comboBox_discord_print_language = QComboBox(self.contentSettings)
+        self.comboBox_discord_print_language = QComboBox(self.scrollAreaWidgetContents_3)
         self.comboBox_discord_print_language.addItem("")
         self.comboBox_discord_print_language.addItem("")
         self.comboBox_discord_print_language.addItem("")
         self.comboBox_discord_print_language.setObjectName(u"comboBox_discord_print_language")
         self.comboBox_discord_print_language.setMaximumSize(QSize(16777215, 30))
 
-        self.verticalLayout_41.addWidget(self.comboBox_discord_print_language)
+        self.verticalLayout_46.addWidget(self.comboBox_discord_print_language)
 
-        self.verticalSpacer_7 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.verticalSpacer_8 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
-        self.verticalLayout_41.addItem(self.verticalSpacer_7)
+        self.verticalLayout_46.addItem(self.verticalSpacer_8)
 
-        self.checkBox_discord_bot = QCheckBox(self.contentSettings)
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+
+        self.verticalLayout_46.addLayout(self.horizontalLayout_7)
+
+        self.verticalGroupBox_discorbot_settings = QGroupBox(self.scrollAreaWidgetContents_3)
+        self.verticalGroupBox_discorbot_settings.setObjectName(u"verticalGroupBox_discorbot_settings")
+        self.verticalLayout_51 = QVBoxLayout(self.verticalGroupBox_discorbot_settings)
+        self.verticalLayout_51.setSpacing(3)
+        self.verticalLayout_51.setObjectName(u"verticalLayout_51")
+        self.verticalLayout_51.setContentsMargins(6, 6, 6, 6)
+        self.checkBox_discord_bot = QCheckBox(self.verticalGroupBox_discorbot_settings)
         self.checkBox_discord_bot.setObjectName(u"checkBox_discord_bot")
 
-        self.verticalLayout_41.addWidget(self.checkBox_discord_bot)
+        self.verticalLayout_51.addWidget(self.checkBox_discord_bot)
 
-        self.lineEdit_discord_bot_id = QLineEdit(self.contentSettings)
+        self.lineEdit_discord_bot_id = QLineEdit(self.verticalGroupBox_discorbot_settings)
         self.lineEdit_discord_bot_id.setObjectName(u"lineEdit_discord_bot_id")
         sizePolicy11.setHeightForWidth(self.lineEdit_discord_bot_id.sizePolicy().hasHeightForWidth())
         self.lineEdit_discord_bot_id.setSizePolicy(sizePolicy11)
@@ -2842,9 +2908,9 @@ class Ui_MainWindow(object):
         self.lineEdit_discord_bot_id.setMaximumSize(QSize(16777215, 30))
         self.lineEdit_discord_bot_id.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_41.addWidget(self.lineEdit_discord_bot_id)
+        self.verticalLayout_51.addWidget(self.lineEdit_discord_bot_id)
 
-        self.lineEdit_discord_bot_channel_id = QLineEdit(self.contentSettings)
+        self.lineEdit_discord_bot_channel_id = QLineEdit(self.verticalGroupBox_discorbot_settings)
         self.lineEdit_discord_bot_channel_id.setObjectName(u"lineEdit_discord_bot_channel_id")
         sizePolicy11.setHeightForWidth(self.lineEdit_discord_bot_channel_id.sizePolicy().hasHeightForWidth())
         self.lineEdit_discord_bot_channel_id.setSizePolicy(sizePolicy11)
@@ -2852,18 +2918,23 @@ class Ui_MainWindow(object):
         self.lineEdit_discord_bot_channel_id.setMaximumSize(QSize(16777215, 30))
         self.lineEdit_discord_bot_channel_id.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_41.addWidget(self.lineEdit_discord_bot_channel_id)
+        self.verticalLayout_51.addWidget(self.lineEdit_discord_bot_channel_id)
 
-        self.verticalSpacer_5 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
-        self.verticalLayout_41.addItem(self.verticalSpacer_5)
+        self.verticalLayout_46.addWidget(self.verticalGroupBox_discorbot_settings)
 
-        self.checkBox_discord_webhook = QCheckBox(self.contentSettings)
+        self.verticalGroupBox_discord_webhook_settings = QGroupBox(self.scrollAreaWidgetContents_3)
+        self.verticalGroupBox_discord_webhook_settings.setObjectName(u"verticalGroupBox_discord_webhook_settings")
+        self.verticalLayout_52 = QVBoxLayout(self.verticalGroupBox_discord_webhook_settings)
+        self.verticalLayout_52.setSpacing(3)
+        self.verticalLayout_52.setObjectName(u"verticalLayout_52")
+        self.verticalLayout_52.setContentsMargins(6, 6, 6, 6)
+        self.checkBox_discord_webhook = QCheckBox(self.verticalGroupBox_discord_webhook_settings)
         self.checkBox_discord_webhook.setObjectName(u"checkBox_discord_webhook")
 
-        self.verticalLayout_41.addWidget(self.checkBox_discord_webhook)
+        self.verticalLayout_52.addWidget(self.checkBox_discord_webhook)
 
-        self.lineEdit_discord_webhook_url = QLineEdit(self.contentSettings)
+        self.lineEdit_discord_webhook_url = QLineEdit(self.verticalGroupBox_discord_webhook_settings)
         self.lineEdit_discord_webhook_url.setObjectName(u"lineEdit_discord_webhook_url")
         sizePolicy11.setHeightForWidth(self.lineEdit_discord_webhook_url.sizePolicy().hasHeightForWidth())
         self.lineEdit_discord_webhook_url.setSizePolicy(sizePolicy11)
@@ -2871,9 +2942,25 @@ class Ui_MainWindow(object):
         self.lineEdit_discord_webhook_url.setMaximumSize(QSize(16777215, 30))
         self.lineEdit_discord_webhook_url.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_41.addWidget(self.lineEdit_discord_webhook_url)
+        self.verticalLayout_52.addWidget(self.lineEdit_discord_webhook_url)
 
-        self.lineEdit_discord_webhook_username = QLineEdit(self.contentSettings)
+        self.verticalGroupBox_discord_your_settings = QGroupBox(self.verticalGroupBox_discord_webhook_settings)
+        self.verticalGroupBox_discord_your_settings.setObjectName(u"verticalGroupBox_discord_your_settings")
+        self.verticalLayout_49 = QVBoxLayout(self.verticalGroupBox_discord_your_settings)
+        self.verticalLayout_49.setSpacing(3)
+        self.verticalLayout_49.setObjectName(u"verticalLayout_49")
+        self.verticalLayout_49.setContentsMargins(6, 6, 6, 6)
+        self.label_34 = QLabel(self.verticalGroupBox_discord_your_settings)
+        self.label_34.setObjectName(u"label_34")
+        sizePolicy13 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy13.setHorizontalStretch(0)
+        sizePolicy13.setVerticalStretch(0)
+        sizePolicy13.setHeightForWidth(self.label_34.sizePolicy().hasHeightForWidth())
+        self.label_34.setSizePolicy(sizePolicy13)
+
+        self.verticalLayout_49.addWidget(self.label_34)
+
+        self.lineEdit_discord_webhook_username = QLineEdit(self.verticalGroupBox_discord_your_settings)
         self.lineEdit_discord_webhook_username.setObjectName(u"lineEdit_discord_webhook_username")
         sizePolicy11.setHeightForWidth(self.lineEdit_discord_webhook_username.sizePolicy().hasHeightForWidth())
         self.lineEdit_discord_webhook_username.setSizePolicy(sizePolicy11)
@@ -2881,14 +2968,9 @@ class Ui_MainWindow(object):
         self.lineEdit_discord_webhook_username.setMaximumSize(QSize(16777215, 30))
         self.lineEdit_discord_webhook_username.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_41.addWidget(self.lineEdit_discord_webhook_username)
+        self.verticalLayout_49.addWidget(self.lineEdit_discord_webhook_username)
 
-        self.label_28 = QLabel(self.contentSettings)
-        self.label_28.setObjectName(u"label_28")
-
-        self.verticalLayout_41.addWidget(self.label_28)
-
-        self.lineEdit_discord_webhook_avatar = QLineEdit(self.contentSettings)
+        self.lineEdit_discord_webhook_avatar = QLineEdit(self.verticalGroupBox_discord_your_settings)
         self.lineEdit_discord_webhook_avatar.setObjectName(u"lineEdit_discord_webhook_avatar")
         sizePolicy11.setHeightForWidth(self.lineEdit_discord_webhook_avatar.sizePolicy().hasHeightForWidth())
         self.lineEdit_discord_webhook_avatar.setSizePolicy(sizePolicy11)
@@ -2896,19 +2978,44 @@ class Ui_MainWindow(object):
         self.lineEdit_discord_webhook_avatar.setMaximumSize(QSize(16777215, 30))
         self.lineEdit_discord_webhook_avatar.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_41.addWidget(self.lineEdit_discord_webhook_avatar)
+        self.verticalLayout_49.addWidget(self.lineEdit_discord_webhook_avatar)
 
-        self.label_29 = QLabel(self.contentSettings)
-        self.label_29.setObjectName(u"label_29")
+        self.lineEdit_discord_your_name = QLineEdit(self.verticalGroupBox_discord_your_settings)
+        self.lineEdit_discord_your_name.setObjectName(u"lineEdit_discord_your_name")
+        sizePolicy11.setHeightForWidth(self.lineEdit_discord_your_name.sizePolicy().hasHeightForWidth())
+        self.lineEdit_discord_your_name.setSizePolicy(sizePolicy11)
+        self.lineEdit_discord_your_name.setMinimumSize(QSize(0, 30))
+        self.lineEdit_discord_your_name.setMaximumSize(QSize(16777215, 30))
+        self.lineEdit_discord_your_name.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_41.addWidget(self.label_29)
+        self.verticalLayout_49.addWidget(self.lineEdit_discord_your_name)
 
-        self.verticalSpacer_6 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.lineEdit_discord_your_avatar = QLineEdit(self.verticalGroupBox_discord_your_settings)
+        self.lineEdit_discord_your_avatar.setObjectName(u"lineEdit_discord_your_avatar")
+        sizePolicy11.setHeightForWidth(self.lineEdit_discord_your_avatar.sizePolicy().hasHeightForWidth())
+        self.lineEdit_discord_your_avatar.setSizePolicy(sizePolicy11)
+        self.lineEdit_discord_your_avatar.setMinimumSize(QSize(0, 30))
+        self.lineEdit_discord_your_avatar.setMaximumSize(QSize(16777215, 30))
+        self.lineEdit_discord_your_avatar.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_41.addItem(self.verticalSpacer_6)
+        self.verticalLayout_49.addWidget(self.lineEdit_discord_your_avatar)
 
 
-        self.verticalLayout_13.addLayout(self.verticalLayout_41)
+        self.verticalLayout_52.addWidget(self.verticalGroupBox_discord_your_settings)
+
+
+        self.verticalLayout_46.addWidget(self.verticalGroupBox_discord_webhook_settings)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_46.addItem(self.verticalSpacer_4)
+
+
+        self.horizontalLayout_28.addLayout(self.verticalLayout_46)
+
+        self.scrollArea_stylesheet.setWidget(self.scrollAreaWidgetContents_3)
+
+        self.verticalLayout_13.addWidget(self.scrollArea_stylesheet)
 
 
         self.verticalLayout_7.addWidget(self.contentSettings)
@@ -3112,7 +3219,7 @@ class Ui_MainWindow(object):
         self.comboBox_tts_language.setItemText(1, QCoreApplication.translate("MainWindow", u"Japanese", None))
         self.comboBox_tts_language.setItemText(2, QCoreApplication.translate("MainWindow", u"Korean", None))
 
-        self.comboBox_tts_language.setCurrentText(QCoreApplication.translate("MainWindow", u"Japanese", None))
+        self.comboBox_tts_language.setCurrentText(QCoreApplication.translate("MainWindow", u"English", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Voice ID (Index)</span></p></body></html>", None))
         self.comboBox_tts_voice_id.setItemText(0, QCoreApplication.translate("MainWindow", u"0 - Char_name", None))
 
@@ -3223,25 +3330,31 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem23.setText(QCoreApplication.translate("MainWindow", u"Line", None));
         self.tableWidget.setSortingEnabled(__sortingEnabled)
 
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Send Discord Bot Message As</span></p></body></html>", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Send Discord Bot Message As</span></p></body></html>", None))
         self.comboBox_discord_print_language.setItemText(0, QCoreApplication.translate("MainWindow", u"English", None))
         self.comboBox_discord_print_language.setItemText(1, QCoreApplication.translate("MainWindow", u"Japanese", None))
         self.comboBox_discord_print_language.setItemText(2, QCoreApplication.translate("MainWindow", u"Korean", None))
 
+        self.verticalGroupBox_discorbot_settings.setTitle(QCoreApplication.translate("MainWindow", u"Discord Bot Settings", None))
         self.checkBox_discord_bot.setText(QCoreApplication.translate("MainWindow", u"Discord Bot", None))
         self.lineEdit_discord_bot_id.setText("")
         self.lineEdit_discord_bot_id.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Discord Bot ID (Token)", None))
         self.lineEdit_discord_bot_channel_id.setText("")
         self.lineEdit_discord_bot_channel_id.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Discord Channel ID to send msg", None))
+        self.verticalGroupBox_discord_webhook_settings.setTitle(QCoreApplication.translate("MainWindow", u"Discord Webhook Settings", None))
         self.checkBox_discord_webhook.setText(QCoreApplication.translate("MainWindow", u"Discord Webhook", None))
         self.lineEdit_discord_webhook_url.setText("")
         self.lineEdit_discord_webhook_url.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Discord Webhook Url (Token)", None))
+        self.verticalGroupBox_discord_your_settings.setTitle(QCoreApplication.translate("MainWindow", u"Custom Settings", None))
+        self.label_34.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:8pt;\">\u25bc Default: keep it blank</span></p></body></html>", None))
         self.lineEdit_discord_webhook_username.setText("")
         self.lineEdit_discord_webhook_username.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Custom Bot name", None))
-        self.label_28.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:8pt;\">\u25b2 Default: keep it blank</span></p></body></html>", None))
         self.lineEdit_discord_webhook_avatar.setText("")
-        self.lineEdit_discord_webhook_avatar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Custom Profile Picture", None))
-        self.label_29.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:8pt;\">\u25b2 Default: keep it blank</span></p></body></html>", None))
+        self.lineEdit_discord_webhook_avatar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Custom Bot Profile Picture", None))
+        self.lineEdit_discord_your_name.setText("")
+        self.lineEdit_discord_your_name.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Custom Your name", None))
+        self.lineEdit_discord_your_avatar.setText("")
+        self.lineEdit_discord_your_avatar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Custom Your Profile Picture", None))
         self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"Copyright (c) 2023 HWcoms", None))
         self.version.setText(QCoreApplication.translate("MainWindow", u"v1.0.0", None))
     # retranslateUi

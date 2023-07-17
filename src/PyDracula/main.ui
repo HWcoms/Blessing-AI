@@ -2895,7 +2895,7 @@ QSlider::handle:horizontal:pressed {
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1152</width>
+                            <width>912</width>
                             <height>811</height>
                            </rect>
                           </property>
@@ -3329,7 +3329,7 @@ QPushButton:pressed{
                                 <string notr="true">background-color: rgb(33, 37, 43);</string>
                                </property>
                                <property name="currentText">
-                                <string>Japanese</string>
+                                <string>English</string>
                                </property>
                                <item>
                                 <property name="text">
@@ -3978,6 +3978,9 @@ QSlider::handle:horizontal:hover {
 
 QSlider::handle:horizontal:pressed {
     background-color: rgb(65, 255, 195);
+}
+QComboBox {
+	background-color: rgb(33, 37, 43);
 }</string>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_39">
@@ -4476,7 +4479,7 @@ QPushButton:pressed{
                                 </sizepolicy>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true"/>
                                </property>
                                <item>
                                 <property name="text">
@@ -4825,7 +4828,7 @@ QPushButton:pressed{
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>352</width>
+                                 <width>274</width>
                                  <height>218</height>
                                 </rect>
                                </property>
@@ -5363,6 +5366,7 @@ QPushButton:pressed{
                        </item>
                       </layout>
                      </widget>
+                     <widget class="QWidget" name="page"/>
                     </widget>
                    </item>
                   </layout>
@@ -5381,6 +5385,9 @@ QPushButton:pressed{
                     <width>0</width>
                     <height>16777215</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <property name="frameShape">
                    <enum>QFrame::NoFrame</enum>
@@ -5422,6 +5429,10 @@ QPushButton:pressed{
                    </item>
                    <item>
                     <widget class="QFrame" name="contentSettings">
+                     <property name="styleSheet">
+                      <string notr="true">background: transparent;
+</string>
+                     </property>
                      <property name="frameShape">
                       <enum>QFrame::NoFrame</enum>
                      </property>
@@ -5433,298 +5444,471 @@ QPushButton:pressed{
                        <number>0</number>
                       </property>
                       <property name="leftMargin">
-                       <number>10</number>
+                       <number>6</number>
                       </property>
                       <property name="topMargin">
-                       <number>10</number>
+                       <number>0</number>
                       </property>
                       <property name="rightMargin">
-                       <number>10</number>
+                       <number>6</number>
                       </property>
                       <property name="bottomMargin">
-                       <number>10</number>
+                       <number>0</number>
                       </property>
                       <item>
-                       <layout class="QVBoxLayout" name="verticalLayout_41">
-                        <property name="spacing">
-                         <number>7</number>
+                       <widget class="QScrollArea" name="scrollArea_stylesheet">
+                        <property name="styleSheet">
+                         <string notr="true">QLineEdit {
+	border: 2px solid rgb(48, 50, 62);
+	border-radius: 10px;
+	color: #FFF;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color:rgb(34,36,44)
+}
+QLineEdit:hover {
+	border: 2px solid rgb(66, 70, 86);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(85, 170, 255);
+	background-color: rgb(43, 45, 56);
+}
+
+QSlider::handle:horizontal {
+    background-color: rgb(85, 170, 255);
+    border: none;
+    height: 40px;
+    width: 10px;
+    margin: -20px 0;
+    border-radius: 20px;
+    padding: -20px 0px;
+}
+QSlider::handle:horizontal:hover {
+    background-color: rgb(155, 180, 255);
+}
+
+QSlider::handle:horizontal:pressed {
+    background-color: rgb(65, 255, 195);
+}
+QComboBox {
+	background-color: rgb(33, 37, 43);
+}</string>
                         </property>
-                        <property name="leftMargin">
+                        <property name="frameShape">
+                         <enum>QFrame::NoFrame</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Plain</enum>
+                        </property>
+                        <property name="lineWidth">
                          <number>0</number>
                         </property>
-                        <property name="topMargin">
-                         <number>0</number>
+                        <property name="verticalScrollBarPolicy">
+                         <enum>Qt::ScrollBarAsNeeded</enum>
                         </property>
-                        <property name="rightMargin">
-                         <number>0</number>
+                        <property name="horizontalScrollBarPolicy">
+                         <enum>Qt::ScrollBarAlwaysOff</enum>
                         </property>
-                        <property name="bottomMargin">
-                         <number>10</number>
+                        <property name="widgetResizable">
+                         <bool>true</bool>
                         </property>
-                        <item>
-                         <widget class="QLabel" name="label_2">
-                          <property name="text">
-                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Send Discord Bot Message As&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QComboBox" name="comboBox_discord_print_language">
-                          <property name="maximumSize">
-                           <size>
-                            <width>16777215</width>
-                            <height>30</height>
-                           </size>
-                          </property>
+                        <widget class="QWidget" name="scrollAreaWidgetContents_3">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>0</y>
+                           <width>200</width>
+                           <height>613</height>
+                          </rect>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayout_28">
                           <item>
-                           <property name="text">
-                            <string>English</string>
-                           </property>
+                           <layout class="QVBoxLayout" name="verticalLayout_46">
+                            <item>
+                             <widget class="QLabel" name="label_6">
+                              <property name="text">
+                               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Send Discord Bot Message As&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QComboBox" name="comboBox_discord_print_language">
+                              <property name="maximumSize">
+                               <size>
+                                <width>16777215</width>
+                                <height>30</height>
+                               </size>
+                              </property>
+                              <item>
+                               <property name="text">
+                                <string>English</string>
+                               </property>
+                              </item>
+                              <item>
+                               <property name="text">
+                                <string>Japanese</string>
+                               </property>
+                              </item>
+                              <item>
+                               <property name="text">
+                                <string>Korean</string>
+                               </property>
+                              </item>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="verticalSpacer_8">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeType">
+                               <enum>QSizePolicy::Fixed</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>20</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                            <item>
+                             <layout class="QHBoxLayout" name="horizontalLayout_7"/>
+                            </item>
+                            <item>
+                             <widget class="QGroupBox" name="verticalGroupBox_discorbot_settings">
+                              <property name="title">
+                               <string>Discord Bot Settings</string>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_51">
+                               <property name="spacing">
+                                <number>3</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>6</number>
+                               </property>
+                               <item>
+                                <widget class="QCheckBox" name="checkBox_discord_bot">
+                                 <property name="text">
+                                  <string>Discord Bot</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLineEdit" name="lineEdit_discord_bot_id">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                 </property>
+                                 <property name="placeholderText">
+                                  <string>Discord Bot ID (Token)</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLineEdit" name="lineEdit_discord_bot_channel_id">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                 </property>
+                                 <property name="placeholderText">
+                                  <string>Discord Channel ID to send msg</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QGroupBox" name="verticalGroupBox_discord_webhook_settings">
+                              <property name="title">
+                               <string>Discord Webhook Settings</string>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_52">
+                               <property name="spacing">
+                                <number>3</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>6</number>
+                               </property>
+                               <item>
+                                <widget class="QCheckBox" name="checkBox_discord_webhook">
+                                 <property name="text">
+                                  <string>Discord Webhook</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLineEdit" name="lineEdit_discord_webhook_url">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                 </property>
+                                 <property name="placeholderText">
+                                  <string>Discord Webhook Url (Token)</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QGroupBox" name="verticalGroupBox_discord_your_settings">
+                                 <property name="title">
+                                  <string>Custom Settings</string>
+                                 </property>
+                                 <layout class="QVBoxLayout" name="verticalLayout_49">
+                                  <property name="spacing">
+                                   <number>3</number>
+                                  </property>
+                                  <property name="leftMargin">
+                                   <number>6</number>
+                                  </property>
+                                  <property name="topMargin">
+                                   <number>6</number>
+                                  </property>
+                                  <property name="rightMargin">
+                                   <number>6</number>
+                                  </property>
+                                  <property name="bottomMargin">
+                                   <number>6</number>
+                                  </property>
+                                  <item>
+                                   <widget class="QLabel" name="label_34">
+                                    <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                      <horstretch>0</horstretch>
+                                      <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                    </property>
+                                    <property name="text">
+                                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;▼ Default: keep it blank&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QLineEdit" name="lineEdit_discord_webhook_username">
+                                    <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                      <horstretch>0</horstretch>
+                                      <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                    </property>
+                                    <property name="minimumSize">
+                                     <size>
+                                      <width>0</width>
+                                      <height>30</height>
+                                     </size>
+                                    </property>
+                                    <property name="maximumSize">
+                                     <size>
+                                      <width>16777215</width>
+                                      <height>30</height>
+                                     </size>
+                                    </property>
+                                    <property name="text">
+                                     <string/>
+                                    </property>
+                                    <property name="alignment">
+                                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                    </property>
+                                    <property name="placeholderText">
+                                     <string>Custom Bot name</string>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QLineEdit" name="lineEdit_discord_webhook_avatar">
+                                    <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                      <horstretch>0</horstretch>
+                                      <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                    </property>
+                                    <property name="minimumSize">
+                                     <size>
+                                      <width>0</width>
+                                      <height>30</height>
+                                     </size>
+                                    </property>
+                                    <property name="maximumSize">
+                                     <size>
+                                      <width>16777215</width>
+                                      <height>30</height>
+                                     </size>
+                                    </property>
+                                    <property name="text">
+                                     <string/>
+                                    </property>
+                                    <property name="alignment">
+                                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                    </property>
+                                    <property name="placeholderText">
+                                     <string>Custom Bot Profile Picture</string>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QLineEdit" name="lineEdit_discord_your_name">
+                                    <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                      <horstretch>0</horstretch>
+                                      <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                    </property>
+                                    <property name="minimumSize">
+                                     <size>
+                                      <width>0</width>
+                                      <height>30</height>
+                                     </size>
+                                    </property>
+                                    <property name="maximumSize">
+                                     <size>
+                                      <width>16777215</width>
+                                      <height>30</height>
+                                     </size>
+                                    </property>
+                                    <property name="text">
+                                     <string/>
+                                    </property>
+                                    <property name="alignment">
+                                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                    </property>
+                                    <property name="placeholderText">
+                                     <string>Custom Your name</string>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QLineEdit" name="lineEdit_discord_your_avatar">
+                                    <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                      <horstretch>0</horstretch>
+                                      <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                    </property>
+                                    <property name="minimumSize">
+                                     <size>
+                                      <width>0</width>
+                                      <height>30</height>
+                                     </size>
+                                    </property>
+                                    <property name="maximumSize">
+                                     <size>
+                                      <width>16777215</width>
+                                      <height>30</height>
+                                     </size>
+                                    </property>
+                                    <property name="text">
+                                     <string/>
+                                    </property>
+                                    <property name="alignment">
+                                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                    </property>
+                                    <property name="placeholderText">
+                                     <string>Custom Your Profile Picture</string>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="verticalSpacer_4">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>20</width>
+                                <height>40</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                           </layout>
                           </item>
-                          <item>
-                           <property name="text">
-                            <string>Japanese</string>
-                           </property>
-                          </item>
-                          <item>
-                           <property name="text">
-                            <string>Korean</string>
-                           </property>
-                          </item>
-                         </widget>
-                        </item>
-                        <item>
-                         <spacer name="verticalSpacer_7">
-                          <property name="orientation">
-                           <enum>Qt::Vertical</enum>
-                          </property>
-                          <property name="sizeType">
-                           <enum>QSizePolicy::Fixed</enum>
-                          </property>
-                          <property name="sizeHint" stdset="0">
-                           <size>
-                            <width>20</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                         </spacer>
-                        </item>
-                        <item>
-                         <widget class="QCheckBox" name="checkBox_discord_bot">
-                          <property name="text">
-                           <string>Discord Bot</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLineEdit" name="lineEdit_discord_bot_id">
-                          <property name="sizePolicy">
-                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                           </sizepolicy>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>16777215</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                          <property name="placeholderText">
-                           <string>Discord Bot ID (Token)</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLineEdit" name="lineEdit_discord_bot_channel_id">
-                          <property name="sizePolicy">
-                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                           </sizepolicy>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>16777215</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                          <property name="placeholderText">
-                           <string>Discord Channel ID to send msg</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <spacer name="verticalSpacer_5">
-                          <property name="orientation">
-                           <enum>Qt::Vertical</enum>
-                          </property>
-                          <property name="sizeType">
-                           <enum>QSizePolicy::Fixed</enum>
-                          </property>
-                          <property name="sizeHint" stdset="0">
-                           <size>
-                            <width>20</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                         </spacer>
-                        </item>
-                        <item>
-                         <widget class="QCheckBox" name="checkBox_discord_webhook">
-                          <property name="text">
-                           <string>Discord Webhook</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLineEdit" name="lineEdit_discord_webhook_url">
-                          <property name="sizePolicy">
-                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                           </sizepolicy>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>16777215</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                          <property name="placeholderText">
-                           <string>Discord Webhook Url (Token)</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLineEdit" name="lineEdit_discord_webhook_username">
-                          <property name="sizePolicy">
-                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                           </sizepolicy>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>16777215</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                          <property name="placeholderText">
-                           <string>Custom Bot name</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="label_28">
-                          <property name="text">
-                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;▲ Default: keep it blank&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLineEdit" name="lineEdit_discord_webhook_avatar">
-                          <property name="sizePolicy">
-                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                           </sizepolicy>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>16777215</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                          <property name="placeholderText">
-                           <string>Custom Profile Picture</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="label_29">
-                          <property name="text">
-                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;▲ Default: keep it blank&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <spacer name="verticalSpacer_6">
-                          <property name="orientation">
-                           <enum>Qt::Vertical</enum>
-                          </property>
-                          <property name="sizeType">
-                           <enum>QSizePolicy::Expanding</enum>
-                          </property>
-                          <property name="sizeHint" stdset="0">
-                           <size>
-                            <width>20</width>
-                            <height>10</height>
-                           </size>
-                          </property>
-                         </spacer>
-                        </item>
-                       </layout>
+                         </layout>
+                        </widget>
+                       </widget>
                       </item>
                      </layout>
                     </widget>
