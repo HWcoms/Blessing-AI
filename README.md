@@ -85,13 +85,8 @@ Also You don't need to follow (Local) steps below**
   ([Google Colab Link](https://colab.research.google.com/drive/1VwEONZNajP4WGwJ8bw55MODHQ_yq1hpJ?usp=sharing))
   ![](docs/screenshots/ColabApiServerUrl.png?raw=true)
   
-  In .env setting file, Copy and Paste the Url to  
-  
-  ```diff
-  TEXTGENERATION_URL =                #Paste Url Here (no need to add Quotation mark)
-  ```
-  
-  Check more information in [Env](https://github.com/HWcomss/Blessing-AI/blob/main/docs/ENV.md#textgen-api-url) document  
+  Copy and Paste the Url to Blessing-AI program
+  ![](docs/screenshots/Blessing_AI_Api_Url_Paste.png?raw=true)
   
   Also if you want to use other Cloud services or Language models, Check [this video](https://www.youtube.com/watch?v=TP2yID7Ubr4&t=2s) by Aitrepreneur
 
