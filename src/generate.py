@@ -3,6 +3,7 @@ from LangAIComm import generate_reply
 
 # Load Program Settings
 from setting_info import SettingInfo
+import json
 
 from pathlib import Path
 
@@ -49,8 +50,22 @@ class Generator:
         bot_reply = ""
 
         if text:
+            # SEND USER MESSAGE TO DISCORD
+            #########################################
+            # TODO: test user discord message is working
+            # TODO: refactor your name, your image
+
+            your_name = character_settings["your_name"]
+            your_image = other_settings["discord_your_avatar"]
+            your_json = {"character_name": your_name, "character_image": your_image}
+
+            #########################################
+            # SEND USER MESSAGE TO DISCORD
+
             speech_lang = detect_language(text)
             translated_speech = DoTranslate(text, speech_lang, ai_model_language)
+
+            self.send_discord(translated_speech, ai_model_language, your_json, other_settings, by_user=True)
 
             if self.logging:
                 # source_lang_name = languages.get(alpha2=speech_lang).name
@@ -63,6 +78,7 @@ class Generator:
 
             if self.logging:
                 print(f'Bot: {bot_reply}')
+
         else:
             print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
             return None  # failed
@@ -71,8 +87,52 @@ class Generator:
             print("\031[31m" + '[Generator.Generate] Error: text value is blank' + "\033[0m")
             return None  # failed
 
-        # speak(bot_reply, audio_settings, other_settings)
+        self.send_discord(bot_reply, ai_model_language, character_settings, other_settings)
+
         return bot_reply  # success
+
+    def send_discord(self, message, message_language, profile_settings, other_settings, by_user=False):
+        log_str = "[Generator.send_discord]: "
+        if self.logging:
+            print("\033[34m" + log_str + "\033[32m")
+
+        discord_print_language = other_settings["discord_print_language"]
+        discord_bot = other_settings["discord_bot"]
+        discord_webhook = other_settings["discord_webhook"]
+
+        if discord_bot or discord_webhook:
+            # Do translate to discord_print_langage, if it's not same as language_code
+            if message_language != discord_print_language:
+                discord_sentence = DoTranslate(message, message_language, discord_print_language)
+            else:
+                discord_sentence = message
+
+            if discord_bot:
+                # Using Discord Bot
+                SendDiscordMessage(discord_sentence, other_settings["discord_bot_id"], other_settings["discord_bot_channel_id"])
+            if discord_webhook:
+                webhook_url = other_settings["discord_webhook_url"]
+
+                if by_user:
+                    webhook_username = other_settings["discord_your_name"]
+                    webhook_avatar = other_settings["discord_your_avatar"]
+                else:
+                    webhook_username = other_settings["discord_webhook_username"]
+                    webhook_avatar = other_settings["discord_webhook_avatar"]
+
+                # IF THERE NAME OR AVATAR ARE EMPTY, GET INFORMATION FROM "character_settings.txt"
+                if webhook_username == "" or webhook_username is None:
+                    webhook_username = profile_settings["character_name"]
+                if webhook_avatar == "" or webhook_avatar is None:
+                    webhook_avatar = profile_settings["character_image"]
+
+                print("webhook_username: ", webhook_username)
+                print("webhook_avatar: ", webhook_avatar)
+
+                ExcuteDiscordWebhook(discord_sentence, webhook_url, webhook_username, webhook_avatar)  # Using Webhook
+
+        if self.logging:
+            print("\033[0m")
 
     def speak_tts(self, text, settings_list: list = None):
         # print("speak")
@@ -94,14 +154,12 @@ class Generator:
             print("\033[34m" + log_str + "\033[0m")
 
         if text:
-            # from voicevox import speak
-            self.speak_moegoe(text, character_settings, audio_settings, prompt_settings, other_settings)
+            self.speak_moegoe(text, character_settings, audio_settings, prompt_settings)
         else:
             print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
             return None  # failed
 
-    def speak_moegoe(self, sentence, character_settings, audio_settings, prompt_settings, other_settings):
-
+    def speak_moegoe(self, sentence, character_settings, audio_settings, prompt_settings):
         log_str = "[Generator.speak_moegoe]: "
         if self.logging:
             print("\033[34m" + log_str + "\033[32m")
@@ -110,7 +168,6 @@ class Generator:
         language_code = audio_settings["tts_language"]
         voice_volume = audio_settings["voice_volume"]
         voice_id = audio_settings["voice_id"]
-        discord_print_language = other_settings["discord_print_language"]
         ai_model_language = prompt_settings[
             "ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
 
@@ -119,7 +176,7 @@ class Generator:
             bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
         elif language_code == 'ko':
             bot_trans_speech = bot_trans_speech  # TODO: eng to korean
-            voice_volume = voice_volume * 0.3
+            voice_volume = voice_volume * 0.5
 
         # synthesize voice as wav file
         speech_text(audio_settings["tts_character_name"], bot_trans_speech, language_code, voice_id, voice_volume)
@@ -131,33 +188,6 @@ class Generator:
         threads = [Thread(target=self.play_voice, args=[spk_id])]
         # threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
 
-        discord_bot = other_settings["discord_bot"]
-        discord_webhook = other_settings["discord_webhook"]
-
-        if discord_bot or discord_webhook:
-            # Do translate to discord_print_langage, if it's not same as language_code
-            if language_code != discord_print_language:
-                discord_sentence = DoTranslate(sentence, ai_model_language, discord_print_language)
-            else:
-                discord_sentence = bot_trans_speech
-
-            if discord_bot:
-                bot_id = other_settings["discord_bot_id"]
-                channel_id = other_settings["discord_bot_channel_id"]
-
-                SendDiscordMessage(discord_sentence, bot_id, channel_id)  # Using Discord Bot
-            if discord_webhook:
-                webhook_url = other_settings["discord_webhook_url"]
-                webhook_username = other_settings["discord_webhook_username"]
-                webhook_avatar = other_settings["discord_webhook_avatar"]
-
-                if webhook_username == "":
-                    webhook_username = character_settings["character_name"]
-                if webhook_avatar == "":
-                    webhook_avatar = character_settings["character_image"]
-
-                ExcuteDiscordWebhook(discord_sentence, webhook_url, webhook_username, webhook_avatar)  # Using Webhook
-
         [t.start() for t in threads]
         [t.join() for t in threads]
 
@@ -165,13 +195,10 @@ class Generator:
         import sounddevice as sd
         import soundfile as sf
 
+        s_q = sd.query_devices()
+        device_name = f"""{s_q[device_id]["name"]}"""
         data, fs = sf.read(self.tts_wav_path, dtype='float32')
-
-        # if INGAME_PUSH_TO_TALK_KEY:
-        #     keyboard.press(INGAME_PUSH_TO_TALK_KEY)
+        print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
 
         sd.play(data, fs, device=device_id)
         sd.wait()
-
-        # if INGAME_PUSH_TO_TALK_KEY:
-        #     keyboard.release(INGAME_PUSH_TO_TALK_KEY)
