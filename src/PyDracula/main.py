@@ -131,7 +131,7 @@ class MainWindow(QMainWindow):
 
         widgets.settingsTopBtn.clicked.connect(openCloseRightBox)
 
-        # UPDATE CONTENT BY COMPONENT
+        # region UPDATE CONTENT BY COMPONENT
         widgets.checkBox_discord_bot.clicked.connect(self.update_content_by_component)
         widgets.checkBox_discord_webhook.clicked.connect(self.update_content_by_component)
 
@@ -148,11 +148,15 @@ class MainWindow(QMainWindow):
         widgets.lineEdit_discord_webhook_username.textChanged.connect(self.update_content_by_component)
         widgets.lineEdit_discord_webhook_avatar.textChanged.connect(self.update_content_by_component)
 
+        # character settings components
+        widgets.textEdit_your_name.textChanged.connect(self.update_content_by_component)
+
         # INSTALL EVENT FILTER
         widgets.lineEdit_api_url.installEventFilter(self)
         widgets.lineEdit_discord_bot_id.installEventFilter(self)
         widgets.lineEdit_discord_bot_channel_id.installEventFilter(self)
         widgets.lineEdit_discord_webhook_url.installEventFilter(self)
+        # endregion
 
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
@@ -236,6 +240,14 @@ class MainWindow(QMainWindow):
         if componentName is not None:
             component_type, component_key = self.component_info_by_name(componentName)
 
+        # region CHARACTER SETTINGS
+        #####################################################################################
+        if componentName == "textEdit_your_name":
+            setting_name = 'character_settings'
+        #####################################################################################
+        # endregion CHARACTER SETTINGS
+
+
         # region OTHER SETTINGS
         #####################################################################################
         if "discord_" in component_key:
@@ -243,21 +255,6 @@ class MainWindow(QMainWindow):
 
             if component_type == "checkBox":
                 self.extra_right_menu_update(True)
-
-        if isinstance(called_component, QCheckBox):
-            component_property = called_component.isChecked()
-
-        if isinstance(called_component, QComboBox):
-            if "language" in component_key:
-                component_property = self.convert_language_code(called_component.currentText())
-            else:
-                component_property = called_component.currentText()
-
-        if isinstance(called_component, QLineEdit):
-            lineEdit_text = str(called_component.text())
-            if not lineEdit_text or lineEdit_text == "":
-                lineEdit_text = ""
-            component_property = lineEdit_text
         #####################################################################################
         # endregion OTHER SETTINGS
 
@@ -272,8 +269,33 @@ class MainWindow(QMainWindow):
         #####################################################################################
         # endregion PROMPT SETTINGS
 
-        # region Error Handler
+        # PROPERTY HANDLER BY COMPONENT TYPE
+        #####################################################################################
+        if isinstance(called_component, QCheckBox):
+            component_property = called_component.isChecked()
 
+        if isinstance(called_component, QComboBox):
+            if "language" in component_key:
+                component_property = self.convert_language_code(called_component.currentText())
+            else:
+                component_property = called_component.currentText()
+
+        if isinstance(called_component, QLineEdit):
+            comp_text = str(called_component.text())
+            if not comp_text or comp_text == "":
+                comp_text = ""
+            component_property = comp_text
+
+        if isinstance(called_component, QTextEdit):
+            comp_text = str(called_component.toPlainText())
+            if not comp_text or comp_text == "":
+                comp_text = ""
+            component_property = comp_text
+        #####################################################################################
+        # endregion PROPERTY HANDLER
+
+
+        # region Error Handler
         err_log = "\033[31m" + "Error [main GUI.update_content_by_component]:"
         # IF ANY INFORMATION IS NONE
         if componentName is None:
@@ -626,8 +648,8 @@ class MainWindow(QMainWindow):
         self.char_info_dict.update(char_settings_json)
         # TODO: if your_name or character_name is changed in settings_txt, program don't know who is the user in chatlog_txt
 
-        widgets.textEdit_yourname.setText(user_name)
-        widgets.label_char_name.setText(character_name)
+        widgets.textEdit_your_name.setText(user_name)
+        widgets.label_character_name.setText(character_name)
 
         # print(self.char_info_dict)
 

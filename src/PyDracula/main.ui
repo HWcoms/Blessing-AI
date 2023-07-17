@@ -1801,7 +1801,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>3</number>
+                      <number>1</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -2541,7 +2541,7 @@ QPushButton:pressed{
                             </widget>
                            </item>
                            <item>
-                            <widget class="QTextEdit" name="textEdit_yourname">
+                            <widget class="QTextEdit" name="textEdit_your_name">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
                                <horstretch>0</horstretch>
@@ -2701,7 +2701,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                             </widget>
                            </item>
                            <item alignment="Qt::AlignHCenter">
-                            <widget class="QLabel" name="label_char_name">
+                            <widget class="QLabel" name="label_character_name">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                                <horstretch>0</horstretch>
@@ -2895,7 +2895,7 @@ QSlider::handle:horizontal:pressed {
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>912</width>
+                            <width>1152</width>
                             <height>811</height>
                            </rect>
                           </property>
@@ -4828,7 +4828,7 @@ QPushButton:pressed{
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>274</width>
+                                 <width>218</width>
                                  <height>218</height>
                                 </rect>
                                </property>

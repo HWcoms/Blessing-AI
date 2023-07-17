@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainjoooZn.ui'
+## Form generated from reading UI file 'mainekezCa.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1385,16 +1385,16 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_char_info_1.addWidget(self.label_your_name)
 
-        self.textEdit_yourname = QTextEdit(self.Character_page)
-        self.textEdit_yourname.setObjectName(u"textEdit_yourname")
+        self.textEdit_your_name = QTextEdit(self.Character_page)
+        self.textEdit_your_name.setObjectName(u"textEdit_your_name")
         sizePolicy9 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Maximum)
         sizePolicy9.setHorizontalStretch(0)
         sizePolicy9.setVerticalStretch(0)
-        sizePolicy9.setHeightForWidth(self.textEdit_yourname.sizePolicy().hasHeightForWidth())
-        self.textEdit_yourname.setSizePolicy(sizePolicy9)
-        self.textEdit_yourname.setMinimumSize(QSize(0, 0))
-        self.textEdit_yourname.setMaximumSize(QSize(16777215, 40))
-        self.textEdit_yourname.setStyleSheet(u"QTextEdit {\n"
+        sizePolicy9.setHeightForWidth(self.textEdit_your_name.sizePolicy().hasHeightForWidth())
+        self.textEdit_your_name.setSizePolicy(sizePolicy9)
+        self.textEdit_your_name.setMinimumSize(QSize(0, 0))
+        self.textEdit_your_name.setMaximumSize(QSize(16777215, 40))
+        self.textEdit_your_name.setStyleSheet(u"QTextEdit {\n"
 "	border: 2px solid rgb(48, 50, 62);\n"
 "	border-radius: 10px;\n"
 "	color: #FFF;\n"
@@ -1410,7 +1410,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(43, 45, 56);\n"
 "}")
 
-        self.verticalLayout_char_info_1.addWidget(self.textEdit_yourname)
+        self.verticalLayout_char_info_1.addWidget(self.textEdit_your_name)
 
         self.label_greeting = QLabel(self.Character_page)
         self.label_greeting.setObjectName(u"label_greeting")
@@ -1461,20 +1461,20 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_char_profile.addWidget(self.label_char_img, 0, Qt.AlignHCenter)
 
-        self.label_char_name = QLabel(self.Character_page)
-        self.label_char_name.setObjectName(u"label_char_name")
-        sizePolicy8.setHeightForWidth(self.label_char_name.sizePolicy().hasHeightForWidth())
-        self.label_char_name.setSizePolicy(sizePolicy8)
-        self.label_char_name.setMinimumSize(QSize(150, 30))
-        self.label_char_name.setMaximumSize(QSize(16777215, 16777215))
-        self.label_char_name.setLayoutDirection(Qt.LeftToRight)
-        self.label_char_name.setFrameShape(QFrame.Box)
-        self.label_char_name.setFrameShadow(QFrame.Raised)
-        self.label_char_name.setLineWidth(2)
-        self.label_char_name.setMidLineWidth(1)
-        self.label_char_name.setAlignment(Qt.AlignCenter)
+        self.label_character_name = QLabel(self.Character_page)
+        self.label_character_name.setObjectName(u"label_character_name")
+        sizePolicy8.setHeightForWidth(self.label_character_name.sizePolicy().hasHeightForWidth())
+        self.label_character_name.setSizePolicy(sizePolicy8)
+        self.label_character_name.setMinimumSize(QSize(150, 30))
+        self.label_character_name.setMaximumSize(QSize(16777215, 16777215))
+        self.label_character_name.setLayoutDirection(Qt.LeftToRight)
+        self.label_character_name.setFrameShape(QFrame.Box)
+        self.label_character_name.setFrameShadow(QFrame.Raised)
+        self.label_character_name.setLineWidth(2)
+        self.label_character_name.setMidLineWidth(1)
+        self.label_character_name.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_char_profile.addWidget(self.label_char_name, 0, Qt.AlignHCenter)
+        self.verticalLayout_char_profile.addWidget(self.label_character_name, 0, Qt.AlignHCenter)
 
 
         self.horizontalLayout_char_info_top.addLayout(self.verticalLayout_char_profile)
@@ -1573,7 +1573,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 912, 811))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1152, 811))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -2579,7 +2579,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 274, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -3079,7 +3079,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -3165,7 +3165,7 @@ class Ui_MainWindow(object):
         self.pushButton_pause_reply.setText(QCoreApplication.translate("MainWindow", u"  Skip", None))
         self.pushButton_stop_reply.setText(QCoreApplication.translate("MainWindow", u" Generate", None))
         self.label_your_name.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Your Name</span></p></body></html>", None))
-        self.textEdit_yourname.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.textEdit_your_name.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -3183,7 +3183,7 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Hello my name is bot</p></body></html>", None))
         self.label_char_img.setText(QCoreApplication.translate("MainWindow", u"char_img", None))
-        self.label_char_name.setText(QCoreApplication.translate("MainWindow", u"char_name", None))
+        self.label_character_name.setText(QCoreApplication.translate("MainWindow", u"char_name", None))
         self.label_context.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Context</span></p></body></html>", None))
         self.textEdit_context.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
