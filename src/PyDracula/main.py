@@ -138,6 +138,8 @@ class MainWindow(QMainWindow):
         widgets.pushButton_view_original_url.pressed.connect(self.update_content_by_component)
         widgets.pushButton_view_original_url.released.connect(self.released_component)
 
+        widgets.comboBox_discord_print_language.currentTextChanged.connect(self.update_content_by_component)
+
         # INSTALL EVENT FILTER
         widgets.lineEdit_api_url.installEventFilter(self)
         widgets.lineEdit_discord_bot_id.installEventFilter(self)
@@ -225,20 +227,26 @@ class MainWindow(QMainWindow):
         # OTHER SETTINGS
         #####################################################################################
         if componentName == "checkBox_discord_bot":
+            setting_name = 'other_settings'
             component_key = 'discord_bot'
 
             self.extra_right_menu_update(True)
 
         if componentName == "checkBox_discord_webhook":
+            setting_name = 'other_settings'
             component_key = 'discord_webhook'
 
             self.extra_right_menu_update(True)
 
         if isinstance(called_component, QCheckBox):
             component_property = called_component.isChecked()
-            setting_name = 'other_settings'
 
-        # TODO: hide secret infos as '*'
+        if componentName == "comboBox_discord_print_language":
+            setting_name = 'other_settings'
+            component_key = "discord_print_language"
+
+        if isinstance(called_component, QComboBox):
+            component_property = self.convert_language_code(called_component.currentText())
         #####################################################################################
         # OTHER SETTINGS
 
@@ -252,6 +260,23 @@ class MainWindow(QMainWindow):
             return
         #####################################################################################
         # PROMPT SETTINGS
+
+        # Error Handler
+
+        err_log = "\033[31m" + "Error [main GUI.update_content_by_component]: this component has no"
+        # IF ANY INFORMATION IS NONE
+        if not componentName:
+            print(f"{err_log} componentName: \033[33m{componentName}" + "\033[0m")
+            return
+        if not component_key:
+            print(f"{err_log} component_key: \033[33m{component_key}" + "\033[0m")
+            return
+        if not component_property:
+            print(f"{err_log} component_property: \033[33m{component_property}" + "\033[0m")
+            return
+        if not setting_name:
+            print(f"{err_log} setting_name: \033[33m{setting_name}" + "\033[0m")
+            return
 
 
         print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}")
