@@ -1,6 +1,6 @@
 {
     "discord_your_name": "",
-	"discord_your_avatar": "",
+    "discord_your_avatar": "",
     "discord_bot": false,
     "discord_bot_id": "",
     "discord_bot_channel_id": "",

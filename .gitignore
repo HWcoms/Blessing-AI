@@ -184,8 +184,6 @@ src/PyBlackBox/*
 
 textholder.py
 
-settings/unused/
-
 src/TestUrlSecret.py
 
-settings/*
+settings/unused/
