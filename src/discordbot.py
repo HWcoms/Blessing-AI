@@ -82,11 +82,12 @@ def ExcuteDiscordWebhook(message, webhook_url, username, avatar=None):
             ModifyDiscordWebhook(webhook_url, username, _final_url)
 
         print("avatar url: ", _final_url)
+        print("avatar url type: ", url_type)
 
     # ////////////////////////////////////////////////////////
     # CHECK URL TYPE [data: or http:]
 
-    print(webhook_data)
+    # print(webhook_data)
 
     try:
         result = requests.post(webhook_url, json=webhook_data)

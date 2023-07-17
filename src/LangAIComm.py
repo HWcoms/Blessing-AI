@@ -33,8 +33,7 @@ token_request_url = None
 
 trim_string = '\n'
 
-character_name = None  # 'Kato Megumi'
-
+# character_name = None  # 'Kato Megumi'
 
 ## load voice_settings.txt
 
@@ -176,14 +175,15 @@ def load_chatlog(file_path):
     return data
 
 
-def run(prompt, name1):
+def run(prompt, yourname):
     # settings_json = read_text_file(Path(__file__).resolve().parent.parent / r'Voice_Settings.txt')
     settings_json = SettingInfo.load_prompt_settings()
     gen_request_url = check_url(settings_json["api_url"], gen_url_endpoint)
+    max_prompt_token = settings_json["max_prompt_token"]
     max_reply_token = settings_json["max_reply_token"]
 
     request = {
-        "your_name": name1,
+        'your_name': yourname,
         'prompt': prompt,
         'max_new_tokens': max_reply_token,
         'do_sample': True,
@@ -200,10 +200,10 @@ def run(prompt, name1):
         'early_stopping': False,
         'seed': -1,
         'add_bos_token': True,
-        'truncation_length': 2048,
+        'truncation_length': max_prompt_token,
         'ban_eos_token': False,
         'skip_special_tokens': True,
-        'stopping_strings': ["\ncoms:"]
+        'stopping_strings': [f"{yourname}:"]
     }
     # request['prompt'] = request['prompt'].encode('utf-8').decode('utf-8') #making sure to en/decode as utf-8 - sometimes prompt get changed to symbols
     request['prompt'] = request['prompt'].strip()
@@ -214,7 +214,7 @@ def run(prompt, name1):
         if response.status_code == 200:
             result_prompt = response.json()['results'][0]['text']
             # print(result)
-            trimmed_string = trim_until_newline(result_prompt)
+            trimmed_string = trim_until_newline(result_prompt, yourname)
             return trimmed_string
         else:
             print(f"Error [LangAIComm.run]: failed to request generate_reply [status_code: {response.status_code}]")
@@ -234,10 +234,10 @@ def load_text_file(file_path):
         return ""
 
 
-def trim_until_newline(string):
+def trim_until_newline(string, prefix):
     # string = string.decode()
 
-    index = string.find("\ncoms")
+    index = string.find(f"{prefix}:")
     if index != -1:
         return string[:index]
     else:
@@ -339,7 +339,8 @@ def generate_reply(string, character_name, max_prompt_token=2048, max_reply_toke
         result_text = clean_lines(result_text)
 
         # ADD PREFIXS EVERY LINES IF 'user_input' HAS MULTIPLE LINES
-        prefix_user_input = add_prefix_lines(string, char_settings_json["your_name"]) + "\n" + char_dict["character_name"] + ":"
+        prefix_user_input = add_prefix_lines(string, char_settings_json["your_name"]) + "\n" + char_dict[
+            "character_name"] + ":"
 
         if chat_str.strip() == '':
             prefix_chat_str = prefix_user_input  # Chatlog is empty
@@ -374,6 +375,7 @@ def add_prefix_lines(string, prefix):
     result = '\n'.join(prefixed_lines)  # Join the lines back into a single string
 
     return result
+
 
 def extract_date(string):
     # Parse the string into a datetime object.
