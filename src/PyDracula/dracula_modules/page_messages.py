@@ -256,23 +256,17 @@ class Chat(QWidget):
 
     def generate_reply(self, text):
         from generate import Generator  # noqa
-
-        # refresh other info (load max prompt/reply tokens)
-
-        # self.mWindow.load_prompt_info()
-        # self.mWindow.load_other_info()
+        gen = Generator()
 
         # Refresh all info before generate
         self.mWindow.load_all_info()
 
-        gen = Generator()
-        # text_lang_code = language_detection(text)
-
+        char_info_dict = self.mWindow.char_info_dict
         audio_info_dict = self.mWindow.audio_info_dict
         prompt_info_dict = self.mWindow.prompt_info_dict
+        chat_info_dict = self.mWindow.chat_info_dict
 
-        # setting_list = [None, self.char_info_dict, self.chat_info_dict]
-        setting_list = [audio_info_dict, self.char_info_dict, prompt_info_dict, self.chat_info_dict]
+        setting_list = [audio_info_dict, char_info_dict, prompt_info_dict, chat_info_dict]
         reply_txt = gen.generate(text, setting_list)
 
         # reply_txt = "test"
