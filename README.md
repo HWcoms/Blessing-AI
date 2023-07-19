@@ -55,16 +55,17 @@ I'm using Python 3.10.6 (https://www.python.org/downloads/release/python-3106/)
     e.g ```pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118``` **I only tested on CUDA 11.8**
 
 - Download MoeGoe character model (MoeGoe TTS model)
+  - Currently I'm using an Anime Character 'Kato Megumi' VITS model from 'Saekano' (CV: Kiyono Yasuno (安野 希世乃))  
+    To download this model https://drive.google.com/file/d/1Qcr6OpnuZGc3Vw54kdV8-k9TTijiDTsF/view?usp=share_link  
+    In zip file there are 2 files (`G_latest.pth`, `moegoe_config.json`).
+  - You can use other model if you want other voice (need 2files - `*.pth`, `*.json`) (optional)  
+  - You can change file name of `G_latest.pth`, `moegoe_config.json` to anything -> `*.pth`, `*.json`  
   
-  - You can use other model if you want other voice (need 2files - G_latest.pth, moegoe_config.json) (optional)  
-
-- Currently I'm using an Anime Character 'Kato Megumi' VITS model from 'Saekano' (CV: Kiyono Yasuno (安野 希世乃))  
-  To download this model https://drive.google.com/file/d/1Qcr6OpnuZGc3Vw54kdV8-k9TTijiDTsF/view?usp=share_link  
-  In zip file there are 2 files (G_latest.pth, moegoe_config.json).  
+  Locate to [src/Models/models/Voice/](src/Models/Voice/) folder, Create a folder that same name as your character.json file name  
+  and put vits model files in the folder.  
   
-  Locate to [src/Models/models/Voice/](src/Models/Voice/) folder, Create a folder that same name as your character.json file name and put vits model files in the folder.
-  
-  for example, if you have a `Kato Megumi.json` character file in  [src/Models/models/Characters/](src/Models/Characters/) folder, then create a folder `Kato Megumi`in Voice folder and paste `G_latest.pth`,`moegoe_config.json` files In the created folder.
+  for example, if you have a `Kato Megumi.json` character file in  [src/Models/models/Characters/](src/Models/Characters/) folder,
+  then create a folder as `Kato Megumi` in [src/Models/models/Voice/](src/Models/Voice/) folder and paste `*.pth`, `*.json` files.  
 
   ![](docs/screenshots/MoeGoeModels.png?raw=true)
 
