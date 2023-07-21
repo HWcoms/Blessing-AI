@@ -28,6 +28,7 @@ language_marks = {
     "日本語": "[JA]",
     "简体中文": "[ZH]",
     "English": "[EN]",
+    "한국어": "[KO]",
     "Mix": "",
 }
 
@@ -142,11 +143,12 @@ def voice_conversion():
 def speech_text(character_name, msg, lang, spk_id, audio_volume):
     # Load model path
     hps_ms, n_speakers, n_symbols, speakers, use_f0, emotion_embedding, net_g_ms = load_model(character_name)
-
+    # print(hps_ms['data']['text_cleaners'][0])
+    # TODO: auto language_mark if text_cleaners is for multiple language
     if lang == 'ja':
         msg = language_marks[language] + msg + language_marks[language]
-
-    print(msg)
+    elif lang == 'ko' and hps_ms['data']['text_cleaners'][0] != 'korean_cleaners':
+        msg = language_marks["한국어"] + msg + language_marks["한국어"]
 
     if n_symbols != 0:
         if not emotion_embedding:
