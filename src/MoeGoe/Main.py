@@ -140,7 +140,7 @@ def voice_conversion():
 """
 
 
-def speech_text(character_name, msg, lang, spk_id, audio_volume):
+def speech_text(character_name, msg, lang, spk_id, audio_volume, out_path = out_file_path):
     # Load model path
     hps_ms, n_speakers, n_symbols, speakers, use_f0, emotion_embedding, net_g_ms = load_model(character_name)
     # print(hps_ms['data']['text_cleaners'][0])
@@ -179,9 +179,6 @@ def speech_text(character_name, msg, lang, spk_id, audio_volume):
                 # print_speakers(speakers[0], escape)
                 # speaker_id = get_speaker_id('Speaker ID: ')
                 speaker_id = spk_id
-
-                # out_path = "models\demo.wav"
-                out_path = out_file_path
 
                 with no_grad():
                     x_tst = stn_tst.unsqueeze(0)

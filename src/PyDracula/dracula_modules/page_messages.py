@@ -197,7 +197,7 @@ class Chat(QWidget):
         elif prefix == your_name:
             # print(f"You said: {message}")
             self.send_by_user(message, self.pf_img_dict['user'])
-        else:     # Other character    # TODO: when other character spoken, display name & other profile_image
+        else:  # Other character    # TODO: when other character spoken, display name & other profile_image
             # print(f"{prefix} said: {message}")
             self.send_by_other(message, self.pf_img_dict['other'])
 
@@ -266,10 +266,10 @@ class Chat(QWidget):
         prompt_info_dict = self.mWindow.prompt_info_dict
         chat_info_dict = self.mWindow.chat_info_dict
 
-        setting_list = [audio_info_dict, char_info_dict, prompt_info_dict, chat_info_dict]
-
         # CHECK TTS_ONLY IN RIGHT_EXTRA MENU
         if not chat_info_dict["tts_only"]:
+            setting_list = [audio_info_dict, char_info_dict, prompt_info_dict, chat_info_dict]
+
             reply_txt = gen.generate(text, setting_list)
 
             if reply_txt is None or reply_txt == "":
@@ -278,13 +278,13 @@ class Chat(QWidget):
             else:
                 self.mWindow.after_generate_reply()  # call method from main window [GUI]
 
-                gen.speak_tts(reply_txt, setting_list)
-        else:
-            gen.speak_tts(text, setting_list, tts_only=True)    # tts testing
+                text = reply_txt
+                # gen.speak_tts(reply_txt, setting_list)
+        # else:
+        # gen.speak_tts(text, setting_list, tts_only=True)    # tts testing
 
+        self.mWindow.gen_voice_thread(text)
 
-
-    ####
     def buttonClick(self):
         # GET BUTTON CLICKED
         btn = self.sender()
@@ -303,12 +303,13 @@ class Chat(QWidget):
             try:
                 subprocess.Popen(["explorer", "/select,", chatlog_path])
             except Exception as e:
-                print("\033[31m" + "Error [page_messages.buttonClick]: Failed to Open Folder" + "\n\033[33m" + f"▲ {e}" + "\033[0m")
-
+                print(
+                    "\033[31m" + "Error [page_messages.buttonClick]: Failed to Open Folder" + "\n\033[33m" + f"▲ {e}" + "\033[0m")
 
         # SHOW CHARACTER PAGE
         if btnName == "btn_more_top":
             print(btnName)
+
 
 if __name__ == "__main__":
     print()

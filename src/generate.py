@@ -11,7 +11,7 @@ from pathlib import Path
 from modules.translator import DoTranslate, detect_language
 from modules.convert_roma_ja import english_to_katakana
 from MoeGoe.Main import speech_text
-from threading import Thread
+
 # from modules.audio_to_device import play_voice
 from discordbot import SendDiscordMessage, ExcuteDiscordWebhook
 
@@ -20,8 +20,8 @@ tts_wav_path = Path(__file__).resolve().parent / r'audio\tts.wav'
 
 class Generator:
     def __init__(self):
+        super().__init__()
         self.logging = True
-        self.tts_wav_path = tts_wav_path
 
     def generate(self, text, settings_list: list = None):
         log_str = ""
@@ -108,7 +108,8 @@ class Generator:
 
             if discord_bot:
                 # Using Discord Bot
-                SendDiscordMessage(discord_sentence, other_settings["discord_bot_id"], other_settings["discord_bot_channel_id"])
+                SendDiscordMessage(discord_sentence, other_settings["discord_bot_id"],
+                                   other_settings["discord_bot_channel_id"])
             if discord_webhook:
                 webhook_url = other_settings["discord_webhook_url"]
 
@@ -132,78 +133,3 @@ class Generator:
 
         if self.logging:
             print("\033[0m")
-
-    def speak_tts(self, text, settings_list: list = None, tts_only=False):
-        # print("speak")
-
-        # Load Program Settings
-        if settings_list is None or len(settings_list) == 0:
-            log_str = "[Generator.speak]: No loaded settings exist! loading them now..."
-            settings_list = SettingInfo.load_all_settings()
-
-        else:
-            log_str = "[Generator.speak]: Using loaded program settings from main GUI"
-
-        audio_settings = settings_list[0]
-        character_settings = settings_list[1]
-        prompt_settings = settings_list[2]
-        other_settings = settings_list[3]
-
-        if self.logging:
-            print("\033[34m" + log_str + "\033[0m")
-
-        text_lang = None
-
-        if tts_only:
-            text_lang = detect_language(text)
-        else:
-            text_lang = prompt_settings[
-                "ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
-        print("tts lang: ", text, text_lang)
-        if text:
-            self.speak_moegoe(text, text_lang, character_settings, audio_settings)
-        else:
-            print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
-            return None  # failed
-
-    def speak_moegoe(self, sentence, sentence_lang, character_settings, audio_settings):
-        log_str = "[Generator.speak_moegoe]: "
-        if self.logging:
-            print("\033[34m" + log_str + "\033[32m")
-
-        spk_id = audio_settings["spk_index"]
-        language_code = audio_settings["tts_language"]
-        voice_volume = audio_settings["voice_volume"]
-        voice_id = audio_settings["voice_id"]
-
-        bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code)  # Translate reply
-        if language_code == 'ja':
-            bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
-        elif language_code == 'ko':
-            bot_trans_speech = bot_trans_speech  # TODO: eng to korean
-            voice_volume = voice_volume * 0.5
-
-        # synthesize voice as wav file
-        speech_text(audio_settings["tts_character_name"], bot_trans_speech, language_code, voice_id, voice_volume)
-
-        if self.logging:
-            print("\033[0m")
-
-        # play voice to app mic input and speakers/headphones
-        threads = [Thread(target=self.play_voice, args=[spk_id])]
-        # threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
-
-        [t.start() for t in threads]
-        [t.join() for t in threads]
-
-    def play_voice(self, device_id):
-        import sounddevice as sd
-        import soundfile as sf
-
-        s_q = sd.query_devices()
-        device_name = f"""{s_q[device_id]["name"]}"""
-        data, fs = sf.read(self.tts_wav_path, dtype='float32')
-        print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
-
-        sd.play(data, fs, device=device_id)
-        sd.wait()

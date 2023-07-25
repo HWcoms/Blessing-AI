@@ -18,21 +18,27 @@ import sys
 import os
 import platform
 
+from pathlib import Path
+
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
 from PySide6.QtWidgets import *
 from PySide6 import QtCore
 from PySide6.QtCore import Qt
 
+script_path = os.path.abspath(os.path.dirname(__file__))
+root_path = os.path.dirname(script_path)  # able to import modules in src folder
+
 # IF MAIN THREAD IS THIS, APPEND SYS ENV PATH
 if __name__ != "__main__":
-    script_path = os.path.abspath(os.path.dirname(__file__))
-    root_path = os.path.dirname(script_path)  # able to import modules in src folder
     sys.path.append(script_path)
     sys.path.append(root_path)
 
 from dracula_modules import *
 from widgets import *
+
+# Settings
+from setting_info import SettingInfo  # noqa
 
 # CHATLOAD
 from dracula_modules.page_messages import Chat # Chat Widget
@@ -45,13 +51,20 @@ os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100
 # ///////////////////////////////////////////////////////////////
 widgets = None
 
+tts_wav_dir = os.path.join(os.path.dirname(root_path), 'cache', 'audio')
+
+tts_wav_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
 
+        # CHECK AUDIO CACHE FOLDER
+        if not os.path.exists(tts_wav_dir):
+            os.makedirs(tts_wav_dir)
+            print("\033[34m" + f"[MainWindow.__init__]: Created audio cache folder! \033[33m[{tts_wav_dir}]" + "\033[0m")
+
         # SET CUSTOM VARIABLES
-        # ///////////////////////////////////////////////////////////////
         self.char_info_dict : dict = None   # [your_name, character_name,
                                             # character_description, character_image,
                                             # greeting, context]
@@ -71,7 +84,6 @@ class MainWindow(QMainWindow):
         self.prompt_info_dict: dict = None  # [max_prompt_token, max_reply_token,
                                             # ai_model_language]
         # SET AS GLOBAL WIDGETS
-        # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         global widgets
@@ -630,7 +642,6 @@ class MainWindow(QMainWindow):
 
     def load_character_info(self):
         global widgets
-        from setting_info import SettingInfo    # noqa
         char_settings_json = SettingInfo.load_character_settings()
         character_name = char_settings_json["character_name"]
         user_name = char_settings_json["your_name"]
@@ -669,8 +680,6 @@ class MainWindow(QMainWindow):
 
         if self.chat_info_dict is None:
             self.chat_info_dict = {}
-
-        from setting_info import SettingInfo    # noqa
 
         char_settings_json = SettingInfo.load_character_settings()
         character_name = self.char_info_dict["character_name"]
@@ -729,21 +738,18 @@ class MainWindow(QMainWindow):
         if self.audio_info_dict is None:
             self.audio_info_dict = {}
 
-        from setting_info import SettingInfo  # noqa
         self.audio_info_dict.update(SettingInfo.load_audio_settings())
 
     def load_other_info(self):
         if self.chat_info_dict is None:
             self.chat_info_dict = {}
 
-        from setting_info import SettingInfo  # noqa
         self.chat_info_dict.update(SettingInfo.load_other_settings())
 
     def load_prompt_info(self):
         if self.prompt_info_dict is None:
             self.prompt_info_dict = {}
 
-        from setting_info import SettingInfo  # noqa
         self.prompt_info_dict.update(SettingInfo.load_prompt_settings())
 
     def after_generate_reply(self, success = 1):
@@ -759,7 +765,6 @@ class MainWindow(QMainWindow):
         # self.chat.scroll_to_animation()
 
     def get_chatlog_path(self):
-        from setting_info import SettingInfo    # noqa
         return SettingInfo.get_chatlog_filename(self.char_info_dict["character_name"],True)
 
     def convert_language_code(self, language_input):
@@ -836,6 +841,125 @@ class MainWindow(QMainWindow):
             return type_name, component_name
         else:
             return "\033[31m" + f"[main GUI.component_info_by_name]: Invalid input format: \033[33m{componentName_str}" + "\033[0m"
+
+    def gen_voice_thread(self, text):
+        self.tts_thread = TTSTHREAD()
+        self.tts_thread.text = text
+        self.tts_thread.start()
+
+
+class TTSTHREAD(QThread):
+    def __init__(self):
+        super().__init__()
+        self.logging = True
+        self.text = ""
+
+    def run(self):
+        self.speak_tts(text=self.text)
+
+    def speak_tts(self, text, settings_list: list = None):
+        from modules.translator import detect_language
+        # print("speak")
+
+        # Load Program Settings
+        if settings_list is None or len(settings_list) == 0:
+            log_str = "[Generator.speak]: No loaded settings exist! loading them now..."
+            settings_list = SettingInfo.load_all_settings()
+
+        else:
+            log_str = "[Generator.speak]: Using loaded program settings from main GUI"
+
+        audio_settings = settings_list[0]
+        character_settings = settings_list[1]
+        prompt_settings = settings_list[2]
+        other_settings = settings_list[3]
+
+        if self.logging:
+            print("\033[34m" + log_str + "\033[0m")
+
+        tts_only = other_settings["tts_only"]
+        text_lang = None
+
+        if tts_only:
+            text_lang = detect_language(text)
+        else:
+            text_lang = prompt_settings[
+                "ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
+        print("tts lang: ", text, text_lang)
+        if text:
+            self.speak_moegoe(text, text_lang, character_settings, audio_settings)
+        else:
+            print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
+            return None  # failed
+
+    def speak_moegoe(self, sentence, sentence_lang, character_settings, audio_settings):
+        from modules.translator import DoTranslate, detect_language
+        from modules.convert_roma_ja import english_to_katakana
+        from MoeGoe.Main import speech_text
+
+        log_str = "[Generator.speak_moegoe]: "
+        if self.logging:
+            print("\033[34m" + log_str + "\033[32m")
+
+        spk_id = audio_settings["spk_index"]
+        tts_character_name = audio_settings["tts_character_name"]
+        language_code = audio_settings["tts_language"]
+        voice_volume = audio_settings["voice_volume"]
+        voice_id = audio_settings["voice_id"]
+
+        bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code)  # Translate reply
+        if language_code == 'ja':
+            bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
+        elif language_code == 'ko':
+            bot_trans_speech = bot_trans_speech  # TODO: eng to korean
+            voice_volume = voice_volume * 0.5
+
+        if self.logging:
+            print("\033[0m")
+
+        # play voice to app mic input and speakers/headphones
+        # TODO: replace this after Qthread is done
+        ###############################################################################
+        print("GenVoiceThread.run: start speech process!")
+
+        new_audio_path = self.new_audio_path()
+
+        # synthesize voice as wav file
+        speech_text(tts_character_name, bot_trans_speech, language_code, voice_id, voice_volume, out_path=new_audio_path)
+
+        self.play_voice(spk_id, new_audio_path)
+
+        print("GenVoiceThread.run: speech done!")
+
+        # threads = [Thread(target=self.play_voice, args=[spk_id])]
+
+        # unnecessary # threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]
+
+        # [t.start() for t in threads]
+        # [t.join() for t in threads]
+        ###############################################################################
+        # TODO: replace this after Qthread is done
+
+    def play_voice(self, device_id, audio_path):
+        import sounddevice as sd
+        import soundfile as sf
+
+        s_q = sd.query_devices()
+        device_name = f"""{s_q[device_id]["name"]}"""
+        data, fs = sf.read(audio_path, dtype='float32')
+        print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
+
+        sd.play(data, fs, device=device_id)
+        sd.wait()
+
+    def new_audio_path(self):
+        num = 0
+        while True:
+            file_name = f'tts_{num}.wav'
+            file_path = os.path.join(tts_wav_dir, file_name)
+            if not os.path.exists(file_path):
+                return file_path
+            num += 1
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
