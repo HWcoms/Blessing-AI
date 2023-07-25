@@ -135,6 +135,8 @@ class MainWindow(QMainWindow):
         widgets.checkBox_discord_bot.clicked.connect(self.update_content_by_component)
         widgets.checkBox_discord_webhook.clicked.connect(self.update_content_by_component)
 
+        widgets.checkBox_tts_only.clicked.connect(self.update_content_by_component)
+
         widgets.pushButton_view_original_url.pressed.connect(self.update_content_by_component)
         widgets.pushButton_view_original_url.released.connect(self.released_component)
 
@@ -191,22 +193,24 @@ class MainWindow(QMainWindow):
         if widgets is None:
             widgets = self.ui
 
-        # if not event.type() == QEvent.Type.FocusIn or QEvent.Type.FocusOut:
-        #     return False
+        # print(f"source: {source}, event: {event}")
 
-        if source == widgets.lineEdit_api_url and event.type() == QEvent.Type.FocusIn:
-            # print (f"source: {source}, event: {event}")
-            self.refresh_api_url(hide_url=False)
-        elif source == widgets.lineEdit_api_url and event.type() == QEvent.Type.FocusOut:
-            # print(f"source: {source}, event: {event}")
-            self.refresh_api_url()
+        if event.type() == QEvent.Type.FocusIn:
+            if source == widgets.lineEdit_api_url:
+                self.refresh_api_url(hide_url=False)
+                if event.type() == QKeyEvent:
+                    print(f"changing edit text: {source.text()} [{source.objectName()}]")
 
-        if (source == widgets.lineEdit_discord_bot_id or
-            source == widgets.lineEdit_discord_bot_channel_id or
-            source == widgets.lineEdit_discord_webhook_url):
-            if event.type() == QEvent.Type.FocusIn:
+            if (source == widgets.lineEdit_discord_bot_id or
+                source == widgets.lineEdit_discord_bot_channel_id or
+                source == widgets.lineEdit_discord_webhook_url):
                 self.refresh_discord_url(source, hide_url=False)
-            elif event.type() == QEvent.Type.FocusOut:
+        elif event.type() == QEvent.Type.FocusOut:
+            if source == widgets.lineEdit_api_url:
+                self.refresh_api_url()
+            if (source == widgets.lineEdit_discord_bot_id or
+                source == widgets.lineEdit_discord_bot_channel_id or
+                source == widgets.lineEdit_discord_webhook_url):
                 self.refresh_discord_url(source)
 
         return super().eventFilter(source, event)
@@ -250,9 +254,8 @@ class MainWindow(QMainWindow):
 
         # region OTHER SETTINGS
         #####################################################################################
-        if "discord_" in component_key:
+        if "discord_" in component_key or "tts_only" in component_key:
             setting_name = 'other_settings'
-
             if component_type == "checkBox":
                 self.extra_right_menu_update(True)
         #####################################################################################
@@ -315,6 +318,7 @@ class MainWindow(QMainWindow):
         # endregion
 
         print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}")
+
         update_json(component_key, component_property, setting_name)
 
     def released_component(self):
@@ -350,7 +354,6 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
             self.last_scroll_value = self.chat.get_scroll_value()
-            # TODO: if chatlog.txt differ with chat_info_dict["chatlog"], Reload chatlog.txt
             self.chat_layout_update(self.last_scroll_value)
 
         # SHOW CHARACTER PAGE
@@ -513,6 +516,7 @@ class MainWindow(QMainWindow):
         if not only_color:
             discord_bot = self.chat_info_dict["discord_bot"]
             discord_webhook = self.chat_info_dict["discord_webhook"]
+            tts_only = self.chat_info_dict["tts_only"]
 
             # INFO VARIABLES
             ############################################################################################
@@ -532,6 +536,7 @@ class MainWindow(QMainWindow):
         else:
             discord_bot = widgets.checkBox_discord_bot.isChecked()
             discord_webhook = widgets.checkBox_discord_webhook.isChecked()
+            tts_only = widgets.checkBox_tts_only.isChecked()
 
         bot_id_widget = widgets.lineEdit_discord_bot_id
         bot_channel_id_widget = widgets.lineEdit_discord_bot_channel_id
@@ -549,6 +554,7 @@ class MainWindow(QMainWindow):
             # DISCORD WEBHOOK SETTING WIDGETS
             ############################################################################################
             widgets.checkBox_discord_webhook.setChecked(discord_webhook)
+            widgets.checkBox_tts_only.setChecked(tts_only)
 
         webhook_url_widget = widgets.lineEdit_discord_webhook_url
         webhook_username_widget = widgets.lineEdit_discord_webhook_username

@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 # Speak MoeGoe
-from modules.translator import DoTranslate
+from modules.translator import DoTranslate, detect_language
 from modules.convert_roma_ja import english_to_katakana
 from MoeGoe.Main import speech_text
 from threading import Thread
@@ -24,7 +24,6 @@ class Generator:
         self.tts_wav_path = tts_wav_path
 
     def generate(self, text, settings_list: list = None):
-        from modules.translator import DoTranslate, detect_language
         log_str = ""
         # Load Program Settings
         audio_settings, character_settings, prompt_settings, other_settings = None, None, None, None
@@ -134,7 +133,7 @@ class Generator:
         if self.logging:
             print("\033[0m")
 
-    def speak_tts(self, text, settings_list: list = None):
+    def speak_tts(self, text, settings_list: list = None, tts_only=False):
         # print("speak")
 
         # Load Program Settings
@@ -153,13 +152,21 @@ class Generator:
         if self.logging:
             print("\033[34m" + log_str + "\033[0m")
 
+        text_lang = None
+
+        if tts_only:
+            text_lang = detect_language(text)
+        else:
+            text_lang = prompt_settings[
+                "ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
+        print("tts lang: ", text, text_lang)
         if text:
-            self.speak_moegoe(text, character_settings, audio_settings, prompt_settings)
+            self.speak_moegoe(text, text_lang, character_settings, audio_settings)
         else:
             print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
             return None  # failed
 
-    def speak_moegoe(self, sentence, character_settings, audio_settings, prompt_settings):
+    def speak_moegoe(self, sentence, sentence_lang, character_settings, audio_settings):
         log_str = "[Generator.speak_moegoe]: "
         if self.logging:
             print("\033[34m" + log_str + "\033[32m")
@@ -168,10 +175,8 @@ class Generator:
         language_code = audio_settings["tts_language"]
         voice_volume = audio_settings["voice_volume"]
         voice_id = audio_settings["voice_id"]
-        ai_model_language = prompt_settings[
-            "ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
 
-        bot_trans_speech = DoTranslate(sentence, ai_model_language, language_code)  # Translate reply
+        bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code)  # Translate reply
         if language_code == 'ja':
             bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
         elif language_code == 'ko':

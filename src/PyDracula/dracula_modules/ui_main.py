@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainekezCa.ui'
+## Form generated from reading UI file 'maininyWOK.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1573,7 +1573,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1152, 811))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 358, 811))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -2861,7 +2861,7 @@ class Ui_MainWindow(object):
         self.scrollArea_stylesheet.setWidgetResizable(True)
         self.scrollAreaWidgetContents_3 = QWidget()
         self.scrollAreaWidgetContents_3.setObjectName(u"scrollAreaWidgetContents_3")
-        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 200, 613))
+        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 200, 620))
         self.horizontalLayout_28 = QHBoxLayout(self.scrollAreaWidgetContents_3)
         self.horizontalLayout_28.setObjectName(u"horizontalLayout_28")
         self.verticalLayout_46 = QVBoxLayout()
@@ -3005,6 +3005,28 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_46.addWidget(self.verticalGroupBox_discord_webhook_settings)
+
+        self.verticalSpacer_10 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_46.addItem(self.verticalSpacer_10)
+
+        self.verticalGroupBox_discorbot_settings_2 = QGroupBox(self.scrollAreaWidgetContents_3)
+        self.verticalGroupBox_discorbot_settings_2.setObjectName(u"verticalGroupBox_discorbot_settings_2")
+        self.verticalLayout_53 = QVBoxLayout(self.verticalGroupBox_discorbot_settings_2)
+        self.verticalLayout_53.setSpacing(3)
+        self.verticalLayout_53.setObjectName(u"verticalLayout_53")
+        self.verticalLayout_53.setContentsMargins(6, 6, 6, 6)
+        self.checkBox_tts_only = QCheckBox(self.verticalGroupBox_discorbot_settings_2)
+        self.checkBox_tts_only.setObjectName(u"checkBox_tts_only")
+
+        self.verticalLayout_53.addWidget(self.checkBox_tts_only)
+
+
+        self.verticalLayout_46.addWidget(self.verticalGroupBox_discorbot_settings_2)
+
+        self.verticalSpacer_9 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_46.addItem(self.verticalSpacer_9)
 
         self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -3355,6 +3377,8 @@ class Ui_MainWindow(object):
         self.lineEdit_discord_your_name.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Custom Your name", None))
         self.lineEdit_discord_your_avatar.setText("")
         self.lineEdit_discord_your_avatar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Custom Your Profile Picture", None))
+        self.verticalGroupBox_discorbot_settings_2.setTitle(QCoreApplication.translate("MainWindow", u"Other Settings", None))
+        self.checkBox_tts_only.setText(QCoreApplication.translate("MainWindow", u"TTS Only (test TTS)", None))
         self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"Copyright (c) 2023 HWcoms", None))
         self.version.setText(QCoreApplication.translate("MainWindow", u"v1.0.0", None))
     # retranslateUi

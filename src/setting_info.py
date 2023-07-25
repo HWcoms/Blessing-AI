@@ -88,13 +88,13 @@ def update_json(key_str, data, filename):
     current_dict = json_data
     for key in keys[:-1]:
         if key not in current_dict:
-            raise KeyError(f"[setting_info.update_json] Key '{key}' not found in JSON data.")
+            raise KeyError(f"[setting_info.update_json] Key '{key}' not found in JSON data. [{filename}]")
         current_dict = current_dict[key]
 
     # Update the value of the last key
     last_key = keys[-1]
     if last_key not in current_dict:
-        raise KeyError(f"[setting_info.update_json] Key '{last_key}' not found in JSON data.")
+        raise KeyError(f"[setting_info.update_json] Key '{last_key}' not found in JSON data. [{filename}]")
     current_dict[last_key] = data
 
     # Save the updated JSON back to the file

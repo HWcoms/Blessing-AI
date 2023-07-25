@@ -2895,7 +2895,7 @@ QSlider::handle:horizontal:pressed {
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1152</width>
+                            <width>358</width>
                             <height>811</height>
                            </rect>
                           </property>
@@ -5518,7 +5518,7 @@ QComboBox {
                            <x>0</x>
                            <y>0</y>
                            <width>200</width>
-                           <height>613</height>
+                           <height>620</height>
                           </rect>
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_28">
@@ -5890,6 +5890,69 @@ QComboBox {
                                </item>
                               </layout>
                              </widget>
+                            </item>
+                            <item>
+                             <spacer name="verticalSpacer_10">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeType">
+                               <enum>QSizePolicy::Fixed</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>20</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                            <item>
+                             <widget class="QGroupBox" name="verticalGroupBox_discorbot_settings_2">
+                              <property name="title">
+                               <string>Other Settings</string>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_53">
+                               <property name="spacing">
+                                <number>3</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>6</number>
+                               </property>
+                               <item>
+                                <widget class="QCheckBox" name="checkBox_tts_only">
+                                 <property name="text">
+                                  <string>TTS Only (test TTS)</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="verticalSpacer_9">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeType">
+                               <enum>QSizePolicy::Fixed</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>20</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                             </spacer>
                             </item>
                             <item>
                              <spacer name="verticalSpacer_4">
