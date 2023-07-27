@@ -20,6 +20,8 @@ import platform
 
 from pathlib import Path
 
+import time
+
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
 from PySide6.QtWidgets import *
@@ -92,6 +94,9 @@ class MainWindow(QMainWindow):
         widgets.textBrowser_google_colab_link.setOpenExternalLinks(True)
         self.chat = None
         self.last_scroll_value = -1
+
+        self.qthread_list = []  # Qthreads list
+        self.qthread_list.clear()
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -843,19 +848,36 @@ class MainWindow(QMainWindow):
             return "\033[31m" + f"[main GUI.component_info_by_name]: Invalid input format: \033[33m{componentName_str}" + "\033[0m"
 
     def gen_voice_thread(self, text):
-        self.tts_thread = TTSTHREAD()
-        self.tts_thread.text = text
-        self.tts_thread.start()
+        tts_thread = TTSTHREAD(self, text)
+        self.qthread_list.append(tts_thread)
+
+        if tts_thread.logging:
+            thread_logging_str = "==================== QThread List ===================="
+
+            print("\033[32m" + thread_logging_str + "\033[0m")
+            print(self.qthread_list)
+            for i, qthread in enumerate(self.qthread_list):
+                print(f"QThread ({i}): [{qthread.text}]")
+            print("\033[32m" + thread_logging_str + "\033[0m")
+
+        tts_thread.start()
 
 
 class TTSTHREAD(QThread):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent, text=""):
+        super().__init__(parent)
+        self.parent = parent
         self.logging = True
-        self.text = ""
+        self.text = text
 
     def run(self):
         self.speak_tts(text=self.text)
+        time.sleep(1)
+        self.remove_from_thread_list()
+
+        # while True:
+        #     print(self.text)
+        #     time.sleep(2)
 
     def speak_tts(self, text, settings_list: list = None):
         from modules.translator import detect_language
@@ -923,7 +945,7 @@ class TTSTHREAD(QThread):
         print("GenVoiceThread.run: start speech process!")
 
         new_audio_path = self.new_audio_path()
-
+        # new_audio_path = r"C:\Users\HWcoms\Blessing-AI\cache\audio\tts_16.wav"
         # synthesize voice as wav file
         speech_text(tts_character_name, bot_trans_speech, language_code, voice_id, voice_volume, out_path=new_audio_path)
 
@@ -960,6 +982,10 @@ class TTSTHREAD(QThread):
             if not os.path.exists(file_path):
                 return file_path
             num += 1
+
+    def remove_from_thread_list(self):
+        self.parent.qthread_list.remove(self)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
