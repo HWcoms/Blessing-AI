@@ -269,21 +269,19 @@ class Chat(QWidget):
         # CHECK TTS_ONLY IN RIGHT_EXTRA MENU
         if not chat_info_dict["tts_only"]:
             setting_list = [audio_info_dict, char_info_dict, prompt_info_dict, chat_info_dict]
+            self.mWindow.gen_prompt_thread(text)
+            # reply_txt = gen.generate(text, setting_list)
+            #
+            # if reply_txt is None or reply_txt == "":
+            #     print("\033[31m" + "Error [GUI/page_messages]: failed to generate reply." + "\033[0m")
+            #     self.mWindow.after_generate_reply(-1)
+            # else:
+            #     self.mWindow.after_generate_reply()  # call method from main window [GUI]
+            #
+            #     text = reply_txt
 
-            reply_txt = gen.generate(text, setting_list)
-
-            if reply_txt is None or reply_txt == "":
-                print("\033[31m" + "Error [GUI/page_messages]: failed to generate reply." + "\033[0m")
-                self.mWindow.after_generate_reply(-1)
-            else:
-                self.mWindow.after_generate_reply()  # call method from main window [GUI]
-
-                text = reply_txt
-                # gen.speak_tts(reply_txt, setting_list)
-        # else:
-        # gen.speak_tts(text, setting_list, tts_only=True)    # tts testing
-
-        self.mWindow.gen_voice_thread(text)
+        # TODO: Wait until generate prompt or check if there's reply_txt every seconds
+        # self.mWindow.gen_voice_thread(text)
 
     def buttonClick(self):
         # GET BUTTON CLICKED

@@ -245,7 +245,6 @@ class MainWindow(QMainWindow):
                 source == widgets.lineEdit_discord_webhook_url):
                 self.refresh_discord_url(source, hide_url=False)
         elif event.type() == QEvent.Type.FocusOut:
-            # TODO: save edited text to settings.txt
             if source == widgets.lineEdit_api_url:
                 setting_name = "prompt_settings"
             if (source == widgets.lineEdit_discord_bot_id or
@@ -894,33 +893,18 @@ class MainWindow(QMainWindow):
         else:
             return "\033[31m" + f"[main GUI.component_info_by_name]: Invalid input format: \033[33m{componentName_str}" + "\033[0m"
 
+    # Generate and Play TTS Using QThread
     def gen_voice_thread(self, text):
         tts_thread = TTSTHREAD(self, text)
         self.tts_thread_list.append(tts_thread)
-
-        if tts_thread.logging:
-            thread_logging_str = "==================== TTS Thread List ===================="
-
-            print("\033[32m" + thread_logging_str + "\033[0m")
-            print(self.tts_thread_list)
-            for i, qthread in enumerate(self.tts_thread_list):
-                print(f"QThread ({i}): [{qthread.text}]")
-            print("\033[32m" + thread_logging_str + "\033[0m")
-
+        tts_thread.print_thread_list()
         tts_thread.start()
 
+    # Generate Prompt Using QThread
     def gen_prompt_thread(self, text):
         prompt_thread = PROMPTTHREAD(self, text)
-
-        if prompt_thread.logging:
-            thread_logging_str = "==================== PROMPT Thread List ===================="
-
-            print("\033[32m" + thread_logging_str + "\033[0m")
-            print(self.prompt_thread_list)
-            for i, qthread in enumerate(self.prompt_thread_list):
-                print(f"QThread ({i}): [{qthread.text}]")
-            print("\033[32m" + thread_logging_str + "\033[0m")
-
+        self.prompt_thread_list.append(prompt_thread)
+        prompt_thread.print_thread_list()
         prompt_thread.start()
 
 class PROMPTTHREAD(QThread):
@@ -931,127 +915,27 @@ class PROMPTTHREAD(QThread):
         self.logging = logging
 
     def run(self):
-        self.generate(text = self.text)
+        from generate import Generator
+        gen = Generator()
+        reply_txt = gen.generate(self.text)
+
+        # self.generate(text = self.text)
         time.sleep(1)
         self.remove_from_thread_list()
 
-    def generate(self, text, settings_list: list = None):
-        from modules.translator import DoTranslate, detect_language
-
-        log_str = ""
-        # Load Program Settings
-        audio_settings, character_settings, prompt_settings, other_settings = None, None, None, None
-
-        if settings_list is None or len(settings_list) == 0:
-            log_str = "[Generator.generate]: No loaded settings exist! loading them now..."
-            settings_list = SettingInfo.load_all_settings()
-
-        else:
-            log_str = "[Generator.generate]: Using loaded program settings from main GUI"
-
-        audio_settings = settings_list[0]
-        character_settings = settings_list[1]
-        prompt_settings = settings_list[2]
-        other_settings = settings_list[3]
-
-        if self.logging:
-            print("\033[34m" + log_str + "\033[0m")
-
-        # language_code that AI Model using ("pygmalion should communicate with  english")
-        ai_model_language = prompt_settings["ai_model_language"]
-
-        bot_reply = ""
-
-        if text:
-            # SEND USER MESSAGE TO DISCORD
-            #########################################
-            # TODO: test user discord message is working
-
-            your_name = character_settings["your_name"]
-            your_image = other_settings["discord_your_avatar"]
-            your_json = {"character_name": your_name, "character_image": your_image}
-
-            #########################################
-            # SEND USER MESSAGE TO DISCORD
-
-            speech_lang = detect_language(text)
-            translated_speech = DoTranslate(text, speech_lang, ai_model_language)
-
-            self.send_discord(translated_speech, ai_model_language, your_json, other_settings, by_user=True)
-
-            if self.logging:
-                # source_lang_name = languages.get(alpha2=speech_lang).name
-                # print(f'{source_lang_name}: {eng_speech}')
-                print(f'User: {translated_speech}')
-
-            bot_reply = generate_reply(translated_speech, character_settings["character_name"],
-                                       prompt_settings["max_prompt_token"], prompt_settings["max_reply_token"])
-            # bot_trans_speech = DoTranslate(bot_reply,'en',target_lang=tts_language)
-
-            if self.logging:
-                print(f'Bot: {bot_reply}')
-
-        else:
-            print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
-            return None  # failed
-
-        if bot_reply == "":
-            print("\031[31m" + '[Generator.Generate] Error: text value is blank' + "\033[0m")
-            return None  # failed
-
-        self.send_discord(bot_reply, ai_model_language, character_settings, other_settings)
-
-        return bot_reply  # success
-
-    def send_discord(self, message, message_language, profile_settings, other_settings, by_user=False):
-        from discordbot import SendDiscordMessage, ExcuteDiscordWebhook
-
-        log_str = "[Generator.send_discord]: "
-        if self.logging:
-            print("\033[34m" + log_str + "\033[32m")
-
-        discord_print_language = other_settings["discord_print_language"]
-        discord_bot = other_settings["discord_bot"]
-        discord_webhook = other_settings["discord_webhook"]
-
-        if discord_bot or discord_webhook:
-            # Do translate to discord_print_langage, if it's not same as language_code
-            if message_language != discord_print_language:
-                discord_sentence = DoTranslate(message, message_language, discord_print_language)
-            else:
-                discord_sentence = message
-
-            if discord_bot:
-                # Using Discord Bot
-                SendDiscordMessage(discord_sentence, other_settings["discord_bot_id"],
-                                   other_settings["discord_bot_channel_id"])
-            if discord_webhook:
-                webhook_url = other_settings["discord_webhook_url"]
-
-                if by_user:
-                    webhook_username = other_settings["discord_your_name"]
-                    webhook_avatar = other_settings["discord_your_avatar"]
-                else:
-                    webhook_username = other_settings["discord_webhook_username"]
-                    webhook_avatar = other_settings["discord_webhook_avatar"]
-
-                # IF THERE NAME OR AVATAR ARE EMPTY, GET INFORMATION FROM "character_settings.txt"
-                if webhook_username == "" or webhook_username is None:
-                    webhook_username = profile_settings["character_name"]
-                if webhook_avatar == "" or webhook_avatar is None:
-                    webhook_avatar = profile_settings["character_image"]
-
-                print("webhook_username: ", webhook_username)
-                print("webhook_avatar: ", webhook_avatar)
-
-                ExcuteDiscordWebhook(discord_sentence, webhook_url, webhook_username, webhook_avatar)  # Using Webhook
-
-        if self.logging:
-            print("\033[0m")
-
-
     def remove_from_thread_list(self):
         self.parent.prompt_thread_list.remove(self)
+
+    def print_thread_list(self):
+        if self.logging:
+            thread_logging_str = "==================== Prompt Thread List ===================="
+
+            print("\033[32m" + thread_logging_str + "\033[0m")
+            print(self.parent.prompt_thread_list)
+            for i, qthread in enumerate(self.parent.prompt_thread_list):
+                print(f"QThread ({i}): [{qthread.text}]")
+            print("\033[32m" + thread_logging_str + "\033[0m")
+
 
 class TTSTHREAD(QThread):
     def __init__(self, parent, text="", logging=True):
@@ -1069,6 +953,16 @@ class TTSTHREAD(QThread):
 
     def remove_from_thread_list(self):
         self.parent.tts_thread_list.remove(self)
+
+    def print_thread_list(self):
+        if self.logging:
+            thread_logging_str = "==================== TTS Thread List ===================="
+
+            print("\033[32m" + thread_logging_str + "\033[0m")
+            print(self.parent.tts_thread_list)
+            for i, qthread in enumerate(self.parent.tts_thread_list):
+                print(f"QThread ({i}): [{qthread.text}]")
+            print("\033[32m" + thread_logging_str + "\033[0m")
 
     def speak_tts(self, text, settings_list: list = None):
         from modules.translator import detect_language
@@ -1140,7 +1034,6 @@ class TTSTHREAD(QThread):
 
         print("\033[34m" + f"[GenVoiceThread.run]: speech done! [\033[32m{sentence}\033[34m] [{self.audio_path}]" + "\033[0m")
 
-
     def play_voice(self, device_id, audio_path):
         import sounddevice as sd
         import soundfile as sf
@@ -1161,9 +1054,6 @@ class TTSTHREAD(QThread):
             if not os.path.exists(file_path):
                 return file_path
             num += 1
-
-    def remove_from_thread_list(self):
-        self.parent.tts_thread_list.remove(self)
 
 
 if __name__ == "__main__":
