@@ -101,6 +101,8 @@ class MainWindow(QMainWindow):
         self.prompt_thread_list = []
         self.prompt_thread_list.clear()
 
+        self.thread_manager = THREADMANAGER(self)
+        self.thread_manager.start()
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -907,21 +909,42 @@ class MainWindow(QMainWindow):
         prompt_thread.print_thread_list()
         prompt_thread.start()
 
+class THREADMANAGER(QThread):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+    def run(self):
+        while True:
+            thread_list = self.parent.prompt_thread_list
+
+            if len(thread_list) >= 1:
+                # Check reply text
+                first_index_reply = thread_list[0].reply_text
+                thread_list[0].print_thread_list()
+                print(first_index_reply)
+
+                if first_index_reply != "":
+                    self.parent.gen_voice_thread(first_index_reply)
+                    thread_list[0].remove_from_thread_list()
+
+            time.sleep(0.3)
+
+
 class PROMPTTHREAD(QThread):
     def __init__(self, parent, text="", logging=True):
         super().__init__(parent)
         self.parent = parent
         self.text = text
         self.logging = logging
+        self.reply_text = ""
 
     def run(self):
         from generate import Generator
         gen = Generator()
-        reply_txt = gen.generate(self.text)
+        self.reply_text = gen.generate(self.text)
 
-        # self.generate(text = self.text)
-        time.sleep(1)
-        self.remove_from_thread_list()
+        # time.sleep(1)
+        # self.remove_from_thread_list()
 
     def remove_from_thread_list(self):
         self.parent.prompt_thread_list.remove(self)
