@@ -9,5 +9,6 @@
     "discord_webhook_username": "",
     "discord_webhook_avatar": "",
     "discord_print_language": "ko",
-    "chat_display_language": "ko"
+    "chat_display_language": "ko",
+    "tts_only": false
 }
