@@ -279,7 +279,8 @@ class Chat(QWidget):
             #     self.mWindow.after_generate_reply()  # call method from main window [GUI]
             #
             #     text = reply_txt
-
+        else:
+            self.mWindow.gen_voice_thread(text)
         # TODO: Wait until generate prompt or check if there's reply_txt every seconds
         # self.mWindow.gen_voice_thread(text)
 

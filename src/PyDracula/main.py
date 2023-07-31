@@ -103,7 +103,8 @@ class MainWindow(QMainWindow):
 
         self.thread_manager = THREADMANAGER(self)
         self.thread_manager.start()
-        self.thread_manager.thread_manager_signal.connect(self.delete_first_prompt_thread)
+        self.thread_manager.prompt_done_signal.connect(self.delete_first_prompt_thread)
+        self.thread_manager.tts_done_signal.connect(self.delete_first_tts_thread)
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -896,11 +897,12 @@ class MainWindow(QMainWindow):
             return "\033[31m" + f"[main GUI.component_info_by_name]: Invalid input format: \033[33m{componentName_str}" + "\033[0m"
 
     def delete_first_prompt_thread(self):
-        print(self.prompt_thread_list[0], self.prompt_thread_list[0].reply_text)
         self.prompt_thread_list[0].remove_from_thread_list()
 
         self.after_generate_reply()
 
+    def delete_first_tts_thread(self):
+        self.tts_thread_list[0].remove_from_thread_list()
 
     # Generate and Play TTS Using QThread
     def gen_voice_thread(self, text):
@@ -919,7 +921,8 @@ class MainWindow(QMainWindow):
         prompt_thread.PromptDone.connect(self.gen_voice_thread)
 
 class THREADMANAGER(QThread):
-    thread_manager_signal = Signal()
+    prompt_done_signal = Signal()
+    tts_done_signal = Signal()
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
@@ -928,6 +931,7 @@ class THREADMANAGER(QThread):
         while True:
 
             prompt_thread_list = main_program.prompt_thread_list
+            tts_thread_list = main_program.tts_thread_list
 
             if len(prompt_thread_list) >= 1:
                 # Start first thread if not running
@@ -945,8 +949,17 @@ class THREADMANAGER(QThread):
                     # self.parent.gen_voice_thread(first_index_reply)
 
                     # thread_list[0].remove_from_thread_list()
-                    print("test: ", first_index_reply)
-                    self.thread_manager_signal.emit()
+                    self.prompt_done_signal.emit()
+
+            if len(tts_thread_list) >= 1:
+                # Start first thread if not running
+                if not tts_thread_list[0].isRunning() and not tts_thread_list[0].done:
+                    prompt_thread_list[0].start()
+                    print(f"start tts thread: [{tts_thread_list[0].text}]")
+
+                if tts_thread_list[0].done:
+                    print("tts is done: ", tts_thread_list[0].text, tts_thread_list[0].done)
+                    self.tts_done_signal.emit()
 
             time.sleep(0.3)
 
@@ -993,6 +1006,7 @@ class TTSTHREAD(QThread):
         self.text = text
         self.logging = True
         self.audio_path = ""
+        self.done = False
 
     def run(self):
         self.audio_path = self.new_audio_path()
@@ -1095,6 +1109,9 @@ class TTSTHREAD(QThread):
 
         sd.play(data, fs, device=device_id)
         sd.wait()
+
+        # TODO: refactor
+        self.done = True
 
     def new_audio_path(self):
         num = 0
