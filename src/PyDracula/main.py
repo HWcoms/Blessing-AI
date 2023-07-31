@@ -103,6 +103,7 @@ class MainWindow(QMainWindow):
 
         self.thread_manager = THREADMANAGER(self)
         self.thread_manager.start()
+        self.thread_manager.thread_manager_signal.connect(self.delete_first_prompt_thread)
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -781,11 +782,10 @@ class MainWindow(QMainWindow):
         # get chatlog filename
         self.chat_info_dict["chatlog_filename"] = SettingInfo.get_chatlog_filename(character_name)
 
-    @staticmethod
-    def load_mic_info():
+    def load_mic_info(self, text):
 
 
-        print()
+        print("test mic info:" + text)
 
     def load_audio_info(self):
         if self.audio_info_dict is None:
@@ -895,42 +895,64 @@ class MainWindow(QMainWindow):
         else:
             return "\033[31m" + f"[main GUI.component_info_by_name]: Invalid input format: \033[33m{componentName_str}" + "\033[0m"
 
+    def delete_first_prompt_thread(self):
+        print(self.prompt_thread_list[0], self.prompt_thread_list[0].reply_text)
+        self.prompt_thread_list[0].remove_from_thread_list()
+
+        self.after_generate_reply()
+
+
     # Generate and Play TTS Using QThread
     def gen_voice_thread(self, text):
         tts_thread = TTSTHREAD(self, text)
         self.tts_thread_list.append(tts_thread)
-        tts_thread.print_thread_list()
+        # tts_thread.print_thread_list()
         tts_thread.start()
 
     # Generate Prompt Using QThread
     def gen_prompt_thread(self, text):
         prompt_thread = PROMPTTHREAD(self, text)
         self.prompt_thread_list.append(prompt_thread)
-        prompt_thread.print_thread_list()
-        prompt_thread.start()
+        # prompt_thread.print_thread_list()
+        # prompt_thread.start()
+
+        prompt_thread.PromptDone.connect(self.gen_voice_thread)
 
 class THREADMANAGER(QThread):
+    thread_manager_signal = Signal()
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
     def run(self):
+        main_program = self.parent
         while True:
-            thread_list = self.parent.prompt_thread_list
 
-            if len(thread_list) >= 1:
+            prompt_thread_list = main_program.prompt_thread_list
+
+            if len(prompt_thread_list) >= 1:
+                # Start first thread if not running
+                if not prompt_thread_list[0].isRunning() and prompt_thread_list[0].reply_text == "":
+                    prompt_thread_list[0].start()
+                    print(f"start prompt thread: [{prompt_thread_list[0].text}]")
+
                 # Check reply text
-                first_index_reply = thread_list[0].reply_text
-                thread_list[0].print_thread_list()
-                print(first_index_reply)
+                first_index_reply = prompt_thread_list[0].reply_text
+                prompt_thread_list[0].print_thread_list()
+                # print(first_index_reply)
 
                 if first_index_reply != "":
-                    self.parent.gen_voice_thread(first_index_reply)
-                    thread_list[0].remove_from_thread_list()
+                    # print(self.parent.ui.textEdit_your_name.toPlainText())
+                    # self.parent.gen_voice_thread(first_index_reply)
+
+                    # thread_list[0].remove_from_thread_list()
+                    print("test: ", first_index_reply)
+                    self.thread_manager_signal.emit()
 
             time.sleep(0.3)
 
 
 class PROMPTTHREAD(QThread):
+    PromptDone = Signal(str)
     def __init__(self, parent, text="", logging=True):
         super().__init__(parent)
         self.parent = parent
@@ -942,6 +964,9 @@ class PROMPTTHREAD(QThread):
         from generate import Generator
         gen = Generator()
         self.reply_text = gen.generate(self.text)
+
+        print("reply created: ", self.reply_text)
+        self.PromptDone.emit(self.reply_text)
 
         # time.sleep(1)
         # self.remove_from_thread_list()
@@ -961,6 +986,7 @@ class PROMPTTHREAD(QThread):
 
 
 class TTSTHREAD(QThread):
+    TTSDone = Signal()
     def __init__(self, parent, text="", logging=True):
         super().__init__(parent)
         self.parent = parent
@@ -972,7 +998,8 @@ class TTSTHREAD(QThread):
         self.audio_path = self.new_audio_path()
         self.speak_tts(text=self.text)
         time.sleep(1)
-        self.remove_from_thread_list()
+        self.TTSDone.emit()
+        # self.remove_from_thread_list()
 
     def remove_from_thread_list(self):
         self.parent.tts_thread_list.remove(self)
