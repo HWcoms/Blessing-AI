@@ -1,5 +1,6 @@
 @echo off
+call "%CD%\venv\Scripts\activate"
 
-cd src
-python main_gui.py
+cd src/PyDracula
+python main.py
 pause
