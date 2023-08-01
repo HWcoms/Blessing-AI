@@ -57,6 +57,11 @@ tts_wav_dir = os.path.join(os.path.dirname(root_path), 'cache', 'audio')
 
 tts_wav_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
+# Table column width size percentage values
+t_val_col_a = 20   # Queue List column width_value
+t_val_col_b = 60
+t_val_col_c = 20
+
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
@@ -131,6 +136,13 @@ class MainWindow(QMainWindow):
         # QTableWidget PARAMETERS
         # ///////////////////////////////////////////////////////////////
         widgets.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        global t_val_col_a, t_val_col_b, t_val_col_c
+        # QTable for Thread Lists
+        self.resize_thread_table(t_val_col_a, t_val_col_b, t_val_col_c)
+
+        # Chat layout set Minsize
+        widgets.chat.setMinimumSize(QSize(0, 300))
 
         # BUTTONS CLICK
         # ///////////////////////////////////////////////////////////////
@@ -214,6 +226,14 @@ class MainWindow(QMainWindow):
         self.load_all_info()
 
         # print(self.convert_language_code("Japanese"))
+
+    def resize_thread_table(self, per_a, per_b, per_c):
+        global widgets
+        for table in [widgets.tableWidget_prompt_list, widgets.tableWidget_tts_list]:
+            table.setColumnWidth(0, table.width() * per_a / 100)
+            table.setColumnWidth(1, table.width() * per_b / 100)
+            table.setColumnWidth(2, table.width() * per_c / 100)
+            table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
     # DEFINE EVENT FILTER
     # ///////////////////////////////////////////////////////////////
@@ -658,6 +678,10 @@ class MainWindow(QMainWindow):
     def resizeEvent(self, event):
         # Update Size Grips
         UIFunctions.resize_grips(self)
+
+        # Update Thread Table Columns Size
+        global t_val_col_a, t_val_col_b, t_val_col_c
+        self.resize_thread_table(t_val_col_a, t_val_col_b, t_val_col_c)
 
     # MOUSE CLICK EVENTS
     # ///////////////////////////////////////////////////////////////

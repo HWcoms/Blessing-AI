@@ -286,6 +286,8 @@
   </qresource>
   <qresource prefix="chat/images">
     <file>images/chatlog/users/cat.png</file>
+    <file>images/chatlog/users/ai.png</file>
+    <file>images/chatlog/users/ai_150px.png</file>
     <file>images/chatlog/users/cat_150px.png</file>
     <file>images/chatlog/users/me.png</file>
     <file>images/chatlog/users/me_150px.png</file>

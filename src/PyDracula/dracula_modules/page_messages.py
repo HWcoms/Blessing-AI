@@ -117,9 +117,10 @@ class Chat(QWidget):
         except Exception as e:
             print("\033[31m" + f"[GUI] ERROR: \033[33m{e}" + "\033[0m")
             # define default image
-            btn_image = "cat.png"
+            btn_image = "ai.png"   # modify this if want to change
             self.pf_img_dict['bot'] = btn_image
 
+            # Change top left bot's profile image
             self.page.user_image.setStyleSheet(f"""
                 #user_image {{ background-image: url(:/chat/images/images/chatlog/users/{btn_image}) }}
             """)

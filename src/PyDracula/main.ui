@@ -1770,6 +1770,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 </property>
                 <item>
                  <widget class="QFrame" name="pagesContainer">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>120</height>
+                   </size>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true"/>
                   </property>
@@ -1779,21 +1785,24 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   <property name="frameShadow">
                    <enum>QFrame::Raised</enum>
                   </property>
+                  <property name="lineWidth">
+                   <number>0</number>
+                  </property>
                   <layout class="QVBoxLayout" name="verticalLayout_15">
                    <property name="spacing">
                     <number>0</number>
                    </property>
                    <property name="leftMargin">
-                    <number>10</number>
+                    <number>0</number>
                    </property>
                    <property name="topMargin">
-                    <number>10</number>
+                    <number>0</number>
                    </property>
                    <property name="rightMargin">
-                    <number>10</number>
+                    <number>0</number>
                    </property>
                    <property name="bottomMargin">
-                    <number>10</number>
+                    <number>0</number>
                    </property>
                    <item>
                     <widget class="QStackedWidget" name="stackedWidget">
@@ -1801,7 +1810,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>1</number>
+                      <number>0</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -1825,127 +1834,148 @@ li.checked::marker { content: &quot;\2612&quot;; }
                         </spacer>
                        </item>
                        <item>
-                        <layout class="QVBoxLayout" name="a_verticalLayout_top" stretch="0,0">
-                         <property name="leftMargin">
-                          <number>6</number>
+                        <widget class="QScrollArea" name="scrollArea_3">
+                         <property name="frameShape">
+                          <enum>QFrame::NoFrame</enum>
                          </property>
-                         <property name="rightMargin">
-                          <number>6</number>
+                         <property name="lineWidth">
+                          <number>0</number>
                          </property>
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_chat_log">
-                           <property name="spacing">
-                            <number>6</number>
-                           </property>
-                           <property name="sizeConstraint">
-                            <enum>QLayout::SetDefaultConstraint</enum>
-                           </property>
-                           <property name="leftMargin">
-                            <number>10</number>
-                           </property>
-                           <property name="topMargin">
-                            <number>0</number>
-                           </property>
-                           <property name="rightMargin">
-                            <number>10</number>
-                           </property>
-                           <property name="bottomMargin">
-                            <number>0</number>
-                           </property>
+                         <property name="widgetResizable">
+                          <bool>true</bool>
+                         </property>
+                         <widget class="QWidget" name="scrollAreaWidgetContents_4">
+                          <property name="geometry">
+                           <rect>
+                            <x>0</x>
+                            <y>-52</y>
+                            <width>1172</width>
+                            <height>583</height>
+                           </rect>
+                          </property>
+                          <layout class="QVBoxLayout" name="verticalLayout_14">
                            <item>
-                            <widget class="QLabel" name="label_chat_log">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
+                            <layout class="QVBoxLayout" name="a_verticalLayout_top" stretch="0,0">
+                             <property name="leftMargin">
+                              <number>6</number>
                              </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>80</width>
-                               <height>30</height>
-                              </size>
+                             <property name="rightMargin">
+                              <number>6</number>
                              </property>
-                             <property name="layoutDirection">
-                              <enum>Qt::LeftToRight</enum>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Chat Log&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                             <property name="margin">
-                              <number>0</number>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <spacer name="horizontalSpacer">
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item>
-                            <widget class="QLabel" name="label_token_count">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>200</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="layoutDirection">
-                              <enum>Qt::RightToLeft</enum>
-                             </property>
-                             <property name="autoFillBackground">
-                              <bool>false</bool>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Token Count&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignCenter</set>
-                             </property>
-                             <property name="margin">
-                              <number>0</number>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QLineEdit" name="lineEdit_token_count">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>1</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>70</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="layoutDirection">
-                              <enum>Qt::RightToLeft</enum>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QLineEdit {
+                             <item>
+                              <layout class="QHBoxLayout" name="horizontalLayout_chat_log">
+                               <property name="spacing">
+                                <number>6</number>
+                               </property>
+                               <property name="sizeConstraint">
+                                <enum>QLayout::SetDefaultConstraint</enum>
+                               </property>
+                               <property name="leftMargin">
+                                <number>10</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>10</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
+                               <item>
+                                <widget class="QLabel" name="label_chat_log">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>80</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="layoutDirection">
+                                  <enum>Qt::LeftToRight</enum>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true"/>
+                                 </property>
+                                 <property name="text">
+                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Chat Log&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                 </property>
+                                 <property name="margin">
+                                  <number>0</number>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <spacer name="horizontalSpacer">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>40</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="label_token_count">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>200</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="layoutDirection">
+                                  <enum>Qt::RightToLeft</enum>
+                                 </property>
+                                 <property name="autoFillBackground">
+                                  <bool>false</bool>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true"/>
+                                 </property>
+                                 <property name="text">
+                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Token Count&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                 <property name="margin">
+                                  <number>0</number>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLineEdit" name="lineEdit_token_count">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>1</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="layoutDirection">
+                                  <enum>Qt::RightToLeft</enum>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLineEdit {
 	border: 2px solid rgb(49, 49, 72);
 	border-radius: 10px;
 	color: #FFF;
@@ -1953,21 +1983,21 @@ li.checked::marker { content: &quot;\2612&quot;; }
 	padding-right: 10px;
 	background-color:rgb(34,36,44)
 }</string>
-                             </property>
-                             <property name="text">
-                              <string>1203</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <widget class="QWidget" name="chat" native="true">
-                           <property name="styleSheet">
-                            <string notr="true">#chat {
+                                 </property>
+                                 <property name="text">
+                                  <string>1203</string>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </item>
+                             <item>
+                              <widget class="QWidget" name="chat" native="true">
+                               <property name="styleSheet">
+                                <string notr="true">#chat {
 	border: 2px solid rgb(48, 50, 62);
 	border-radius: 10px;
 	color: #FFF;
@@ -1975,87 +2005,421 @@ li.checked::marker { content: &quot;\2612&quot;; }
 	padding-right: 10px;
 	background-color:rgb(34,36,44)
 }</string>
-                           </property>
-                           <layout class="QVBoxLayout" name="verticalLayout_25">
-                            <property name="spacing">
-                             <number>0</number>
-                            </property>
-                            <property name="leftMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="topMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>0</number>
-                            </property>
-                            <item>
-                             <layout class="QVBoxLayout" name="chat_layout">
-                              <property name="spacing">
-                               <number>0</number>
-                              </property>
-                              <item>
-                               <widget class="QLabel" name="chat_widget_placeholder_2">
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>0</width>
-                                  <height>200</height>
-                                 </size>
+                               </property>
+                               <layout class="QVBoxLayout" name="verticalLayout_25">
+                                <property name="spacing">
+                                 <number>0</number>
                                 </property>
-                                <property name="text">
-                                 <string/>
+                                <property name="leftMargin">
+                                 <number>0</number>
                                 </property>
-                                <property name="pixmap">
-                                 <pixmap>:/user_profile/images/user_profile/me.png</pixmap>
+                                <property name="topMargin">
+                                 <number>0</number>
                                 </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignCenter</set>
+                                <property name="rightMargin">
+                                 <number>0</number>
                                 </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </item>
-                           </layout>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <layout class="QGridLayout" name="b_gridLayout_mid">
-                         <property name="leftMargin">
-                          <number>6</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>6</number>
-                         </property>
-                         <item row="0" column="1">
-                          <widget class="QTextEdit" name="textEdit_user_message">
-                           <property name="enabled">
-                            <bool>true</bool>
-                           </property>
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>30</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QTextEdit {
+                                <property name="bottomMargin">
+                                 <number>0</number>
+                                </property>
+                                <item>
+                                 <layout class="QVBoxLayout" name="chat_layout">
+                                  <property name="spacing">
+                                   <number>0</number>
+                                  </property>
+                                  <item>
+                                   <widget class="QLabel" name="chat_widget_placeholder_2">
+                                    <property name="minimumSize">
+                                     <size>
+                                      <width>0</width>
+                                      <height>300</height>
+                                     </size>
+                                    </property>
+                                    <property name="text">
+                                     <string/>
+                                    </property>
+                                    <property name="pixmap">
+                                     <pixmap>:/user_profile/images/user_profile/me.png</pixmap>
+                                    </property>
+                                    <property name="alignment">
+                                     <set>Qt::AlignCenter</set>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                 </layout>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item>
+                            <layout class="QVBoxLayout" name="c_verticalLayout_lower">
+                             <property name="leftMargin">
+                              <number>6</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>6</number>
+                             </property>
+                             <item>
+                              <layout class="QHBoxLayout" name="horizontalLayout_26">
+                               <item>
+                                <widget class="QLabel" name="label">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Prompt Queue&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="label_15">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>30</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;|&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="label_2">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;TTS Queue&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </item>
+                             <item>
+                              <layout class="QHBoxLayout" name="horizontalLayout_18">
+                               <item>
+                                <widget class="QTableWidget" name="tableWidget_prompt_list">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>550</width>
+                                   <height>120</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QTableWidget::item{
+	border-color: rgb(44, 49, 60);
+	padding-left: 5px;
+	padding-right: 5px;
+	gridline-color: rgb(44, 49, 60);
+	background-color: rgb(66, 74, 86);
+	background-color: rgb(71, 79, 93);
+}
+QTableWidget::item:selected{
+	background-color: rgb(189, 147, 249);
+}</string>
+                                 </property>
+                                 <property name="frameShape">
+                                  <enum>QFrame::NoFrame</enum>
+                                 </property>
+                                 <property name="verticalScrollBarPolicy">
+                                  <enum>Qt::ScrollBarAsNeeded</enum>
+                                 </property>
+                                 <property name="sizeAdjustPolicy">
+                                  <enum>QAbstractScrollArea::AdjustToContents</enum>
+                                 </property>
+                                 <property name="editTriggers">
+                                  <set>QAbstractItemView::NoEditTriggers</set>
+                                 </property>
+                                 <property name="selectionMode">
+                                  <enum>QAbstractItemView::SingleSelection</enum>
+                                 </property>
+                                 <property name="selectionBehavior">
+                                  <enum>QAbstractItemView::SelectRows</enum>
+                                 </property>
+                                 <attribute name="horizontalHeaderVisible">
+                                  <bool>true</bool>
+                                 </attribute>
+                                 <attribute name="horizontalHeaderCascadingSectionResizes">
+                                  <bool>true</bool>
+                                 </attribute>
+                                 <attribute name="horizontalHeaderDefaultSectionSize">
+                                  <number>100</number>
+                                 </attribute>
+                                 <attribute name="horizontalHeaderHighlightSections">
+                                  <bool>true</bool>
+                                 </attribute>
+                                 <attribute name="verticalHeaderVisible">
+                                  <bool>false</bool>
+                                 </attribute>
+                                 <attribute name="verticalHeaderCascadingSectionResizes">
+                                  <bool>false</bool>
+                                 </attribute>
+                                 <attribute name="verticalHeaderHighlightSections">
+                                  <bool>false</bool>
+                                 </attribute>
+                                 <row>
+                                  <property name="text">
+                                   <string>새 열</string>
+                                  </property>
+                                 </row>
+                                 <row>
+                                  <property name="text">
+                                   <string>1</string>
+                                  </property>
+                                 </row>
+                                 <column>
+                                  <property name="text">
+                                   <string>User</string>
+                                  </property>
+                                 </column>
+                                 <column>
+                                  <property name="text">
+                                   <string>Message</string>
+                                  </property>
+                                 </column>
+                                 <column>
+                                  <property name="text">
+                                   <string>State</string>
+                                  </property>
+                                 </column>
+                                 <item row="0" column="0">
+                                  <property name="text">
+                                   <string>test1</string>
+                                  </property>
+                                 </item>
+                                 <item row="0" column="1">
+                                  <property name="text">
+                                   <string>hello my name is hwcoms good morning everyone omg</string>
+                                  </property>
+                                 </item>
+                                 <item row="0" column="2">
+                                  <property name="text">
+                                   <string>running</string>
+                                  </property>
+                                 </item>
+                                 <item row="1" column="0">
+                                  <property name="text">
+                                   <string>test2safdasdfadsf</string>
+                                  </property>
+                                 </item>
+                                 <item row="1" column="1">
+                                  <property name="text">
+                                   <string>good</string>
+                                  </property>
+                                 </item>
+                                 <item row="1" column="2">
+                                  <property name="text">
+                                   <string>waiting</string>
+                                  </property>
+                                 </item>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QTableWidget" name="tableWidget_tts_list">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>550</width>
+                                   <height>120</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>16777215</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QTableWidget::item{
+	border-color: rgb(44, 49, 60);
+	padding-left: 5px;
+	padding-right: 5px;
+	gridline-color: rgb(44, 49, 60);
+	background-color: rgb(66, 74, 86);
+	background-color: rgb(71, 79, 93);
+}
+QTableWidget::item:selected{
+	background-color: rgb(189, 147, 249);
+}</string>
+                                 </property>
+                                 <property name="frameShape">
+                                  <enum>QFrame::NoFrame</enum>
+                                 </property>
+                                 <property name="verticalScrollBarPolicy">
+                                  <enum>Qt::ScrollBarAsNeeded</enum>
+                                 </property>
+                                 <property name="sizeAdjustPolicy">
+                                  <enum>QAbstractScrollArea::AdjustToContents</enum>
+                                 </property>
+                                 <property name="editTriggers">
+                                  <set>QAbstractItemView::NoEditTriggers</set>
+                                 </property>
+                                 <property name="selectionMode">
+                                  <enum>QAbstractItemView::SingleSelection</enum>
+                                 </property>
+                                 <property name="selectionBehavior">
+                                  <enum>QAbstractItemView::SelectRows</enum>
+                                 </property>
+                                 <attribute name="horizontalHeaderVisible">
+                                  <bool>true</bool>
+                                 </attribute>
+                                 <attribute name="horizontalHeaderCascadingSectionResizes">
+                                  <bool>true</bool>
+                                 </attribute>
+                                 <attribute name="horizontalHeaderDefaultSectionSize">
+                                  <number>100</number>
+                                 </attribute>
+                                 <attribute name="horizontalHeaderHighlightSections">
+                                  <bool>true</bool>
+                                 </attribute>
+                                 <attribute name="verticalHeaderVisible">
+                                  <bool>false</bool>
+                                 </attribute>
+                                 <attribute name="verticalHeaderCascadingSectionResizes">
+                                  <bool>false</bool>
+                                 </attribute>
+                                 <attribute name="verticalHeaderHighlightSections">
+                                  <bool>false</bool>
+                                 </attribute>
+                                 <row>
+                                  <property name="text">
+                                   <string>새 열</string>
+                                  </property>
+                                 </row>
+                                 <row>
+                                  <property name="text">
+                                   <string>1</string>
+                                  </property>
+                                 </row>
+                                 <column>
+                                  <property name="text">
+                                   <string>User</string>
+                                  </property>
+                                 </column>
+                                 <column>
+                                  <property name="text">
+                                   <string>Message</string>
+                                  </property>
+                                 </column>
+                                 <column>
+                                  <property name="text">
+                                   <string>State</string>
+                                  </property>
+                                 </column>
+                                 <item row="0" column="0">
+                                  <property name="text">
+                                   <string>test1</string>
+                                  </property>
+                                 </item>
+                                 <item row="0" column="1">
+                                  <property name="text">
+                                   <string>hello my name is hwcoms good morning everyone omg</string>
+                                  </property>
+                                 </item>
+                                 <item row="0" column="2">
+                                  <property name="text">
+                                   <string>running</string>
+                                  </property>
+                                 </item>
+                                 <item row="1" column="0">
+                                  <property name="text">
+                                   <string>test2safdasdfadsf</string>
+                                  </property>
+                                 </item>
+                                 <item row="1" column="1">
+                                  <property name="text">
+                                   <string>good</string>
+                                  </property>
+                                 </item>
+                                 <item row="1" column="2">
+                                  <property name="text">
+                                   <string>waiting</string>
+                                  </property>
+                                 </item>
+                                </widget>
+                               </item>
+                              </layout>
+                             </item>
+                             <item>
+                              <layout class="QGridLayout" name="b_gridLayout_mid">
+                               <property name="leftMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>6</number>
+                               </property>
+                               <item row="0" column="1">
+                                <widget class="QTextEdit" name="textEdit_user_message">
+                                 <property name="enabled">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QTextEdit {
 	border: 2px solid rgb(48, 50, 62);
 	border-radius: 10px;
 	color: #FFF;
@@ -2066,12 +2430,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
 QTextEdit:hover {
 	border: 2px solid rgb(66, 70, 86);
 }</string>
-                           </property>
-                           <property name="readOnly">
-                            <bool>true</bool>
-                           </property>
-                           <property name="html">
-                            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+                                 </property>
+                                 <property name="readOnly">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="html">
+                                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
@@ -2082,94 +2446,94 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;nice to meet you&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;how are you today.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I'm good&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="0" column="0">
-                          <layout class="QVBoxLayout" name="verticalLayout_23">
-                           <property name="spacing">
-                            <number>0</number>
-                           </property>
-                           <property name="leftMargin">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <widget class="QLabel" name="label_last_user_message">
-                             <property name="enabled">
-                              <bool>true</bool>
-                             </property>
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>200</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Last User Message&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                             <property name="margin">
-                              <number>0</number>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <spacer name="verticalSpacer_2">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeType">
-                              <enum>QSizePolicy::Fixed</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>5</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </item>
-                         <item row="1" column="1">
-                          <widget class="QTextEdit" name="textEdit_bot_reply">
-                           <property name="enabled">
-                            <bool>true</bool>
-                           </property>
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>30</height>
-                            </size>
-                           </property>
-                           <property name="baseSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QTextEdit {
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="0" column="0">
+                                <layout class="QVBoxLayout" name="verticalLayout_23">
+                                 <property name="spacing">
+                                  <number>0</number>
+                                 </property>
+                                 <property name="leftMargin">
+                                  <number>0</number>
+                                 </property>
+                                 <item>
+                                  <widget class="QLabel" name="label_last_user_message">
+                                   <property name="enabled">
+                                    <bool>true</bool>
+                                   </property>
+                                   <property name="sizePolicy">
+                                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                     <horstretch>0</horstretch>
+                                     <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>30</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true"/>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Last User Message&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                   <property name="margin">
+                                    <number>0</number>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <spacer name="verticalSpacer_2">
+                                   <property name="orientation">
+                                    <enum>Qt::Vertical</enum>
+                                   </property>
+                                   <property name="sizeType">
+                                    <enum>QSizePolicy::Fixed</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>20</width>
+                                     <height>5</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                </layout>
+                               </item>
+                               <item row="1" column="1">
+                                <widget class="QTextEdit" name="textEdit_bot_reply">
+                                 <property name="enabled">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <property name="baseSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QTextEdit {
 	border: 2px solid rgb(48, 50, 62);
 	border-radius: 10px;
 	color: #FFF;
@@ -2180,12 +2544,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
 QTextEdit:hover {
 	border: 2px solid rgb(66, 70, 86);
 }</string>
-                           </property>
-                           <property name="readOnly">
-                            <bool>true</bool>
-                           </property>
-                           <property name="html">
-                            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+                                 </property>
+                                 <property name="readOnly">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="html">
+                                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
@@ -2195,97 +2559,96 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hello, coms!&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;nice to meet you too!&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I'm good today.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="0">
-                          <layout class="QVBoxLayout" name="verticalLayout_21">
-                           <property name="spacing">
-                            <number>0</number>
-                           </property>
-                           <property name="leftMargin">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <widget class="QLabel" name="label_last_bot_reply">
-                             <property name="enabled">
-                              <bool>true</bool>
-                             </property>
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>200</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Last Bot Reply&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                             <property name="margin">
-                              <number>0</number>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <spacer name="verticalSpacer_3">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeType">
-                              <enum>QSizePolicy::Fixed</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>5</height>
-                              </size>
-                             </property>
-                            </spacer>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="1" column="0">
+                                <layout class="QVBoxLayout" name="verticalLayout_21">
+                                 <property name="spacing">
+                                  <number>0</number>
+                                 </property>
+                                 <property name="leftMargin">
+                                  <number>0</number>
+                                 </property>
+                                 <item>
+                                  <widget class="QLabel" name="label_last_bot_reply">
+                                   <property name="enabled">
+                                    <bool>true</bool>
+                                   </property>
+                                   <property name="sizePolicy">
+                                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                     <horstretch>0</horstretch>
+                                     <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>30</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true"/>
+                                   </property>
+                                   <property name="text">
+                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Last Bot Reply&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                   </property>
+                                   <property name="margin">
+                                    <number>0</number>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <spacer name="verticalSpacer_3">
+                                   <property name="orientation">
+                                    <enum>Qt::Vertical</enum>
+                                   </property>
+                                   <property name="sizeType">
+                                    <enum>QSizePolicy::Fixed</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>20</width>
+                                     <height>5</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                </layout>
+                               </item>
+                              </layout>
+                             </item>
+                            </layout>
                            </item>
                           </layout>
-                         </item>
-                        </layout>
+                         </widget>
+                        </widget>
                        </item>
                        <item>
-                        <layout class="QVBoxLayout" name="c_verticalLayout_lower">
+                        <layout class="QHBoxLayout" name="horizontalLayout_command_button">
+                         <property name="spacing">
+                          <number>70</number>
+                         </property>
                          <property name="leftMargin">
-                          <number>6</number>
+                          <number>170</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
                          </property>
                          <property name="rightMargin">
-                          <number>6</number>
+                          <number>170</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
                          </property>
                          <item>
-                          <widget class="QLabel" name="label">
+                          <widget class="QPushButton" name="pushButton_mute_tts">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                            <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
                            </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Message Queue&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignCenter</set>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QListView" name="listView_message_queue">
                            <property name="minimumSize">
                             <size>
                              <width>0</width>
@@ -2294,137 +2657,81 @@ li.checked::marker { content: &quot;\2612&quot;; }
                            </property>
                            <property name="maximumSize">
                             <size>
-                             <width>16777215</width>
-                             <height>200</height>
+                             <width>300</width>
+                             <height>80</height>
                             </size>
                            </property>
                            <property name="styleSheet">
-                            <string notr="true">QListView {
-	border: 2px solid rgb(48, 50, 62);
-	border-radius: 10px;
-	color: #FFF;
-	padding-left: 10px;
-	padding-right: 10px;
-	background-color:rgb(34,36,44)
-}
-QListView:hover {
-	border: 2px solid rgb(66, 70, 86);
-}
-QListView:focus {
-	border: 2px solid rgb(85, 170, 255);
-	background-color: rgb(43, 45, 56);
+                            <string notr="true">QPushButton{
+	font: 14pt &quot;Segoe UI&quot;;
+	color: white;
+	background-color: rgb(131, 56, 236);
+	border-radius: 5px;
 }</string>
+                           </property>
+                           <property name="text">
+                            <string>Toggle Spk</string>
                            </property>
                           </widget>
                          </item>
                          <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_command_button">
-                           <property name="spacing">
-                            <number>70</number>
+                          <widget class="QPushButton" name="pushButton_mute_mic">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
                            </property>
-                           <property name="leftMargin">
-                            <number>170</number>
+                           <property name="minimumSize">
+                            <size>
+                             <width>0</width>
+                             <height>50</height>
+                            </size>
                            </property>
-                           <property name="topMargin">
-                            <number>0</number>
+                           <property name="maximumSize">
+                            <size>
+                             <width>300</width>
+                             <height>80</height>
+                            </size>
                            </property>
-                           <property name="rightMargin">
-                            <number>170</number>
-                           </property>
-                           <property name="bottomMargin">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <widget class="QPushButton" name="pushButton_mute_tts">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>50</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>300</width>
-                               <height>80</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton{
+                           <property name="styleSheet">
+                            <string notr="true">QPushButton{
 	font: 14pt &quot;Segoe UI&quot;;
 	color: white;
 	background-color: rgb(131, 56, 236);
 	border-radius: 5px;
 }</string>
-                             </property>
-                             <property name="text">
-                              <string>Toggle Spk</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QPushButton" name="pushButton_mute_mic">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>50</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>300</width>
-                               <height>80</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton{
-	font: 14pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(131, 56, 236);
-	border-radius: 5px;
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>Toggle Mic</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QPushButton" name="pushButton_pause_reply">
-                             <property name="enabled">
-                              <bool>true</bool>
-                             </property>
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>50</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>300</width>
-                               <height>80</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton{
+                           </property>
+                           <property name="text">
+                            <string>Toggle Mic</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="pushButton_pause_reply">
+                           <property name="enabled">
+                            <bool>true</bool>
+                           </property>
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="minimumSize">
+                            <size>
+                             <width>0</width>
+                             <height>50</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>300</width>
+                             <height>80</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QPushButton{
 	font: 14pt &quot;Segoe UI&quot;;
 	color: white;
 	background-color: rgb(251, 86, 7);
@@ -2437,38 +2744,38 @@ QPushButton:hover{
 QPushButton:pressed{
 	background-color: rgb(197, 66, 5);
 }</string>
-                             </property>
-                             <property name="text">
-                              <string>  Skip</string>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="resources.qrc">
-                               <normaloff>:/icons/images/icons/cil-media-skip-forward.png</normaloff>:/icons/images/icons/cil-media-skip-forward.png</iconset>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QPushButton" name="pushButton_stop_reply">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>50</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>300</width>
-                               <height>80</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton{
+                           </property>
+                           <property name="text">
+                            <string>  Skip</string>
+                           </property>
+                           <property name="icon">
+                            <iconset resource="resources.qrc">
+                             <normaloff>:/icons/images/icons/cil-media-skip-forward.png</normaloff>:/icons/images/icons/cil-media-skip-forward.png</iconset>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="pushButton_stop_reply">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="minimumSize">
+                            <size>
+                             <width>0</width>
+                             <height>50</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>300</width>
+                             <height>80</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QPushButton{
 	font: 14pt &quot;Segoe UI&quot;;
 	color: white;
 	background-color: rgb(255, 0, 110);
@@ -2480,17 +2787,15 @@ QPushButton:hover{
 QPushButton:pressed{
 	background-color: rgb(200, 0, 87);
 }</string>
-                             </property>
-                             <property name="text">
-                              <string> Generate</string>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="resources.qrc">
-                               <normaloff>:/icons/images/icons/cil-media-stop.png</normaloff>:/icons/images/icons/cil-media-stop.png</iconset>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
+                           </property>
+                           <property name="text">
+                            <string> Generate</string>
+                           </property>
+                           <property name="icon">
+                            <iconset resource="resources.qrc">
+                             <normaloff>:/icons/images/icons/cil-media-stop.png</normaloff>:/icons/images/icons/cil-media-stop.png</iconset>
+                           </property>
+                          </widget>
                          </item>
                         </layout>
                        </item>
@@ -2895,7 +3200,7 @@ QSlider::handle:horizontal:pressed {
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>358</width>
+                            <width>1152</width>
                             <height>811</height>
                            </rect>
                           </property>
@@ -4828,7 +5133,7 @@ QPushButton:pressed{
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>218</width>
+                                 <width>352</width>
                                  <height>218</height>
                                 </rect>
                                </property>
