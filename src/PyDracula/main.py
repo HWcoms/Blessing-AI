@@ -672,6 +672,30 @@ class MainWindow(QMainWindow):
         for item in item_list:
             item.setStyleSheet("color: rgb(0, 255, 38);")
 
+    def update_thread_table(self):
+        global widgets
+        table_list = [widgets.tableWidget_prompt_list, widgets.tableWidget_tts_list]
+        threadlist_zip = [self.prompt_thread_list, self.tts_thread_list]
+        row = 0
+
+        for (table, thread_list) in zip(table_list, threadlist_zip):
+            row_i = int(row/2)  # row [0, 1] -> index 0, [2, 3] -> index 1
+            table.setRowCount(len(thread_list))
+            if len(thread_list) >= 1:
+                # print(row_i, table)
+                table.setItem(row_i, 0, QTableWidgetItem("name"))
+                table.setItem(row_i, 1, QTableWidgetItem(thread_list[row_i].text))
+
+                if (thread_list[row_i].isRunning):
+                    status = "running"
+                else:
+                    status = "Waiting"
+
+                table.setItem(row_i, 2, QTableWidgetItem(status))
+
+            row = row + 1
+
+
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -817,6 +841,60 @@ class MainWindow(QMainWindow):
             self.audio_info_dict = {}
 
         self.audio_info_dict.update(SettingInfo.load_audio_settings())
+        global widgets
+
+        # LineEdit & Sliders
+        mic_threshold = str (self.audio_info_dict["mic_threshold"])
+        phrase_timeout = str (self.audio_info_dict["phrase_timeout"])
+        voice_speed = str (self.audio_info_dict["voice_speed"])
+        voice_volume = str ( int(self.audio_info_dict["voice_volume"] * 100))
+        intonation_scale = str (self.audio_info_dict["intonation_scale"])
+        pre_phoneme_length = str (self.audio_info_dict["pre_phoneme_length"])
+        post_phoneme_length = str (self.audio_info_dict["post_phoneme_length"])
+
+        widgets.lineEdit_mic_threshold.setText(mic_threshold + " %")
+        widgets.horizontalSlider_mic_threshold.setValue(int(mic_threshold))
+
+        widgets.lineEdit_phrase_timeout.setText(phrase_timeout)
+
+        widgets.lineEdit_voice_volume.setText(voice_volume + " %")
+        val = int(voice_volume)
+        widgets.horizontalSlider_voice_volume.setValue(val)
+
+        widgets.lineEdit_voice_speed.setText(voice_speed)
+        val = int( float(voice_speed)*100.0)
+        widgets.horizontalSlider_voice_speed.setValue(val)
+
+        widgets.lineEdit_intonation_scale.setText(intonation_scale)
+        val = int( float(intonation_scale)*100.0)
+        widgets.horizontalSlider_intonation_scale.setValue(val)
+
+        widgets.lineEdit_pre_phoneme_length.setText(pre_phoneme_length)
+        val = int(float(pre_phoneme_length) * 100.0)
+        widgets.horizontalSlider_pre_phoneme_length.setValue(val)
+
+        widgets.lineEdit_post_phoneme_length.setText(post_phoneme_length)
+        val = int(float(post_phoneme_length) * 100.0)
+        widgets.horizontalSlider_post_phoneme_length.setValue(val)
+
+        # Combo Box
+        mic_device = str(self.audio_info_dict["mic_index"])
+        spk_device = str(self.audio_info_dict["spk_index"])
+        tts_character_name = self.audio_info_dict["tts_character_name"]
+        tts_language = self.convert_language_code(self.audio_info_dict["tts_language"])
+        tts_voice_id = str(self.audio_info_dict["voice_id"])
+        # tts_voice_id = self.get_voice_name_from_id(self.audio_info_dict["voice_id"])
+
+        widgets.comboBox_mic_device.setCurrentText(mic_device)
+        widgets.comboBox_spk_device.setCurrentText(spk_device)
+        widgets.comboBox_tts_charcter.setCurrentText(tts_character_name)
+        widgets.comboBox_tts_language.setCurrentText(tts_language)
+        widgets.comboBox_tts_voice_id.setCurrentText(tts_voice_id)
+
+    def get_voice_name_from_id(self, id):
+        # get name if there's character name from index
+
+        pass
 
     def load_other_info(self):
         if self.chat_info_dict is None:
@@ -934,6 +1012,7 @@ class MainWindow(QMainWindow):
         self.tts_thread_list.append(tts_thread)
         # tts_thread.print_thread_list()
         tts_thread.start()
+        self.update_thread_table()
 
     # Generate Prompt Using QThread
     def gen_prompt_thread(self, text):
@@ -943,6 +1022,7 @@ class MainWindow(QMainWindow):
         # prompt_thread.start()
 
         prompt_thread.PromptDone.connect(self.gen_voice_thread)
+        self.update_thread_table()
 
 class THREADMANAGER(QThread):
     prompt_done_signal = Signal()
@@ -953,7 +1033,6 @@ class THREADMANAGER(QThread):
     def run(self):
         main_program = self.parent
         while True:
-
             prompt_thread_list = main_program.prompt_thread_list
             tts_thread_list = main_program.tts_thread_list
 

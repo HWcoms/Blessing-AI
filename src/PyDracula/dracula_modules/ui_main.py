@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainkzgAVU.ui'
+## Form generated from reading UI file 'mainwyiPXt.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1047,7 +1047,7 @@ class Ui_MainWindow(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, -52, 1172, 583))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1172, 583))
         self.verticalLayout_14 = QVBoxLayout(self.scrollAreaWidgetContents_4)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.a_verticalLayout_top = QVBoxLayout()
@@ -1710,7 +1710,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1152, 811))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -225, 1172, 814))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -1774,6 +1774,20 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_20.addItem(self.horizontalSpacer_11)
 
+        self.lineEdit_mic_threshold = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_mic_threshold.setObjectName(u"lineEdit_mic_threshold")
+        sizePolicy11 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy11.setHorizontalStretch(0)
+        sizePolicy11.setVerticalStretch(0)
+        sizePolicy11.setHeightForWidth(self.lineEdit_mic_threshold.sizePolicy().hasHeightForWidth())
+        self.lineEdit_mic_threshold.setSizePolicy(sizePolicy11)
+        self.lineEdit_mic_threshold.setMinimumSize(QSize(60, 0))
+        self.lineEdit_mic_threshold.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_mic_threshold.setAcceptDrops(True)
+        self.lineEdit_mic_threshold.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.lineEdit_mic_threshold)
+
         self.horizontalSpacer_12 = QSpacerItem(40, 19, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_20.addItem(self.horizontalSpacer_12)
@@ -1822,9 +1836,6 @@ class Ui_MainWindow(object):
 
         self.lineEdit_phrase_timeout = QLineEdit(self.scrollAreaWidgetContents_2)
         self.lineEdit_phrase_timeout.setObjectName(u"lineEdit_phrase_timeout")
-        sizePolicy11 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy11.setHorizontalStretch(0)
-        sizePolicy11.setVerticalStretch(0)
         sizePolicy11.setHeightForWidth(self.lineEdit_phrase_timeout.sizePolicy().hasHeightForWidth())
         self.lineEdit_phrase_timeout.setSizePolicy(sizePolicy11)
         self.lineEdit_phrase_timeout.setMinimumSize(QSize(60, 0))
@@ -2002,15 +2013,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_28.addLayout(self.horizontalLayout_13)
 
-        self.horizontalSlider_tts_speed = QSlider(self.scrollAreaWidgetContents_2)
-        self.horizontalSlider_tts_speed.setObjectName(u"horizontalSlider_tts_speed")
-        self.horizontalSlider_tts_speed.setStyleSheet(u"")
-        self.horizontalSlider_tts_speed.setMaximum(200)
-        self.horizontalSlider_tts_speed.setSingleStep(0)
-        self.horizontalSlider_tts_speed.setValue(100)
-        self.horizontalSlider_tts_speed.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_voice_volume = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalSlider_voice_volume.setObjectName(u"horizontalSlider_voice_volume")
+        self.horizontalSlider_voice_volume.setStyleSheet(u"")
+        self.horizontalSlider_voice_volume.setMaximum(200)
+        self.horizontalSlider_voice_volume.setSingleStep(0)
+        self.horizontalSlider_voice_volume.setValue(100)
+        self.horizontalSlider_voice_volume.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout_28.addWidget(self.horizontalSlider_tts_speed)
+        self.verticalLayout_28.addWidget(self.horizontalSlider_voice_volume)
 
 
         self.verticalLayout_22.addLayout(self.verticalLayout_28)
@@ -2063,14 +2074,14 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_32.addLayout(self.horizontalLayout_14)
 
-        self.horizontalSlider_tts_speed_2 = QSlider(self.scrollAreaWidgetContents_2)
-        self.horizontalSlider_tts_speed_2.setObjectName(u"horizontalSlider_tts_speed_2")
-        self.horizontalSlider_tts_speed_2.setStyleSheet(u"")
-        self.horizontalSlider_tts_speed_2.setMaximum(200)
-        self.horizontalSlider_tts_speed_2.setValue(100)
-        self.horizontalSlider_tts_speed_2.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_voice_speed = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalSlider_voice_speed.setObjectName(u"horizontalSlider_voice_speed")
+        self.horizontalSlider_voice_speed.setStyleSheet(u"")
+        self.horizontalSlider_voice_speed.setMaximum(200)
+        self.horizontalSlider_voice_speed.setValue(100)
+        self.horizontalSlider_voice_speed.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout_32.addWidget(self.horizontalSlider_tts_speed_2)
+        self.verticalLayout_32.addWidget(self.horizontalSlider_voice_speed)
 
 
         self.verticalLayout_22.addLayout(self.verticalLayout_32)
@@ -2123,14 +2134,14 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_33.addLayout(self.horizontalLayout_15)
 
-        self.horizontalSlider_tts_intonation_scale = QSlider(self.scrollAreaWidgetContents_2)
-        self.horizontalSlider_tts_intonation_scale.setObjectName(u"horizontalSlider_tts_intonation_scale")
-        self.horizontalSlider_tts_intonation_scale.setStyleSheet(u"")
-        self.horizontalSlider_tts_intonation_scale.setMaximum(200)
-        self.horizontalSlider_tts_intonation_scale.setValue(100)
-        self.horizontalSlider_tts_intonation_scale.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_intonation_scale = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalSlider_intonation_scale.setObjectName(u"horizontalSlider_intonation_scale")
+        self.horizontalSlider_intonation_scale.setStyleSheet(u"")
+        self.horizontalSlider_intonation_scale.setMaximum(200)
+        self.horizontalSlider_intonation_scale.setValue(100)
+        self.horizontalSlider_intonation_scale.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout_33.addWidget(self.horizontalSlider_tts_intonation_scale)
+        self.verticalLayout_33.addWidget(self.horizontalSlider_intonation_scale)
 
 
         self.verticalLayout_22.addLayout(self.verticalLayout_33)
@@ -2716,7 +2727,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 352, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -3238,7 +3249,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -3415,6 +3426,7 @@ class Ui_MainWindow(object):
 
         self.pushButton_mic_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Threshold</span></p></body></html>", None))
+        self.lineEdit_mic_threshold.setText(QCoreApplication.translate("MainWindow", u"30 %", None))
         self.label_21.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Phrase TimeOut</span></p></body></html>", None))
         self.lineEdit_phrase_timeout.setText(QCoreApplication.translate("MainWindow", u"2", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>seconds</p></body></html>", None))

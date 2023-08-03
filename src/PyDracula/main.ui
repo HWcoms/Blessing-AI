@@ -1810,7 +1810,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -1848,7 +1848,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>-52</y>
+                            <y>0</y>
                             <width>1172</width>
                             <height>583</height>
                            </rect>
@@ -3199,9 +3199,9 @@ QSlider::handle:horizontal:pressed {
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>0</y>
-                            <width>1152</width>
-                            <height>811</height>
+                            <y>-225</y>
+                            <width>1172</width>
+                            <height>814</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -3332,6 +3332,37 @@ QPushButton:pressed{
                                       </size>
                                      </property>
                                     </spacer>
+                                   </item>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_mic_threshold">
+                                     <property name="sizePolicy">
+                                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                       <horstretch>0</horstretch>
+                                       <verstretch>0</verstretch>
+                                      </sizepolicy>
+                                     </property>
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>0</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>16777215</height>
+                                      </size>
+                                     </property>
+                                     <property name="acceptDrops">
+                                      <bool>true</bool>
+                                     </property>
+                                     <property name="text">
+                                      <string>30 %</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignCenter</set>
+                                     </property>
+                                    </widget>
                                    </item>
                                    <item>
                                     <spacer name="horizontalSpacer_12">
@@ -3770,7 +3801,7 @@ QPushButton:pressed{
                                 </layout>
                                </item>
                                <item>
-                                <widget class="QSlider" name="horizontalSlider_tts_speed">
+                                <widget class="QSlider" name="horizontalSlider_voice_volume">
                                  <property name="styleSheet">
                                   <string notr="true"/>
                                  </property>
@@ -3882,7 +3913,7 @@ QPushButton:pressed{
                                 </layout>
                                </item>
                                <item>
-                                <widget class="QSlider" name="horizontalSlider_tts_speed_2">
+                                <widget class="QSlider" name="horizontalSlider_voice_speed">
                                  <property name="styleSheet">
                                   <string notr="true"/>
                                  </property>
@@ -3991,7 +4022,7 @@ QPushButton:pressed{
                                 </layout>
                                </item>
                                <item>
-                                <widget class="QSlider" name="horizontalSlider_tts_intonation_scale">
+                                <widget class="QSlider" name="horizontalSlider_intonation_scale">
                                  <property name="styleSheet">
                                   <string notr="true"/>
                                  </property>
@@ -5133,7 +5164,7 @@ QPushButton:pressed{
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>352</width>
+                                 <width>218</width>
                                  <height>218</height>
                                 </rect>
                                </property>
