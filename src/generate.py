@@ -133,3 +133,99 @@ class Generator:
 
         if self.logging:
             print("\033[0m")
+
+
+class GeneratorTTS:
+    def __init__(self):
+        super().__init__()
+        self.logging = True
+        self.audio_path = ""
+        self.device_id = 0
+
+    def speak_tts(self, text, settings_list: list = None):
+        # Load Program Settings
+        if settings_list is None or len(settings_list) == 0:
+            log_str = "[Generator.speak]: No loaded settings exist! loading them now..."
+            settings_list = SettingInfo.load_all_settings()
+
+        else:
+            log_str = "[Generator.speak]: Using loaded program settings from main GUI"
+
+        audio_settings = settings_list[0]
+        character_settings = settings_list[1]
+        prompt_settings = settings_list[2]
+        other_settings = settings_list[3]
+
+        if self.logging:
+            print("\033[34m" + log_str + "\033[0m")
+
+        tts_only = other_settings["tts_only"]
+        text_lang = None
+
+        if tts_only:
+            text_lang = detect_language(text)
+        else:
+            text_lang = prompt_settings[
+                "ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
+        print("tts lang: ", text, text_lang)
+        if text:
+            self.speak_moegoe(text, text_lang, character_settings, audio_settings)
+        else:
+            print("\031[31m" + '[GeneratorTTS.Generate] Error: text variable is None' + "\033[0m")
+            return None  # failed
+
+    def speak_moegoe(self, sentence, sentence_lang, character_settings, audio_settings):
+        log_str = "[GeneratorTTS.speak_moegoe]: "
+        if self.logging:
+            print("\033[34m" + log_str + "\033[32m")
+
+        spk_id = audio_settings["spk_index"]
+        tts_character_name = audio_settings["tts_character_name"]
+        language_code = audio_settings["tts_language"]
+        voice_volume = audio_settings["voice_volume"]
+        voice_id = audio_settings["voice_id"]
+
+        self.device_id = spk_id
+
+        bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code)  # Translate reply
+        if language_code == 'ja':
+            bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
+        elif language_code == 'ko':
+            bot_trans_speech = bot_trans_speech  # TODO: eng to korean
+            voice_volume = voice_volume * 0.5
+
+        if self.logging:
+            print("\033[0m")
+
+        print("\033[34m" + f"[GeneratorTTS.run]: start speech process! [\033[32m{sentence}\033[34m]" + "\033[0m")
+
+        self.audio_path = self.new_audio_path()  # assign output directory to self.audio_path before run this method!
+        # synthesize voice as wav file
+        speech_text(tts_character_name, bot_trans_speech, language_code, voice_id, voice_volume,
+                    out_path=self.audio_path)
+
+        print(
+            "\033[34m" + f"[GeneratorTTS.speak_moegoe]: Created TTS as Wav File! [\033[32m{sentence}\033[34m] [{self.audio_path}]" + "\033[0m")
+
+    def play_voice(self):
+        import sounddevice as sd
+        import soundfile as sf
+
+        s_q = sd.query_devices()
+        device_name = f"""{s_q[self.device_id]["name"]}"""
+        data, fs = sf.read(self.audio_path, dtype='float32')
+        print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
+
+        sd.play(data, fs, device=self.device_id, blocking=True)
+        sd.wait()
+
+    def new_audio_path(self):
+        import os
+
+        num = 0
+        while True:
+            file_name = f'tts_{num}.wav'
+            file_path = os.path.join(self.audio_path, file_name)
+            if not os.path.exists(file_path):
+                return file_path
+            num += 1

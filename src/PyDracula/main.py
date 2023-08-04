@@ -109,7 +109,8 @@ class MainWindow(QMainWindow):
         self.thread_manager = THREADMANAGER(self)
         self.thread_manager.start()
         self.thread_manager.prompt_done_signal.connect(self.delete_first_prompt_thread)
-        self.thread_manager.tts_done_signal.connect(self.delete_first_tts_thread)
+        # self.thread_manager.tts_gen_done_signal.connect(self.update_thread_table())
+        self.thread_manager.tts_speech_done_signal.connect(self.delete_first_tts_thread)
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -1011,7 +1012,7 @@ class MainWindow(QMainWindow):
         tts_thread = TTSTHREAD(self, text)
         self.tts_thread_list.append(tts_thread)
         # tts_thread.print_thread_list()
-        tts_thread.start()
+        # tts_thread.start()
         self.update_thread_table()
 
     # Generate Prompt Using QThread
@@ -1026,7 +1027,8 @@ class MainWindow(QMainWindow):
 
 class THREADMANAGER(QThread):
     prompt_done_signal = Signal()
-    tts_done_signal = Signal()
+    tts_gen_done_signal = Signal()
+    tts_speech_done_signal = Signal()
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
@@ -1056,13 +1058,19 @@ class THREADMANAGER(QThread):
 
             if len(tts_thread_list) >= 1:
                 # Start first thread if not running
-                if not tts_thread_list[0].isRunning() and not tts_thread_list[0].done:
-                    prompt_thread_list[0].start()
+                if not tts_thread_list[0].isRunning() and not tts_thread_list[0].speech_done:
+                    tts_thread_list[0].start()
                     print(f"start tts thread: [{tts_thread_list[0].text}]")
 
-                if tts_thread_list[0].done:
-                    print("tts is done: ", tts_thread_list[0].text, tts_thread_list[0].done)
-                    self.tts_done_signal.emit()
+                tts_thread_list[0].print_thread_list()
+
+                if tts_thread_list[0].gen_done:
+                    print("tts is generated: ", tts_thread_list[0].text, tts_thread_list[0].gen_done)
+                    self.tts_gen_done_signal.emit()
+
+                if tts_thread_list[0].speech_done:
+                    print("tts is done: ", tts_thread_list[0].text, tts_thread_list[0].speech_done)
+                    self.tts_speech_done_signal.emit()
 
             time.sleep(0.3)
 
@@ -1108,14 +1116,23 @@ class TTSTHREAD(QThread):
         self.parent = parent
         self.text = text
         self.logging = True
-        self.audio_path = ""
-        self.done = False
+        self.gen_done = False
+        self.speech_done = False
 
     def run(self):
-        self.audio_path = self.new_audio_path()
-        self.speak_tts(text=self.text)
-        time.sleep(1)
-        self.TTSDone.emit()
+        from generate import GeneratorTTS
+        gen = GeneratorTTS()
+
+        global tts_wav_path
+        gen.audio_path = tts_wav_dir
+        print(tts_wav_path)
+
+        gen.speak_tts(text=self.text)
+        self.gen_done = True
+
+        gen.play_voice()
+        self.speech_done = True
+        # self.speak_tts(text=self.text)
         # self.remove_from_thread_list()
 
     def remove_from_thread_list(self):
@@ -1128,102 +1145,8 @@ class TTSTHREAD(QThread):
             print("\033[32m" + thread_logging_str + "\033[0m")
             print(self.parent.tts_thread_list)
             for i, qthread in enumerate(self.parent.tts_thread_list):
-                print(f"QThread ({i}): [{qthread.text}]")
+                print(f"QThread ({i}): [{qthread.text}] | Gen Done: {self.gen_done} | Speech Done: {self.speech_done}")
             print("\033[32m" + thread_logging_str + "\033[0m")
-
-    def speak_tts(self, text, settings_list: list = None):
-        from modules.translator import detect_language
-        # print("speak")
-
-        # Load Program Settings
-        if settings_list is None or len(settings_list) == 0:
-            log_str = "[Generator.speak]: No loaded settings exist! loading them now..."
-            settings_list = SettingInfo.load_all_settings()
-
-        else:
-            log_str = "[Generator.speak]: Using loaded program settings from main GUI"
-
-        audio_settings = settings_list[0]
-        character_settings = settings_list[1]
-        prompt_settings = settings_list[2]
-        other_settings = settings_list[3]
-
-        if self.logging:
-            print("\033[34m" + log_str + "\033[0m")
-
-        tts_only = other_settings["tts_only"]
-        text_lang = None
-
-        if tts_only:
-            text_lang = detect_language(text)
-        else:
-            text_lang = prompt_settings[
-                "ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
-        print("tts lang: ", text, text_lang)
-        if text:
-            self.speak_moegoe(text, text_lang, character_settings, audio_settings)
-        else:
-            print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
-            return None  # failed
-
-    def speak_moegoe(self, sentence, sentence_lang, character_settings, audio_settings):
-        from modules.translator import DoTranslate, detect_language
-        from modules.convert_roma_ja import english_to_katakana
-        from MoeGoe.Main import speech_text
-
-        log_str = "[Generator.speak_moegoe]: "
-        if self.logging:
-            print("\033[34m" + log_str + "\033[32m")
-
-        spk_id = audio_settings["spk_index"]
-        tts_character_name = audio_settings["tts_character_name"]
-        language_code = audio_settings["tts_language"]
-        voice_volume = audio_settings["voice_volume"]
-        voice_id = audio_settings["voice_id"]
-
-        bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code)  # Translate reply
-        if language_code == 'ja':
-            bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
-        elif language_code == 'ko':
-            bot_trans_speech = bot_trans_speech  # TODO: eng to korean
-            voice_volume = voice_volume * 0.5
-
-        if self.logging:
-            print("\033[0m")
-
-        print("\033[34m" + f"[GenVoiceThread.run]: start speech process! [\033[32m{sentence}\033[34m]" + "\033[0m")
-
-        # synthesize voice as wav file
-        speech_text(tts_character_name, bot_trans_speech, language_code, voice_id, voice_volume, out_path=self.audio_path)
-
-        # play voice to app mic input and speakers/headphones
-        self.play_voice(spk_id, self.audio_path)
-
-        print("\033[34m" + f"[GenVoiceThread.run]: speech done! [\033[32m{sentence}\033[34m] [{self.audio_path}]" + "\033[0m")
-
-    def play_voice(self, device_id, audio_path):
-        import sounddevice as sd
-        import soundfile as sf
-
-        s_q = sd.query_devices()
-        device_name = f"""{s_q[device_id]["name"]}"""
-        data, fs = sf.read(audio_path, dtype='float32')
-        print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
-
-        sd.play(data, fs, device=device_id)
-        sd.wait()
-
-        # TODO: refactor
-        self.done = True
-
-    def new_audio_path(self):
-        num = 0
-        while True:
-            file_name = f'tts_{num}.wav'
-            file_path = os.path.join(tts_wav_dir, file_name)
-            if not os.path.exists(file_path):
-                return file_path
-            num += 1
 
 
 if __name__ == "__main__":
