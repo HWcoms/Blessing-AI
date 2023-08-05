@@ -41,11 +41,16 @@ from widgets import *
 
 # Settings
 from setting_info import SettingInfo  # noqa
-
 # CHATLOAD
 from dracula_modules.page_messages import Chat # Chat Widget
+# AUDIO DEVICE
+from modules.aud_device_manager import AudioDevice
 
-# Remove [import resources_rc] in ui_main.py!!
+#####################################################################################
+#                                                                                   #
+#                    Remove [import resources_rc] in ui_main.py!!                   #
+#                                                                                   #
+#####################################################################################
 
 os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100%
 
@@ -54,8 +59,7 @@ os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100
 widgets = None
 
 tts_wav_dir = os.path.join(os.path.dirname(root_path), 'cache', 'audio')
-
-tts_wav_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
+# tts_wav_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
 # Table column width size percentage values
 t_val_col_a = 20   # Queue List column width_value
@@ -90,6 +94,10 @@ class MainWindow(QMainWindow):
 
         self.prompt_info_dict: dict = None  # [max_prompt_token, max_reply_token,
                                             # ai_model_language]
+
+        # AUDIO DEVICE MANAGER
+        self.newAudDevice = AudioDevice("compact")
+
         # SET AS GLOBAL WIDGETS
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -109,7 +117,7 @@ class MainWindow(QMainWindow):
         self.thread_manager = THREADMANAGER(self)
         self.thread_manager.start()
         self.thread_manager.prompt_done_signal.connect(self.delete_first_prompt_thread)
-        # self.thread_manager.tts_gen_done_signal.connect(self.update_thread_table())
+        self.thread_manager.tts_gen_done_signal.connect(self.start_next_tts_thread)
         self.thread_manager.tts_speech_done_signal.connect(self.delete_first_tts_thread)
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
@@ -405,7 +413,7 @@ class MainWindow(QMainWindow):
             return
         # endregion
 
-        print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}")
+        print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}" + "\033[0m")
 
         update_json(component_key, component_property, setting_name)
 
@@ -832,17 +840,70 @@ class MainWindow(QMainWindow):
         # get chatlog filename
         self.chat_info_dict["chatlog_filename"] = SettingInfo.get_chatlog_filename(character_name)
 
-    def load_mic_info(self, text):
+    def refresh_audio_device(self):
+        global widgets
 
+        # REFRESH AUDIO DEVICE INFO LIST
+        self.newAudDevice.get_all_device("compact")
+        # print(self.newAudDevice.get_speaker_name_list())
+        # print(self.newAudDevice)
 
-        print("test mic info:" + text)
+        mic_comboBox = widgets.comboBox_mic_device
+        spk_comboBox = widgets.comboBox_spk_device
+
+        mic_comboBox.clear()
+        spk_comboBox.clear()
+
+        for _mic in self.newAudDevice.mic_list:
+            mic_comboBox.addItem(_mic.name)
+        for _spk in self.newAudDevice.speaker_list:
+            spk_comboBox.addItem(_spk.name)
+
+        # REFRESH TTS INFO LIST
+        tts_char_list = self.get_tts_characters_list()
+
+        tts_comboBox = widgets.comboBox_mic_device
+        tts_comboBox.clear()
+
+        for _mic in self.newAudDevice.mic_list:
+            tts_comboBox.addItem(_mic.name)
+
+    def select_aud_devices_loaded_setting(self):
+        global widgets
+        self.newAudDevice.set_selected_device_to_default()
+
+        print("mic: ", self.newAudDevice.selected_mic)
+        print("spk: ", self.newAudDevice.selected_speaker)
+        widgets.comboBox_mic_device.setCurrentText(self.newAudDevice.selected_mic.name)
+        widgets.comboBox_spk_device.setCurrentText(self.newAudDevice.selected_speaker.name)
+
+    def select_tts_loaded_setting(self):
+        global widgets
+
+    def get_tts_characters_list(self):
+        tts_char_list = []
+        tts_char_dir = os.path.join(root_path, 'Models', 'Voice')
+
+        for _folder in os.scandir(tts_char_dir):
+            if _folder.is_dir():
+                tts_char_list.append(_folder.name)
+
+        if len(tts_char_list) == 0:
+            print(
+                "\033[31m" + "Error [main GUI.get_tts_characters_list]: Could not find any TTS Character folders in " + "\033[33m" + f"{tts_char_dir}" + "\033[0m")
+            return None
+
+        return tts_char_list
+
 
     def load_audio_info(self):
+        global widgets
+
         if self.audio_info_dict is None:
             self.audio_info_dict = {}
 
         self.audio_info_dict.update(SettingInfo.load_audio_settings())
-        global widgets
+        self.refresh_audio_device()
 
         # LineEdit & Sliders
         mic_threshold = str (self.audio_info_dict["mic_threshold"])
@@ -886,8 +947,7 @@ class MainWindow(QMainWindow):
         tts_voice_id = str(self.audio_info_dict["voice_id"])
         # tts_voice_id = self.get_voice_name_from_id(self.audio_info_dict["voice_id"])
 
-        widgets.comboBox_mic_device.setCurrentText(mic_device)
-        widgets.comboBox_spk_device.setCurrentText(spk_device)
+        self.select_aud_devices_loaded_setting()
         widgets.comboBox_tts_charcter.setCurrentText(tts_character_name)
         widgets.comboBox_tts_language.setCurrentText(tts_language)
         widgets.comboBox_tts_voice_id.setCurrentText(tts_voice_id)
@@ -1007,6 +1067,15 @@ class MainWindow(QMainWindow):
     def delete_first_tts_thread(self):
         self.tts_thread_list[0].remove_from_thread_list()
 
+    def start_next_tts_thread(self):
+        if len(self.tts_thread_list) > 1:    # threada has more than 2
+            if self.tts_thread_list[1].isRunning(): return # return if thread is already running
+
+            print("[Main GUI.start_next_tts_thread]: Starting next TTS thread")
+            self.tts_thread_list[1].start()
+        else:
+            print("[Main GUI.start_next_tts_thread]: There's no next TTS thread in thread list! all TTS threads is done generating wav file ")
+
     # Generate and Play TTS Using QThread
     def gen_voice_thread(self, text):
         tts_thread = TTSTHREAD(self, text)
@@ -1058,18 +1127,21 @@ class THREADMANAGER(QThread):
 
             if len(tts_thread_list) >= 1:
                 # Start first thread if not running
-                if not tts_thread_list[0].isRunning() and not tts_thread_list[0].speech_done:
+                if not tts_thread_list[0].isRunning() and not tts_thread_list[0].gen.speech_done:
                     tts_thread_list[0].start()
                     print(f"start tts thread: [{tts_thread_list[0].text}]")
 
                 tts_thread_list[0].print_thread_list()
 
-                if tts_thread_list[0].gen_done:
-                    print("tts is generated: ", tts_thread_list[0].text, tts_thread_list[0].gen_done)
+                if tts_thread_list[0].gen.gen_done and not tts_thread_list[0].gen.speech_done:
+                    print("tts wav file is generated: ", tts_thread_list[0].text, tts_thread_list[0].gen.gen_done)
+                    # Start next thread
+                    tts_thread_list[0].gen.play_voice()
                     self.tts_gen_done_signal.emit()
 
-                if tts_thread_list[0].speech_done:
-                    print("tts is done: ", tts_thread_list[0].text, tts_thread_list[0].speech_done)
+                if tts_thread_list[0].gen.speech_done:
+                    print("tts process all done: ", tts_thread_list[0].text, tts_thread_list[0].gen.speech_done)
+                    # Remove current thraed
                     self.tts_speech_done_signal.emit()
 
             time.sleep(0.3)
@@ -1112,26 +1184,21 @@ class PROMPTTHREAD(QThread):
 class TTSTHREAD(QThread):
     TTSDone = Signal()
     def __init__(self, parent, text="", logging=True):
+        from generate import GeneratorTTS
+
         super().__init__(parent)
         self.parent = parent
+        self.gen = GeneratorTTS()
+
         self.text = text
         self.logging = True
-        self.gen_done = False
-        self.speech_done = False
 
     def run(self):
-        from generate import GeneratorTTS
-        gen = GeneratorTTS()
+        global tts_wav_dir
+        self.gen.audio_path = tts_wav_dir
 
-        global tts_wav_path
-        gen.audio_path = tts_wav_dir
-        print(tts_wav_path)
+        self.gen.speak_tts(text=self.text)
 
-        gen.speak_tts(text=self.text)
-        self.gen_done = True
-
-        gen.play_voice()
-        self.speech_done = True
         # self.speak_tts(text=self.text)
         # self.remove_from_thread_list()
 
@@ -1145,7 +1212,7 @@ class TTSTHREAD(QThread):
             print("\033[32m" + thread_logging_str + "\033[0m")
             print(self.parent.tts_thread_list)
             for i, qthread in enumerate(self.parent.tts_thread_list):
-                print(f"QThread ({i}): [{qthread.text}] | Gen Done: {self.gen_done} | Speech Done: {self.speech_done}")
+                print(f"QThread ({i}): [{qthread.text}] | Gen Done: {qthread.gen.gen_done} | Speech Done: {qthread.gen.speech_done}")
             print("\033[32m" + thread_logging_str + "\033[0m")
 
 

@@ -141,6 +141,8 @@ class GeneratorTTS:
         self.logging = True
         self.audio_path = ""
         self.device_id = 0
+        self.gen_done = False
+        self.speech_done = False
 
     def speak_tts(self, text, settings_list: list = None):
         # Load Program Settings
@@ -207,6 +209,9 @@ class GeneratorTTS:
         print(
             "\033[34m" + f"[GeneratorTTS.speak_moegoe]: Created TTS as Wav File! [\033[32m{sentence}\033[34m] [{self.audio_path}]" + "\033[0m")
 
+        # TODO: problem! should wait for end of creation wav
+        self.gen_done = True
+
     def play_voice(self):
         import sounddevice as sd
         import soundfile as sf
@@ -218,6 +223,8 @@ class GeneratorTTS:
 
         sd.play(data, fs, device=self.device_id, blocking=True)
         sd.wait()
+
+        self.speech_done = True
 
     def new_audio_path(self):
         import os

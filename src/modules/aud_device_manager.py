@@ -3,7 +3,11 @@ import re
 
 import pyaudio
 import sounddevice as sd
-from .device import *
+
+if __name__ == '__main__':
+    from device import *
+else:
+    from .device import *
 
 
 class AudioDevice:
@@ -27,9 +31,14 @@ class AudioDevice:
         self.init_selected_device()
         # self.get_spk_mic_list("compact")
 
-    def get_all_device(self, mode):
-        q_list = sd.query_devices()
+    def clear_all_lists(self):
         self.device_list.clear()
+        self.mic_list.clear()
+        self.speaker_list.clear()
+
+    def get_all_device(self, mode="normal"):
+        q_list = sd.query_devices()
+        self.clear_all_lists()
 
         str_list = repr(q_list).split('\n')
         first_seen_driver = None
