@@ -40,11 +40,12 @@ from dracula_modules import *
 from widgets import *
 
 # Settings
-from setting_info import SettingInfo  # noqa
+from setting_info import SettingInfo, read_text_file  # noqa
 # CHATLOAD
 from dracula_modules.page_messages import Chat # Chat Widget
 # AUDIO DEVICE
 from modules.aud_device_manager import AudioDevice
+import glob # find moegoe config file
 
 #####################################################################################
 #                                                                                   #
@@ -859,15 +860,6 @@ class MainWindow(QMainWindow):
         for _spk in self.newAudDevice.speaker_list:
             spk_comboBox.addItem(_spk.name)
 
-        # REFRESH TTS INFO LIST
-        tts_char_list = self.get_tts_characters_list()
-
-        tts_comboBox = widgets.comboBox_mic_device
-        tts_comboBox.clear()
-
-        for _mic in self.newAudDevice.mic_list:
-            tts_comboBox.addItem(_mic.name)
-
     def select_aud_devices_loaded_setting(self):
         global widgets
         self.newAudDevice.set_selected_device_to_default()
@@ -877,10 +869,19 @@ class MainWindow(QMainWindow):
         widgets.comboBox_mic_device.setCurrentText(self.newAudDevice.selected_mic.name)
         widgets.comboBox_spk_device.setCurrentText(self.newAudDevice.selected_speaker.name)
 
-    def select_tts_loaded_setting(self):
-        global widgets
+    def refresh_tts_info(self):
+        # REFRESH TTS INFO LIST
+        self.get_tts_characters_list()
+
+
+
 
     def get_tts_characters_list(self):
+        # region [TTS CHARACTER LIST]
+        ################################################################################################
+        tts_comboBox = widgets.comboBox_tts_charcter
+        tts_comboBox.clear()
+
         tts_char_list = []
         tts_char_dir = os.path.join(root_path, 'Models', 'Voice')
 
@@ -893,8 +894,71 @@ class MainWindow(QMainWindow):
                 "\033[31m" + "Error [main GUI.get_tts_characters_list]: Could not find any TTS Character folders in " + "\033[33m" + f"{tts_char_dir}" + "\033[0m")
             return None
 
-        return tts_char_list
+        for tts_char in tts_char_list:
+            tts_comboBox.addItem(tts_char)
+        ################################################################################################
+        # endregion [TTS CHARACTER LIST]
 
+
+        # region [LOAD 'config.json' INFO]
+        ################################################################################################
+        cfg_path = os.path.join(tts_char_dir, self.audio_info_dict["tts_character_name"], "*.json")
+        try:
+            config_file = glob.glob(cfg_path)[0]
+        except Exception as e:
+            print(
+                "\033[31m" + f"Error [main GUI.get_tts_characters_list]: failed to search config file: \033[33m{e}" + "\n\033[0m")
+
+        # print(f"moegoe config file: {config_file}")
+
+        config_json = read_text_file(config_file)
+        # print(f"settings [{config_json}]")
+
+        # LANGUAGE LIST
+        text_cleaners = config_json['data']['text_cleaners'][0]
+        avbl_lang = self.get_available_language(text_cleaners)
+        if not avbl_lang:
+            print("\033[31m" + "Error [main GUI.get_tts_characters_list]: Could not find languge options from text cleaners " + "\033[33m" + f"{text_cleaners}" + "\033[0m")
+
+        lang_comboBox = widgets.comboBox_tts_language
+        lang_comboBox.clear()
+
+        for _lang in avbl_lang:
+            lang_comboBox.addItem(self.convert_language_code(_lang))
+
+        # VOICE ID LIST
+        id_list = config_json['speakers']
+        voice_id_comboBox = widgets.comboBox_tts_voice_id
+        voice_id_comboBox.clear()
+
+        for _id in id_list:
+            voice_id_comboBox.addItem(_id)
+        ################################################################################################
+        # endregion [LOAD 'config.json' INFO]
+
+    # GET AVAILALBE LANG FROM 'text_cleaners'
+    def get_available_language(self, text_cleaners):
+        combo_list = []  # Warning! No support 'sanskrit' for now
+
+        if "cjke_cleaners" in text_cleaners:
+            combo_list.extend(['en', 'ja', 'ko', 'zh'])
+        elif "zh_ja_mixture_cleaners" in text_cleaners:
+            combo_list.extend(['ja', 'zh'])
+        elif "japanese_cleaners" in text_cleaners:
+            combo_list.extend(['ja'])
+        elif "korean_cleaners" in text_cleaners:
+            combo_list.extend(['ko'])
+        elif "chinese_cleaners" in text_cleaners:
+            combo_list.extend(['zh'])
+
+        return combo_list
+
+    def select_tts_loaded_setting(self, char_name, lang, v_id):
+        global widgets
+
+        widgets.comboBox_tts_charcter.setCurrentText(char_name)
+        widgets.comboBox_tts_language.setCurrentText(lang)
+        widgets.comboBox_tts_voice_id.setCurrentIndex(v_id)
 
     def load_audio_info(self):
         global widgets
@@ -904,8 +968,10 @@ class MainWindow(QMainWindow):
 
         self.audio_info_dict.update(SettingInfo.load_audio_settings())
         self.refresh_audio_device()
+        self.refresh_tts_info()
 
-        # LineEdit & Sliders
+        # region [LINEEDIT & SLIDERS]
+        ################################################################################################
         mic_threshold = str (self.audio_info_dict["mic_threshold"])
         phrase_timeout = str (self.audio_info_dict["phrase_timeout"])
         voice_speed = str (self.audio_info_dict["voice_speed"])
@@ -938,24 +1004,21 @@ class MainWindow(QMainWindow):
         widgets.lineEdit_post_phoneme_length.setText(post_phoneme_length)
         val = int(float(post_phoneme_length) * 100.0)
         widgets.horizontalSlider_post_phoneme_length.setValue(val)
+        ################################################################################################
+        # endregion [LINEEDIT & SLIDERS]
 
-        # Combo Box
+        # region [COMBO BOX]
+        ################################################################################################
         mic_device = str(self.audio_info_dict["mic_index"])
         spk_device = str(self.audio_info_dict["spk_index"])
         tts_character_name = self.audio_info_dict["tts_character_name"]
         tts_language = self.convert_language_code(self.audio_info_dict["tts_language"])
-        tts_voice_id = str(self.audio_info_dict["voice_id"])
-        # tts_voice_id = self.get_voice_name_from_id(self.audio_info_dict["voice_id"])
+        tts_voice_id = self.audio_info_dict["voice_id"]
+        ################################################################################################
+        # endregion [COMBO BOX]
 
         self.select_aud_devices_loaded_setting()
-        widgets.comboBox_tts_charcter.setCurrentText(tts_character_name)
-        widgets.comboBox_tts_language.setCurrentText(tts_language)
-        widgets.comboBox_tts_voice_id.setCurrentText(tts_voice_id)
-
-    def get_voice_name_from_id(self, id):
-        # get name if there's character name from index
-
-        pass
+        self.select_tts_loaded_setting(tts_character_name, tts_language, tts_voice_id)
 
     def load_other_info(self):
         if self.chat_info_dict is None:
@@ -999,7 +1062,8 @@ class MainWindow(QMainWindow):
             # Add more language mappings as needed
             "English": "en",
             "Korean": "ko",
-            "Japanese": "ja"
+            "Japanese": "ja",
+            "Chinese": "zh"
         }
         if language_input in language_mapping:
             return language_mapping[language_input]
