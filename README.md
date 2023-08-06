@@ -10,7 +10,6 @@ Please note that this project is currently under development and may not be feat
 ## Table of Contents
 
 - [Installation](#installation-windows)  
-- [Setting Env](#setting-env-file)  
 - [Install Language Model/Interface](#install-language-model--interface)  
   - [In Cloud](#1-run-text-gen-on-cloud-optional)  
   - [In Local](#1-install-languagemodel-interface-local)  
@@ -69,12 +68,6 @@ I'm using Python 3.10.6 (https://www.python.org/downloads/release/python-3106/)
 
   ![](docs/screenshots/MoeGoeModels.png?raw=true)
 
-## Setting Env file
-
- :warning: **If you don't do setting your env file, program won't work)** :warning:  
-This env is setting file contains Translator API key, Audio device ID, keyboard key settings. as Default, these settings are blank. so you should insert them following under document.  
-go to [Env](docs/ENV.md) Document.  
-
 ## Install Language Model / Interface
 
 ### 1. Run Text-Gen on Cloud (Optional)
@@ -82,8 +75,9 @@ go to [Env](docs/ENV.md) Document.
 :pushpin: **If you don't have a decent GPU and trying to run this on Cloud, Try this Option.  
 Also You don't need to follow (Local) steps below**  
 
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1VwEONZNajP4WGwJ8bw55MODHQ_yq1hpJ?usp=sharing)  
 - Using Google Colab, you can able to manage Large Language models has 13B parameters  
-  ([Google Colab Link](https://colab.research.google.com/drive/1VwEONZNajP4WGwJ8bw55MODHQ_yq1hpJ?usp=sharing))
+  
   ![](docs/screenshots/ColabApiServerUrl.png?raw=true)
   
   Copy and Paste the Url to Blessing-AI program

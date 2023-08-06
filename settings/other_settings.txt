@@ -1,4 +1,6 @@
 {
+    "translator_id": "",
+    "translator_secret": "",
     "discord_your_name": "",
     "discord_your_avatar": "",
     "discord_bot": false,
