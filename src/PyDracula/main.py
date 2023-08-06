@@ -40,7 +40,7 @@ from dracula_modules import *
 from widgets import *
 
 # Settings
-from setting_info import SettingInfo, read_text_file  # noqa
+from setting_info import SettingInfo, update_json, read_text_file  # noqa
 # CHATLOAD
 from dracula_modules.page_messages import Chat # Chat Widget
 # AUDIO DEVICE
@@ -248,8 +248,6 @@ class MainWindow(QMainWindow):
     # DEFINE EVENT FILTER
     # ///////////////////////////////////////////////////////////////
     def eventFilter(self, source, event):
-        from setting_info import update_json  # noqa
-
         global widgets
         if widgets is None:
             widgets = self.ui
@@ -316,8 +314,6 @@ class MainWindow(QMainWindow):
     # GUI COMPONENT CALLBACK
     # ///////////////////////////////////////////////////////////////
     def update_content_by_component(self):
-        from setting_info import update_json    # noqa
-
         global widgets
         if widgets is None:
             widgets = self.ui
@@ -860,23 +856,30 @@ class MainWindow(QMainWindow):
         for _spk in self.newAudDevice.speaker_list:
             spk_comboBox.addItem(_spk.name)
 
+        # SET COLOR BY ITEM TEXT [None] OR NOT
+        for _combo in [mic_comboBox, spk_comboBox]:
+            self.add_none_item_combobox(_combo)
+
     def select_aud_devices_loaded_setting(self):
-        global widgets
-        self.newAudDevice.set_selected_device_to_default()
+        self.newAudDevice.set_selected_device_to_default()  # TODO Load from audio_settings
+
+        mic_comboBox = self.ui.comboBox_mic_device
+        spk_comboBox = self.ui.comboBox_spk_device
 
         print("mic: ", self.newAudDevice.selected_mic)
         print("spk: ", self.newAudDevice.selected_speaker)
-        widgets.comboBox_mic_device.setCurrentText(self.newAudDevice.selected_mic.name)
-        widgets.comboBox_spk_device.setCurrentText(self.newAudDevice.selected_speaker.name)
+        mic_comboBox.setCurrentText(self.newAudDevice.selected_mic.name)
+        spk_comboBox.setCurrentText(self.newAudDevice.selected_speaker.name)
 
+        for _combo in [mic_comboBox, spk_comboBox]:
+            if _combo.currentIndex() == 0:
+                _col = "red"
+            else:
+                _col = "white"
+            self.change_color_combobox(_combo, _col)
+
+    # REFRESH TTS INFO LIST
     def refresh_tts_info(self):
-        # REFRESH TTS INFO LIST
-        self.get_tts_characters_list()
-
-
-
-
-    def get_tts_characters_list(self):
         # region [TTS CHARACTER LIST]
         ################################################################################################
         tts_comboBox = widgets.comboBox_tts_charcter
@@ -891,14 +894,13 @@ class MainWindow(QMainWindow):
 
         if len(tts_char_list) == 0:
             print(
-                "\033[31m" + "Error [main GUI.get_tts_characters_list]: Could not find any TTS Character folders in " + "\033[33m" + f"{tts_char_dir}" + "\033[0m")
+                "\033[31m" + "Error [main GUI.refresh_tts_info]: Could not find any TTS Character folders in " + "\033[33m" + f"{tts_char_dir}" + "\033[0m")
             return None
 
         for tts_char in tts_char_list:
             tts_comboBox.addItem(tts_char)
         ################################################################################################
         # endregion [TTS CHARACTER LIST]
-
 
         # region [LOAD 'config.json' INFO]
         ################################################################################################
@@ -907,7 +909,7 @@ class MainWindow(QMainWindow):
             config_file = glob.glob(cfg_path)[0]
         except Exception as e:
             print(
-                "\033[31m" + f"Error [main GUI.get_tts_characters_list]: failed to search config file: \033[33m{e}" + "\n\033[0m")
+                "\033[31m" + f"Error [main GUI.refresh_tts_info]: failed to search config file: \033[33m{e}" + "\n\033[0m")
 
         # print(f"moegoe config file: {config_file}")
 
@@ -918,7 +920,8 @@ class MainWindow(QMainWindow):
         text_cleaners = config_json['data']['text_cleaners'][0]
         avbl_lang = self.get_available_language(text_cleaners)
         if not avbl_lang:
-            print("\033[31m" + "Error [main GUI.get_tts_characters_list]: Could not find languge options from text cleaners " + "\033[33m" + f"{text_cleaners}" + "\033[0m")
+            print(
+                "\033[31m" + "Error [main GUI.refresh_tts_info]: Could not find languge options from text cleaners " + "\033[33m" + f"{text_cleaners}" + "\033[0m")
 
         lang_comboBox = widgets.comboBox_tts_language
         lang_comboBox.clear()
@@ -935,6 +938,17 @@ class MainWindow(QMainWindow):
             voice_id_comboBox.addItem(_id)
         ################################################################################################
         # endregion [LOAD 'config.json' INFO]
+
+        for _combo in [tts_comboBox, lang_comboBox, voice_id_comboBox]:
+            self.add_none_item_combobox(_combo)
+
+        # region [UPDATE JSON FILE]
+        ################################################################################################
+
+
+        # update_json(tts_character_name, component_property, "audio_settings")
+        ################################################################################################
+        # endregion [UPDATE JSON FILE]
 
     # GET AVAILALBE LANG FROM 'text_cleaners'
     def get_available_language(self, text_cleaners):
@@ -954,11 +968,44 @@ class MainWindow(QMainWindow):
         return combo_list
 
     def select_tts_loaded_setting(self, char_name, lang, v_id):
-        global widgets
+        tts_comboBox = self.ui.comboBox_tts_charcter
+        lang_comboBox = self.ui.comboBox_tts_language
+        voice_id_comboBox = self.ui.comboBox_tts_voice_id
 
-        widgets.comboBox_tts_charcter.setCurrentText(char_name)
-        widgets.comboBox_tts_language.setCurrentText(lang)
-        widgets.comboBox_tts_voice_id.setCurrentIndex(v_id)
+        tts_comboBox.setCurrentText(char_name)
+        lang_comboBox.setCurrentText(lang)
+
+        # select [None] if there's no voice_id in list
+        id_count = voice_id_comboBox.count()
+        if id_count > 1 and v_id <= id_count-2:
+            voice_id_comboBox.setCurrentIndex(v_id + 1)
+        else:
+            voice_id_comboBox.setCurrentIndex(0)
+
+        # SET COLOR BY ITEM TEXT [None] OR NOT
+        for _combo in [tts_comboBox, lang_comboBox, voice_id_comboBox]:
+            # print(_combo.currentIndex())
+            if _combo.currentIndex() == 0:
+                _col = "red"
+            else:
+                _col = "white"
+            self.change_color_combobox(_combo, _col)
+
+    def change_color_combobox(self, combo_box:QComboBox, color:str):
+        combo_style = "QComboBox {" \
+                      "color: %s;" \
+                      "background-color: rgb(27, 29, 35);" \
+                      "border-radius: 5px;border: 2px;" \
+                      " solid rgb(33, 37, 43);" \
+                      "padding: 5px;padding-left: 10px;}"
+
+        combo_box.setStyleSheet(combo_style % (color))
+
+
+    def add_none_item_combobox(self, combo_box:QComboBox, text:str= "[None]", color:str= "red"):
+        model = combo_box.model()
+        combo_box.insertItem(0, text)
+        model.setData(model.index(0, 0), QColor(color), QtCore.Qt.ForegroundRole)
 
     def load_audio_info(self):
         global widgets
