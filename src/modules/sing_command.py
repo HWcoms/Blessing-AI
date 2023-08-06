@@ -1,13 +1,22 @@
 import glob
 import io
 import os
+import re
 import subprocess as sp
 from typing import Dict, Tuple, Optional, IO
 
 import select
 
-import pytube
-from pytube.cli import on_progress
+import yt_dlp
+from youtube_search import YoutubeSearch
+
+save_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'cache', 'rvc')
+
+# CHECK AUDIO CACHE FOLDER
+if not os.path.exists(save_dir):
+    os.makedirs(save_dir)
+    print("\033[34m" + f"[sing_command]: Created audio cache folder! \033[33m[{save_dir}]" + "\033[0m")
+
 
 def check_command(text):
     command_prefixes = ['!sing', '!draw', '!emote']
@@ -29,7 +38,9 @@ def check_command(text):
 
 
 def do_sing(song_name):
-    og_vocal, og_inst = search_audio(song_name)
+    og_song = search_audio(song_name)
+
+    demucs_audio(in_path=og_song, out_path=save_dir, mp3=True)
     pitch = 12  # normalize og vocal -> get pitch that similar with inference
     # rvc_vocal = rvc_process(og_vocal, pitch)
 
@@ -40,64 +51,107 @@ def do_sing(song_name):
 
 
 def search_audio(song_name):
-    dl_audio = None  # dl
+    search = YoutubeSearch(song_name, max_results=5).to_dict()
+    top_vid = get_highest_view(search)
+    dl_url = 'https://www.youtube.com' + top_vid['url_suffix']
+    print(dl_url)
+    dl_audio = download_audio(dl_url, top_vid['title'])
+    print(dl_audio)
 
-    sep_dir = demucs_audio(dl_audio)
+    return dl_audio
+    #
+    # sep_vocal = sep_dir + "og_vocal.wav"
+    # sep_inst = sep_dir + "og_inst.wav"
 
-    sep_vocal = sep_dir + "og_vocal.wav"
-    sep_inst = sep_dir + "og_inst.wav"
-
-    return sep_vocal, sep_inst
-
-
-path = os.path.join(os.path.dirname(__file__), 'video_data')
-video_file_size = 0
-
-
-def generate_infos():
-    infos = []
-    with open("./speaker_links.txt", 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    for line in lines:
-        line = line.replace("\n", "").replace(" ", "")
-        if line == "":
-            continue
-        speaker, link = line.split("|")
-        filename = speaker + "_" + str(random.randint(0, 1000000))
-        infos.append({"link": link, "filename": filename})
-    return infos
+    # return sep_vocal, sep_inst
 
 
-def download_video():
-    infos = generate_infos()
+def get_highest_view(video_list):
+    if len(video_list) == 0:
+        return None
+    top_video = video_list[0]
 
-    for info in infos:
-        link = info['link']
-        filename = info['filename']
+    for video in video_list:
+        top_view = get_view_count_from_str(top_video['views'])
+        cur_view = get_view_count_from_str(video['views'])
 
-        yt = pytube.YouTube(link, on_progress_callback=on_progress)
-        video = yt.streams.get_lowest_resolution()
-        video_file_size = video.filesize
-        result_name = video.default_filename
-        result_name = result_name.replace(" ", "_")
+        if top_view < cur_view:
+            top_video = video
+    return top_video
 
-        if check_file_exist(result_name):
-            continue
 
-        video.download('./video_data')
+def get_view_count_from_str(view_str):
+    numbers = re.findall(r'\d+', view_str)
+    num_list = [int(number) for number in numbers]
 
-        # pytube.YouTube(link).streams.first().download()
+    merged_string = ''.join(str(number) for number in num_list)
+    merged_number = int(merged_string)
+    return merged_number
 
-        output_video_name = video.default_filename
-        output_prefix_name = result_name
 
-        os.renames(os.path.join(path, output_video_name), os.path.join(path, output_prefix_name))
+def download_audio(link, filename=None):
+    prefix_name = None
 
-        temp_file_path = os.path.join(os.path.dirname(__file__), video.title + '.3gpp')
-        if (os.path.exists(temp_file_path)):
-            os.remove(temp_file_path)
+    ydl_opts = None
+    if filename:
+        ydl_opts = {
+            'quiet': True,
+            'outtmpl': f'{save_dir}/{filename}.%(ext)s',
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+        }
+    else:
+        dl_opts = {
+            'quiet': True,
+            'outtmpl': f'{save_dir}/%(title)s.%(ext)s',
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+        }
 
-        print("downloaded video! - ", result_name, "    ")
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl_info = ydl.extract_info(link, download=False)
+        yt_title = ydl_info['title']
+
+        if filename:
+            prefix_name = filename
+        else:
+            prefix_name = yt_title
+
+        if ".mp3" in prefix_name:
+            prefix_name = prefix_name
+        else:
+            prefix_name += ".mp3"
+
+        # CHECK FILE EXIST
+        if filename is None:
+            prefix_name = prefix_name.replace(" ", "_")
+
+        if check_file_exist(prefix_name):
+            return prefix_name
+
+        ydl.download([link])
+
+    os.renames(os.path.join(save_dir, yt_title + ".mp3"), os.path.join(save_dir, prefix_name))
+
+    print("downloaded video! - ", prefix_name, "    ")
+    return prefix_name
+
+
+def check_file_exist(name):
+    file_path = os.path.join(save_dir, name)
+    if os.path.exists(file_path):
+        print(name, " - file is aleardy exist (skip download)")
+        return True
+    else:
+        return False
 
 
 def demucs_audio(in_path=None, out_path=None, model="htdemucs", mp3=False, float32=False, int24=False,
@@ -109,25 +163,30 @@ def demucs_audio(in_path=None, out_path=None, model="htdemucs", mp3=False, float
         cmd += ["--mp3", f"--mp3-bitrate={mp3_rate}"]
         ext = "mp3"
     if float32:
-        cmd += ["--float32"]
+        cmd += [" --float32"]
     if int24:
-        cmd += ["--int24"]
+        cmd += [" --int24"]
     if two_stems is not None:
-        cmd += [f"--two-stems={two_stems}"]
-    files = find_all(in_path, ext)
-    if not files:
-        print(f"No valid audio files in {in_path}")
+        cmd += [f" --two-stems={two_stems}"]
+
+    in_full_path = os.path.join(save_dir, in_path)
+
+    if not os.path.exists(in_full_path):
+        print(f"No valid audio files in {in_full_path}")
         return
+
     print("Going to separate the files:")
-    print('\n'.join(files))
-    print("With command: ", " ".join(cmd))
-    p = sp.Popen(cmd + files, stdout=sp.PIPE, stderr=sp.PIPE)
-    copy_process_streams(p)
-    p.wait()
-    if p.returncode != 0:
-        print("Command failed, something went wrong.")
-    else:
-        return out_path  # success
+    print(f"{cmd} {in_full_path}")
+
+    # os.system(f"{cmd} {in_full_path}")
+    os.system(f"demucs --two-stems=vocals {in_full_path}")
+    # p = sp.Popen(cmd + in_full_path, stdout=sp.PIPE, stderr=sp.PIPE)
+    # copy_process_streams(p)
+    # p.wait()
+    # if p.returncode != 0:
+    #     print("Command failed, something went wrong.")
+    # else:
+    #     return out_path  # success
 
 
 def find_all(dir_path, ext):
@@ -201,11 +260,12 @@ def merge_audio(vocal, inst, out_name):
 
 
 if __name__ == '__main__':
-    command, value = check_command("!sing song_name")
+    command, value = check_command("!sing kemono friends opening")
 
-    print(value)
     if command == '!sing':
         do_sing(value)
+        # search_audio(value)
+        # download_audio("https://youtu.be/53iAl0Cgc1A", "bocchi")
     elif command == '!draw':
         # do_draw(value)
         pass
