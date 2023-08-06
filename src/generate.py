@@ -140,6 +140,7 @@ class GeneratorTTS:
         super().__init__()
         self.logging = True
         self.audio_path = ""
+        self.audio_dir = ""
         self.device_id = 0
         self.gen_done = False
         self.speech_done = False
@@ -202,6 +203,8 @@ class GeneratorTTS:
         print("\033[34m" + f"[GeneratorTTS.run]: start speech process! [\033[32m{sentence}\033[34m]" + "\033[0m")
 
         self.audio_path = self.new_audio_path()  # assign output directory to self.audio_path before run this method!
+
+        print("test:", self.audio_path)
         # synthesize voice as wav file
         speech_text(tts_character_name, bot_trans_speech, language_code, voice_id, voice_volume,
                     out_path=self.audio_path)
@@ -209,7 +212,6 @@ class GeneratorTTS:
         print(
             "\033[34m" + f"[GeneratorTTS.speak_moegoe]: Created TTS as Wav File! [\033[32m{sentence}\033[34m] [{self.audio_path}]" + "\033[0m")
 
-        # TODO: problem! should wait for end of creation wav
         self.gen_done = True
 
     def play_voice(self):
@@ -232,7 +234,7 @@ class GeneratorTTS:
         num = 0
         while True:
             file_name = f'tts_{num}.wav'
-            file_path = os.path.join(self.audio_path, file_name)
+            file_path = os.path.join(self.audio_dir, file_name)
             if not os.path.exists(file_path):
                 return file_path
             num += 1

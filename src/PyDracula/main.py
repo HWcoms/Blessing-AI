@@ -209,6 +209,9 @@ class MainWindow(QMainWindow):
         widgets.lineEdit_discord_webhook_url.installEventFilter(self)
 
         widgets.lineEdit_api_url.installEventFilter(self)
+
+        self.install_event_all(QComboBox)
+        self.install_event_all(QSlider)
         # endregion
 
         # SHOW APP
@@ -253,6 +256,24 @@ class MainWindow(QMainWindow):
             widgets = self.ui
 
         obj_name = source.objectName()
+
+        # SCROLL EVENT HANDLER
+        if event.type() == QEvent.Type.Wheel:
+            if self.check_name(obj_name, ["comboBox", "horizontalSlider"]):
+                # print(f"source: {source}, type: {event.type()}, event: {event}")
+                scroll_widget = self.ui.scrollArea_2.verticalScrollBar()
+                cur_scroll_val = scroll_widget.value()
+                dir = -1 if event.angleDelta().y() > 0 else 1
+                scroll_amount = 80 * dir
+
+                # print(f"scroll event: [{obj_name}]")
+
+                # Simulate Scroll Event
+                scroll_widget.setValue(cur_scroll_val + scroll_amount)
+
+                # Ignore Original Event
+                return True
+
         component_type = None
         component_key = None
         component_property = None
@@ -264,13 +285,13 @@ class MainWindow(QMainWindow):
             print("\033[31m" + f"Error [Main GUI.eventFilter]: can't get obj_name from source" + "\033[0m")
             return super().eventFilter(source, event)
 
-        # print(f"source: {source}, event: {event}")
+        # print(f"source: {source}, type: {event.type()}, event: {event}")
 
         if event.type() == QEvent.Type.FocusIn:
             if source == widgets.lineEdit_api_url:
                 self.refresh_api_url(hide_url=False)
                 if event.type() == QKeyEvent:
-                    print(f"changing edit text: {source.text()} [{source.objectName()}]")
+                    print(f"changing edit text: {source.text()} [{obj_name}]")
 
             if (source == widgets.lineEdit_discord_bot_id or
                 source == widgets.lineEdit_discord_bot_channel_id or
@@ -308,8 +329,22 @@ class MainWindow(QMainWindow):
                 source == widgets.lineEdit_discord_webhook_url):
                 self.refresh_discord_url(source)
 
+
         return super().eventFilter(source, event)
 
+    def check_name(self, og_name, name_list:list):
+        for name in name_list:
+            if name in og_name:
+                return True
+        return False
+
+    def install_event_all(self, obj_name:QObject):
+        obj_list = self.findChildren(obj_name)
+
+        for obj in obj_list:
+            # install event on only custom objects
+            if "_" in obj.objectName():
+                obj.installEventFilter(self)
 
     # GUI COMPONENT CALLBACK
     # ///////////////////////////////////////////////////////////////
@@ -1168,7 +1203,8 @@ class MainWindow(QMainWindow):
             component_name = '_'.join(parts[1:])
             return type_name, component_name
         else:
-            return "\033[31m" + f"[main GUI.component_info_by_name]: Invalid input format: \033[33m{componentName_str}" + "\033[0m"
+            print ("\033[31m" + f"[main GUI.component_info_by_name]: Invalid input format: \033[33m{componentName_str}" + "\033[0m")
+            return None, None
 
     def delete_first_prompt_thread(self):
         self.prompt_thread_list[0].remove_from_thread_list()
@@ -1191,16 +1227,12 @@ class MainWindow(QMainWindow):
     def gen_voice_thread(self, text):
         tts_thread = TTSTHREAD(self, text)
         self.tts_thread_list.append(tts_thread)
-        # tts_thread.print_thread_list()
-        # tts_thread.start()
         self.update_thread_table()
 
     # Generate Prompt Using QThread
     def gen_prompt_thread(self, text):
         prompt_thread = PROMPTTHREAD(self, text)
         self.prompt_thread_list.append(prompt_thread)
-        # prompt_thread.print_thread_list()
-        # prompt_thread.start()
 
         prompt_thread.PromptDone.connect(self.gen_voice_thread)
         self.update_thread_table()
@@ -1245,7 +1277,7 @@ class THREADMANAGER(QThread):
                 tts_thread_list[0].print_thread_list()
 
                 if tts_thread_list[0].gen.gen_done and not tts_thread_list[0].gen.speech_done:
-                    print("tts wav file is generated: ", tts_thread_list[0].text, tts_thread_list[0].gen.gen_done)
+                    print("tts wav file is generated: ", tts_thread_list[0].text, tts_thread_list[0].gen, f"Path[{tts_thread_list[0].gen.audio_path}]")
                     # Start next thread
                     tts_thread_list[0].gen.play_voice()
                     self.tts_gen_done_signal.emit()
@@ -1306,7 +1338,7 @@ class TTSTHREAD(QThread):
 
     def run(self):
         global tts_wav_dir
-        self.gen.audio_path = tts_wav_dir
+        self.gen.audio_dir = tts_wav_dir
 
         self.gen.speak_tts(text=self.text)
 
