@@ -322,9 +322,9 @@ class VC(object):
         elif f0_method == "rmvpe":
             if hasattr(self, "model_rmvpe") == False:
                 from rmvpe import RMVPE
-
+                fixed_path = os.path.join(os.path.dirname(BASE_DIR), 'Models')
                 self.model_rmvpe = RMVPE(
-                    os.path.join(BASE_DIR, 'rvc_models', 'rmvpe.pt'), is_half=self.is_half, device=self.device
+                    os.path.join(fixed_path, 'rvc_model', 'rmvpe.pt'), is_half=self.is_half, device=self.device
                 )
             f0 = self.model_rmvpe.infer_from_audio(x, thred=0.03)
 

@@ -1,13 +1,9 @@
+import gc
 import glob
-import io
 import json
 import os
 import re
-import subprocess as sp
 from contextlib import suppress
-from typing import Dict, Tuple, Optional, IO
-
-import select
 
 import yt_dlp
 from youtube_search import YoutubeSearch
@@ -23,8 +19,9 @@ from rvc_modules.rvc import Config, load_hubert, get_vc, rvc_infer
 root_folder = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 rvc_required_dir = os.path.join(root_folder, 'src', 'Models', 'rvc_model')  # MDX, RVC Pretrained models
-rvc_cache_dir = os.path.join(root_folder, 'cache', 'rvc')
+rvc_voice_dir = os.path.join(root_folder, 'src', 'Models', 'rvc_voice')  # Voice Models (pth, index)
 
+rvc_cache_dir = os.path.join(root_folder, 'cache', 'rvc')
 process_dir = os.path.join(rvc_cache_dir, "song_process")
 
 # CHECK AUDIO CACHE FOLDER
@@ -54,17 +51,19 @@ def check_command(text):
     return command_prefix, command_value
 
 
-def do_sing(song_name):
+def do_sing(char_name, song_name, pitch=0):  # normalize og vocal -> get pitch that similar with inference
     dl_url, video_id = search_audio(song_name)
 
-    rvc_process_dict = check_rvc_process_exist(os.path.join(process_dir, video_id))
+    output_folder = os.path.join(process_dir, video_id)
+    rvc_process_dict = check_rvc_process_exist(char_name, pitch, output_folder)
 
     vocals_path, instrumentals_path, backup_vocals_path, main_vocals_path, main_vocals_dereverb_path = None, None, None, None, None
-    final_rvc = None
+    final_cover = None
+    rvc_result = None
     # check if there's final prefix
     if 'final' in rvc_process_dict:
         # print("RVC result audio file name: ", rvc_process_dict['final'])
-        final_rvc = rvc_process_dict['final']
+        final_cover = rvc_process_dict['final']
     else:
         if 'inst' not in rvc_process_dict:
             dl_audio = download_audio(dl_url, video_id)
@@ -85,14 +84,27 @@ def do_sing(song_name):
                 main_vocals_path = rvc_process_dict['main_vocal']
             main_vocals_dereverb_path = seperate_song(main_vocals_path, video_id, 'dereverb')
 
-        # final rvc
-        pitch = 12  # normalize og vocal -> get pitch that similar with inference
-        final_rvc = rvc_process(main_vocals_dereverb_path, pitch)
-    return
-    result_rvc = merge_audio([final_rvc, backup_vocals_path, instrumentals_path])
+        if 'rvc' not in rvc_process_dict:
+            if main_vocals_dereverb_path is None:
+                main_vocals_dereverb_path = rvc_process_dict['dereverb']
+
+            # rvc process
+            rvc_result = rvc_process(char_name, main_vocals_dereverb_path, output_folder, pitch)
+
+    if backup_vocals_path is None:
+        backup_vocals_path = rvc_process_dict['backup_vocal']
+    if instrumentals_path is None:
+        instrumentals_path = rvc_process_dict['inst']
+    if rvc_result is None:
+        rvc_result = rvc_process_dict['rvc']
+
+    # print("rvc:", rvc_result)
+
+    # reverb_added_rvc = add_sound_fx(rvc_result)
+    # final_cover = merge_audio([rvc_result, backup_vocals_path, instrumentals_path])
 
     # play_audio(result_rvc)
-    return result_rvc
+    return rvc_result
 
 
 ############################################################################
@@ -227,6 +239,9 @@ def download_audio(link, out_dir_name):
 ############################################################################
 # endregion [Youtube DL]
 
+
+# region [UTILS]
+############################################################################
 def check_file_exist(name, custom_dir, custom_log=""):
     file_path = os.path.join(custom_dir, name)
 
@@ -238,17 +253,24 @@ def check_file_exist(name, custom_dir, custom_log=""):
         return False
 
 
-def check_rvc_process_exist(work_dir, custom_log=""):
+def check_rvc_process_exist(char_name, pitch, work_dir, custom_log=""):
     result_dict = {}
 
-    # Check Final
+    # Check Final (merged)
     prefix = "Ver*).mp3"
-    for filename in glob.glob(os.path.join(work_dir, f'*{prefix}*')):
-        print(filename)
-        print(f"Final RVC Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
+    for filename in glob.glob(os.path.join(work_dir, f'*{char_name}*{prefix}*')):
+        print(f"Final Cover Music is Aleardy exist!: [\033[33m{filename}\033[0m]")
         # Found Final Result
         result_dict['final'] = filename
-        return result_dict
+        break
+
+    # Check RVC process
+    prefix = ".wav"
+    for filename in glob.glob(os.path.join(work_dir, f'*_{char_name}_p{pitch}_i*{prefix}*')):
+        print(f"RVC Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
+        # Found Final Result
+        result_dict['rvc'] = filename
+        break
 
     # Check DeReverb
     prefix = "_DeReverb.wav"
@@ -288,6 +310,63 @@ def check_rvc_process_exist(work_dir, custom_log=""):
     return result_dict
 
 
+############################################################################
+# endregion [UTILS]
+
+# region [RVC]
+############################################################################
+def get_rvc_model(voice_model):
+    rvc_model_filename, rvc_index_filename = None, None
+    model_dir = os.path.join(rvc_voice_dir, voice_model)
+    for file in os.listdir(model_dir):
+        ext = os.path.splitext(file)[1]
+        if ext == '.pth':
+            rvc_model_filename = file
+        if ext == '.index':
+            rvc_index_filename = file
+
+    if rvc_model_filename is None:
+        error_msg = f'No model file exists in {model_dir}.'
+        raise ValueError(error_msg)
+
+    return os.path.join(model_dir, rvc_model_filename), os.path.join(model_dir,
+                                                                     rvc_index_filename) if rvc_index_filename else ''
+
+
+def voice_change(voice_model, vocals_path, output_path, pitch_change,
+                 index_rate=0.5):  # Control how much of the AI's accent to leave in the vocals. 0 <= INDEX_RATE <= 1.
+    rvc_model_path, rvc_index_path = get_rvc_model(voice_model)
+    device = 'cuda:0'
+    config = Config(device, True)
+    # print(config)
+    hubert_model = load_hubert(device, config.is_half, os.path.join(rvc_required_dir, 'hubert_base.pt'))
+    cpt, version, net_g, tgt_sr, vc = get_vc(device, config.is_half, config, rvc_model_path)
+
+    # print(output_path)
+    # convert main vocals
+    ai_vocals_filename = vocals_path.replace("_Vocals_Main_DeReverb.wav", ".wav")  # _Vocals_Main_DeReverb.wav -> .wav
+    ai_vocals_path = os.path.join(output_path,
+                                  f'{os.path.splitext(os.path.basename(ai_vocals_filename))[0]}_{voice_model}_p{pitch_change}_i{index_rate}.wav')
+
+    rvc_infer(rvc_index_path, index_rate, vocals_path, ai_vocals_path, pitch_change, cpt, version, net_g, tgt_sr, vc,
+              hubert_model)
+    del hubert_model, cpt
+    gc.collect()
+
+
+def rvc_process(char_name, audio, output_path, pitch):
+    # print(audio)
+    voice_change(char_name, audio, output_path, pitch)
+
+    result = "test"
+    return result
+
+
+############################################################################
+# endregion [RVC]
+
+# region [SoundFX]
+############################################################################
 def seperate_song(in_file, song_id, mode,
                   keep_orig=True):  # mode=["vocalninst", "backup", "dereverb"] # keep_org -> keep input files
     song_input = os.path.join(process_dir, song_id, in_file)  # og song file
@@ -327,56 +406,6 @@ def seperate_song(in_file, song_id, mode,
         raise ValueError(f"Argument mode is invalid: {mode}")
 
 
-def find_all(dir_path, ext):
-    file_list = []
-    for filename in glob.glob(os.path.join(dir_path, f'*.{ext}')):
-        file_list.append(filename)
-
-    return file_list
-
-
-# region [RVC]
-############################################################################
-def get_rvc_model(voice_model, is_webui):
-    rvc_model_filename, rvc_index_filename = None, None
-    model_dir = os.path.join(rvc_models_dir, voice_model)
-    for file in os.listdir(model_dir):
-        ext = os.path.splitext(file)[1]
-        if ext == '.pth':
-            rvc_model_filename = file
-        if ext == '.index':
-            rvc_index_filename = file
-
-    if rvc_model_filename is None:
-        error_msg = f'No model file exists in {model_dir}.'
-        raise_exception(error_msg, is_webui)
-
-    return os.path.join(model_dir, rvc_model_filename), os.path.join(model_dir,
-                                                                     rvc_index_filename) if rvc_index_filename else ''
-
-
-def voice_change(voice_model, vocals_path, output_path, pitch_change, index_rate, is_webui):
-    rvc_model_path, rvc_index_path = get_rvc_model(voice_model, is_webui)
-    device = 'cuda:0'
-    config = Config(device, True)
-    hubert_model = load_hubert(device, config.is_half, os.path.join(rvc_models_dir, 'hubert_base.pt'))
-    cpt, version, net_g, tgt_sr, vc = get_vc(device, config.is_half, config, rvc_model_path)
-
-    # convert main vocals
-    rvc_infer(rvc_index_path, index_rate, vocals_path, output_path, pitch_change, cpt, version, net_g, tgt_sr, vc,
-              hubert_model)
-    del hubert_model, cpt
-    gc.collect()
-
-
-def rvc_process(audio, pitch):
-    result = "test"
-    return result
-
-
-############################################################################
-# endregion [RVC]
-
 def add_sound_fx(audio, reverb=True, echo=False):
     result = audio
     if reverb:
@@ -409,13 +438,25 @@ def merge_audio(audio_files: list):
     return result
 
 
+############################################################################
+# endregion [SoundFX]
+
+def find_all(dir_path, ext):
+    file_list = []
+    for filename in glob.glob(os.path.join(dir_path, f'*.{ext}')):
+        file_list.append(filename)
+
+    return file_list
+
+
 if __name__ == '__main__':
     download_required_models()
+    v_model = "Muhyun"
 
     command, value = check_command("!sing kemono friends opening")
     if command == '!sing':
         value = "This is the Real Gura sings Cupid by Fifty-Fifty【HololiveEN】"
-        do_sing(value)
+        do_sing(v_model, value)
         # search_audio(value)
         # download_audio("https://youtu.be/Yd8kUoB72xU", "test")
     elif command == '!draw':
