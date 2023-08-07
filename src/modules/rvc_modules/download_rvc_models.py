@@ -36,6 +36,26 @@ def dl_model(link, model_name, dir_name):
                 f.write(chunk)
 
 
+def download_required_models():
+    _mdx_model_names = ['UVR-MDX-NET-Voc_FT.onnx', 'UVR_MDXNET_KARA_2.onnx', 'Reverb_HQ_By_FoxJoy.onnx']
+    for _model in _mdx_model_names:
+        if not check_files(_model, BASE_DIR):
+            mod_print(f'Downloading {_model}...')
+            dl_model(MDX_DOWNLOAD_LINK, _model, BASE_DIR)
+        else:
+            mod_print(f'{_model} Found...')
+
+    _rvc_model_names = ['hubert_base.pt', 'rmvpe.pt']
+    for _model in _rvc_model_names:
+        if not check_files(_model, BASE_DIR):
+            mod_print(f'Downloading {_model}...')
+            dl_model(RVC_DOWNLOAD_LINK, _model, BASE_DIR)
+        else:
+            mod_print(f'{_model} Found...')
+
+    mod_print('All RVC required models are downloaded!')
+
+
 if __name__ == '__main__':
     mdx_model_names = ['UVR-MDX-NET-Voc_FT.onnx', 'UVR_MDXNET_KARA_2.onnx', 'Reverb_HQ_By_FoxJoy.onnx']
     for model in mdx_model_names:
