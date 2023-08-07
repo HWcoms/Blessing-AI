@@ -1,6 +1,12 @@
 from multiprocessing import cpu_count
 from pathlib import Path
 
+import os
+import sys
+# this_script.py
+script_path = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(script_path)
+
 import torch
 from fairseq import checkpoint_utils
 from scipy.io import wavfile
