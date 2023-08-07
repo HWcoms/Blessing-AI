@@ -1,0 +1,7 @@
+put rvc voice models here with whole folder
+
+example)
+rvc_voice/
+├── megumi/
+│	├──*.pth
+│	└──*.index
