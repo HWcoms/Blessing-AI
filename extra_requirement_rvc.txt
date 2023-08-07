@@ -14,3 +14,6 @@ yt-dlp
 
 # Demucs
 demucs
+
+# rvc
+fairseq==0.12.2

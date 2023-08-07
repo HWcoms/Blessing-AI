@@ -17,6 +17,9 @@ from urllib.parse import urlparse, parse_qs
 from rvc_modules.mdx import run_mdx
 from rvc_modules.download_rvc_models import download_required_models
 
+# rvc
+from rvc_modules.rvc import Config, load_hubert, get_vc, rvc_infer
+
 root_folder = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 rvc_required_dir = os.path.join(root_folder, 'src', 'Models', 'rvc_model')  # MDX, RVC Pretrained models
