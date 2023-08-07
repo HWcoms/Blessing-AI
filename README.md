@@ -186,7 +186,7 @@ TODO: finish edit
 
 This project is built using various open-source libraries and source code. I would like to express my gratitude to the following projects and individuals for their contributions:
 
-### [LanguageLeapAI · GitHub](https://github.com/SociallyIneptWeeb/LanguageLeapAI)
+### [LanguageLeapAI · GitHub](https://github.com/SociallyIneptWeeb/LanguageLeapAI) | [AICoverGen · GitHub](https://github.com/SociallyIneptWeeb/AICoverGen)
 <details>
   <summary>MIT</summary>
 
@@ -213,6 +213,8 @@ This project is built using various open-source libraries and source code. I wou
     SOFTWARE.
 
 </details>
+
+
 
 ### [Faster Whisper · GitHub](https://github.com/guillaumekln/faster-whisper)
 <details>
