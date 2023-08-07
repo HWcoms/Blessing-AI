@@ -3,14 +3,23 @@ import io
 import os
 import re
 import subprocess as sp
+from contextlib import suppress
 from typing import Dict, Tuple, Optional, IO
 
 import select
 
 import yt_dlp
 from youtube_search import YoutubeSearch
+from urllib.parse import urlparse, parse_qs
 
-save_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'cache', 'rvc')
+# demucs
+from rvc_modules.mdx import run_mdx
+
+rvc_cache_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'cache', 'rvc')
+save_dir = rvc_cache_dir
+orig_song_path = os.path.join(rvc_cache_dir, 'original_song')
+output_dir = os.path.join(rvc_cache_dir, 'mdx_output')
+mdxnet_models_dir = os.path.join(rvc_cache_dir, 'mdx_models')
 
 # CHECK AUDIO CACHE FOLDER
 if not os.path.exists(save_dir):
@@ -32,7 +41,7 @@ def check_command(text):
 
     if command_prefix is None:
         print("\033[31m" + f"No command found in text: {text}" + "\033[0m")
-        return None
+        return command_prefix, command_value
 
     return command_prefix, command_value
 
@@ -40,7 +49,11 @@ def check_command(text):
 def do_sing(song_name):
     og_song = search_audio(song_name)
 
-    demucs_audio(in_path=og_song, out_path=save_dir, mp3=True)
+    # demucs_audio(in_path=og_song, out_path=save_dir, mp3=True, int24=True)
+    # sep_vocal = sep_dir + "og_vocal.wav"
+    # sep_inst = sep_dir + "og_inst.wav"
+    # return sep_vocal, sep_inst
+
     pitch = 12  # normalize og vocal -> get pitch that similar with inference
     # rvc_vocal = rvc_process(og_vocal, pitch)
 
@@ -54,16 +67,15 @@ def search_audio(song_name):
     search = YoutubeSearch(song_name, max_results=5).to_dict()
     top_vid = get_highest_view(search)
     dl_url = 'https://www.youtube.com' + top_vid['url_suffix']
-    print(dl_url)
-    dl_audio = download_audio(dl_url, top_vid['title'])
-    print(dl_audio)
+    print(f"[sing_command.search_audio]: found video on Youtube [{dl_url}]")
+
+    vid_dir_name = get_youtube_video_id(dl_url)
+
+    dl_audio = download_audio(dl_url, vid_dir_name)
+    # print(f"[sing_command.search_audio]: downloaded Youtube video to audio in [{dl_audio}]")
 
     return dl_audio
-    #
-    # sep_vocal = sep_dir + "og_vocal.wav"
-    # sep_inst = sep_dir + "og_inst.wav"
-
-    # return sep_vocal, sep_inst
+    # return None
 
 
 def get_highest_view(video_list):
@@ -89,64 +101,101 @@ def get_view_count_from_str(view_str):
     return merged_number
 
 
-def download_audio(link, filename=None):
+def get_youtube_video_id(url, ignore_playlist=True):
+    """
+    Examples:
+    http://youtu.be/SA2iWivDJiE
+    http://www.youtube.com/watch?v=_oPAwA_Udwc&feature=feedu
+    http://www.youtube.com/embed/SA2iWivDJiE
+    http://www.youtube.com/v/SA2iWivDJiE?version=3&amp;hl=en_US
+    """
+    query = urlparse(url)
+    if query.hostname == 'youtu.be':
+        if query.path[1:] == 'watch':
+            return query.query[2:]
+        return query.path[1:]
+
+    if query.hostname in {'www.youtube.com', 'youtube.com', 'music.youtube.com'}:
+        if not ignore_playlist:
+            # use case: get playlist id not current video in playlist
+            with suppress(KeyError):
+                return parse_qs(query.query)['list'][0]
+        if query.path == '/watch':
+            return parse_qs(query.query)['v'][0]
+        if query.path[:7] == '/watch/':
+            return query.path.split('/')[1]
+        if query.path[:7] == '/embed/':
+            return query.path.split('/')[2]
+        if query.path[:3] == '/v/':
+            return query.path.split('/')[2]
+
+    # returns None for invalid YouTube url
+    return None
+
+
+def download_audio(link, out_dir_name):
     prefix_name = None
 
-    ydl_opts = None
-    if filename:
-        ydl_opts = {
-            'quiet': True,
-            'outtmpl': f'{save_dir}/{filename}.%(ext)s',
-            'format': 'bestaudio/best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-        }
-    else:
-        dl_opts = {
-            'quiet': True,
-            'outtmpl': f'{save_dir}/%(title)s.%(ext)s',
-            'format': 'bestaudio/best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-        }
+    if not out_dir_name:
+        raise RuntimeError("out_path is None!")
+
+    # ydl_opts = {
+    #     'quiet': True,
+    #     'outtmpl': '%(title)s.%(ext)s',
+    #     'format': 'bestaudio/best',
+    #     'postprocessors': [{
+    #         'key': 'FFmpegExtractAudio',
+    #         'preferredcodec': 'mp3',
+    #         'preferredquality': '192',
+    #     }],
+    # }
+
+    ydl_opts = {
+        'format': 'bestaudio',
+        'outtmpl': '%(title)s.%(ext)s',
+        'nocheckcertificate': True,
+        'ignoreerrors': True,
+        'no_warnings': True,
+        'quiet': True,
+        'extractaudio': True,
+    }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl_info = ydl.extract_info(link, download=False)
-        yt_title = ydl_info['title']
+        download_name = ydl.prepare_filename(ydl_info)
 
-        if filename:
-            prefix_name = filename
-        else:
-            prefix_name = yt_title
+        # print(download_name)
 
-        if ".mp3" in prefix_name:
-            prefix_name = prefix_name
+        prefix_name, ext = os.path.splitext(download_name)
+        # print(ext)
+        if ".mp3" in ext:
+            prefix_name = download_name
         else:
             prefix_name += ".mp3"
 
-        # CHECK FILE EXIST
-        if filename is None:
-            prefix_name = prefix_name.replace(" ", "_")
+        # print(prefix_name)
+        orig_song_path = os.path.join(save_dir, out_dir_name)
 
-        if check_file_exist(prefix_name):
+        # CHECK FILE EXIST
+        if check_file_exist(prefix_name, orig_song_path):
             return prefix_name
 
+        if not os.path.exists(orig_song_path):
+            os.makedirs(orig_song_path)
+            print("\033[34m" + f"[sing_command.download_audio]: Created audio folder for yt-download! \033[33m[{orig_song_path}]" + "\033[0m")
+
         ydl.download([link])
+        print("downloaded video! - ", prefix_name, "    ")
 
-    os.renames(os.path.join(save_dir, yt_title + ".mp3"), os.path.join(save_dir, prefix_name))
-
-    print("downloaded video! - ", prefix_name, "    ")
+    os.renames(os.path.join(download_name), os.path.join(orig_song_path, prefix_name))
+    #
+    # return prefix_name
     return prefix_name
 
 
-def check_file_exist(name):
-    file_path = os.path.join(save_dir, name)
+def check_file_exist(name, custom_dir):
+    file_path = os.path.join(custom_dir, name)
+
     if os.path.exists(file_path):
         print(name, " - file is aleardy exist (skip download)")
         return True
@@ -154,8 +203,32 @@ def check_file_exist(name):
         return False
 
 
+def all_in_one(song_id):
+    keep_orig = True
+    song_output_dir = os.path.join(output_dir, song_id)
+
+    mdx_model_params = None
+
+    # [~] Separating Vocals from Instrumental...
+    vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir,
+                                              os.path.join(mdxnet_models_dir, 'UVR-MDX-NET-Voc_FT.onnx'),
+                                              orig_song_path, denoise=True, keep_orig=keep_orig)
+
+    # [~] Separating Main Vocals from Backup Vocals...
+    backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir,
+                                                   os.path.join(mdxnet_models_dir, 'UVR_MDXNET_KARA_2.onnx'),
+                                                   vocals_path, suffix='Backup', invert_suffix='Main', denoise=True)
+
+    # [~] Applying DeReverb to Vocals...
+    _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir,
+                                           os.path.join(mdxnet_models_dir, 'Reverb_HQ_By_FoxJoy.onnx'),
+                                           main_vocals_path, invert_suffix='DeReverb', exclude_main=True, denoise=True)
+
+    return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
+
+
 def demucs_audio(in_path=None, out_path=None, model="htdemucs", mp3=False, float32=False, int24=False,
-                 two_stems=None):  # ex) two_stems = "vocals"
+                 two_stems="vocals"):  # ex) two_stems = "vocals"
     cmd = ["python3", "-m", "demucs.separate", "-o", str(out_path), "-n", model]
     ext = "wav"
     if mp3:
@@ -178,6 +251,8 @@ def demucs_audio(in_path=None, out_path=None, model="htdemucs", mp3=False, float
     print("Going to separate the files:")
     print(f"{cmd} {in_full_path}")
 
+    import demucs.separate
+    demucs.separate.main(cmd)
     # os.system(f"{cmd} {in_full_path}")
     os.system(f"demucs --two-stems=vocals {in_full_path}")
     # p = sp.Popen(cmd + in_full_path, stdout=sp.PIPE, stderr=sp.PIPE)
@@ -261,14 +336,16 @@ def merge_audio(vocal, inst, out_name):
 
 if __name__ == '__main__':
     command, value = check_command("!sing kemono friends opening")
-
     if command == '!sing':
+        value = "TVアニメ「ぼっち・ざ・ろっく！」オープニング映像/「青春コンプレックス」#結束バンド"
         do_sing(value)
         # search_audio(value)
-        # download_audio("https://youtu.be/53iAl0Cgc1A", "bocchi")
+        # download_audio("https://youtu.be/Yd8kUoB72xU", "test")
     elif command == '!draw':
         # do_draw(value)
         pass
     elif command == '!emote':
         # do_emote(value)
         pass
+    else:
+        print("prompt: ", value)
