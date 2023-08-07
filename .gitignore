@@ -173,6 +173,8 @@ Start_with_oobabooga.bat
 
 src/Models/Voice/*
 src/Models/ChatLog/*
+src/Models/rvc_model/*
+src/Models/rvc_voice/*
 
 src/ico/images/blessingAILogo_emptyfill.psd
 
