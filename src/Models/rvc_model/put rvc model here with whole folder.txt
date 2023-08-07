@@ -1,7 +1,0 @@
-put rvc model here with whole folder
-
-example)
-rvc_model/
-├── megumi/
-│	├──megumi.pth	(folder name and filename should be same)
-│	└──*.index

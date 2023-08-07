@@ -1,0 +1,7 @@
+Program will automatically download in runtime if there's no file here.
+(put pretrained rvc / mdx models here)
+
+example)
+rvc_model/
+├── *.pth
+├──*.onnx
