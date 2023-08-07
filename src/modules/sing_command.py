@@ -47,7 +47,8 @@ def check_command(text):
 
 
 def do_sing(song_name):
-    og_song = search_audio(song_name)
+    dl_url, video_id = search_audio(song_name)
+    dl_audio = download_audio(dl_url, video_id)
 
     # demucs_audio(in_path=og_song, out_path=save_dir, mp3=True, int24=True)
     # sep_vocal = sep_dir + "og_vocal.wav"
@@ -67,14 +68,13 @@ def search_audio(song_name):
     search = YoutubeSearch(song_name, max_results=5).to_dict()
     top_vid = get_highest_view(search)
     dl_url = 'https://www.youtube.com' + top_vid['url_suffix']
-    print(f"[sing_command.search_audio]: found video on Youtube [{dl_url}]")
+    print("\033[34m" + f"[sing_command.search_audio]: \033[33mfound video on Youtube [{dl_url}]" + "\033[0m")
 
-    vid_dir_name = get_youtube_video_id(dl_url)
+    video_id = get_youtube_video_id(dl_url)
 
-    dl_audio = download_audio(dl_url, vid_dir_name)
     # print(f"[sing_command.search_audio]: downloaded Youtube video to audio in [{dl_audio}]")
 
-    return dl_audio
+    return dl_url, video_id
     # return None
 
 
@@ -139,17 +139,6 @@ def download_audio(link, out_dir_name):
     if not out_dir_name:
         raise RuntimeError("out_path is None!")
 
-    # ydl_opts = {
-    #     'quiet': True,
-    #     'outtmpl': '%(title)s.%(ext)s',
-    #     'format': 'bestaudio/best',
-    #     'postprocessors': [{
-    #         'key': 'FFmpegExtractAudio',
-    #         'preferredcodec': 'mp3',
-    #         'preferredquality': '192',
-    #     }],
-    # }
-
     ydl_opts = {
         'format': 'bestaudio',
         'outtmpl': '%(title)s.%(ext)s',
@@ -173,31 +162,30 @@ def download_audio(link, out_dir_name):
         else:
             prefix_name += ".mp3"
 
-        # print(prefix_name)
         orig_song_path = os.path.join(save_dir, out_dir_name)
 
         # CHECK FILE EXIST
-        if check_file_exist(prefix_name, orig_song_path):
+        if check_file_exist(prefix_name, orig_song_path, "[Mp3 Found]"):
             return prefix_name
 
         if not os.path.exists(orig_song_path):
             os.makedirs(orig_song_path)
             print("\033[34m" + f"[sing_command.download_audio]: Created audio folder for yt-download! \033[33m[{orig_song_path}]" + "\033[0m")
 
+    if not check_file_exist(download_name, orig_song_path, "[Wav Found]"):
         ydl.download([link])
         print("downloaded video! - ", prefix_name, "    ")
 
-    os.renames(os.path.join(download_name), os.path.join(orig_song_path, prefix_name))
-    #
-    # return prefix_name
+        os.renames(os.path.join(download_name), os.path.join(orig_song_path, download_name))
+
     return prefix_name
 
 
-def check_file_exist(name, custom_dir):
+def check_file_exist(name, custom_dir, custom_log=""):
     file_path = os.path.join(custom_dir, name)
 
     if os.path.exists(file_path):
-        print(name, " - file is aleardy exist (skip download)")
+        print("\033[34m" f"[sing_command.check_file_exist]: \033[33m{custom_log} {name} - file is aleardy exist (skip process)" + "\033[0m")
         return True
     else:
         return False
