@@ -28,7 +28,10 @@ Please note that this project is currently under development and may not be feat
 
 I only tested on this specific versions but I didn't test it on others so please install same version as possible  
 also **please consider using conda to avoid version conflicts**  
-I'm using Python 3.10.6 (https://www.python.org/downloads/release/python-3106/)  
+
+I'm using Python 3.10.6  
+
+[![Python](https://img.shields.io/badge/python%203.10.6-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/downloads/release/python-3106/)  
 
 - Cloning this repository
   
@@ -50,12 +53,17 @@ I'm using Python 3.10.6 (https://www.python.org/downloads/release/python-3106/)
     pip install -r requirements.txt
     ```
   
-  - Install pyTorch from this site (https://pytorch.org/get-started/locally/)  
-    e.g ```pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118``` **I only tested on CUDA 11.8**
+  - Make sure pyTorch is able to use gpu.  
+    ![](docs/screenshots/torch_cuda.png?raw=true)  
+    If `torch.__version__` is cpu, install pyTorch following this site (https://pytorch.org/get-started/locally/)  
+    e.g ```pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118``` **I only tested on CUDA 11.8**  
+    
+
 
 - Download MoeGoe character model (MoeGoe TTS model)
-  - Currently I'm using an Anime Character 'Kato Megumi' VITS model from 'Saekano' (CV: Kiyono Yasuno (安野 希世乃))  
-    To download this model https://drive.google.com/file/d/1Qcr6OpnuZGc3Vw54kdV8-k9TTijiDTsF/view?usp=share_link  
+  - Currently I'm using an Anime Character [Kato Megumi](https://saekano.fandom.com/wiki/Megumi_Kato) as VITS model.  
+  - To download this model: [![Google Drive](https://img.shields.io/badge/Google%20Drive-4285F4?style=Flat-square&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1Qcr6OpnuZGc3Vw54kdV8-k9TTijiDTsF/view?usp=share_link)  
+    
     In zip file there are 2 files (`G_latest.pth`, `moegoe_config.json`).
   - You can use other model if you want other voice (need 2files - `*.pth`, `*.json`) (optional)  
   - You can change file name of `G_latest.pth`, `moegoe_config.json` to anything -> `*.pth`, `*.json`  
@@ -167,20 +175,17 @@ Currently, you can only use record while record is ready, I'll update it later t
 # [Extension / WIP]
 ## Song request with RVC
 extension for request singing to AI using RVC (Retrieval-based-Voice-Conversion).  
-example) user: please sing never gonna give you up! -> send prompt to Language model -> bot: !sing: never gonna give you up -> this program will produce ai covered song with rvc(Retrieval-based-Voice-Conversion)  
-### Install RVC-WEBUI  
-download the RVC-beta.7z file from [here](https://huggingface.co/lj1995/VoiceConversionWebUI/tree/main)   
-![](docs/screenshots/rvc-hfdownload.png?raw=true)  
-and extract it using 7-Zip into a root folder It will take around 4~8GB of space.  
+example) user: please sing never gonna give you up! -> send prompt to Language model -> bot: !sing: never gonna give you up -> search youtube video with keyword (never gonna give you up) -> this program will produce ai cover song with rvc(Retrieval-based-Voice-Conversion)  
+
 install extra_requirement_rvc  
 ```
-    pip install -r extra_requirement_rvc.txt
+pip install -r extra_requirement_rvc.txt  
 ```
-### Download RVC trained pth files
-Download kato megumi pth file from Google drive  
-https://drive.google.com/file/d/1mEnR3GXUFGVurQTNauVrJzWC0kEcTmsN/view?usp=sharing (You can use your own pth file)  
-extract `kato megumi.zip` copy `kato megumi` folder to Blessing-AI/src/Models/rvc_model
-TODO: finish edit
+### Download RVC trained pth files  
+Download kato megumi pth file from Google drive [![Google Drive](https://img.shields.io/badge/Google%20Drive-4285F4?style=Flat-square&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1mEnR3GXUFGVurQTNauVrJzWC0kEcTmsN/view?usp=sharing)  
+extract `kato megumi.zip` copy `kato megumi` folder to [Blessing-AI/src/Models/rvc_voice](src/Models/rvc_voice)  
+If you want to use other voice models as infer, please make a folder inside [Blessing-AI/src/Models/rvc_voice](src/Models/rvc_voice)  
+and put `*.pth`, `*.index` in.  
 
 ## Credits
 
