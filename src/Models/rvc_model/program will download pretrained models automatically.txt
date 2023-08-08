@@ -4,4 +4,4 @@ Program will automatically download in runtime if there's no file here.
 example)
 rvc_model/
 ├── *.pth
-├──*.onnx
+├── *.onnx
