@@ -387,7 +387,7 @@ def voice_change(voice_model, vocals_path, output_path, pitch_change,
     del hubert_model, cpt
     gc.collect()
 
-    print("\033[34m[sing_command.voice_change]: RVC Vocal Process Done!\033[0m")
+    print("\033[34m[sing_command.voice_change]: \033[32mRVC Vocal Process Done!\033[0m")
 
     return ai_vocals_path
 
@@ -461,6 +461,7 @@ def add_audio_fx(audio_path, reverb_rm_size, reverb_wet, reverb_dry, reverb_damp
                 effected = board(chunk, f.samplerate, reset=False)
                 o.write(effected)
 
+    print("\033[34m[sing_command.add_audio_fx]: \033[32mAdd Reverb Process Done!\033[0m")
     return output_path
 
 
@@ -469,7 +470,9 @@ def merge_audio(in_audio: list, out_dir, volume_settings: list):
     backup_vocal_audio = AudioSegment.from_wav(in_audio[1]) - 6 + volume_settings[1]
     instrumental_audio = AudioSegment.from_wav(in_audio[2]) - 7 + volume_settings[2]
 
-    return main_vocal_audio.overlay(backup_vocal_audio).overlay(instrumental_audio).export(out_dir, format='mp3')
+    main_vocal_audio.overlay(backup_vocal_audio).overlay(instrumental_audio).export(out_dir, format='mp3')
+
+    print("\033[34m[sing_command.merge_audio]: \033[32mFinal Merge Process Done!\033[0m")
 
 
 ############################################################################
