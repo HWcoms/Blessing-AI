@@ -16,6 +16,11 @@ from rvc_modules.download_rvc_models import download_required_models
 # rvc
 from rvc_modules.rvc import Config, load_hubert, get_vc, rvc_infer
 
+# audio FX
+from pedalboard import Pedalboard, Reverb, Compressor, HighpassFilter
+from pedalboard.io import AudioFile
+from pydub import AudioSegment
+
 root_folder = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 rvc_required_dir = os.path.join(root_folder, 'src', 'Models', 'rvc_model')  # MDX, RVC Pretrained models
@@ -58,12 +63,11 @@ def do_sing(char_name, song_name, pitch=0):  # normalize og vocal -> get pitch t
     rvc_process_dict = check_rvc_process_exist(char_name, pitch, output_folder)
 
     vocals_path, instrumentals_path, backup_vocals_path, main_vocals_path, main_vocals_dereverb_path = None, None, None, None, None
-    final_cover = None
-    rvc_result = None
+    rvc_result_path, ai_vocals_mixed_path, final_cover_path = None, None, None
     # check if there's final prefix
     if 'final' in rvc_process_dict:
         # print("RVC result audio file name: ", rvc_process_dict['final'])
-        final_cover = rvc_process_dict['final']
+        final_cover_path = rvc_process_dict['final']
     else:
         if 'inst' not in rvc_process_dict:
             dl_audio = download_audio(dl_url, video_id)
@@ -89,22 +93,44 @@ def do_sing(char_name, song_name, pitch=0):  # normalize og vocal -> get pitch t
                 main_vocals_dereverb_path = rvc_process_dict['dereverb']
 
             # rvc process
-            rvc_result = rvc_process(char_name, main_vocals_dereverb_path, output_folder, pitch)
+            rvc_result_path = voice_change(char_name, main_vocals_dereverb_path, output_folder, pitch)
+
+        if 'fx' not in rvc_process_dict:
+            if rvc_result_path is None:
+                rvc_result_path = rvc_process_dict['rvc']
+
+            ai_vocals_mixed_path = add_audio_fx(rvc_result_path,
+                                                reverb_rm_size=0.15, reverb_wet=0.2,
+                                                reverb_dry=0.8, reverb_damping=0.7)
 
     if backup_vocals_path is None:
         backup_vocals_path = rvc_process_dict['backup_vocal']
     if instrumentals_path is None:
         instrumentals_path = rvc_process_dict['inst']
-    if rvc_result is None:
-        rvc_result = rvc_process_dict['rvc']
+    if ai_vocals_mixed_path is None:
+        ai_vocals_mixed_path = rvc_process_dict['fx']
 
-    # print("rvc:", rvc_result)
+    audios_to_mix = [ai_vocals_mixed_path, backup_vocals_path, instrumentals_path]
+    audio_mix_settings = [0, 0, 0]  # Main Vocal, Backup Vocal, Inst Volume
 
-    # reverb_added_rvc = add_sound_fx(rvc_result)
-    # final_cover = merge_audio([rvc_result, backup_vocals_path, instrumentals_path])
+    # Fix final filename
+    final_cover_prefix = instrumentals_path.replace("_Instrumental.wav", ".wav")
+    final_cover_path = os.path.join(output_folder,
+                                  f'{os.path.splitext(os.path.basename(final_cover_prefix))[0]} ({char_name} Ver).mp3')
 
+    # Merge All Audios
+    merge_audio(audios_to_mix, final_cover_path, audio_mix_settings)
+
+    # if not keep_files:
+    #     display_progress('[~] Removing intermediate audio files...', 0.95, is_webui, progress)
+    #     intermediate_files = [vocals_path, main_vocals_path, ai_vocals_mixed_path]
+    #     for file in intermediate_files:
+    #         if file and os.path.exists(file):
+    #             os.remove(file)
+
+    print(final_cover_path)
     # play_audio(result_rvc)
-    return rvc_result
+    return final_cover_path
 
 
 ############################################################################
@@ -264,9 +290,17 @@ def check_rvc_process_exist(char_name, pitch, work_dir, custom_log=""):
         result_dict['final'] = filename
         break
 
+    # Check FX process
+    prefix = "_mixed.wav"
+    for filename in glob.glob(os.path.join(work_dir, f'*_{char_name}_p*{pitch}_i*{prefix}*')):
+        print(f"Audio FX Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
+        # Found Final Result
+        result_dict['fx'] = filename
+        break
+
     # Check RVC process
     prefix = ".wav"
-    for filename in glob.glob(os.path.join(work_dir, f'*_{char_name}_p{pitch}_i*{prefix}*')):
+    for filename in glob.glob(os.path.join(work_dir, f'*_{char_name}_p*{pitch}_i*{prefix}*')):
         print(f"RVC Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
         # Found Final Result
         result_dict['rvc'] = filename
@@ -283,13 +317,13 @@ def check_rvc_process_exist(char_name, pitch, work_dir, custom_log=""):
     # Check Main_Vocal, Backup_Vocal
     prefix = "_Vocals_Main.wav"
     for filename in glob.glob(os.path.join(work_dir, f'*{prefix}*')):
-        print(custom_log + f"Main Vocal / Backup Vocal Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
+        print(custom_log + f"Main Vocal Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
         # Found _Vocals_Main Result
         result_dict['main_vocal'] = filename
         break
     prefix = "_Vocals_Backup.wav"
     for filename in glob.glob(os.path.join(work_dir, f'*{prefix}*')):
-        print(custom_log + f"Main Vocal / Backup Vocal Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
+        print(custom_log + f"Backup Vocal Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
         # Found _Vocals_Backup Result
         result_dict['backup_vocal'] = filename
         break
@@ -353,13 +387,9 @@ def voice_change(voice_model, vocals_path, output_path, pitch_change,
     del hubert_model, cpt
     gc.collect()
 
+    print("\033[34m[sing_command.voice_change]: RVC Vocal Process Done!\033[0m")
 
-def rvc_process(char_name, audio, output_path, pitch):
-    # print(audio)
-    voice_change(char_name, audio, output_path, pitch)
-
-    result = "test"
-    return result
+    return ai_vocals_path
 
 
 ############################################################################
@@ -375,12 +405,13 @@ def seperate_song(in_file, song_id, mode,
     with open(os.path.join(rvc_required_dir, 'model_data.json')) as infile:
         mdx_model_params = json.load(infile)
 
-    # print(mdx_model_params)
-    # print(song_input)
-
+    str_tmp = "\033[34m" + "[sing_command.seperate_song]: \033[33m"
+    str_end = "\033[0m"
     if mode == 'vocalninst':
         # Put original_audio as song_input argument
         # [~] Separating Vocals from Instrumental...
+
+        print(str_tmp + "Separating Vocals from Instrumental..." + str_end)
         vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir,
                                                   os.path.join(rvc_required_dir, 'UVR-MDX-NET-Voc_FT.onnx'),
                                                   song_input, denoise=True, keep_orig=keep_orig)
@@ -390,6 +421,8 @@ def seperate_song(in_file, song_id, mode,
     elif mode == 'backup':
         # Put vocals_path as song_input argument
         # [~] Separating Main Vocals from Backup Vocals...
+        print(str_tmp + "Separating Main Vocals from Backup Vocals..." + str_end)
+
         backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir,
                                                        os.path.join(rvc_required_dir, 'UVR_MDXNET_KARA_2.onnx'),
                                                        in_file, suffix='Backup', invert_suffix='Main', denoise=True)
@@ -398,6 +431,8 @@ def seperate_song(in_file, song_id, mode,
     elif mode == 'dereverb':
         # Put main_vocals_path as song_input argument
         # [~] Applying DeReverb to Vocals...
+        print(str_tmp + "Applying DeReverb to Vocals..." + str_end)
+
         _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir,
                                                os.path.join(rvc_required_dir, 'Reverb_HQ_By_FoxJoy.onnx'),
                                                in_file, invert_suffix='DeReverb', exclude_main=True, denoise=True)
@@ -406,36 +441,35 @@ def seperate_song(in_file, song_id, mode,
         raise ValueError(f"Argument mode is invalid: {mode}")
 
 
-def add_sound_fx(audio, reverb=True, echo=False):
-    result = audio
-    if reverb:
-        # Add Reverb
-        result = audio
-    if echo:
-        # Add Echo
-        result = audio
+def add_audio_fx(audio_path, reverb_rm_size, reverb_wet, reverb_dry, reverb_damping):
+    output_path = f'{os.path.splitext(audio_path)[0]}_mixed.wav'
 
-    return result
+    # Initialize audio effects plugins
+    board = Pedalboard(
+        [
+            HighpassFilter(),
+            Compressor(ratio=4, threshold_db=-15),
+            Reverb(room_size=reverb_rm_size, dry_level=reverb_dry, wet_level=reverb_wet, damping=reverb_damping)
+        ]
+    )
+
+    with AudioFile(audio_path) as f:
+        with AudioFile(output_path, 'w', f.samplerate, f.num_channels) as o:
+            # Read one second of audio at a time, until the file is empty:
+            while f.tell() < f.frames:
+                chunk = f.read(int(f.samplerate))
+                effected = board(chunk, f.samplerate, reset=False)
+                o.write(effected)
+
+    return output_path
 
 
-def merge_audio(audio_files: list):
-    from pydub import AudioSegment  # noqa
+def merge_audio(in_audio: list, out_dir, volume_settings: list):
+    main_vocal_audio = AudioSegment.from_wav(in_audio[0]) - 4 + volume_settings[0]
+    backup_vocal_audio = AudioSegment.from_wav(in_audio[1]) - 6 + volume_settings[1]
+    instrumental_audio = AudioSegment.from_wav(in_audio[2]) - 7 + volume_settings[2]
 
-    for audio in audio_files:
-        # mix all files
-        # sound1 = AudioSegment.from_mp3(vocal)
-        # sound2 = AudioSegment.from_mp3(inst)
-        #
-        # # mix sound2 with sound1
-        # output = sound1.overlay(sound2)
-        #
-        # # save the result
-        # result = out_name
-        #
-        # output.export(f"{out_name}.mp3", format="mp3")
-        pass
-    result = ""
-    return result
+    return main_vocal_audio.overlay(backup_vocal_audio).overlay(instrumental_audio).export(out_dir, format='mp3')
 
 
 ############################################################################
@@ -451,12 +485,11 @@ def find_all(dir_path, ext):
 
 if __name__ == '__main__':
     download_required_models()
-    v_model = "Muhyun"
+    v_model = "nahida-jp"
 
-    command, value = check_command("!sing kemono friends opening")
+    command, value = check_command("!sing 비둘기 크라잉넛")
     if command == '!sing':
-        value = "This is the Real Gura sings Cupid by Fifty-Fifty【HololiveEN】"
-        do_sing(v_model, value)
+        do_sing(v_model, value, 12)
         # search_audio(value)
         # download_audio("https://youtu.be/Yd8kUoB72xU", "test")
     elif command == '!draw':

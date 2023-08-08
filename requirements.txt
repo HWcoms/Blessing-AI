@@ -33,8 +33,14 @@ urllib3==1.26.13
 numba
 librosa
 scipy
+
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torch==2.0.1+cu118
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torchaudio==2.0.2+cu118
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torchvision==0.15.2+cu118
+
 unidecode
 openjtalk>=0.3.0.dev2
 jamo
