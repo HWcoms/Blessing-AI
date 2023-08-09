@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwyiPXt.ui'
+## Form generated from reading UI file 'mainOHaSBu.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1047,7 +1047,7 @@ class Ui_MainWindow(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1172, 583))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1138, 583))
         self.verticalLayout_14 = QVBoxLayout(self.scrollAreaWidgetContents_4)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.a_verticalLayout_top = QVBoxLayout()
@@ -1710,7 +1710,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -225, 1172, 814))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 358, 814))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -2406,10 +2406,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_23 = QHBoxLayout()
         self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
-        self.label_30 = QLabel(self.Prompt_Page)
-        self.label_30.setObjectName(u"label_30")
+        self.label_31 = QLabel(self.Prompt_Page)
+        self.label_31.setObjectName(u"label_31")
 
-        self.horizontalLayout_23.addWidget(self.label_30)
+        self.horizontalLayout_23.addWidget(self.label_31)
 
         self.horizontalSpacer_16 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -2573,6 +2573,158 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_26.addLayout(self.verticalLayout_36)
+
+        self.verticalSpacer_5 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_26.addItem(self.verticalSpacer_5)
+
+        self.verticalLayout_41 = QVBoxLayout()
+        self.verticalLayout_41.setObjectName(u"verticalLayout_41")
+        self.verticalLayout_41.setContentsMargins(0, 0, 0, -1)
+        self.QFrameSplit_line = QFrame(self.Prompt_Page)
+        self.QFrameSplit_line.setObjectName(u"QFrameSplit_line")
+        sizePolicy1.setHeightForWidth(self.QFrameSplit_line.sizePolicy().hasHeightForWidth())
+        self.QFrameSplit_line.setSizePolicy(sizePolicy1)
+        self.QFrameSplit_line.setMinimumSize(QSize(0, 5))
+        self.QFrameSplit_line.setStyleSheet(u"QFrame [frameShape=\"4\"] /* QFrame::HLine == 0x0004 */\n"
+"{\n"
+"    color: rgb(121, 133, 157)\n"
+"}\n"
+"")
+        self.QFrameSplit_line.setFrameShape(QFrame.HLine)
+        self.QFrameSplit_line.setFrameShadow(QFrame.Plain)
+        self.QFrameSplit_line.setLineWidth(1)
+        self.QFrameSplit_line.setMidLineWidth(0)
+
+        self.verticalLayout_41.addWidget(self.QFrameSplit_line)
+
+        self.verticalLayout_43 = QVBoxLayout()
+        self.verticalLayout_43.setObjectName(u"verticalLayout_43")
+        self.horizontalLayout_27 = QHBoxLayout()
+        self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
+        self.label_16 = QLabel(self.Prompt_Page)
+        self.label_16.setObjectName(u"label_16")
+        self.label_16.setAlignment(Qt.AlignBottom|Qt.AlignLeading|Qt.AlignLeft)
+
+        self.horizontalLayout_27.addWidget(self.label_16)
+
+        self.horizontalSpacer_19 = QSpacerItem(40, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_27.addItem(self.horizontalSpacer_19)
+
+        self.textBrowser_papago_token_link = QTextBrowser(self.Prompt_Page)
+        self.textBrowser_papago_token_link.setObjectName(u"textBrowser_papago_token_link")
+        sizePolicy11.setHeightForWidth(self.textBrowser_papago_token_link.sizePolicy().hasHeightForWidth())
+        self.textBrowser_papago_token_link.setSizePolicy(sizePolicy11)
+        self.textBrowser_papago_token_link.setMinimumSize(QSize(0, 0))
+        self.textBrowser_papago_token_link.setMaximumSize(QSize(160, 40))
+        self.textBrowser_papago_token_link.setFocusPolicy(Qt.NoFocus)
+        self.textBrowser_papago_token_link.setAcceptDrops(True)
+        self.textBrowser_papago_token_link.setInputMethodHints(Qt.ImhNone)
+        self.textBrowser_papago_token_link.setFrameShape(QFrame.NoFrame)
+        self.textBrowser_papago_token_link.setFrameShadow(QFrame.Plain)
+        self.textBrowser_papago_token_link.setLineWidth(1)
+        self.textBrowser_papago_token_link.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.textBrowser_papago_token_link.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.textBrowser_papago_token_link.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
+        self.textBrowser_papago_token_link.setAutoFormatting(QTextEdit.AutoNone)
+        self.textBrowser_papago_token_link.setLineWrapMode(QTextEdit.NoWrap)
+        self.textBrowser_papago_token_link.setAcceptRichText(True)
+
+        self.horizontalLayout_27.addWidget(self.textBrowser_papago_token_link)
+
+
+        self.verticalLayout_43.addLayout(self.horizontalLayout_27)
+
+
+        self.verticalLayout_41.addLayout(self.verticalLayout_43)
+
+        self.horizontalLayout_29 = QHBoxLayout()
+        self.horizontalLayout_29.setObjectName(u"horizontalLayout_29")
+        self.lineEdit_translator_api_id = QLineEdit(self.Prompt_Page)
+        self.lineEdit_translator_api_id.setObjectName(u"lineEdit_translator_api_id")
+        sizePolicy11.setHeightForWidth(self.lineEdit_translator_api_id.sizePolicy().hasHeightForWidth())
+        self.lineEdit_translator_api_id.setSizePolicy(sizePolicy11)
+        self.lineEdit_translator_api_id.setMinimumSize(QSize(0, 30))
+        self.lineEdit_translator_api_id.setMaximumSize(QSize(16777215, 16777215))
+        self.lineEdit_translator_api_id.setEchoMode(QLineEdit.Normal)
+        self.lineEdit_translator_api_id.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.horizontalLayout_29.addWidget(self.lineEdit_translator_api_id)
+
+        self.pushButton_view_translator_id = QPushButton(self.Prompt_Page)
+        self.pushButton_view_translator_id.setObjectName(u"pushButton_view_translator_id")
+        sizePolicy4.setHeightForWidth(self.pushButton_view_translator_id.sizePolicy().hasHeightForWidth())
+        self.pushButton_view_translator_id.setSizePolicy(sizePolicy4)
+        self.pushButton_view_translator_id.setMinimumSize(QSize(130, 30))
+        self.pushButton_view_translator_id.setStyleSheet(u"QPushButton{\n"
+"	font: bold 12pt \"Segoe UI\";\n"
+"	color: white;\n"
+"	background-color: rgb(255, 43, 43);\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(255, 114, 114);\n"
+"}\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(159, 27, 27);\n"
+"}")
+
+        self.horizontalLayout_29.addWidget(self.pushButton_view_translator_id)
+
+
+        self.verticalLayout_41.addLayout(self.horizontalLayout_29)
+
+        self.label_17 = QLabel(self.Prompt_Page)
+        self.label_17.setObjectName(u"label_17")
+
+        self.verticalLayout_41.addWidget(self.label_17)
+
+        self.horizontalLayout_31 = QHBoxLayout()
+        self.horizontalLayout_31.setObjectName(u"horizontalLayout_31")
+        self.lineEdit_translator_api_secret = QLineEdit(self.Prompt_Page)
+        self.lineEdit_translator_api_secret.setObjectName(u"lineEdit_translator_api_secret")
+        sizePolicy11.setHeightForWidth(self.lineEdit_translator_api_secret.sizePolicy().hasHeightForWidth())
+        self.lineEdit_translator_api_secret.setSizePolicy(sizePolicy11)
+        self.lineEdit_translator_api_secret.setMinimumSize(QSize(0, 30))
+        self.lineEdit_translator_api_secret.setMaximumSize(QSize(16777215, 16777215))
+        self.lineEdit_translator_api_secret.setEchoMode(QLineEdit.Normal)
+        self.lineEdit_translator_api_secret.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.horizontalLayout_31.addWidget(self.lineEdit_translator_api_secret)
+
+        self.pushButton_view_translator_secret = QPushButton(self.Prompt_Page)
+        self.pushButton_view_translator_secret.setObjectName(u"pushButton_view_translator_secret")
+        sizePolicy4.setHeightForWidth(self.pushButton_view_translator_secret.sizePolicy().hasHeightForWidth())
+        self.pushButton_view_translator_secret.setSizePolicy(sizePolicy4)
+        self.pushButton_view_translator_secret.setMinimumSize(QSize(130, 30))
+        self.pushButton_view_translator_secret.setStyleSheet(u"QPushButton{\n"
+"	font: bold 12pt \"Segoe UI\";\n"
+"	color: white;\n"
+"	background-color: rgb(255, 43, 43);\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(255, 114, 114);\n"
+"}\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(159, 27, 27);\n"
+"}")
+
+        self.horizontalLayout_31.addWidget(self.pushButton_view_translator_secret)
+
+
+        self.verticalLayout_41.addLayout(self.horizontalLayout_31)
+
+        self.label_30 = QLabel(self.Prompt_Page)
+        self.label_30.setObjectName(u"label_30")
+
+        self.verticalLayout_41.addWidget(self.label_30)
+
+
+        self.verticalLayout_26.addLayout(self.verticalLayout_41)
 
         self._prompt_bottom_verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -3249,7 +3401,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -3477,7 +3629,7 @@ class Ui_MainWindow(object):
         self.lineEdit_api_url.setText(QCoreApplication.translate("MainWindow", u"http://localhost:5000", None))
         self.lineEdit_api_url.setPlaceholderText(QCoreApplication.translate("MainWindow", u"API Request Url", None))
         self.pushButton_view_original_url.setText(QCoreApplication.translate("MainWindow", u"View URL", None))
-        self.label_30.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt;\">(Example) With Colab: </span><span style=\" font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#aaffff;\">https://blessing-ai-test.trycloudflare.com/api</span></p></body></html>", None))
+        self.label_31.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt;\">(Example) With Colab: </span><span style=\" font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#aaffff;\">https://blessing-ai-test.trycloudflare.com/api</span></p></body></html>", None))
         self.label_25.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"right\"><span style=\" font-size:9pt;\">With local: </span><span style=\" font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#aaffff;\">http://localhost:5000</span></p></body></html>", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Max Prompt Token</span></p></body></html>", None))
         self.lineEdit_max_prompt_token.setText(QCoreApplication.translate("MainWindow", u"1024", None))
@@ -3491,6 +3643,23 @@ class Ui_MainWindow(object):
         self.comboBox_ai_model_language.setItemText(2, QCoreApplication.translate("MainWindow", u"Korean", None))
 
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt; font-weight:700;\">Recommend to set as 'EN'</span></p></body></html>", None))
+        self.label_16.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Papago Translator API </span><span style=\" font-size:11pt; font-weight:700;\">(ID)</span></p></body></html>", None))
+        self.textBrowser_papago_token_link.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"hr { height: 1px; border-width: 0; }\n"
+"li.unchecked::marker { content: \"\\2610\"; }\n"
+"li.checked::marker { content: \"\\2612\"; }\n"
+"</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"right\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://developers.naver.com/apps/#/register?api=ppg_n2mt\"><span style=\" text-decoration: underline; color:#aaffff;\">(Naver Papago Translator)<br />Request API Tokens</span></a></p></body></html>", None))
+        self.lineEdit_translator_api_id.setText("")
+        self.lineEdit_translator_api_id.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Translator API ID", None))
+        self.pushButton_view_translator_id.setText(QCoreApplication.translate("MainWindow", u"View ID", None))
+        self.label_17.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Papago Translator API </span><span style=\" font-size:11pt; font-weight:700;\">(Secret)</span></p></body></html>", None))
+        self.lineEdit_translator_api_secret.setText("")
+        self.lineEdit_translator_api_secret.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Translator API Secret", None))
+        self.pushButton_view_translator_secret.setText(QCoreApplication.translate("MainWindow", u"View Secret", None))
+        self.label_30.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>If id, secret are blank or invalid, This program uses google translator</p></body></html>", None))
         self.labelBoxBlenderInstalation.setText(QCoreApplication.translate("MainWindow", u"FILE BOX", None))
         self.lineEdit.setText("")
         self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Type here", None))

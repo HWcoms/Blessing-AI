@@ -106,6 +106,7 @@ class MainWindow(QMainWindow):
         widgets = self.ui
         widgets.textBrowser.setOpenExternalLinks(True)
         widgets.textBrowser_google_colab_link.setOpenExternalLinks(True)
+        widgets.textBrowser_papago_token_link.setOpenExternalLinks(True)
         self.chat = None
         self.last_scroll_value = -1
 
@@ -204,11 +205,12 @@ class MainWindow(QMainWindow):
 
         # INSTALL EVENT FILTER
         widgets.lineEdit_api_url.installEventFilter(self)
+        widgets.lineEdit_translator_api_id.installEventFilter(self)
+        widgets.lineEdit_translator_api_secret.installEventFilter(self)
+
         widgets.lineEdit_discord_bot_id.installEventFilter(self)
         widgets.lineEdit_discord_bot_channel_id.installEventFilter(self)
         widgets.lineEdit_discord_webhook_url.installEventFilter(self)
-
-        widgets.lineEdit_api_url.installEventFilter(self)
 
         self.install_event_all(QComboBox)
         self.install_event_all(QSlider)
@@ -287,22 +289,27 @@ class MainWindow(QMainWindow):
 
         # print(f"source: {source}, type: {event.type()}, event: {event}")
 
+        lineEdit_api_url_list = [widgets.lineEdit_api_url]
+        lineEdit_api_token_list = [widgets.lineEdit_translator_api_id, widgets.lineEdit_translator_api_secret]
+        lineEdit_discord_list = [widgets.lineEdit_discord_bot_id, widgets.lineEdit_discord_bot_channel_id, widgets.lineEdit_discord_webhook_url]
+
         if event.type() == QEvent.Type.FocusIn:
-            if source == widgets.lineEdit_api_url:
+            if source in lineEdit_api_url_list:
                 self.refresh_api_url(hide_url=False)
                 if event.type() == QKeyEvent:
                     print(f"changing edit text: {source.text()} [{obj_name}]")
 
-            if (source == widgets.lineEdit_discord_bot_id or
-                source == widgets.lineEdit_discord_bot_channel_id or
-                source == widgets.lineEdit_discord_webhook_url):
+            if source in lineEdit_api_token_list:
+                self.refresh_api_token(source, hide_url=False)
+                if event.type() == QKeyEvent:
+                    print(f"changing edit text: {source.text()} [{obj_name}]")
+
+            if source in lineEdit_discord_list:
                 self.refresh_discord_url(source, hide_url=False)
         elif event.type() == QEvent.Type.FocusOut:
-            if source == widgets.lineEdit_api_url:
+            if source in lineEdit_api_url_list or source in lineEdit_api_token_list:
                 setting_name = "prompt_settings"
-            if (source == widgets.lineEdit_discord_bot_id or
-                source == widgets.lineEdit_discord_bot_channel_id or
-                source == widgets.lineEdit_discord_webhook_url):
+            if source in lineEdit_discord_list:
                 setting_name = "other_settings"
 
             # Get Text Data
@@ -322,11 +329,11 @@ class MainWindow(QMainWindow):
                 print("\033[34m" + f"[Main GUI.eventFilter]: Update \033[32m| {setting_name}.txt | {component_key} | {component_property}" + "\033[0m")
                 update_json(component_key, component_property, setting_name)
 
-            if source == widgets.lineEdit_api_url:
+            if source in lineEdit_api_url_list:
                 self.refresh_api_url()
-            if (source == widgets.lineEdit_discord_bot_id or
-                source == widgets.lineEdit_discord_bot_channel_id or
-                source == widgets.lineEdit_discord_webhook_url):
+            if source in lineEdit_api_token_list:
+                self.refresh_api_token(source)
+            if source in lineEdit_discord_list:
                 self.refresh_discord_url(source)
 
 
@@ -593,6 +600,11 @@ class MainWindow(QMainWindow):
 
         self.refresh_api_url()
 
+        lineEdit_api_token_list = [widgets.lineEdit_translator_api_id, widgets.lineEdit_translator_api_secret]
+
+        for _token_comp in lineEdit_api_token_list:
+            self.refresh_api_token(_token_comp)
+
         widgets.lineEdit_max_prompt_token.setText( str(max_prompt_token) )
         widgets.horizontalSlider_max_prompt_token.setValue(max_prompt_token)
 
@@ -608,6 +620,13 @@ class MainWindow(QMainWindow):
         _url = self.prompt_info_dict["api_url"]
 
         self.refresh_url_widget(_widget, _url, hide_url, True)
+
+    def refresh_api_token(self, component:QLineEdit, hide_url:bool=True):
+        self.load_prompt_info()
+        component_key = component.objectName().replace("lineEdit_", "")  # lineEdit_translator_api_id
+
+        _token = self.prompt_info_dict[component_key]
+        self.refresh_url_widget(component, _token, hide_url, False)
 
     def refresh_discord_url(self, component:QLineEdit, hide_url=True):
         self.load_other_info()
