@@ -5,7 +5,7 @@
 This python program is made for communicating prompt and result from chatbot interface (e.g [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui))<br>
 Also able to use [MoeGoe TTS](https://github.com/CjangCjengh/MoeGoe), voice recognition or text from User.<br>
   
-[![Made with  - ❤️](https://img.shields.io/badge/Made_with_-❤️-white?style=for-the-badge)](https://github.com/HWcomss/Blessing-AI)
+[![Made with  - ❤️](https://img.shields.io/badge/Made_with-❤-red?style=for-the-badge)](https://github.com/HWcomss/Blessing-AI)
 [![Licence](https://img.shields.io/badge/LICENSE-MIT-green.svg?style=for-the-badge)](LICENSE.md)<br>
 
 </div>
