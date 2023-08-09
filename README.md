@@ -1,11 +1,25 @@
-# Blessing-AI
+<div align="center">
 
-This python program is made for communicating prompt and result from chatbot interface (e.g [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui)), also able to use [MoeGoe TTS](https://github.com/CjangCjengh/MoeGoe), voice recognition or text from User  
+<h1>Blessing-AI</h1>
 
-![](docs/screenshots/Blessing_AI_Preview.png?raw=true)  
+This python program is made for communicating prompt and result from chatbot interface (e.g [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui))<br>
+Also able to use [MoeGoe TTS](https://github.com/CjangCjengh/MoeGoe), voice recognition or text from User.<br>
+  
+[![Made with  - ❤️](https://img.shields.io/badge/Made_with_-❤️-white?style=for-the-badge)](https://github.com/HWcomss/Blessing-AI)
+[![Licence](https://img.shields.io/badge/LICENSE-MIT-green.svg?style=for-the-badge)](LICENSE.md)<br>
 
-***Note: This project is a work in progress.***  
-Please note that this project is currently under development and may not be feature-complete or stable. Use it at your own risk, and feel free to contribute or provide feedback. We appreciate your understanding and patience as we continue to improve and enhance the project.
+</div>
+
+![](docs/screenshots/Blessing_AI_Preview.png?raw=true)
+
+<div align="left">
+<b>Note: This project is a work in progress.</b><br>
+Please note that this project is currently under development and may not be feature-complete or stable.<br>
+Use it at your own risk, and feel free to contribute or provide feedback.<br>
+We appreciate your understanding and patience as we continue to improve and enhance the project.
+</div>
+
+------
 
 ## Table of Contents
 
