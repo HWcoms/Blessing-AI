@@ -159,28 +159,28 @@ call python server.py --auto-devices --chat --verbose --wbits 4 --groupsize 128 
 pause
 ```
 
-### 2. Run Blessing-AI (3 options)
-
-- Run as executable file (recommended)  
-  run ```AIVoice.exe```
-
-- Run as Batch file  
-  run ```Start.bat```
-
-- Python Program  
-  Run this command in the [src/](src) folder.  
-  
-  ```
-  python voice_translator.py
-  ```
-
-- GUI Python Program (WIP)  
+### 2. Run Blessing-AI
+- [GUI] Python Program (recommended / WIP)  
   ⚠️ **This method is Working In Progress**: Currently, Text chat only works as input ⚠️  
   Run this command in the [src/](src) folder.  
   
   ```
   python qt_gui_main.py
   ```
+
+- [CLI] Run as executable file  
+  run ```AIVoice.exe```
+
+- [CLI] Run as Batch file  
+  run ```Start.bat```
+
+- [CLI] Python Program  
+  Run this command in the [src/](src) folder.  
+  
+  ```
+  python voice_translator.py
+  ```
+  
 
 ### How to use In Program
 
