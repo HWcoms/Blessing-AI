@@ -21,8 +21,9 @@ We appreciate your understanding and patience as we continue to improve and enha
 
 ------
 
-## Table of Contents
-
+<details>
+  <summary><h2>Table of Contents</h2></summary>
+  
 - [Installation](#installation-windows)  
 - [Install Language Model/Interface](#install-language-model--interface)  
   - [In Cloud](#1-run-text-gen-on-cloud-optional)  
@@ -37,6 +38,8 @@ We appreciate your understanding and patience as we continue to improve and enha
     - [Download RVC trained pth files](#download-rvc-trained-pth-files)  
 - [Credits](#credits)  
 - [License](#license)  
+</details>
+
 
 ## Installation (Windows)
 
