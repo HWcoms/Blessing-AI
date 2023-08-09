@@ -68,6 +68,8 @@ def do_sing(char_name, song_name, pitch=0):  # normalize og vocal -> get pitch t
     if 'final' in rvc_process_dict:
         # print("RVC result audio file name: ", rvc_process_dict['final'])
         final_cover_path = rvc_process_dict['final']
+
+        return final_cover_path
     else:
         if 'inst' not in rvc_process_dict:
             dl_audio = download_audio(dl_url, video_id)
@@ -488,11 +490,11 @@ def find_all(dir_path, ext):
 
 if __name__ == '__main__':
     download_required_models()
-    v_model = "nahida-jp"
+    v_model = "Karen Kujou"
 
-    command, value = check_command("!sing 비둘기 크라잉넛")
+    command, value = check_command("!sing MyGo bangdream haruhikage")
     if command == '!sing':
-        do_sing(v_model, value, 12)
+        do_sing(v_model, value, 0)
         # search_audio(value)
         # download_audio("https://youtu.be/Yd8kUoB72xU", "test")
     elif command == '!draw':
