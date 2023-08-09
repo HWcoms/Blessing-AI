@@ -1,27 +1,19 @@
 import json
 import urllib.request
-from os import getenv
 from urllib.error import HTTPError
 
-from dotenv import load_dotenv
 from iso639 import languages
 
 import googletrans
 
-load_dotenv()
-
-PAPAGO_AUTH_ID = getenv('PAPAGO_AUTH_ID')
-PAPAGO_AUTH_SECRET = getenv('PAPAGO_AUTH_SECRET')
 
 # papago
-client_id = PAPAGO_AUTH_ID  # 개발자센터에서 발급받은 Client ID 값
-client_secret = PAPAGO_AUTH_SECRET  # 개발자센터에서 발급받은 Client Secret 값
 trannslate_url = "https://openapi.naver.com/v1/papago/n2mt"
 detect_url = "https://openapi.naver.com/v1/papago/detectLangs"
 
 
 # If text language is ja -> no translate, but if other source_lang -> translate to ja
-def DoTranslate(string, source_lang='ko', target_lang='ja'):
+def DoTranslate(string, source_lang='ko', target_lang='ja', token_id="", token_secret=""):
     if source_lang == target_lang:
         return string
 
@@ -33,8 +25,8 @@ def DoTranslate(string, source_lang='ko', target_lang='ja'):
     # print("인식언어: ",source_lang_name, "목표언어: ", traget_lang_name)
 
     request = urllib.request.Request(trannslate_url)
-    request.add_header("X-Naver-Client-Id", client_id)
-    request.add_header("X-Naver-Client-Secret", client_secret)
+    request.add_header("X-Naver-Client-Id", token_id)
+    request.add_header("X-Naver-Client-Secret", token_secret)
 
     data = "source=" + source_lang + "&target=" + target_lang + "&text=" + encText
     result = papago_translate(request, data)
@@ -97,14 +89,14 @@ def google_translate(text, target_lang):
     return result.text
 
 
-def detect_language(string):
+def detect_language(string, token_id="", token_secret=""):
     # Papago detect_language
     encText = urllib.parse.quote(string)
     # print("인식언어: ",source_lang_name, "목표언어: ", traget_lang_name)
 
     request = urllib.request.Request(detect_url)
-    request.add_header("X-Naver-Client-Id", client_id)
-    request.add_header("X-Naver-Client-Secret", client_secret)
+    request.add_header("X-Naver-Client-Id", token_id)
+    request.add_header("X-Naver-Client-Secret", token_secret)
 
     data = "query=" + encText
 

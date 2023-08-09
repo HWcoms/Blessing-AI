@@ -61,10 +61,13 @@ class Generator:
             #########################################
             # SEND USER MESSAGE TO DISCORD
 
-            speech_lang = detect_language(text)
-            translated_speech = DoTranslate(text, speech_lang, ai_model_language)
+            token_id = prompt_settings["translator_api_id"]
+            token_secret = prompt_settings["translator_api_secret"]
 
-            self.send_discord(translated_speech, ai_model_language, your_json, other_settings, by_user=True)
+            speech_lang = detect_language(text, token_id, token_secret)
+            translated_speech = DoTranslate(text, speech_lang, ai_model_language, token_id, token_secret)
+
+            self.send_discord(translated_speech, ai_model_language, [token_id, token_secret], your_json, other_settings, by_user=True)
 
             if self.logging:
                 # source_lang_name = languages.get(alpha2=speech_lang).name
@@ -86,11 +89,12 @@ class Generator:
             print("\031[31m" + '[Generator.Generate] Error: text value is blank' + "\033[0m")
             return None  # failed
 
-        self.send_discord(bot_reply, ai_model_language, character_settings, other_settings)
+        self.send_discord(bot_reply, ai_model_language, [token_id, token_secret], character_settings, other_settings)
 
         return bot_reply  # success
 
-    def send_discord(self, message, message_language, profile_settings, other_settings, by_user=False):
+    def send_discord(self, message, message_language, trans_token_list: list, profile_settings, other_settings,
+                     by_user=False):
         log_str = "[Generator.send_discord]: "
         if self.logging:
             print("\033[34m" + log_str + "\033[32m")
@@ -99,10 +103,14 @@ class Generator:
         discord_bot = other_settings["discord_bot"]
         discord_webhook = other_settings["discord_webhook"]
 
+        token_id = trans_token_list[0]
+        token_secret = trans_token_list[1]
+
         if discord_bot or discord_webhook:
             # Do translate to discord_print_langage, if it's not same as language_code
             if message_language != discord_print_language:
-                discord_sentence = DoTranslate(message, message_language, discord_print_language)
+                discord_sentence = DoTranslate(message, message_language, discord_print_language, token_id,
+                                               token_secret)
             else:
                 discord_sentence = message
 
@@ -165,19 +173,22 @@ class GeneratorTTS:
         tts_only = other_settings["tts_only"]
         text_lang = None
 
+        token_id = prompt_settings["translator_api_id"]
+        token_secret = prompt_settings["translator_api_secret"]
+
         if tts_only:
-            text_lang = detect_language(text)
+            text_lang = detect_language(text, token_id, token_secret)
         else:
             text_lang = prompt_settings[
                 "ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
         print("tts lang: ", text, text_lang)
         if text:
-            self.speak_moegoe(text, text_lang, character_settings, audio_settings)
+            self.speak_moegoe(text, text_lang, [token_id, token_secret], audio_settings)
         else:
             print("\031[31m" + '[GeneratorTTS.Generate] Error: text variable is None' + "\033[0m")
             return None  # failed
 
-    def speak_moegoe(self, sentence, sentence_lang, character_settings, audio_settings):
+    def speak_moegoe(self, sentence, sentence_lang, trans_token_list: list, audio_settings):
         log_str = "[GeneratorTTS.speak_moegoe]: "
         if self.logging:
             print("\033[34m" + log_str + "\033[32m")
@@ -188,9 +199,12 @@ class GeneratorTTS:
         voice_volume = audio_settings["voice_volume"]
         voice_id = audio_settings["voice_id"]
 
+        token_id = trans_token_list[0]
+        token_secret = trans_token_list[1]
+
         self.device_id = spk_id
 
-        bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code)  # Translate reply
+        bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code, token_id, token_secret)  # Translate reply
         if language_code == 'ja':
             bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
         elif language_code == 'ko':
