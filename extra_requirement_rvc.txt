@@ -1,23 +1,27 @@
-tensorboardX
-ffmpeg-python
-pydub==0.25.1
-
 # Youtube
 youtube-search
 yt_dlp==2023.7.6
 
-# mdx
+# Audio FX
+pydub==0.25.1
+pedalboard==0.7.7
+
+# MDX (demucs)
 onnxruntime-gpu
 tqdm==4.65.0
 
-# rvc
+# RVC
+tensorboardX
+ffmpeg-python
 lib==4.0.0
 fairseq==0.12.2
 praat-parselmouth>=0.4.2
 fairseq==0.12.2
 pyworld==0.3.4
 torchcrepe==0.0.20
-pedalboard==0.7.7
 
 # Try [conda install faiss-cpu==1.7.3] if failed
 faiss-cpu==1.7.3
+
+# Pitch Detection
+inaSpeechSegmenter
