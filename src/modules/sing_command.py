@@ -53,6 +53,7 @@ class BotCommand:
         self.logging = True
         self.char_model_name = char_model_name
         self.gender_type = gender_type
+        self.auto_pitch_amount = 3.0
 
         self.dl_url = ""
         self.video_id = ""
@@ -372,9 +373,8 @@ class BotCommand:
             vocal_exist = self.find_one_filename(work_dir, result_dict, "main_vocal", search_filename, log_msg)
             if vocal_exist:
                 # og_vocal is existed
-                pitch[0] = get_pitch_with_audio(result_dict["main_vocal"], ai_gender_type)
+                pitch[0] = get_pitch_with_audio(result_dict["main_vocal"], ai_gender_type, self.auto_pitch_amount)
             else:
-                # TODO: Download original video
                 self.print_log("warning", "no main vocal result found!",
                                "Trying to get pitch Information from yt-dl original file", True)
                 # print(
@@ -393,7 +393,7 @@ class BotCommand:
                 #
                 # pitch[0] = get_pitch_with_audio(_yt_tmp_dict['yt_path'], ai_gender_type)
 
-                pitch[0] = get_pitch_with_audio(song_input, ai_gender_type)
+                pitch[0] = get_pitch_with_audio(song_input, ai_gender_type, self.auto_pitch_amount)
 
         search_dict_log_list = [['final', f'*{char_name}*Ver*)*_p{pitch[0]}_i{index_rate}', 'Final Cover'],
                                 ['fx', f'*_{char_name}_p{pitch[0]}_i{index_rate}_mixed.wav', 'Audio FX Result'],
@@ -637,7 +637,7 @@ if __name__ == '__main__':
     download_required_models()
 
     bot_cmd = BotCommand("Kato Megumi", "female")
-    command, value = bot_cmd.check_command("!sing YOASOBI「アイドル」 Official Music Video")
+    command, value = bot_cmd.check_command("!sing take on me")
 
     # command, value = check_command("!sing idol yoasobi")
     if command == '!sing':

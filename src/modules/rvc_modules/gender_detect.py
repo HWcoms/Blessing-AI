@@ -41,7 +41,7 @@ def compare_gender(segment_list):
     return top_seg
 
 
-def pitch_by_gender(og_gender_type: str, ai_gender_type: str, defer_value=12.0):
+def pitch_by_gender(og_gender_type: str, ai_gender_type: str, defer_value):
     pitch = 0.0
     if og_gender_type == ai_gender_type:
         pitch = 0.0
@@ -56,11 +56,11 @@ def pitch_by_gender(og_gender_type: str, ai_gender_type: str, defer_value=12.0):
 
 
 # All in one method
-def get_pitch_with_audio(audio_file, ai_gender_type: str):  # ai_gender_type -> ["female", "male"]
+def get_pitch_with_audio(audio_file, ai_gender_type: str, defer_value=12.0):  # ai_gender_type -> ["female", "male"]
     segmented_infos = seperate_audio_infos(audio_file)
     og_gender_type = compare_gender(segmented_infos)
 
-    return pitch_by_gender(og_gender_type, ai_gender_type)
+    return pitch_by_gender(og_gender_type, ai_gender_type, defer_value)
 
 
 if __name__ == "__main__":
