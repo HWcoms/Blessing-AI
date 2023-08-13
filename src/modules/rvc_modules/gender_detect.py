@@ -47,9 +47,9 @@ def pitch_by_gender(og_gender_type: str, ai_gender_type: str, defer_value=12.0):
         pitch = 0.0
     else:
         if og_gender_type == 'female':  # ai_gender -> male
-            pitch += defer_value
-        elif og_gender_type == 'male':  # ai_gender -> female
             pitch -= defer_value
+        elif og_gender_type == 'male':  # ai_gender -> female
+            pitch += defer_value
 
     pitch = round(float(pitch), 1)
     return pitch
