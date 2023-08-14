@@ -7,7 +7,7 @@ seg = Segmenter()
 
 # Choose any mp3 file online
 # media = 'https://github.com/ina-foss/inaSpeechSegmenter/raw/master/media/musanmix.mp3'
-media = r'C:\Users\HWcoms\Blessing-AI\cache\rvc\song_process\avAfAZ6d-Rg\EZ DO DANCE (THUNDER STORM ver.) 더빙_Vocals.wav'
+media = r'C:\Users\HWcoms\Blessing-AI\cache\rvc\song_process\F9TuIVpBi5I\test_vocal.wav'
 
 
 def seperate_audio_infos(media_path):
@@ -64,10 +64,10 @@ def get_pitch_with_audio(audio_file, ai_gender_type: str, defer_value=12.0):  # 
 
 
 if __name__ == "__main__":
-    print(get_pitch_with_audio(media, "female"))
+    # print(get_pitch_with_audio(media, "female"))
 
-    # seg_infos = seperate_audio_infos(media)
-    # og_gen_type = compare_gender(seg_infos)
-    #
-    # ai_gen_type = 'female'
-    # print(pitch_by_gender(og_gen_type, ai_gen_type))
+    seg_infos = seperate_audio_infos(media)
+    og_gen_type = compare_gender(seg_infos)
+
+    ai_gen_type = 'female'
+    print(pitch_by_gender(og_gen_type, ai_gen_type, 6))

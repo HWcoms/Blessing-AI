@@ -42,6 +42,7 @@ class BotCommand:
     """
     Class, Handles Bot Commands ['!sing', '!draw', '!emote']
     """
+
     def __init__(self, char_model_name="", gender_type=""):
         """
         Args:
@@ -63,7 +64,7 @@ class BotCommand:
 
     # region [LOG]
     ############################################################################
-    def print_log(self, log_type="log", text="", detail_text="", print_func_name=False):
+    def print_log(self, log_type="log", text="", detail_text="", print_func_name=True):
         """print logs by types ['log', 'error', 'warning']
           Args:
             log_type: ['log', 'error', 'warning']   (:py:class:`str`)
@@ -75,6 +76,7 @@ class BotCommand:
             return
 
         prefix = ""
+        _result = text
 
         _first_col, _second_col = None, None
         if log_type == "log":
@@ -90,12 +92,12 @@ class BotCommand:
             prefix = "Warning "
 
         if print_func_name:
-            text = f"[{prefix}sing_command.{inspect.stack()[1].function}]: {text}"
+            _result = f"[{prefix}sing_command.{inspect.stack()[1].function}]: {_result}"
 
         if detail_text != "" and detail_text:
-            text = f"{text}: {_second_col}{detail_text}"
+            _result = f"{_result}: {_second_col}{detail_text}"
 
-            print(_first_col + text + "\033[0m")
+        print(_first_col + _result + "\033[0m")
 
     @staticmethod
     def fix_uri_to_print(path_str, log_msg: str):
@@ -126,7 +128,7 @@ class BotCommand:
         if command_prefix is None:
             if self.logging:
                 # print("\033[31m" + f"No command found in text: {text}" + "\033[0m")
-                self.print_log("warning", "No command found in text", text, True)
+                self.print_log("warning", "No command found in text", text)
             return command_prefix, command_value
 
         return command_prefix, command_value
@@ -140,46 +142,53 @@ class BotCommand:
         pitch[0] = round(float(pitch[0]), 1)
         d_index_rate = round(float(index_rate), 1)
 
+        vocals_path, instrumentals_path, backup_vocals_path, main_vocals_path, main_vocals_dereverb_path = None, None, None, None, None
+        rvc_result_path, ai_vocals_mixed_path, final_cover_path = None, None, None
+
         self.dl_url, self.video_id = self.search_audio(song_name)
 
         output_folder = os.path.join(process_dir, self.video_id)
-        rvc_process_dict = self.check_rvc_process_exist(self.char_model_name, pitch, ai_gender_type, d_index_rate, output_folder)
+        rvc_process_dict = self.check_rvc_preprocess_exist(output_folder)
 
-        self.print_log("log", "Pitch Info", pitch, True)
+        # region PRE-PROCESS
+        if 'inst' not in rvc_process_dict:
+            dl_audio = self.download_audio(self.dl_url, self.video_id)
+            vocals_path, instrumentals_path = self.seperate_song(dl_audio, self.video_id, 'vocalninst')
 
-        vocals_path, instrumentals_path, backup_vocals_path, main_vocals_path, main_vocals_dereverb_path = None, None, None, None, None
-        rvc_result_path, ai_vocals_mixed_path, final_cover_path = None, None, None
-        # check if there's final prefix
+        if ('main_vocal' not in rvc_process_dict) or ('backup_vocal' not in rvc_process_dict):
+            # Check og vocals file
+            if not vocals_path:
+                if 'vocals' not in rvc_process_dict:
+                    dl_audio = self.download_audio(self.dl_url, self.video_id)
+                    rvc_process_dict['vocals'] = self.seperate_song(dl_audio, self.video_id, 'vocalninst')
+                vocals_path = rvc_process_dict['vocals']
+
+            backup_vocals_path, main_vocals_path = self.seperate_song(vocals_path, self.video_id, 'backup')
+
+        if 'dereverb' not in rvc_process_dict:
+            if not main_vocals_path:
+                main_vocals_path = rvc_process_dict['main_vocal']
+            main_vocals_dereverb_path = self.seperate_song(main_vocals_path, self.video_id, 'dereverb')
+        # endregion PRE-PROCESS
+
+        post_dict = self.check_rvc_postprocess_exist(self.char_model_name, pitch, ai_gender_type, d_index_rate,
+                                                     output_folder)
+        rvc_process_dict.update(post_dict)
+
+        # region POST-PROCESS
+        # Skip process if 'final' exist
         if 'final' in rvc_process_dict:
             final_cover_path = rvc_process_dict['final']
 
             return final_cover_path
         else:
-            if 'inst' not in rvc_process_dict:
-                dl_audio = self.download_audio(self.dl_url, self.video_id)
-                vocals_path, instrumentals_path = self.seperate_song(dl_audio, self.video_id, 'vocalninst')
-
-            if ('main_vocal' not in rvc_process_dict) or ('backup_vocal' not in rvc_process_dict):
-                # Check og vocals file
-                if not vocals_path:
-                    if 'vocals' not in rvc_process_dict:
-                        dl_audio = self.download_audio(self.dl_url, self.video_id)
-                        rvc_process_dict['vocals'] = self.seperate_song(dl_audio, self.video_id, 'vocalninst')
-                    vocals_path = rvc_process_dict['vocals']
-
-                backup_vocals_path, main_vocals_path = self.seperate_song(vocals_path, self.video_id, 'backup')
-
-            if 'dereverb' not in rvc_process_dict:
-                if not main_vocals_path:
-                    main_vocals_path = rvc_process_dict['main_vocal']
-                main_vocals_dereverb_path = self.seperate_song(main_vocals_path, self.video_id, 'dereverb')
-
             if 'rvc' not in rvc_process_dict:
                 if main_vocals_dereverb_path is None:
                     main_vocals_dereverb_path = rvc_process_dict['dereverb']
 
                 # rvc process
-                rvc_result_path = self.voice_change(self.char_model_name, main_vocals_dereverb_path, output_folder, pitch[0],
+                rvc_result_path = self.voice_change(self.char_model_name, main_vocals_dereverb_path, output_folder,
+                                                    pitch[0],
                                                     d_index_rate)
 
             if 'fx' not in rvc_process_dict:
@@ -189,6 +198,7 @@ class BotCommand:
                 ai_vocals_mixed_path = self.add_audio_fx(rvc_result_path,
                                                          reverb_rm_size=0.15, reverb_wet=0.2,
                                                          reverb_dry=0.8, reverb_damping=0.7)
+        # endregion POST-PROCESS
 
         if backup_vocals_path is None:
             backup_vocals_path = rvc_process_dict['backup_vocal']
@@ -215,7 +225,6 @@ class BotCommand:
         #         if file and os.path.exists(file):
         #             os.remove(file)
 
-        # print(final_cover_path)
         # play_audio(result_rvc)
         return final_cover_path
 
@@ -235,7 +244,7 @@ class BotCommand:
             top_vid = search[0]
         dl_url = 'https://www.youtube.com' + top_vid['url_suffix']
         # print("\033[34m" + f"[sing_command.search_audio]: \033[33mfound video on Youtube [{dl_url}]" + "\033[0m")
-        self.print_log("log", "Found video on Youtube", f"[{dl_url}]", print_func_name=True)
+        self.print_log("log", "Found video on Youtube", f"[{dl_url}]")
         video_id = BotCommand.get_youtube_video_id(dl_url)
 
         # print(f"[sing_command.search_audio]: downloaded YouTube video to audio in [{dl_audio}]")
@@ -333,7 +342,7 @@ class BotCommand:
 
             if not os.path.exists(video_id_dir):
                 os.makedirs(video_id_dir)
-                self.print_log("log", "Created audio folder for yt-download!", f"[{video_id_dir}]", True)
+                self.print_log("log", "Created audio folder for yt-download!", f"[{video_id_dir}]")
                 # print(
                 #     "\033[34m" + f"[sing_command.download_audio]: Created audio folder for yt-download! \033[33m[{video_id_dir}]" + "\033[0m")
 
@@ -354,15 +363,25 @@ class BotCommand:
         file_path = os.path.join(custom_dir, name)
 
         if os.path.exists(file_path):
-            self.print_log("log", f"{custom_log} {name} - file is aleardy exist (skip process)",
-                           print_func_name=True)
-            # print(
-            #     "\033[34m" f"[sing_command.check_file_exist]: \033[33m{custom_log} {name} - file is aleardy exist (skip process)" + "\033[0m")
+            self.print_log("log", f"{custom_log} {name} - file is aleardy exist (skip process)")
             return True
         else:
             return False
 
-    def check_rvc_process_exist(self, char_name, pitch, ai_gender_type, index_rate, work_dir):
+    def check_rvc_preprocess_exist(self, work_dir):
+        result_dict = {}
+
+        search_dict_log_list = [['dereverb', '*_DeReverb.wav', 'DeReverb Result'],
+                                ['main_vocal', '*_Vocals_Main.wav', 'Main Vocal Result'],
+                                ['backup_vocal', '*_Vocals_Backup.wav', 'Backup Vocal Result'],
+                                ['inst', '*_Instrumental.wav', 'Instrumental Result'],
+                                ['vocals', '*_Vocals.wav', 'Vocals Result']]
+
+        self.find_list_filename(search_dict_log_list, work_dir, result_dict)
+
+        return result_dict
+
+    def check_rvc_postprocess_exist(self, char_name, pitch, ai_gender_type, index_rate, work_dir):
         result_dict = {}
 
         if pitch[1]:  # if Auto_pitch -> True
@@ -375,109 +394,23 @@ class BotCommand:
                 # og_vocal is existed
                 pitch[0] = get_pitch_with_audio(result_dict["main_vocal"], ai_gender_type, self.auto_pitch_amount)
             else:
-                self.print_log("warning", "no main vocal result found!",
-                               "Trying to get pitch Information from yt-dl original file", True)
-                # print(
-                #     "[sing_command.check_rvc_process_exist] Warning: no main vocal result found! Trying to get pitch Information from yt-dl original file")
+                self.print_log("Error", "No main vocal result found!")
 
-                dl_audio = self.download_audio(self.dl_url, self.video_id)
-                song_input = os.path.join(work_dir, dl_audio)
+                raise RuntimeError("No main Vocal Result Found!")
+        get_pitch_type = ("Auto" if pitch[1] else "Manual")
+        self.print_log("log", "Pitch Info: ", f"[{pitch[0]}, {get_pitch_type}]")
 
-                # search_filename = "*.webm"
-                # _yt_tmp_dict = {}
-                # og_yt_file = self.find_one_filename(work_dir, _yt_tmp_dict, 'yt_path', search_filename,
-                #                                     "Original dl-Youtube wem file")
-                #
-                # if not og_yt_file:
-                #     raise RuntimeError("No Downloaded *.webm File found!")
-                #
-                # pitch[0] = get_pitch_with_audio(_yt_tmp_dict['yt_path'], ai_gender_type)
-
-                pitch[0] = get_pitch_with_audio(song_input, ai_gender_type, self.auto_pitch_amount)
-
-        search_dict_log_list = [['final', f'*{char_name}*Ver*)*_p{pitch[0]}_i{index_rate}', 'Final Cover'],
+        search_dict_log_list = [['final', f'*{char_name}*Ver*)*_p{pitch[0]}_i{index_rate}.mp3', 'Final Cover'],
                                 ['fx', f'*_{char_name}_p{pitch[0]}_i{index_rate}_mixed.wav', 'Audio FX Result'],
-                                ['rvc', f'*_{char_name}_p{pitch[0]}_i{index_rate}.wav', 'RVC Result'],
-                                ['dereverb', '*_DeReverb.wav', 'DeReverb Result'],
-                                ['main_vocal', '*_Vocals_Main.wav', 'Main Vocal Result'],
-                                ['backup_vocal', '*_Vocals_Backup.wav', '*_Vocals_Backup.wav'],
-                                ['inst', '*_Instrumental.wav', 'Instrumental Result'],
-                                ['vocals', '*_Vocals.wav', 'Vocals Result']]
-
+                                ['rvc', f'*_{char_name}_p{pitch[0]}_i{index_rate}.wav', 'RVC Result']]
         self.find_list_filename(search_dict_log_list, work_dir, result_dict)
 
         return result_dict
 
-        # region temp
-        ##############################################
-        #
-        # # Check Final (merged)
-        # search_filename = f"*{char_name}*Ver*)*_p{pitch}_i{index_rate}"
-        # for filename in glob.glob(os.path.join(work_dir, f'{search_filename}.mp3')):
-        #     print(f"Final Cover Music is Aleardy exist!: [\033[33m'{filename}'\033[0m]")
-        #     # Found Final Result
-        #     result_dict['final'] = filename
-        #     break
-        #
-        # # Check FX process
-        # search_filename = f"*_{char_name}_p{pitch}_i{index_rate}_mixed.wav"
-        # for filename in glob.glob(os.path.join(work_dir, f'{search_filename}')):
-        #     print(f"Audio FX Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
-        #     # Found Final Result
-        #     result_dict['fx'] = filename
-        #     break
-        #
-        # # Check RVC process
-        # search_filename = f"*_{char_name}_p{pitch}_i{index_rate}.wav"
-        # for filename in glob.glob(os.path.join(work_dir, f'{search_filename}')):
-        #     print(f"RVC Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
-        #     # Found Final Result
-        #     result_dict['rvc'] = filename
-        #     break
-        #
-        # # Check DeReverb
-        # search_filename = "*_DeReverb.wav"
-        # for filename in glob.glob(os.path.join(work_dir, f'{search_filename}')):
-        #     print(custom_log + f"DeReverb Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
-        #     # Found DeReverb Result
-        #     result_dict['dereverb'] = filename
-        #     break
-        #
-        # # Check Main_Vocal, Backup_Vocal
-        # search_filename = "*_Vocals_Main.wav"
-        # for filename in glob.glob(os.path.join(work_dir, f'{search_filename}')):
-        #     print(custom_log + f"Main Vocal Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
-        #     # Found _Vocals_Main Result
-        #     result_dict['main_vocal'] = filename
-        #     break
-        # search_filename = "*_Vocals_Backup.wav"
-        # for filename in glob.glob(os.path.join(work_dir, f'{search_filename}')):
-        #     print(custom_log + f"Backup Vocal Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
-        #     # Found _Vocals_Backup Result
-        #     result_dict['backup_vocal'] = filename
-        #     break
-        # # Check Vocal, Inst
-        # search_filename = "*_Instrumental.wav"
-        # for filename in glob.glob(os.path.join(work_dir, f'{search_filename}')):
-        #     print(custom_log + f"Instrumental Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
-        #     # Found _Instrumental Result
-        #     result_dict['inst'] = filename
-        #     break
-        # search_filename = "*_Vocals.wav"
-        # for filename in glob.glob(os.path.join(work_dir, f'{search_filename}')):
-        #     print(custom_log + f"Vocals Result is Aleardy exist!: [\033[33m{filename}\033[0m]")
-        #     # Found _Vocals Result
-        #     result_dict['vocals'] = filename
-        #     break
-        #
-        # return result_dict
-        ##############################################
-        # endregion temp
-
     def find_one_filename(self, file_dir, _dict, dict_key_name, name_to_search, log_message):
         for filename in glob.glob(os.path.join(file_dir, name_to_search)):
             # print(log_message + f"is Aleardy exist!: [\033[33m{filename}\033[0m]")
-            self.print_log("log", f"{log_message} is Aleardy exist!", filename, True)
+            self.print_log("log", f"{log_message} is Aleardy exist!", filename)
             _dict.update({dict_key_name: filename})
 
             return True
@@ -532,7 +465,7 @@ class BotCommand:
         del hubert_model, cpt
         gc.collect()
 
-        self.print_log("log", "RVC Vocal Process Done!", print_func_name=True)
+        self.print_log("log", "RVC Vocal Process Done!")
         # print("\033[34m[sing_command.voice_change]: \033[32mRVC Vocal Process Done!\033[0m")
 
         return ai_vocals_path
@@ -555,7 +488,7 @@ class BotCommand:
         if mode == 'vocalninst':
             # Put original_audio as song_input argument
             # [~] Separating Vocals from Instrumental...
-            self.print_log("log", "Separating Vocals from Instrumental...", print_func_name=True)
+            self.print_log("log", "Separating Vocals from Instrumental...")
             # print(str_tmp + "Separating Vocals from Instrumental..." + str_end)
             vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir,
                                                       os.path.join(rvc_required_dir, 'UVR-MDX-NET-Voc_FT.onnx'),
@@ -566,7 +499,7 @@ class BotCommand:
         elif mode == 'backup':
             # Put vocals_path as song_input argument
             # [~] Separating Main Vocals from Backup Vocals...
-            self.print_log("log", "Separating Main Vocals from Backup Vocals...", print_func_name=True)
+            self.print_log("log", "Separating Main Vocals from Backup Vocals...")
             # print(str_tmp + "Separating Main Vocals from Backup Vocals..." + str_end)
 
             backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir,
@@ -577,7 +510,7 @@ class BotCommand:
         elif mode == 'dereverb':
             # Put main_vocals_path as song_input argument
             # [~] Applying DeReverb to Vocals...
-            self.print_log("log", "Applying DeReverb to Vocals...", print_func_name=True)
+            self.print_log("log", "Applying DeReverb to Vocals...")
             # print(str_tmp + "Applying DeReverb to Vocals..." + str_end)
 
             _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir,
@@ -607,7 +540,7 @@ class BotCommand:
                     effected = board(chunk, f.samplerate, reset=False)
                     o.write(effected)
 
-        self.print_log("log", "Add Reverb Process Done!", print_func_name=True)
+        self.print_log("log", "Add Reverb Process Done!")
         # print("\033[34m[sing_command.add_audio_fx]: \033[32mAdd Reverb Process Done!\033[0m")
         return output_path
 
@@ -618,7 +551,7 @@ class BotCommand:
 
         main_vocal_audio.overlay(backup_vocal_audio).overlay(instrumental_audio).export(out_dir, format='mp3')
 
-        self.print_log("log", "Final Merge Process Done!", print_func_name=True)
+        self.print_log("log", "Final Merge Process Done!")
         # print("\033[34m[sing_command.merge_audio]: \033[32mFinal Merge Process Done!\033[0m")
 
     ############################################################################
