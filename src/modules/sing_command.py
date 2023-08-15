@@ -48,13 +48,34 @@ class BotCommand:
         Args:
             char_model_name: Character name of trained model (:py:class:`str`)
             gender_type: 'male' or 'female' (:py:class:`str`)
-
         """
         super().__init__()
         self.logging = True
+
         self.char_model_name = char_model_name
-        self.gender_type = gender_type
+
+        # Pitch Settings
+        self.auto_pitch_bool = True
         self.auto_pitch_amount = 3.0
+        self.gender_type = gender_type
+        self.pitch = 0.0
+
+        # Voice conversion options
+        self.index_rate = 0.5   # Controls how much of the AI Voice's accent to keep in the vocals
+        self.filter_radius = 3  # If >=3; apply median filtering to the harvested pitch result. Can reduce breathness
+        self.rms_mix_rate = 0.25    # Controls how much to use the original vocal's loudness (0) or a fixed loudness (1)
+        self.protect_rate = 0.33    # Protect voiceless consonants and breath sound. Set to 0.5 to disable
+
+        # Volume Settings
+        self.main_gain = 0.0
+        self.backup_gain = 0.0
+        self.music_gain = 0.0
+
+        #Reverb Settings
+        self.room_size = 0.15   # Larger room size -> longer reverb time
+        self.wetness_level = 0.2    # Level of AI vocals with reverb
+        self.dryness_level = 0.8    # Level of AI vocals without reverb
+        self.damping_level = 0.7    # Absorption of high frequencies in the reverb
 
         self.dl_url = ""
         self.video_id = ""
@@ -113,6 +134,22 @@ class BotCommand:
 
     # region [COMMANDS]
     ############################################################################
+    def check_do_command(self, text):
+        cmd_type, cmd_value = self.check_command(text)
+
+        if cmd_type == '!sing':
+            result_cover_path = bot_cmd.do_sing(cmd_value, self.gender_type,
+                                                [self.pitch, self.auto_pitch_bool], self.index_rate)
+            # cover_audio = bot_cmd.do_sing(value, self.gender_type, [0.0, False])
+        elif cmd_type == '!draw':
+            # do_draw(cmd_value)
+            pass
+        elif cmd_type == '!emote':
+            # do_emote(cmd_value)
+            pass
+        else:
+            print("prompt: ", cmd_value)
+
     def check_command(self, text):
         command_prefixes = ['!sing', '!draw', '!emote']
         command_prefix = None
@@ -179,6 +216,7 @@ class BotCommand:
         # Skip process if 'final' exist
         if 'final' in rvc_process_dict:
             final_cover_path = rvc_process_dict['final']
+            BotCommand.fix_uri_to_print(final_cover_path, "!Sing Result Folder")
 
             return final_cover_path
         else:
@@ -196,8 +234,8 @@ class BotCommand:
                     rvc_result_path = rvc_process_dict['rvc']
 
                 ai_vocals_mixed_path = self.add_audio_fx(rvc_result_path,
-                                                         reverb_rm_size=0.15, reverb_wet=0.2,
-                                                         reverb_dry=0.8, reverb_damping=0.7)
+                                                         self.room_size, self.wetness_level,
+                                                         self.dryness_level, self.damping_level)
         # endregion POST-PROCESS
 
         if backup_vocals_path is None:
@@ -208,7 +246,7 @@ class BotCommand:
             ai_vocals_mixed_path = rvc_process_dict['fx']
 
         audios_to_mix = [ai_vocals_mixed_path, backup_vocals_path, instrumentals_path]
-        audio_mix_settings = [0, 0, 0]  # Main Vocal, Backup Vocal, Inst Volume
+        audio_mix_settings = [self.main_gain, self.backup_gain, self.music_gain]  # Main Vocal, Backup Vocal, Inst Volume
 
         # Fix final filename
         final_cover_prefix = instrumentals_path.replace("_Instrumental.wav", ".wav")
@@ -225,7 +263,7 @@ class BotCommand:
         #         if file and os.path.exists(file):
         #             os.remove(file)
 
-        # play_audio(result_rvc)
+        BotCommand.fix_uri_to_print(final_cover_path, "!Sing Result Folder")
         return final_cover_path
 
     ############################################################################
@@ -448,25 +486,24 @@ class BotCommand:
         rvc_model_path, rvc_index_path = BotCommand.get_rvc_model(voice_model)
         device = 'cuda:0'
         config = Config(device, True)
-        # print(config)
+
         hubert_model = load_hubert(device, config.is_half, os.path.join(rvc_required_dir, 'hubert_base.pt'))
         cpt, version, net_g, tgt_sr, vc = get_vc(device, config.is_half, config, rvc_model_path)
 
-        # print(output_path)
         # convert main vocals
         ai_vocals_filename = vocals_path.replace("_Vocals_Main_DeReverb.wav",
                                                  ".wav")  # _Vocals_Main_DeReverb.wav -> .wav
         ai_vocals_path = os.path.join(output_path,
                                       f'{os.path.splitext(os.path.basename(ai_vocals_filename))[0]}_{voice_model}_p{pitch_change}_i{index_rate}.wav')
 
-        rvc_infer(rvc_index_path, index_rate, vocals_path, ai_vocals_path, pitch_change, cpt, version, net_g, tgt_sr,
+        voice_conversion_options = [index_rate, self.filter_radius, self.rms_mix_rate, self.protect_rate]
+        rvc_infer(rvc_index_path, voice_conversion_options,  vocals_path, ai_vocals_path, pitch_change, cpt, version, net_g, tgt_sr,
                   vc,
                   hubert_model)
         del hubert_model, cpt
         gc.collect()
 
         self.print_log("log", "RVC Vocal Process Done!")
-        # print("\033[34m[sing_command.voice_change]: \033[32mRVC Vocal Process Done!\033[0m")
 
         return ai_vocals_path
 
@@ -489,7 +526,6 @@ class BotCommand:
             # Put original_audio as song_input argument
             # [~] Separating Vocals from Instrumental...
             self.print_log("log", "Separating Vocals from Instrumental...")
-            # print(str_tmp + "Separating Vocals from Instrumental..." + str_end)
             vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir,
                                                       os.path.join(rvc_required_dir, 'UVR-MDX-NET-Voc_FT.onnx'),
                                                       song_input, denoise=True, keep_orig=keep_orig)
@@ -500,7 +536,6 @@ class BotCommand:
             # Put vocals_path as song_input argument
             # [~] Separating Main Vocals from Backup Vocals...
             self.print_log("log", "Separating Main Vocals from Backup Vocals...")
-            # print(str_tmp + "Separating Main Vocals from Backup Vocals..." + str_end)
 
             backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir,
                                                            os.path.join(rvc_required_dir, 'UVR_MDXNET_KARA_2.onnx'),
@@ -511,7 +546,6 @@ class BotCommand:
             # Put main_vocals_path as song_input argument
             # [~] Applying DeReverb to Vocals...
             self.print_log("log", "Applying DeReverb to Vocals...")
-            # print(str_tmp + "Applying DeReverb to Vocals..." + str_end)
 
             _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir,
                                                    os.path.join(rvc_required_dir, 'Reverb_HQ_By_FoxJoy.onnx'),
@@ -541,7 +575,6 @@ class BotCommand:
                     o.write(effected)
 
         self.print_log("log", "Add Reverb Process Done!")
-        # print("\033[34m[sing_command.add_audio_fx]: \033[32mAdd Reverb Process Done!\033[0m")
         return output_path
 
     def merge_audio(self, in_audio: list, out_dir, volume_settings: list):
@@ -552,7 +585,6 @@ class BotCommand:
         main_vocal_audio.overlay(backup_vocal_audio).overlay(instrumental_audio).export(out_dir, format='mp3')
 
         self.print_log("log", "Final Merge Process Done!")
-        # print("\033[34m[sing_command.merge_audio]: \033[32mFinal Merge Process Done!\033[0m")
 
     ############################################################################
     # endregion [SoundFX]
@@ -569,13 +601,18 @@ def find_all(dir_path, ext):
 if __name__ == '__main__':
     download_required_models()
 
-    bot_cmd = BotCommand("Kato Megumi", "female")
-    command, value = bot_cmd.check_command("!sing take on me")
+    bot_cmd = BotCommand("Karen Kujou", "female")
+
+    bot_cmd.check_do_command("!sing Snow halation [자막 ⧸ 발음]")
+
+    exit()
+
+    command, value = bot_cmd.check_command("!sing Snow halation [자막 ⧸ 발음]")
 
     # command, value = check_command("!sing idol yoasobi")
     if command == '!sing':
         cover_audio = bot_cmd.do_sing(value, bot_cmd.gender_type)
-        # cover_audio = bot_cmd.do_sing(value, bot_cmd.gender_type, [-12.0, False])
+        # cover_audio = bot_cmd.do_sing(value, bot_cmd.gender_type, [0.0, False])
 
         # cover_audio = do_sing(v_model, value, 'male')
         # cover_audio = do_sing(v_model, value, 'male', [3.0, False])

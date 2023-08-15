@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainGyxGEs.ui'
+## Form generated from reading UI file 'mainqQmXZy.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -23,7 +23,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplicat
     QSizePolicy, QSlider, QSpacerItem, QStackedWidget,
     QTableWidget, QTableWidgetItem, QTextBrowser, QTextEdit,
     QVBoxLayout, QWidget)
-# import resources_rc
+import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -1715,11 +1715,12 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -827, 1172, 1416))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -616, 1183, 1234))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_22 = QVBoxLayout()
+        self.verticalLayout_22.setSpacing(10)
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
         self.verticalLayout_22.setContentsMargins(6, 6, 6, 6)
         self.verticalLayout_29 = QVBoxLayout()
@@ -1863,7 +1864,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_27.addLayout(self.horizontalLayout_21)
 
-        self.verticalSpacer_spk_device = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.verticalSpacer_spk_device = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout_27.addItem(self.verticalSpacer_spk_device)
 
@@ -1873,6 +1874,15 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_29.addLayout(self.verticalLayout_27)
+
+        self.line_audio_page_2 = QFrame(self.scrollAreaWidgetContents_2)
+        self.line_audio_page_2.setObjectName(u"line_audio_page_2")
+        self.line_audio_page_2.setFrameShadow(QFrame.Plain)
+        self.line_audio_page_2.setLineWidth(1)
+        self.line_audio_page_2.setMidLineWidth(0)
+        self.line_audio_page_2.setFrameShape(QFrame.HLine)
+
+        self.verticalLayout_29.addWidget(self.line_audio_page_2)
 
         self.label_4 = QLabel(self.scrollAreaWidgetContents_2)
         self.label_4.setObjectName(u"label_4")
@@ -1919,14 +1929,53 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_22.addLayout(self.verticalLayout_29)
 
-        self.label_7 = QLabel(self.scrollAreaWidgetContents_2)
+        self.verticalLayout_32 = QVBoxLayout()
+        self.verticalLayout_32.setSpacing(6)
+        self.verticalLayout_32.setObjectName(u"verticalLayout_32")
+        self.verticalLayout_32.setContentsMargins(100, 0, 100, 0)
+        self.horizontalGroupBox_4 = QGroupBox(self.scrollAreaWidgetContents_2)
+        self.horizontalGroupBox_4.setObjectName(u"horizontalGroupBox_4")
+        self.horizontalGroupBox_4.setStyleSheet(u"QGroupBox\n"
+"{\n"
+"    font-size: 18px;\n"
+"    font-weight: bold;\n"
+"}")
+        self.horizontalGroupBox_4.setAlignment(Qt.AlignCenter)
+        self.horizontalGroupBox_4.setCheckable(False)
+        self.horizontalLayout_42 = QHBoxLayout(self.horizontalGroupBox_4)
+        self.horizontalLayout_42.setObjectName(u"horizontalLayout_42")
+        self.horizontalLayout_42.setContentsMargins(10, 0, 10, 3)
+        self.verticalLayout_Audio_mixing_2 = QVBoxLayout()
+        self.verticalLayout_Audio_mixing_2.setSpacing(10)
+        self.verticalLayout_Audio_mixing_2.setObjectName(u"verticalLayout_Audio_mixing_2")
+        self.verticalLayout_Audio_mixing_2.setContentsMargins(0, 10, 0, 10)
+        self.horizontalLayout_58 = QHBoxLayout()
+        self.horizontalLayout_58.setSpacing(6)
+        self.horizontalLayout_58.setObjectName(u"horizontalLayout_58")
+        self.horizontalLayout_58.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_57 = QVBoxLayout()
+        self.verticalLayout_57.setObjectName(u"verticalLayout_57")
+        self.verticalLayout_57.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_59 = QHBoxLayout()
+        self.horizontalLayout_59.setSpacing(10)
+        self.horizontalLayout_59.setObjectName(u"horizontalLayout_59")
+        self.horizontalLayout_59.setContentsMargins(-1, 0, -1, 0)
+        self.label_7 = QLabel(self.horizontalGroupBox_4)
         self.label_7.setObjectName(u"label_7")
 
-        self.verticalLayout_22.addWidget(self.label_7)
+        self.horizontalLayout_59.addWidget(self.label_7)
 
-        self.horizontalLayout_10 = QHBoxLayout()
-        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.comboBox_tts_charcter = QComboBox(self.scrollAreaWidgetContents_2)
+        self.horizontalSpacer_32 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_59.addItem(self.horizontalSpacer_32)
+
+
+        self.verticalLayout_57.addLayout(self.horizontalLayout_59)
+
+        self.horizontalLayout_60 = QHBoxLayout()
+        self.horizontalLayout_60.setObjectName(u"horizontalLayout_60")
+        self.horizontalLayout_60.setContentsMargins(-1, 0, -1, 0)
+        self.comboBox_tts_charcter = QComboBox(self.horizontalGroupBox_4)
         self.comboBox_tts_charcter.addItem("")
         self.comboBox_tts_charcter.addItem("")
         self.comboBox_tts_charcter.addItem("")
@@ -1935,17 +1984,37 @@ class Ui_MainWindow(object):
         self.comboBox_tts_charcter.setSizePolicy(sizePolicy1)
         self.comboBox_tts_charcter.setStyleSheet(u"background-color: rgb(33, 37, 43);")
 
-        self.horizontalLayout_10.addWidget(self.comboBox_tts_charcter)
+        self.horizontalLayout_60.addWidget(self.comboBox_tts_charcter)
 
 
-        self.verticalLayout_22.addLayout(self.horizontalLayout_10)
+        self.verticalLayout_57.addLayout(self.horizontalLayout_60)
 
-        self.label_8 = QLabel(self.scrollAreaWidgetContents_2)
+
+        self.horizontalLayout_58.addLayout(self.verticalLayout_57)
+
+        self.verticalLayout_60 = QVBoxLayout()
+        self.verticalLayout_60.setObjectName(u"verticalLayout_60")
+        self.verticalLayout_60.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_61 = QHBoxLayout()
+        self.horizontalLayout_61.setSpacing(10)
+        self.horizontalLayout_61.setObjectName(u"horizontalLayout_61")
+        self.horizontalLayout_61.setContentsMargins(-1, 0, -1, 0)
+        self.label_8 = QLabel(self.horizontalGroupBox_4)
         self.label_8.setObjectName(u"label_8")
 
-        self.verticalLayout_22.addWidget(self.label_8)
+        self.horizontalLayout_61.addWidget(self.label_8)
 
-        self.comboBox_tts_language = QComboBox(self.scrollAreaWidgetContents_2)
+        self.horizontalSpacer_33 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_61.addItem(self.horizontalSpacer_33)
+
+
+        self.verticalLayout_60.addLayout(self.horizontalLayout_61)
+
+        self.horizontalLayout_62 = QHBoxLayout()
+        self.horizontalLayout_62.setObjectName(u"horizontalLayout_62")
+        self.horizontalLayout_62.setContentsMargins(-1, 0, -1, 0)
+        self.comboBox_tts_language = QComboBox(self.horizontalGroupBox_4)
         self.comboBox_tts_language.addItem("")
         self.comboBox_tts_language.addItem("")
         self.comboBox_tts_language.addItem("")
@@ -1954,32 +2023,75 @@ class Ui_MainWindow(object):
         self.comboBox_tts_language.setSizePolicy(sizePolicy1)
         self.comboBox_tts_language.setStyleSheet(u"background-color: rgb(33, 37, 43);")
 
-        self.verticalLayout_22.addWidget(self.comboBox_tts_language)
+        self.horizontalLayout_62.addWidget(self.comboBox_tts_language)
 
-        self.label_9 = QLabel(self.scrollAreaWidgetContents_2)
+
+        self.verticalLayout_60.addLayout(self.horizontalLayout_62)
+
+
+        self.horizontalLayout_58.addLayout(self.verticalLayout_60)
+
+        self.verticalLayout_61 = QVBoxLayout()
+        self.verticalLayout_61.setObjectName(u"verticalLayout_61")
+        self.verticalLayout_61.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_63 = QHBoxLayout()
+        self.horizontalLayout_63.setSpacing(10)
+        self.horizontalLayout_63.setObjectName(u"horizontalLayout_63")
+        self.horizontalLayout_63.setContentsMargins(-1, 0, -1, 0)
+        self.label_9 = QLabel(self.horizontalGroupBox_4)
         self.label_9.setObjectName(u"label_9")
 
-        self.verticalLayout_22.addWidget(self.label_9)
+        self.horizontalLayout_63.addWidget(self.label_9)
 
-        self.comboBox_tts_voice_id = QComboBox(self.scrollAreaWidgetContents_2)
+        self.horizontalSpacer_34 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_63.addItem(self.horizontalSpacer_34)
+
+
+        self.verticalLayout_61.addLayout(self.horizontalLayout_63)
+
+        self.horizontalLayout_64 = QHBoxLayout()
+        self.horizontalLayout_64.setObjectName(u"horizontalLayout_64")
+        self.horizontalLayout_64.setContentsMargins(-1, 0, -1, 0)
+        self.comboBox_tts_voice_id = QComboBox(self.horizontalGroupBox_4)
         self.comboBox_tts_voice_id.addItem("")
         self.comboBox_tts_voice_id.setObjectName(u"comboBox_tts_voice_id")
         sizePolicy1.setHeightForWidth(self.comboBox_tts_voice_id.sizePolicy().hasHeightForWidth())
         self.comboBox_tts_voice_id.setSizePolicy(sizePolicy1)
         self.comboBox_tts_voice_id.setStyleSheet(u"background-color: rgb(33, 37, 43);")
 
-        self.verticalLayout_22.addWidget(self.comboBox_tts_voice_id)
+        self.horizontalLayout_64.addWidget(self.comboBox_tts_voice_id)
 
-        self.verticalLayout_28 = QVBoxLayout()
-        self.verticalLayout_28.setObjectName(u"verticalLayout_28")
-        self.horizontalLayout_13 = QHBoxLayout()
-        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.label_10 = QLabel(self.scrollAreaWidgetContents_2)
+
+        self.verticalLayout_61.addLayout(self.horizontalLayout_64)
+
+
+        self.horizontalLayout_58.addLayout(self.verticalLayout_61)
+
+
+        self.verticalLayout_Audio_mixing_2.addLayout(self.horizontalLayout_58)
+
+        self.horizontalLayout_49 = QHBoxLayout()
+        self.horizontalLayout_49.setSpacing(6)
+        self.horizontalLayout_49.setObjectName(u"horizontalLayout_49")
+        self.horizontalLayout_49.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSpacer_24 = QSpacerItem(150, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_49.addItem(self.horizontalSpacer_24)
+
+        self.verticalLayout_55 = QVBoxLayout()
+        self.verticalLayout_55.setObjectName(u"verticalLayout_55")
+        self.verticalLayout_55.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_50 = QHBoxLayout()
+        self.horizontalLayout_50.setSpacing(10)
+        self.horizontalLayout_50.setObjectName(u"horizontalLayout_50")
+        self.horizontalLayout_50.setContentsMargins(-1, 0, -1, 0)
+        self.label_10 = QLabel(self.horizontalGroupBox_4)
         self.label_10.setObjectName(u"label_10")
 
-        self.horizontalLayout_13.addWidget(self.label_10)
+        self.horizontalLayout_50.addWidget(self.label_10)
 
-        self.lineEdit_voice_volume = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_voice_volume = QLineEdit(self.horizontalGroupBox_4)
         self.lineEdit_voice_volume.setObjectName(u"lineEdit_voice_volume")
         sizePolicy11.setHeightForWidth(self.lineEdit_voice_volume.sizePolicy().hasHeightForWidth())
         self.lineEdit_voice_volume.setSizePolicy(sizePolicy11)
@@ -1988,17 +2100,17 @@ class Ui_MainWindow(object):
         self.lineEdit_voice_volume.setAcceptDrops(True)
         self.lineEdit_voice_volume.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_13.addWidget(self.lineEdit_voice_volume)
+        self.horizontalLayout_50.addWidget(self.lineEdit_voice_volume)
 
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_28 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_13.addItem(self.horizontalSpacer_3)
+        self.horizontalLayout_50.addItem(self.horizontalSpacer_28)
 
-        self.pushButton_tts_volume_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_tts_volume_default = QPushButton(self.horizontalGroupBox_4)
         self.pushButton_tts_volume_default.setObjectName(u"pushButton_tts_volume_default")
         sizePolicy4.setHeightForWidth(self.pushButton_tts_volume_default.sizePolicy().hasHeightForWidth())
         self.pushButton_tts_volume_default.setSizePolicy(sizePolicy4)
-        self.pushButton_tts_volume_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_tts_volume_default.setMinimumSize(QSize(80, 30))
         self.pushButton_tts_volume_default.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
@@ -2013,12 +2125,15 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_13.addWidget(self.pushButton_tts_volume_default)
+        self.horizontalLayout_50.addWidget(self.pushButton_tts_volume_default)
 
 
-        self.verticalLayout_28.addLayout(self.horizontalLayout_13)
+        self.verticalLayout_55.addLayout(self.horizontalLayout_50)
 
-        self.horizontalSlider_voice_volume = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalLayout_51 = QHBoxLayout()
+        self.horizontalLayout_51.setObjectName(u"horizontalLayout_51")
+        self.horizontalLayout_51.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_voice_volume = QSlider(self.horizontalGroupBox_4)
         self.horizontalSlider_voice_volume.setObjectName(u"horizontalSlider_voice_volume")
         self.horizontalSlider_voice_volume.setStyleSheet(u"")
         self.horizontalSlider_voice_volume.setMaximum(200)
@@ -2026,21 +2141,31 @@ class Ui_MainWindow(object):
         self.horizontalSlider_voice_volume.setValue(100)
         self.horizontalSlider_voice_volume.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout_28.addWidget(self.horizontalSlider_voice_volume)
+        self.horizontalLayout_51.addWidget(self.horizontalSlider_voice_volume)
 
 
-        self.verticalLayout_22.addLayout(self.verticalLayout_28)
+        self.verticalLayout_55.addLayout(self.horizontalLayout_51)
 
-        self.verticalLayout_32 = QVBoxLayout()
-        self.verticalLayout_32.setObjectName(u"verticalLayout_32")
-        self.horizontalLayout_14 = QHBoxLayout()
-        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
-        self.label_11 = QLabel(self.scrollAreaWidgetContents_2)
+
+        self.horizontalLayout_49.addLayout(self.verticalLayout_55)
+
+        self.horizontalSpacer_29 = QSpacerItem(100, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_49.addItem(self.horizontalSpacer_29)
+
+        self.verticalLayout_59 = QVBoxLayout()
+        self.verticalLayout_59.setObjectName(u"verticalLayout_59")
+        self.verticalLayout_59.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_56 = QHBoxLayout()
+        self.horizontalLayout_56.setSpacing(10)
+        self.horizontalLayout_56.setObjectName(u"horizontalLayout_56")
+        self.horizontalLayout_56.setContentsMargins(-1, 0, -1, 0)
+        self.label_11 = QLabel(self.horizontalGroupBox_4)
         self.label_11.setObjectName(u"label_11")
 
-        self.horizontalLayout_14.addWidget(self.label_11)
+        self.horizontalLayout_56.addWidget(self.label_11)
 
-        self.lineEdit_voice_speed = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_voice_speed = QLineEdit(self.horizontalGroupBox_4)
         self.lineEdit_voice_speed.setObjectName(u"lineEdit_voice_speed")
         sizePolicy11.setHeightForWidth(self.lineEdit_voice_speed.sizePolicy().hasHeightForWidth())
         self.lineEdit_voice_speed.setSizePolicy(sizePolicy11)
@@ -2049,18 +2174,18 @@ class Ui_MainWindow(object):
         self.lineEdit_voice_speed.setAcceptDrops(True)
         self.lineEdit_voice_speed.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_14.addWidget(self.lineEdit_voice_speed)
+        self.horizontalLayout_56.addWidget(self.lineEdit_voice_speed)
 
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_31 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_14.addItem(self.horizontalSpacer_4)
+        self.horizontalLayout_56.addItem(self.horizontalSpacer_31)
 
-        self.pushButton_spk_default_3 = QPushButton(self.scrollAreaWidgetContents_2)
-        self.pushButton_spk_default_3.setObjectName(u"pushButton_spk_default_3")
-        sizePolicy4.setHeightForWidth(self.pushButton_spk_default_3.sizePolicy().hasHeightForWidth())
-        self.pushButton_spk_default_3.setSizePolicy(sizePolicy4)
-        self.pushButton_spk_default_3.setMinimumSize(QSize(130, 30))
-        self.pushButton_spk_default_3.setStyleSheet(u"QPushButton{\n"
+        self.pushButton_tts_speed_default = QPushButton(self.horizontalGroupBox_4)
+        self.pushButton_tts_speed_default.setObjectName(u"pushButton_tts_speed_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_tts_speed_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_tts_speed_default.setSizePolicy(sizePolicy4)
+        self.pushButton_tts_speed_default.setMinimumSize(QSize(80, 30))
+        self.pushButton_tts_speed_default.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(122, 137, 168);\n"
@@ -2074,33 +2199,53 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_14.addWidget(self.pushButton_spk_default_3)
+        self.horizontalLayout_56.addWidget(self.pushButton_tts_speed_default)
 
 
-        self.verticalLayout_32.addLayout(self.horizontalLayout_14)
+        self.verticalLayout_59.addLayout(self.horizontalLayout_56)
 
-        self.horizontalSlider_voice_speed = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalLayout_57 = QHBoxLayout()
+        self.horizontalLayout_57.setObjectName(u"horizontalLayout_57")
+        self.horizontalLayout_57.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_voice_speed = QSlider(self.horizontalGroupBox_4)
         self.horizontalSlider_voice_speed.setObjectName(u"horizontalSlider_voice_speed")
         self.horizontalSlider_voice_speed.setStyleSheet(u"")
         self.horizontalSlider_voice_speed.setMaximum(200)
         self.horizontalSlider_voice_speed.setValue(100)
         self.horizontalSlider_voice_speed.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout_32.addWidget(self.horizontalSlider_voice_speed)
+        self.horizontalLayout_57.addWidget(self.horizontalSlider_voice_speed)
 
 
-        self.verticalLayout_22.addLayout(self.verticalLayout_32)
+        self.verticalLayout_59.addLayout(self.horizontalLayout_57)
 
-        self.verticalLayout_33 = QVBoxLayout()
-        self.verticalLayout_33.setObjectName(u"verticalLayout_33")
-        self.horizontalLayout_15 = QHBoxLayout()
-        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
-        self.label_12 = QLabel(self.scrollAreaWidgetContents_2)
+
+        self.horizontalLayout_49.addLayout(self.verticalLayout_59)
+
+        self.horizontalSpacer_25 = QSpacerItem(150, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_49.addItem(self.horizontalSpacer_25)
+
+
+        self.verticalLayout_Audio_mixing_2.addLayout(self.horizontalLayout_49)
+
+        self.horizontalLayout_72 = QHBoxLayout()
+        self.horizontalLayout_72.setSpacing(6)
+        self.horizontalLayout_72.setObjectName(u"horizontalLayout_72")
+        self.horizontalLayout_72.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_65 = QVBoxLayout()
+        self.verticalLayout_65.setObjectName(u"verticalLayout_65")
+        self.verticalLayout_65.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_73 = QHBoxLayout()
+        self.horizontalLayout_73.setSpacing(10)
+        self.horizontalLayout_73.setObjectName(u"horizontalLayout_73")
+        self.horizontalLayout_73.setContentsMargins(-1, 0, -1, 0)
+        self.label_12 = QLabel(self.horizontalGroupBox_4)
         self.label_12.setObjectName(u"label_12")
 
-        self.horizontalLayout_15.addWidget(self.label_12)
+        self.horizontalLayout_73.addWidget(self.label_12)
 
-        self.lineEdit_intonation_scale = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_intonation_scale = QLineEdit(self.horizontalGroupBox_4)
         self.lineEdit_intonation_scale.setObjectName(u"lineEdit_intonation_scale")
         sizePolicy11.setHeightForWidth(self.lineEdit_intonation_scale.sizePolicy().hasHeightForWidth())
         self.lineEdit_intonation_scale.setSizePolicy(sizePolicy11)
@@ -2109,17 +2254,17 @@ class Ui_MainWindow(object):
         self.lineEdit_intonation_scale.setAcceptDrops(True)
         self.lineEdit_intonation_scale.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_15.addWidget(self.lineEdit_intonation_scale)
+        self.horizontalLayout_73.addWidget(self.lineEdit_intonation_scale)
 
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_38 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_15.addItem(self.horizontalSpacer_5)
+        self.horizontalLayout_73.addItem(self.horizontalSpacer_38)
 
-        self.pushButton_spk_default_4 = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_spk_default_4 = QPushButton(self.horizontalGroupBox_4)
         self.pushButton_spk_default_4.setObjectName(u"pushButton_spk_default_4")
         sizePolicy4.setHeightForWidth(self.pushButton_spk_default_4.sizePolicy().hasHeightForWidth())
         self.pushButton_spk_default_4.setSizePolicy(sizePolicy4)
-        self.pushButton_spk_default_4.setMinimumSize(QSize(130, 30))
+        self.pushButton_spk_default_4.setMinimumSize(QSize(80, 30))
         self.pushButton_spk_default_4.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
@@ -2134,33 +2279,42 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_15.addWidget(self.pushButton_spk_default_4)
+        self.horizontalLayout_73.addWidget(self.pushButton_spk_default_4)
 
 
-        self.verticalLayout_33.addLayout(self.horizontalLayout_15)
+        self.verticalLayout_65.addLayout(self.horizontalLayout_73)
 
-        self.horizontalSlider_intonation_scale = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalLayout_74 = QHBoxLayout()
+        self.horizontalLayout_74.setObjectName(u"horizontalLayout_74")
+        self.horizontalLayout_74.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_intonation_scale = QSlider(self.horizontalGroupBox_4)
         self.horizontalSlider_intonation_scale.setObjectName(u"horizontalSlider_intonation_scale")
         self.horizontalSlider_intonation_scale.setStyleSheet(u"")
         self.horizontalSlider_intonation_scale.setMaximum(200)
         self.horizontalSlider_intonation_scale.setValue(100)
         self.horizontalSlider_intonation_scale.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout_33.addWidget(self.horizontalSlider_intonation_scale)
+        self.horizontalLayout_74.addWidget(self.horizontalSlider_intonation_scale)
 
 
-        self.verticalLayout_22.addLayout(self.verticalLayout_33)
+        self.verticalLayout_65.addLayout(self.horizontalLayout_74)
 
-        self.verticalLayout_35 = QVBoxLayout()
-        self.verticalLayout_35.setObjectName(u"verticalLayout_35")
-        self.horizontalLayout_17 = QHBoxLayout()
-        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
-        self.label_14 = QLabel(self.scrollAreaWidgetContents_2)
+
+        self.horizontalLayout_72.addLayout(self.verticalLayout_65)
+
+        self.verticalLayout_66 = QVBoxLayout()
+        self.verticalLayout_66.setObjectName(u"verticalLayout_66")
+        self.verticalLayout_66.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_75 = QHBoxLayout()
+        self.horizontalLayout_75.setSpacing(10)
+        self.horizontalLayout_75.setObjectName(u"horizontalLayout_75")
+        self.horizontalLayout_75.setContentsMargins(-1, 0, -1, 0)
+        self.label_14 = QLabel(self.horizontalGroupBox_4)
         self.label_14.setObjectName(u"label_14")
 
-        self.horizontalLayout_17.addWidget(self.label_14)
+        self.horizontalLayout_75.addWidget(self.label_14)
 
-        self.lineEdit_pre_phoneme_length = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_pre_phoneme_length = QLineEdit(self.horizontalGroupBox_4)
         self.lineEdit_pre_phoneme_length.setObjectName(u"lineEdit_pre_phoneme_length")
         sizePolicy11.setHeightForWidth(self.lineEdit_pre_phoneme_length.sizePolicy().hasHeightForWidth())
         self.lineEdit_pre_phoneme_length.setSizePolicy(sizePolicy11)
@@ -2169,17 +2323,17 @@ class Ui_MainWindow(object):
         self.lineEdit_pre_phoneme_length.setAcceptDrops(True)
         self.lineEdit_pre_phoneme_length.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_17.addWidget(self.lineEdit_pre_phoneme_length)
+        self.horizontalLayout_75.addWidget(self.lineEdit_pre_phoneme_length)
 
-        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_39 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_17.addItem(self.horizontalSpacer_7)
+        self.horizontalLayout_75.addItem(self.horizontalSpacer_39)
 
-        self.pushButton_spk_default_6 = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_spk_default_6 = QPushButton(self.horizontalGroupBox_4)
         self.pushButton_spk_default_6.setObjectName(u"pushButton_spk_default_6")
         sizePolicy4.setHeightForWidth(self.pushButton_spk_default_6.sizePolicy().hasHeightForWidth())
         self.pushButton_spk_default_6.setSizePolicy(sizePolicy4)
-        self.pushButton_spk_default_6.setMinimumSize(QSize(130, 30))
+        self.pushButton_spk_default_6.setMinimumSize(QSize(80, 30))
         self.pushButton_spk_default_6.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
@@ -2194,33 +2348,42 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_17.addWidget(self.pushButton_spk_default_6)
+        self.horizontalLayout_75.addWidget(self.pushButton_spk_default_6)
 
 
-        self.verticalLayout_35.addLayout(self.horizontalLayout_17)
+        self.verticalLayout_66.addLayout(self.horizontalLayout_75)
 
-        self.horizontalSlider_pre_phoneme_length = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalLayout_76 = QHBoxLayout()
+        self.horizontalLayout_76.setObjectName(u"horizontalLayout_76")
+        self.horizontalLayout_76.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_pre_phoneme_length = QSlider(self.horizontalGroupBox_4)
         self.horizontalSlider_pre_phoneme_length.setObjectName(u"horizontalSlider_pre_phoneme_length")
         self.horizontalSlider_pre_phoneme_length.setStyleSheet(u"")
         self.horizontalSlider_pre_phoneme_length.setMaximum(200)
         self.horizontalSlider_pre_phoneme_length.setValue(100)
         self.horizontalSlider_pre_phoneme_length.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout_35.addWidget(self.horizontalSlider_pre_phoneme_length)
+        self.horizontalLayout_76.addWidget(self.horizontalSlider_pre_phoneme_length)
 
 
-        self.verticalLayout_22.addLayout(self.verticalLayout_35)
+        self.verticalLayout_66.addLayout(self.horizontalLayout_76)
 
-        self.verticalLayout_34 = QVBoxLayout()
-        self.verticalLayout_34.setObjectName(u"verticalLayout_34")
-        self.horizontalLayout_16 = QHBoxLayout()
-        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
-        self.label_13 = QLabel(self.scrollAreaWidgetContents_2)
+
+        self.horizontalLayout_72.addLayout(self.verticalLayout_66)
+
+        self.verticalLayout_67 = QVBoxLayout()
+        self.verticalLayout_67.setObjectName(u"verticalLayout_67")
+        self.verticalLayout_67.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_77 = QHBoxLayout()
+        self.horizontalLayout_77.setSpacing(10)
+        self.horizontalLayout_77.setObjectName(u"horizontalLayout_77")
+        self.horizontalLayout_77.setContentsMargins(-1, 0, -1, 0)
+        self.label_13 = QLabel(self.horizontalGroupBox_4)
         self.label_13.setObjectName(u"label_13")
 
-        self.horizontalLayout_16.addWidget(self.label_13)
+        self.horizontalLayout_77.addWidget(self.label_13)
 
-        self.lineEdit_post_phoneme_length = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_post_phoneme_length = QLineEdit(self.horizontalGroupBox_4)
         self.lineEdit_post_phoneme_length.setObjectName(u"lineEdit_post_phoneme_length")
         sizePolicy11.setHeightForWidth(self.lineEdit_post_phoneme_length.sizePolicy().hasHeightForWidth())
         self.lineEdit_post_phoneme_length.setSizePolicy(sizePolicy11)
@@ -2229,17 +2392,17 @@ class Ui_MainWindow(object):
         self.lineEdit_post_phoneme_length.setAcceptDrops(True)
         self.lineEdit_post_phoneme_length.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_16.addWidget(self.lineEdit_post_phoneme_length)
+        self.horizontalLayout_77.addWidget(self.lineEdit_post_phoneme_length)
 
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_40 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_16.addItem(self.horizontalSpacer_6)
+        self.horizontalLayout_77.addItem(self.horizontalSpacer_40)
 
-        self.pushButton_spk_default_5 = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_spk_default_5 = QPushButton(self.horizontalGroupBox_4)
         self.pushButton_spk_default_5.setObjectName(u"pushButton_spk_default_5")
         sizePolicy4.setHeightForWidth(self.pushButton_spk_default_5.sizePolicy().hasHeightForWidth())
         self.pushButton_spk_default_5.setSizePolicy(sizePolicy4)
-        self.pushButton_spk_default_5.setMinimumSize(QSize(130, 30))
+        self.pushButton_spk_default_5.setMinimumSize(QSize(80, 30))
         self.pushButton_spk_default_5.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
@@ -2254,22 +2417,40 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_16.addWidget(self.pushButton_spk_default_5)
+        self.horizontalLayout_77.addWidget(self.pushButton_spk_default_5)
 
 
-        self.verticalLayout_34.addLayout(self.horizontalLayout_16)
+        self.verticalLayout_67.addLayout(self.horizontalLayout_77)
 
-        self.horizontalSlider_post_phoneme_length = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalLayout_78 = QHBoxLayout()
+        self.horizontalLayout_78.setObjectName(u"horizontalLayout_78")
+        self.horizontalLayout_78.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_post_phoneme_length = QSlider(self.horizontalGroupBox_4)
         self.horizontalSlider_post_phoneme_length.setObjectName(u"horizontalSlider_post_phoneme_length")
         self.horizontalSlider_post_phoneme_length.setStyleSheet(u"")
         self.horizontalSlider_post_phoneme_length.setMaximum(200)
         self.horizontalSlider_post_phoneme_length.setValue(100)
         self.horizontalSlider_post_phoneme_length.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout_34.addWidget(self.horizontalSlider_post_phoneme_length)
+        self.horizontalLayout_78.addWidget(self.horizontalSlider_post_phoneme_length)
 
 
-        self.verticalLayout_22.addLayout(self.verticalLayout_34)
+        self.verticalLayout_67.addLayout(self.horizontalLayout_78)
+
+
+        self.horizontalLayout_72.addLayout(self.verticalLayout_67)
+
+
+        self.verticalLayout_Audio_mixing_2.addLayout(self.horizontalLayout_72)
+
+
+        self.horizontalLayout_42.addLayout(self.verticalLayout_Audio_mixing_2)
+
+
+        self.verticalLayout_32.addWidget(self.horizontalGroupBox_4)
+
+
+        self.verticalLayout_22.addLayout(self.verticalLayout_32)
 
         self.line_audio_page = QFrame(self.scrollAreaWidgetContents_2)
         self.line_audio_page.setObjectName(u"line_audio_page")
@@ -2354,6 +2535,68 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_45.addLayout(self.horizontalLayout_35)
 
+        self.verticalLayout_48 = QVBoxLayout()
+        self.verticalLayout_48.setObjectName(u"verticalLayout_48")
+        self.verticalLayout_48.setContentsMargins(10, 5, 10, 5)
+        self.horizontalLayout_38 = QHBoxLayout()
+        self.horizontalLayout_38.setSpacing(10)
+        self.horizontalLayout_38.setObjectName(u"horizontalLayout_38")
+        self.horizontalLayout_38.setContentsMargins(-1, 0, -1, 0)
+        self.label_36 = QLabel(self.horizontalGroupBox)
+        self.label_36.setObjectName(u"label_36")
+        self.label_36.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_38.addWidget(self.label_36)
+
+        self.lineEdit_rvc_index_rate = QLineEdit(self.horizontalGroupBox)
+        self.lineEdit_rvc_index_rate.setObjectName(u"lineEdit_rvc_index_rate")
+        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_index_rate.sizePolicy().hasHeightForWidth())
+        self.lineEdit_rvc_index_rate.setSizePolicy(sizePolicy11)
+        self.lineEdit_rvc_index_rate.setMinimumSize(QSize(60, 0))
+        self.lineEdit_rvc_index_rate.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_rvc_index_rate.setAcceptDrops(True)
+        self.lineEdit_rvc_index_rate.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_38.addWidget(self.lineEdit_rvc_index_rate)
+
+        self.label_37 = QLabel(self.horizontalGroupBox)
+        self.label_37.setObjectName(u"label_37")
+        self.label_37.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.horizontalLayout_38.addWidget(self.label_37)
+
+        self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_38.addItem(self.horizontalSpacer_23)
+
+
+        self.verticalLayout_48.addLayout(self.horizontalLayout_38)
+
+        self.horizontalLayout_40 = QHBoxLayout()
+        self.horizontalLayout_40.setObjectName(u"horizontalLayout_40")
+        self.horizontalLayout_40.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_rvc_pitch_2 = QSlider(self.horizontalGroupBox)
+        self.horizontalSlider_rvc_pitch_2.setObjectName(u"horizontalSlider_rvc_pitch_2")
+        self.horizontalSlider_rvc_pitch_2.setStyleSheet(u"")
+        self.horizontalSlider_rvc_pitch_2.setMinimum(0)
+        self.horizontalSlider_rvc_pitch_2.setMaximum(10)
+        self.horizontalSlider_rvc_pitch_2.setSingleStep(1)
+        self.horizontalSlider_rvc_pitch_2.setPageStep(1)
+        self.horizontalSlider_rvc_pitch_2.setValue(0)
+        self.horizontalSlider_rvc_pitch_2.setOrientation(Qt.Horizontal)
+
+        self.horizontalLayout_40.addWidget(self.horizontalSlider_rvc_pitch_2)
+
+
+        self.verticalLayout_48.addLayout(self.horizontalLayout_40)
+
+
+        self.verticalLayout_45.addLayout(self.verticalLayout_48)
+
+        self.verticalSpacer_12 = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_45.addItem(self.verticalSpacer_12)
+
         self.label_20 = QLabel(self.horizontalGroupBox)
         self.label_20.setObjectName(u"label_20")
         self.label_20.setAlignment(Qt.AlignCenter)
@@ -2417,10 +2660,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_45.addLayout(self.horizontalLayout_33)
 
-        self.verticalSpacer_7 = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_45.addItem(self.verticalSpacer_7)
-
         self.horizontalGroupBox_2 = QGroupBox(self.horizontalGroupBox)
         self.horizontalGroupBox_2.setObjectName(u"horizontalGroupBox_2")
         self.horizontalGroupBox_2.setStyleSheet(u"QGroupBox\n"
@@ -2429,7 +2668,9 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "}")
         self.horizontalGroupBox_2.setAlignment(Qt.AlignCenter)
+        self.horizontalGroupBox_2.setFlat(False)
         self.horizontalGroupBox_2.setCheckable(True)
+        self.horizontalGroupBox_2.setChecked(False)
         self.horizontalLayout_39 = QHBoxLayout(self.horizontalGroupBox_2)
         self.horizontalLayout_39.setObjectName(u"horizontalLayout_39")
         self.horizontalLayout_39.setContentsMargins(0, 0, 0, 3)
@@ -2499,63 +2740,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_45.addWidget(self.horizontalGroupBox_2)
 
-        self.verticalLayout_48 = QVBoxLayout()
-        self.verticalLayout_48.setObjectName(u"verticalLayout_48")
-        self.verticalLayout_48.setContentsMargins(10, 5, 10, 5)
-        self.horizontalLayout_38 = QHBoxLayout()
-        self.horizontalLayout_38.setSpacing(10)
-        self.horizontalLayout_38.setObjectName(u"horizontalLayout_38")
-        self.horizontalLayout_38.setContentsMargins(-1, 0, -1, 0)
-        self.label_36 = QLabel(self.horizontalGroupBox)
-        self.label_36.setObjectName(u"label_36")
-        self.label_36.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.verticalSpacer_7 = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
-        self.horizontalLayout_38.addWidget(self.label_36)
-
-        self.lineEdit_rvc_index_rate = QLineEdit(self.horizontalGroupBox)
-        self.lineEdit_rvc_index_rate.setObjectName(u"lineEdit_rvc_index_rate")
-        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_index_rate.sizePolicy().hasHeightForWidth())
-        self.lineEdit_rvc_index_rate.setSizePolicy(sizePolicy11)
-        self.lineEdit_rvc_index_rate.setMinimumSize(QSize(60, 0))
-        self.lineEdit_rvc_index_rate.setMaximumSize(QSize(60, 16777215))
-        self.lineEdit_rvc_index_rate.setAcceptDrops(True)
-        self.lineEdit_rvc_index_rate.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_38.addWidget(self.lineEdit_rvc_index_rate)
-
-        self.label_37 = QLabel(self.horizontalGroupBox)
-        self.label_37.setObjectName(u"label_37")
-        self.label_37.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-
-        self.horizontalLayout_38.addWidget(self.label_37)
-
-        self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_38.addItem(self.horizontalSpacer_23)
-
-
-        self.verticalLayout_48.addLayout(self.horizontalLayout_38)
-
-        self.horizontalLayout_40 = QHBoxLayout()
-        self.horizontalLayout_40.setObjectName(u"horizontalLayout_40")
-        self.horizontalLayout_40.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalSlider_rvc_pitch_2 = QSlider(self.horizontalGroupBox)
-        self.horizontalSlider_rvc_pitch_2.setObjectName(u"horizontalSlider_rvc_pitch_2")
-        self.horizontalSlider_rvc_pitch_2.setStyleSheet(u"")
-        self.horizontalSlider_rvc_pitch_2.setMinimum(0)
-        self.horizontalSlider_rvc_pitch_2.setMaximum(10)
-        self.horizontalSlider_rvc_pitch_2.setSingleStep(1)
-        self.horizontalSlider_rvc_pitch_2.setPageStep(1)
-        self.horizontalSlider_rvc_pitch_2.setValue(0)
-        self.horizontalSlider_rvc_pitch_2.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout_40.addWidget(self.horizontalSlider_rvc_pitch_2)
-
-
-        self.verticalLayout_48.addLayout(self.horizontalLayout_40)
-
-
-        self.verticalLayout_45.addLayout(self.verticalLayout_48)
+        self.verticalLayout_45.addItem(self.verticalSpacer_7)
 
         self.horizontalGroupBox_3 = QGroupBox(self.horizontalGroupBox)
         self.horizontalGroupBox_3.setObjectName(u"horizontalGroupBox_3")
@@ -3368,7 +3555,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 362, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -4077,7 +4264,8 @@ class Ui_MainWindow(object):
         self.comboBox_spk_device.setItemText(2, QCoreApplication.translate("MainWindow", u"Spk 3", None))
 
         self.pushButton_spk_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Character</span></p></body></html>", None))
+        self.horizontalGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"TTS Settings", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Character </span><span style=\" font-size:9pt;\">(VITS Model)</span></p></body></html>", None))
         self.comboBox_tts_charcter.setItemText(0, QCoreApplication.translate("MainWindow", u"Character 1", None))
         self.comboBox_tts_charcter.setItemText(1, QCoreApplication.translate("MainWindow", u"Character 2", None))
         self.comboBox_tts_charcter.setItemText(2, QCoreApplication.translate("MainWindow", u"Character 3", None))
@@ -4088,24 +4276,24 @@ class Ui_MainWindow(object):
         self.comboBox_tts_language.setItemText(2, QCoreApplication.translate("MainWindow", u"Korean", None))
 
         self.comboBox_tts_language.setCurrentText(QCoreApplication.translate("MainWindow", u"English", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Voice ID (Index)</span></p></body></html>", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Voice ID </span><span style=\" font-size:9pt;\">(Index)</span></p></body></html>", None))
         self.comboBox_tts_voice_id.setItemText(0, QCoreApplication.translate("MainWindow", u"0 - Char_name", None))
 
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Voice Volume</span></p></body></html>", None))
         self.lineEdit_voice_volume.setText(QCoreApplication.translate("MainWindow", u"100 %", None))
-        self.pushButton_tts_volume_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.pushButton_tts_volume_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Voice Speed</span></p></body></html>", None))
         self.lineEdit_voice_speed.setText(QCoreApplication.translate("MainWindow", u"1.0", None))
-        self.pushButton_spk_default_3.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.pushButton_tts_speed_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Intonation Scale</span></p></body></html>", None))
         self.lineEdit_intonation_scale.setText(QCoreApplication.translate("MainWindow", u"1.0", None))
-        self.pushButton_spk_default_4.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.pushButton_spk_default_4.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Pre Phoneme Length</span></p></body></html>", None))
         self.lineEdit_pre_phoneme_length.setText(QCoreApplication.translate("MainWindow", u"1.0", None))
-        self.pushButton_spk_default_6.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.pushButton_spk_default_6.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Post Phoneme Length</span></p></body></html>", None))
         self.lineEdit_post_phoneme_length.setText(QCoreApplication.translate("MainWindow", u"1.0", None))
-        self.pushButton_spk_default_5.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.pushButton_spk_default_5.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.horizontalGroupBox.setTitle(QCoreApplication.translate("MainWindow", u"AI Sining [RVC] Settings", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">RVC Model Found:</span></p></body></html>", None))
         self.textEdit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -4117,6 +4305,9 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Kato Megumi Test</p></body></html>", None))
         self.textEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Not Found", None))
+        self.label_36.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Index Rate</span></p></body></html>", None))
+        self.lineEdit_rvc_index_rate.setText(QCoreApplication.translate("MainWindow", u"0.0", None))
+        self.label_37.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt;\">Controls how much of the AI voice's accent to keep in the vocals</span></p></body></html>", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Choose Gender type of your RVC Model, ai cover song will generated </span><span style=\" font-weight:700; color:#00ff00;\">automatically</span><span style=\" font-weight:700;\"> adjust pitch by this choose.</span></p></body></html>", None))
         self.radioButton_3.setText(QCoreApplication.translate("MainWindow", u"Female", None))
         self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"Male", None))
@@ -4127,9 +4318,6 @@ class Ui_MainWindow(object):
         self.label_35.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\">(Selected <span style=\" font-weight:700;\">Gender Type</span> will be <span style=\" font-weight:700; color:#00ff00;\">unnecessary</span> If you use this option)</p></body></html>", None))
         self.label_33.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Pitch</span></p></body></html>", None))
         self.lineEdit_rvc_pitch.setText(QCoreApplication.translate("MainWindow", u"0.0", None))
-        self.label_36.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Index Rate</span></p></body></html>", None))
-        self.lineEdit_rvc_index_rate.setText(QCoreApplication.translate("MainWindow", u"0.0", None))
-        self.label_37.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt;\">Controls how much of the AI voice's accent to keep in the vocals</span></p></body></html>", None))
         self.horizontalGroupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Audio Mixing Options", None))
         self.label_38.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Volume Changes (decibels)</span></p></body></html>", None))
         self.label_42.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Main Vocal</span></p></body></html>", None))
