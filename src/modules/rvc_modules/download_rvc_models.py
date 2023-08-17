@@ -42,18 +42,18 @@ def download_required_models():
         if not check_files(_model, BASE_DIR):
             mod_print(f'Downloading {_model}...')
             dl_model(MDX_DOWNLOAD_LINK, _model, BASE_DIR)
-        else:
-            mod_print(f'{_model} Found...')
+        # else:
+        #     mod_print(f'{_model} Found...')
 
     _rvc_model_names = ['hubert_base.pt', 'rmvpe.pt']
     for _model in _rvc_model_names:
         if not check_files(_model, BASE_DIR):
             mod_print(f'Downloading {_model}...')
             dl_model(RVC_DOWNLOAD_LINK, _model, BASE_DIR)
-        else:
-            mod_print(f'{_model} Found...')
+        # else:
+        #     mod_print(f'{_model} Found...')
 
-    mod_print('All RVC required models are downloaded!')
+    mod_print(f'All RVC required models are downloaded! : {_mdx_model_names} + {_rvc_model_names}')
 
 
 if __name__ == '__main__':

@@ -1,10 +1,12 @@
 import os
-import re
-
 import pyaudio
-import sounddevice as sd
 
-if __name__ == '__main__':
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"   # hide pygame print
+
+import pygame   # noqa: E402
+import pygame._sdl2 as sdl2_audio  # noqa
+
+if __name__ == '__main__' or "modules" not in __name__:
     from device import *
 else:
     from .device import *
@@ -22,13 +24,14 @@ class AudioDevice:
     mic_list: list  # List of MicDevice - List of Mics
     speaker_list: list  # SpeakerDevice - Selected Speaker
 
-    def __init__(self, mode="normal"):
+    def __init__(self):
         self.device_list = []
         self.mic_list = []
         self.speaker_list = []
-        self.get_all_device(mode)
-        self.set_selected_device_to_default()
-        self.init_selected_device()
+        self.selected_speaker = SpeakerDevice()
+        self.selected_mic = MicDevice()
+        self.get_all_device()
+        # self.set_selected_device_to_default()
         # self.get_spk_mic_list("compact")
 
     def clear_all_lists(self):
@@ -36,96 +39,81 @@ class AudioDevice:
         self.mic_list.clear()
         self.speaker_list.clear()
 
-    def get_all_device(self, mode="normal"):
-        q_list = sd.query_devices()
+    def get_all_device(self):
         self.clear_all_lists()
 
-        str_list = repr(q_list).split('\n')
-        first_seen_driver = None
-        # Split List type with string condition
-        for item in str_list:
-            isDefault = False
+        mic_list = self.get_devices(capture_devices=True)
+        spk_list = self.get_devices(capture_devices=False)
 
-            name_match = re.search(r'(\d+)(.*)', item)
-            index_str = name_match.group(1)  # index
-            remain_str = name_match.group(2)
+        p = pyaudio.PyAudio()
+        d_mic = p.get_default_input_device_info()
+        d_spk = p.get_default_output_device_info()
 
-            start_str = item[0]  # isDefault ['>' input, '<' output, ' ' not default]
+        for i, mic in enumerate(mic_list):
+            isDef = False
+            if d_mic['name'] in mic:
+                # print(f"default mic: {mic}")
+                isDef = True
 
-            name_with_driver = ""
+            _dvc = MicDevice(isDef, i, mic, 2, 0, "SDL2")
 
-            inout_info = ""
-            in_number = 0
-            out_number = 0
-            device: Device
+            if isDef:
+                self.default_mic = _dvc
 
-            # split name, inout_info
-            match = re.search(r'^(.*?)\s*\((\d+)\s*in,\s*(\d+)\s*out\)$', remain_str)
-            if match:
-                name_with_driver = match.group(1)  # name
-                in_number = int(match.group(2))  # input_count
-                out_number = int(match.group(3))  # output_count
-            else:
-                name_with_driver = ""
-                in_number = 0
-                out_number = 0
-                print("Error [Audio Device Manager]: Could not find device information")
+            self.mic_list.append(_dvc)
+            self.device_list.append(_dvc)
 
-            if '>' in start_str or '<' in start_str:
-                # default device"
-                isDefault = True
+        for i, spk in enumerate(spk_list):
+            isDef = False
+            if d_spk['name'] in spk:
+                # print(f"default spk: {spk}")
+                isDef = True
 
-            split_string = name_with_driver.split(',')
-            split_string = [s.strip() for s in split_string]
-            result_name = split_string[0]
-            driver = split_string[1]
+            _dvc = SpeakerDevice(isDef, i, spk, 0, 2, "SDL2")
 
-            if first_seen_driver is None:
-                first_seen_driver = driver
-            if mode == "compact" and driver != first_seen_driver:
-                continue
+            if isDef:
+                self.default_speaker = _dvc
 
-            if in_number > 0:
-                device = MicDevice(isDefault, int(index_str), result_name, in_number, out_number, driver)
+            self.speaker_list.append(_dvc)
+            self.device_list.append(_dvc)
 
-                self.mic_list.append(device)
-            else:
-                device = SpeakerDevice(isDefault, int(index_str), result_name, in_number, out_number, driver)
-                self.speaker_list.append(device)
+    def set_selected_mic_index(self, index):
+        self.selected_mic = self.mic_list[index]
 
-            self.device_list.append(device)
+    def set_selected_speaker_index(self, index):
+        self.selected_speaker = self.speaker_list[index]
 
     def set_selected_mic(self, name):
         for item in self.mic_list:
-            if item.name == name:
-                if self.selected_mic.input_count == 0:
+            if name in item.name:
+                if item.input_count == 0:
                     print(
-                        f"Error [Audio Device]: trying to select {self.selected_mic.input_count} input channel device to Mic")
+                        f"\033[31mError [Audio Device]: trying to select {self.selected_mic.input_count} input channel device to Mic: {item.name}\033[0m")
                     return None
 
                 self.selected_mic = item
                 return item
-        print(f"Error [Audio Device]: Could not find any Mic Device with given name: {name}")
+        print(f"\033[31mError [Audio Device]: Could not find any Mic Device with given name: {name}\033[0m")
 
     def set_selected_speaker(self, name):
         for item in self.speaker_list:
-            if item.name == name:
-                if self.selected_speaker.output_count == 0:
+            if name in item.name:
+                if item.output_count == 0:
                     print(
-                        f"Error [Audio Device]: trying to select {self.selected_speaker.output_count} output channel device to Speaker")
+                        f"\033[31mError [Audio Device]: trying to select {self.selected_speaker.output_count} output channel device to Speaker: {item.name}\033[0m")
                     return None
 
                 self.selected_speaker = item
                 return item
 
-        print(f"Error [Audio Device]: Could not find any Speaker Device with given index: {name}")
+        print(f"\033[31mError [Audio Device]: Could not find any Speaker Device with given index: {name}\033[0m")
 
     def get_default_mic(self):
         for device_info in self.mic_list:
             if device_info.isDefault:
                 return device_info
 
-        print("Error [Audio Device Manager]: Could not find any default Mic")
+        print("\033[31mError [Audio Device Manager]: Could not find any default Mic\033[0m")
         return None
 
     def get_default_speaker(self):
@@ -133,18 +121,23 @@ class AudioDevice:
             if device_info.isDefault:
                 return device_info
 
-        print("Error [Audio Device Manager]: Could not find any default Speaker")
+        print("\033[31mError [Audio Device Manager]: Could not find any default Speaker\033[0m")
         return None
 
     def set_selected_device_to_default(self):
         self.selected_mic = self.get_default_mic()
         self.selected_speaker = self.get_default_speaker()
 
-    def init_selected_device(self):
-        if self.selected_mic is None or self.selected_speaker is None:
-            self.set_selected_device_to_default()
-
     # noinspection PyMethodMayBeStatic
+    def get_devices(self, capture_devices: bool = False):
+        init_by_me = not pygame.mixer.get_init()
+        if init_by_me:
+            pygame.mixer.init()
+        devices = tuple(sdl2_audio.get_audio_device_names(capture_devices))
+        if init_by_me:
+            pygame.mixer.quit()
+        return devices
+
     def get_mic_name_list(self):
         str_list = []
         for item in self.mic_list:
@@ -160,26 +153,35 @@ class AudioDevice:
         return str_list
 
     def __str__(self):
+        _line_str = '\033[33m================================================================\033[0m'
+        _split_str = '\033[34m----------------------------------------------------------------\033[0m'
         # Test print
-        result_str = 'mic_list:'
+        result_str = f'{_line_str}\n'
+        result_str += 'mic_list:'
 
         for mic_info in self.mic_list:
             # print("*"+repr(mic_info))
             result_str = result_str + '\n' + repr(mic_info)
 
-        result_str = result_str + '\n\n' + "speaker_list:"
+        result_str = result_str + f'\n{_split_str}\n' + "speaker_list:"
 
         for speaker_info in self.speaker_list:
             # print(speaker_info)
             result_str = result_str + '\n' + repr(speaker_info)
+
+        result_str += f'\n{_line_str}'
         return result_str
 
 
 if __name__ == '__main__':
-    newAudDevice = AudioDevice("compact")
+    newAudDevice = AudioDevice()
+    newAudDevice.set_selected_speaker("VoiceMeeter")
+    print(newAudDevice)
+    print(newAudDevice.selected_speaker)
+    # newAudDevice.get_all_device()
 
     # newAudDevice.init_selected_device()
     # newAudDevice.load_device_info()
     # newAudDevice.load_device_info()
     # newAudDevice.set_selected_mic()
-    print(newAudDevice.get_speaker_name_list())
+    # print(newAudDevice.get_speaker_name_list())

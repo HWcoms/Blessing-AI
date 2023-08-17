@@ -24,6 +24,11 @@ from pydub import AudioSegment
 # Debug
 import inspect
 
+# Play
+from aud_device_manager import AudioDevice
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"   # hide pygame print
+import pygame                                       # noqa: E402
+
 root_folder = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 rvc_required_dir = os.path.join(root_folder, 'src', 'Models', 'rvc_model')  # MDX, RVC Pretrained models
@@ -52,6 +57,8 @@ class BotCommand:
         super().__init__()
         self.logging = True
 
+        self.device_id = 0  # Speaker ID
+        self.device_name = ""
         self.char_model_name = char_model_name
 
         # Pitch Settings
@@ -61,27 +68,29 @@ class BotCommand:
         self.pitch = 0.0
 
         # Voice conversion options
-        self.index_rate = 0.5   # Controls how much of the AI Voice's accent to keep in the vocals
+        self.index_rate = 0.5  # Controls how much of the AI Voice's accent to keep in the vocals
         self.filter_radius = 3  # If >=3; apply median filtering to the harvested pitch result. Can reduce breathness
-        self.rms_mix_rate = 0.25    # Controls how much to use the original vocal's loudness (0) or a fixed loudness (1)
-        self.protect_rate = 0.33    # Protect voiceless consonants and breath sound. Set to 0.5 to disable
+        self.rms_mix_rate = 0.25  # Controls how much to use the original vocal's loudness (0) or a fixed loudness (1)
+        self.protect_rate = 0.33  # Protect voiceless consonants and breath sound. Set to 0.5 to disable
 
         # Volume Settings
         self.main_gain = 0.0
         self.backup_gain = 0.0
         self.music_gain = 0.0
+        self.play_volume = 0.1
 
-        #Reverb Settings
-        self.room_size = 0.15   # Larger room size -> longer reverb time
-        self.wetness_level = 0.2    # Level of AI vocals with reverb
-        self.dryness_level = 0.8    # Level of AI vocals without reverb
-        self.damping_level = 0.7    # Absorption of high frequencies in the reverb
+        # Reverb Settings
+        self.room_size = 0.15  # Larger room size -> longer reverb time
+        self.wetness_level = 0.2  # Level of AI vocals with reverb
+        self.dryness_level = 0.8  # Level of AI vocals without reverb
+        self.damping_level = 0.7  # Absorption of high frequencies in the reverb
 
         self.dl_url = ""
         self.video_id = ""
 
         self.final_result_path = ""
         self.command_done = False
+        self.play_done = False
 
     # region [LOG]
     ############################################################################
@@ -106,11 +115,11 @@ class BotCommand:
         elif log_type == "error":
             _first_col = "\033[31m"
             _second_col = "\033[33m"
-            prefix = "Error "
+            prefix = "Error! "
         elif log_type == "warning":
-            _first_col = "\033[34m"
-            _second_col = "\033[33m"
-            prefix = "Warning "
+            _first_col = "\033[33m"
+            _second_col = "\033[32m"
+            prefix = "Warning! "
 
         if print_func_name:
             _result = f"[{prefix}sing_command.{inspect.stack()[1].function}]: {_result}"
@@ -121,12 +130,12 @@ class BotCommand:
         print(_first_col + _result + "\033[0m")
 
     @staticmethod
-    def fix_uri_to_print(path_str, log_msg: str):
+    def fix_uri_to_print(path_str, log_msg: str = ""):
         prefix = "file:///"
-        dir_path = os.path.dirname(path_str)
-        fixed_path = prefix + dir_path.replace(os.sep, '/')
+        fixed_path = prefix + path_str.replace(os.sep, '/')
 
-        print(f"{log_msg}: {fixed_path}")
+        if log_msg != "":
+            print(f"{log_msg}: {fixed_path}")
         return fixed_path
 
     ############################################################################
@@ -138,9 +147,13 @@ class BotCommand:
         cmd_type, cmd_value = self.check_command(text)
 
         if cmd_type == '!sing':
-            result_cover_path = bot_cmd.do_sing(cmd_value, self.gender_type,
-                                                [self.pitch, self.auto_pitch_bool], self.index_rate)
+            result_cover_path = bot_cmd.do_sing(cmd_value, True,
+                                                self.gender_type, [self.pitch, self.auto_pitch_bool],
+                                                self.index_rate)
             # cover_audio = bot_cmd.do_sing(value, self.gender_type, [0.0, False])
+            self.command_done = True
+
+            self.play_music(result_cover_path, self.play_volume)
         elif cmd_type == '!draw':
             # do_draw(cmd_value)
             pass
@@ -170,7 +183,8 @@ class BotCommand:
 
         return command_prefix, command_value
 
-    def do_sing(self, song_name, ai_gender_type='female', pitch=None,
+    def do_sing(self, song_name, fast_search: bool = False,
+                ai_gender_type='female', pitch=None,
                 index_rate=0.5):
         # pitch = [Manual_pitch_value, is_Auto_pitch]
         if pitch is None:
@@ -208,7 +222,8 @@ class BotCommand:
             main_vocals_dereverb_path = self.seperate_song(main_vocals_path, self.video_id, 'dereverb')
         # endregion PRE-PROCESS
 
-        post_dict = self.check_rvc_postprocess_exist(self.char_model_name, pitch, ai_gender_type, d_index_rate,
+        post_dict = self.check_rvc_postprocess_exist(self.char_model_name, fast_search, pitch, ai_gender_type,
+                                                     d_index_rate,
                                                      output_folder)
         rvc_process_dict.update(post_dict)
 
@@ -216,7 +231,7 @@ class BotCommand:
         # Skip process if 'final' exist
         if 'final' in rvc_process_dict:
             final_cover_path = rvc_process_dict['final']
-            BotCommand.fix_uri_to_print(final_cover_path, "!Sing Result Folder")
+            # BotCommand.fix_uri_to_print(os.path.dirname(final_cover_path), "!Sing Result Folder")
 
             return final_cover_path
         else:
@@ -246,7 +261,8 @@ class BotCommand:
             ai_vocals_mixed_path = rvc_process_dict['fx']
 
         audios_to_mix = [ai_vocals_mixed_path, backup_vocals_path, instrumentals_path]
-        audio_mix_settings = [self.main_gain, self.backup_gain, self.music_gain]  # Main Vocal, Backup Vocal, Inst Volume
+        audio_mix_settings = [self.main_gain, self.backup_gain,
+                              self.music_gain]  # Main Vocal, Backup Vocal, Inst Volume
 
         # Fix final filename
         final_cover_prefix = instrumentals_path.replace("_Instrumental.wav", ".wav")
@@ -263,7 +279,7 @@ class BotCommand:
         #         if file and os.path.exists(file):
         #             os.remove(file)
 
-        BotCommand.fix_uri_to_print(final_cover_path, "!Sing Result Folder")
+        # BotCommand.fix_uri_to_print(os.path.dirname(final_cover_path), "!Sing Result Folder")
         return final_cover_path
 
     ############################################################################
@@ -419,8 +435,16 @@ class BotCommand:
 
         return result_dict
 
-    def check_rvc_postprocess_exist(self, char_name, pitch, ai_gender_type, index_rate, work_dir):
+    def check_rvc_postprocess_exist(self, char_name, fast_search: bool, pitch, ai_gender_type, index_rate, work_dir):
         result_dict = {}
+
+        # Search final result, ignoring pitch and index-rate settings
+        if fast_search:
+            self.print_log("warning", "Using [Fast Search] to find", "Final Result!")
+            final_exist = self.find_one_filename(work_dir, result_dict, "final", f"*{char_name}*Ver*)*.mp3",
+                                                 "[Fast] Final Cover")
+            if final_exist:
+                return result_dict
 
         if pitch[1]:  # if Auto_pitch -> True
             from rvc_modules.gender_detect import get_pitch_with_audio
@@ -457,6 +481,29 @@ class BotCommand:
     def find_list_filename(self, process_list, file_dir, _dict):
         for _process in process_list:
             self.find_one_filename(file_dir, _dict, _process[0], _process[1], _process[2])
+
+    def play_music(self, in_audio, volume=1.0, start_sec=0):
+        self.print_log("log", "Playing Final Cover Result", self.fix_uri_to_print(in_audio))
+
+        if self.device_name is None or self.device_name == "":
+            self.print_log("error", "No device name specified!", f"[{self.device_name}]")
+        else:
+            self.print_log("log", "Using Audio Device (Speaker)", f"[{self.device_name}]")
+
+        pygame.mixer.init(devicename=self.device_name)
+        sounda = pygame.mixer.Sound(in_audio)
+        # sounda.set_volume(0.3)
+        # sounda.play()
+        pygame.mixer.music.load(in_audio)
+        pygame.mixer.music.play(start=start_sec)
+        pygame.mixer.music.set_volume(volume)
+        # TODO: change audio device while playing
+        pygame.time.wait(3000)
+        changed_device = AudioDevice().set_selected_speaker("VoiceMeeter Aux Input").name
+        pygame.mixer.init(devicename=changed_device)
+        pygame.time.wait(int(sounda.get_length() * 1000))
+
+        self.play_done = True
 
     ############################################################################
     # endregion [UTILS]
@@ -497,7 +544,8 @@ class BotCommand:
                                       f'{os.path.splitext(os.path.basename(ai_vocals_filename))[0]}_{voice_model}_p{pitch_change}_i{index_rate}.wav')
 
         voice_conversion_options = [index_rate, self.filter_radius, self.rms_mix_rate, self.protect_rate]
-        rvc_infer(rvc_index_path, voice_conversion_options,  vocals_path, ai_vocals_path, pitch_change, cpt, version, net_g, tgt_sr,
+        rvc_infer(rvc_index_path, voice_conversion_options, vocals_path, ai_vocals_path, pitch_change, cpt, version,
+                  net_g, tgt_sr,
                   vc,
                   hubert_model)
         del hubert_model, cpt
@@ -529,7 +577,6 @@ class BotCommand:
             vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir,
                                                       os.path.join(rvc_required_dir, 'UVR-MDX-NET-Voc_FT.onnx'),
                                                       song_input, denoise=True, keep_orig=keep_orig)
-
             return vocals_path, instrumentals_path
 
         elif mode == 'backup':
@@ -602,29 +649,8 @@ if __name__ == '__main__':
     download_required_models()
 
     bot_cmd = BotCommand("Karen Kujou", "female")
-
+    bot_cmd.device_name = AudioDevice().set_selected_speaker("VoiceMeeter Input").name
+    # print(bot_cmd.device_name)
+    # bot_cmd.device_name = "VoiceMeeter Aux Input(VB-Audio VoiceMeeter AUX VAIO)"
     bot_cmd.check_do_command("!sing Snow halation [자막 ⧸ 발음]")
 
-    exit()
-
-    command, value = bot_cmd.check_command("!sing Snow halation [자막 ⧸ 발음]")
-
-    # command, value = check_command("!sing idol yoasobi")
-    if command == '!sing':
-        cover_audio = bot_cmd.do_sing(value, bot_cmd.gender_type)
-        # cover_audio = bot_cmd.do_sing(value, bot_cmd.gender_type, [0.0, False])
-
-        # cover_audio = do_sing(v_model, value, 'male')
-        # cover_audio = do_sing(v_model, value, 'male', [3.0, False])
-
-        bot_cmd.fix_uri_to_print(cover_audio, "!Sing Result Folder")
-        # search_audio(value)
-        # download_audio("https://youtu.be/Yd8kUoB72xU", "test")
-    elif command == '!draw':
-        # do_draw(value)
-        pass
-    elif command == '!emote':
-        # do_emote(value)
-        pass
-    else:
-        print("prompt: ", value)

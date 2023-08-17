@@ -15,7 +15,6 @@ hyperframe==5.2.0
 idna==3.4
 keyboard==0.13.5
 packaging==23.0
-PyAudio==0.2.13
 pycparser==2.21
 pydantic==1.10.5
 python-dotenv==0.21.1
@@ -28,6 +27,10 @@ soundfile==0.12.1
 SpeechRecognition==3.9.0
 typing-extensions==4.4.0
 urllib3==1.26.13
+
+# Audio
+PyAudio==0.2.13
+pygame
 
 #MoeGoe
 numba

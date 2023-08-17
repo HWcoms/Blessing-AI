@@ -15,6 +15,14 @@ from MoeGoe.Main import speech_text
 # from modules.audio_to_device import play_voice
 from discordbot import SendDiscordMessage, ExcuteDiscordWebhook
 
+# BotCommand
+from modules.sing_command import BotCommand
+
+# Play
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"   # hide pygame print
+import pygame                                       # noqa: E402
+
 tts_wav_path = Path(__file__).resolve().parent / r'audio\tts.wav'
 
 
@@ -67,7 +75,8 @@ class Generator:
             speech_lang = detect_language(text, token_id, token_secret)
             translated_speech = DoTranslate(text, speech_lang, ai_model_language, token_id, token_secret)
 
-            self.send_discord(translated_speech, ai_model_language, [token_id, token_secret], your_json, other_settings, by_user=True)
+            self.send_discord(translated_speech, ai_model_language, [token_id, token_secret], your_json, other_settings,
+                              by_user=True)
 
             if self.logging:
                 # source_lang_name = languages.get(alpha2=speech_lang).name
@@ -204,7 +213,8 @@ class GeneratorTTS:
 
         self.device_id = spk_id
 
-        bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code, token_id, token_secret)  # Translate reply
+        bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code, token_id,
+                                       token_secret)  # Translate reply
         if language_code == 'ja':
             bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
         elif language_code == 'ko':
@@ -229,16 +239,21 @@ class GeneratorTTS:
         self.gen_done = True
 
     def play_voice(self):
-        import sounddevice as sd
-        import soundfile as sf
-
-        s_q = sd.query_devices()
-        device_name = f"""{s_q[self.device_id]["name"]}"""
-        data, fs = sf.read(self.audio_path, dtype='float32')
+        # TODO: Test if it's working well
+        from modules.aud_device_manager import AudioDevice
+        device_name = AudioDevice().set_selected_speaker_index(self.device_id).name
         print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
 
-        sd.play(data, fs, device=self.device_id, blocking=True)
-        sd.wait()
+        if device_name is None or device_name == "":
+            print("Error: No device name specified!: ", f"[{device_name}]")
+        else:
+            print("Using Audio Device (Speaker): ", f"[{device_name}]")
+
+        pygame.mixer.init(devicename=device_name)
+        sounda = pygame.mixer.Sound(self.audio_path)
+        # sounda.set_volume(0.3)
+        sounda.play()
+        pygame.time.wait(int(sounda.get_length() * 1000))
 
         self.speech_done = True
 
