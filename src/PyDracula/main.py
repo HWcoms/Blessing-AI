@@ -97,7 +97,7 @@ class MainWindow(QMainWindow):
                                             # ai_model_language]
 
         # AUDIO DEVICE MANAGER
-        self.newAudDevice = AudioDevice("compact")
+        self.newAudDevice = AudioDevice()
 
         # SET AS GLOBAL WIDGETS
         self.ui = Ui_MainWindow()
@@ -895,9 +895,7 @@ class MainWindow(QMainWindow):
         global widgets
 
         # REFRESH AUDIO DEVICE INFO LIST
-        self.newAudDevice.get_all_device("compact")
-        # print(self.newAudDevice.get_speaker_name_list())
-        # print(self.newAudDevice)
+        self.newAudDevice.get_all_device()
 
         mic_comboBox = widgets.comboBox_mic_device
         spk_comboBox = widgets.comboBox_spk_device

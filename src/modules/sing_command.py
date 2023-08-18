@@ -26,8 +26,14 @@ import inspect
 
 # Play
 from aud_device_manager import AudioDevice
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"   # hide pygame print
-import pygame                                       # noqa: E402
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"  # hide pygame print
+import pygame  # noqa: E402
+
+# Test
+import threading    # noqa: E402
+
+############################## Packages Import ##############################
+
 
 root_folder = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
@@ -57,8 +63,7 @@ class BotCommand:
         super().__init__()
         self.logging = True
 
-        self.device_id = 0  # Speaker ID
-        self.device_name = ""
+        self.device_name = ""  # Speaker name
         self.char_model_name = char_model_name
 
         # Pitch Settings
@@ -153,6 +158,9 @@ class BotCommand:
             # cover_audio = bot_cmd.do_sing(value, self.gender_type, [0.0, False])
             self.command_done = True
 
+            wk = Worker("test thread", self)
+            wk.daemon = True
+            wk.start()
             self.play_music(result_cover_path, self.play_volume)
         elif cmd_type == '!draw':
             # do_draw(cmd_value)
@@ -482,28 +490,45 @@ class BotCommand:
         for _process in process_list:
             self.find_one_filename(file_dir, _dict, _process[0], _process[1], _process[2])
 
-    def play_music(self, in_audio, volume=1.0, start_sec=0):
-        self.print_log("log", "Playing Final Cover Result", self.fix_uri_to_print(in_audio))
+    def play_music(self, in_audio, volume=1.0, start_sec=0, quite_mode=False):
+        if in_audio is None or in_audio == "":
+            self.print_log("error", "No Audio path to play!")
+            raise RuntimeError()
+        else:
+            if not quite_mode:
+                self.print_log("log", "Playing Final Cover Result", in_audio)
+            self.final_result_path = in_audio
 
         if self.device_name is None or self.device_name == "":
-            self.print_log("error", "No device name specified!", f"[{self.device_name}]")
+            self.print_log("error", "No device name specified!")
+            raise RuntimeError()
         else:
-            self.print_log("log", "Using Audio Device (Speaker)", f"[{self.device_name}]")
+            if not quite_mode:
+                self.print_log("log", "Using Audio Device (Speaker)", f"[{self.device_name}]")
+
+        pygame_mixer = pygame.mixer.get_init()
+        _st_sec = start_sec
+        if pygame_mixer:
+            # Get How Many Seconds past
+            _st_sec = pygame.mixer.music.get_pos() / 1000.0
+            self.print_log("log", "pygame mixer already exist! music played", f"{_st_sec} seconds")
+            pygame.mixer.quit()
 
         pygame.mixer.init(devicename=self.device_name)
         sounda = pygame.mixer.Sound(in_audio)
-        # sounda.set_volume(0.3)
-        # sounda.play()
         pygame.mixer.music.load(in_audio)
-        pygame.mixer.music.play(start=start_sec)
+        pygame.mixer.music.play(start=_st_sec)
         pygame.mixer.music.set_volume(volume)
-        # TODO: change audio device while playing
-        pygame.time.wait(3000)
-        changed_device = AudioDevice().set_selected_speaker("VoiceMeeter Aux Input").name
-        pygame.mixer.init(devicename=changed_device)
-        pygame.time.wait(int(sounda.get_length() * 1000))
+        pygame.time.wait(int((sounda.get_length() * 1000) - _st_sec))
 
         self.play_done = True
+
+    def update_ad_and_play(self, device_name=None):
+        if device_name or device_name != "":
+            self.device_name = device_name
+
+        self.print_log("log", "[Changing Audio Device for playing music]", self.device_name)
+        self.play_music(self.final_result_path, self.play_volume, self.device_name, True)
 
     ############################################################################
     # endregion [UTILS]
@@ -637,6 +662,20 @@ class BotCommand:
     # endregion [SoundFX]
 
 
+class Worker(threading.Thread):
+    def __init__(self, name, bot_command: BotCommand):
+        super().__init__()
+        self.name = name
+        self.bot_command = bot_command
+
+    def run(self):
+        import time
+        print("sub thread start", threading.current_thread().name)
+        time.sleep(3)
+        print("sub thread end", threading.current_thread().name)
+        self.bot_command.update_ad_and_play("VoiceMeeter Aux Input(VB-Audio VoiceMeeter AUX VAIO)")
+
+
 def find_all(dir_path, ext):
     file_list = []
     for filename in glob.glob(os.path.join(dir_path, f'*.{ext}')):
@@ -653,4 +692,3 @@ if __name__ == '__main__':
     # print(bot_cmd.device_name)
     # bot_cmd.device_name = "VoiceMeeter Aux Input(VB-Audio VoiceMeeter AUX VAIO)"
     bot_cmd.check_do_command("!sing Snow halation [자막 ⧸ 발음]")
-
