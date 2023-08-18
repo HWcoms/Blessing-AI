@@ -65,6 +65,7 @@ class BotCommand:
 
         self.device_name = ""  # Speaker name
         self.char_model_name = char_model_name
+        self.fast_search = True
 
         # Pitch Settings
         self.auto_pitch_bool = True
@@ -152,7 +153,7 @@ class BotCommand:
         cmd_type, cmd_value = self.check_command(text)
 
         if cmd_type == '!sing':
-            result_cover_path = bot_cmd.do_sing(cmd_value, True,
+            result_cover_path = bot_cmd.do_sing(cmd_value, self.fast_search,
                                                 self.gender_type, [self.pitch, self.auto_pitch_bool],
                                                 self.index_rate)
             # cover_audio = bot_cmd.do_sing(value, self.gender_type, [0.0, False])
@@ -457,16 +458,16 @@ class BotCommand:
         if pitch[1]:  # if Auto_pitch -> True
             from rvc_modules.gender_detect import get_pitch_with_audio
 
-            search_filename = "*_Vocals_Main.wav"
-            log_msg = "Main Vocal Result"
-            vocal_exist = self.find_one_filename(work_dir, result_dict, "main_vocal", search_filename, log_msg)
+            search_filename = "*_DeReverb.wav"
+            log_msg = "DeReverb(Vocal) Result"
+            vocal_exist = self.find_one_filename(work_dir, result_dict, "dereverb", search_filename, log_msg)
             if vocal_exist:
                 # og_vocal is existed
-                pitch[0] = get_pitch_with_audio(result_dict["main_vocal"], ai_gender_type, self.auto_pitch_amount)
+                pitch[0] = get_pitch_with_audio(result_dict["dereverb"], ai_gender_type, self.auto_pitch_amount)
             else:
-                self.print_log("Error", "No main vocal result found!")
+                self.print_log("Error", "No DeReverb (Main Vocal) result found!")
 
-                raise RuntimeError("No main Vocal Result Found!")
+                raise RuntimeError("No DeReverb (Main Vocal) Result Found!")
         get_pitch_type = ("Auto" if pitch[1] else "Manual")
         self.print_log("log", "Pitch Info: ", f"[{pitch[0]}, {get_pitch_type}]")
 
@@ -511,7 +512,7 @@ class BotCommand:
         if pygame_mixer:
             # Get How Many Seconds past
             _st_sec = pygame.mixer.music.get_pos() / 1000.0
-            self.print_log("log", "pygame mixer already exist! music played", f"{_st_sec} seconds")
+            self.print_log("log", "pygame mixer already exist!", f"Starting music at {_st_sec} seconds")
             pygame.mixer.quit()
 
         pygame.mixer.init(devicename=self.device_name)
@@ -689,6 +690,7 @@ if __name__ == '__main__':
 
     bot_cmd = BotCommand("Karen Kujou", "female")
     bot_cmd.device_name = AudioDevice().set_selected_speaker("VoiceMeeter Input").name
+    bot_cmd.fast_search = False
     # print(bot_cmd.device_name)
     # bot_cmd.device_name = "VoiceMeeter Aux Input(VB-Audio VoiceMeeter AUX VAIO)"
     bot_cmd.check_do_command("!sing Snow halation [자막 ⧸ 발음]")
