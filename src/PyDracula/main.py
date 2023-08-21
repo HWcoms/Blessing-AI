@@ -86,7 +86,6 @@ class MainWindow(QMainWindow):
                                             # discord_bot, discord_webhook,
                                             # discord_print_language, chat_display_language
 
-        # TODO: create audio_setting, prompt setting (devcices)
         self.audio_info_dict: dict = None   # [mic_index, mic_threshold, phrase_timeout,
 
                                             # spk_index, tts_character_name, tts_language
@@ -95,6 +94,11 @@ class MainWindow(QMainWindow):
 
         self.prompt_info_dict: dict = None  # [max_prompt_token, max_reply_token,
                                             # ai_model_language]
+
+        self.command_info_dict: dict = None # rvc_model, rvc_index_rate, rvc_gender (radio),
+                                            # rvc_manual_pitch (bool), rvc_pitch,
+                                            # rvc_main_vocal, rvc_backup_vocal, rvc_music
+
 
         # AUDIO DEVICE MANAGER
         self.newAudDevice = AudioDevice()
@@ -163,6 +167,7 @@ class MainWindow(QMainWindow):
         widgets.btn_character.clicked.connect(self.buttonClick)
         widgets.btn_audio_setting.clicked.connect(self.buttonClick)
         widgets.btn_prompt_setting.clicked.connect(self.buttonClick)
+        widgets.btn_command_setting.clicked.connect(self.buttonClick)
         widgets.btn_exit.clicked.connect(self.buttonClick)
 
         # EXTRA LEFT BOX
@@ -515,6 +520,13 @@ class MainWindow(QMainWindow):
 
             self.load_audio_info()
 
+        if btnName == "btn_command_setting":
+            widgets.stackedWidget.setCurrentWidget(widgets.Command_Page)  # SET PAGE
+            UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
+
+            self.command_page_update()
+
         # SHARE BUTTON FROM EXTRA LEFT MENU
         if btnName == "btn_share":
             import webbrowser
@@ -650,6 +662,44 @@ class MainWindow(QMainWindow):
 
         component.setText(_final_url)    # LineEdit or TextEdit
 
+    # [GUI] DRAW COMMAND PAGE
+    # ///////////////////////////////////////////////////////////////
+    def command_page_update(self):
+        self.load_command_info()
+        global widgets
+
+        _dict = self.command_info_dict
+        widgets.textEdit_rvc_model.setText(_dict['rvc_model'])
+
+        gender_radio = [widgets.radioButton_rvc_gender_male, widgets.radioButton_rvc_gender_female]
+
+        self.set_radio_check(gender_radio, _dict['rvc_gender'])
+        widgets.horizontalGroupBox_rvc_manual_pitch.setChecked(_dict['rvc_manual_pitch'])
+
+        self.set_qobjects_by_dict([widgets.lineEdit_rvc_index_rate, widgets.horizontalSlider_rvc_index_rate,
+                                   widgets.lineEdit_rvc_pitch, widgets.horizontalSlider_rvc_pitch,
+                                   widgets.lineEdit_rvc_main_vocal,  widgets.horizontalSlider_rvc_main_vocal,
+                                   widgets.lineEdit_rvc_backup_vocal, widgets.horizontalSlider_rvc_backup_vocal,
+                                   widgets.lineEdit_rvc_music, widgets.horizontalSlider_rvc_music],
+                                  _dict, 10)
+
+    def get_radio_check(self, radio_list: list[QRadioButton]):
+        for radio in radio_list:
+            if radio.isChecked():
+                return radio
+        raise RuntimeError("No radio is checked Found")
+
+    def set_radio_check(self, radio_list: list[QRadioButton], value):
+        if value is None:
+            raise ValueError("value is not specified!")
+
+        for radio in radio_list:
+            if value in radio.objectName():
+                print("found: " ,radio.objectName())
+                radio.setChecked(True)
+                return radio
+
+        raise RuntimeError("No radio is Found with value")
 
 
     # [GUI] DRAW EXTRA RIGHT MENU
@@ -794,10 +844,9 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def load_all_info(self):
         self.load_character_info()  # Load Character page
-
         self.chat_layout_update()    # Load Home Page
-
         self.load_audio_info()    # Load Audio page
+        self.command_page_update()  # Load Command Page
 
         self.extra_right_menu_update()  # Load other information
         self.prompt_page_update() # Load prompt information
@@ -913,7 +962,7 @@ class MainWindow(QMainWindow):
             self.add_none_item_combobox(_combo)
 
     def select_aud_devices_loaded_setting(self):
-        self.newAudDevice.set_selected_device_to_default()  # TODO Load from audio_settings
+        self.newAudDevice.set_selected_device_to_default()  # TODO: Load from audio_settings
 
         mic_comboBox = self.ui.comboBox_mic_device
         spk_comboBox = self.ui.comboBox_spk_device
@@ -1071,38 +1120,20 @@ class MainWindow(QMainWindow):
 
         # region [LINEEDIT & SLIDERS]
         ################################################################################################
-        mic_threshold = str (self.audio_info_dict["mic_threshold"])
         phrase_timeout = str (self.audio_info_dict["phrase_timeout"])
-        voice_speed = str (self.audio_info_dict["voice_speed"])
-        voice_volume = str ( int(self.audio_info_dict["voice_volume"] * 100))
-        intonation_scale = str (self.audio_info_dict["intonation_scale"])
-        pre_phoneme_length = str (self.audio_info_dict["pre_phoneme_length"])
-        post_phoneme_length = str (self.audio_info_dict["post_phoneme_length"])
-
-        widgets.lineEdit_mic_threshold.setText(mic_threshold + " %")
-        widgets.horizontalSlider_mic_threshold.setValue(int(mic_threshold))
-
         widgets.lineEdit_phrase_timeout.setText(phrase_timeout)
 
-        widgets.lineEdit_voice_volume.setText(voice_volume + " %")
-        val = int(voice_volume)
-        widgets.horizontalSlider_voice_volume.setValue(val)
+        self.set_qobjects_by_dict([widgets.lineEdit_mic_threshold, widgets.horizontalSlider_mic_threshold,
+                                   widgets.lineEdit_voice_volume, widgets.horizontalSlider_voice_volume],
+                                  self.audio_info_dict, 100, True)
 
-        widgets.lineEdit_voice_speed.setText(voice_speed)
-        val = int( float(voice_speed)*100.0)
-        widgets.horizontalSlider_voice_speed.setValue(val)
 
-        widgets.lineEdit_intonation_scale.setText(intonation_scale)
-        val = int( float(intonation_scale)*100.0)
-        widgets.horizontalSlider_intonation_scale.setValue(val)
+        self.set_qobjects_by_dict([widgets.lineEdit_voice_speed, widgets.horizontalSlider_voice_speed,
+                                   widgets.lineEdit_intonation_scale, widgets.horizontalSlider_intonation_scale,
+                                   widgets.lineEdit_pre_phoneme_length, widgets.horizontalSlider_pre_phoneme_length,
+                                   widgets.lineEdit_post_phoneme_length, widgets.horizontalSlider_post_phoneme_length],
+                                  self.audio_info_dict, 100)
 
-        widgets.lineEdit_pre_phoneme_length.setText(pre_phoneme_length)
-        val = int(float(pre_phoneme_length) * 100.0)
-        widgets.horizontalSlider_pre_phoneme_length.setValue(val)
-
-        widgets.lineEdit_post_phoneme_length.setText(post_phoneme_length)
-        val = int(float(post_phoneme_length) * 100.0)
-        widgets.horizontalSlider_post_phoneme_length.setValue(val)
         ################################################################################################
         # endregion [LINEEDIT & SLIDERS]
 
@@ -1119,6 +1150,14 @@ class MainWindow(QMainWindow):
         self.select_aud_devices_loaded_setting()
         self.select_tts_loaded_setting(tts_character_name, tts_language, tts_voice_id)
 
+    def load_command_info(self):
+        global widgets
+
+        if self.command_info_dict is None:
+            self.command_info_dict = {}
+
+        self.command_info_dict.update(SettingInfo.load_command_settings())
+
     def load_other_info(self):
         if self.chat_info_dict is None:
             self.chat_info_dict = {}
@@ -1130,6 +1169,31 @@ class MainWindow(QMainWindow):
             self.prompt_info_dict = {}
 
         self.prompt_info_dict.update(SettingInfo.load_prompt_settings())
+
+    def set_qobjects_by_dict(self, obj_list:list[QObject], _dict, value_multiplier=10.0, add_percent=False):
+        for obj in obj_list:
+            prefix = ""
+            if isinstance(obj, QLineEdit):
+                prefix = "lineEdit_"
+            elif isinstance(obj, QSlider):
+                prefix = f"{obj.orientation().name.lower()}Slider_"
+            else:
+                raise ValueError("No QObject Found or Not Supported QObject")
+
+            key_name = obj.objectName().replace(prefix, "")
+            res_value = _dict[key_name]
+
+            res_str = ""
+            if add_percent:
+                res_int = int(res_value * value_multiplier)
+                res_str = str(res_int) + " %"
+            else:
+                res_str = str(res_value)
+
+            if "lineEdit" in prefix:
+                obj.setText(res_str)
+            elif "Slider" in prefix:
+                obj.setValue(int(res_value * value_multiplier))
 
     def after_generate_reply(self, success = 1):
         if success == -1:

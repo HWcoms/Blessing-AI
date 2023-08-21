@@ -1,0 +1,10 @@
+{
+    "rvc_model": "Kato Megumi",
+    "rvc_index_rate": 0.5,
+    "rvc_gender": "female",
+    "rvc_manual_pitch": false,
+    "rvc_pitch": 0.0,
+    "rvc_main_vocal": 0.0,
+    "rvc_backup_vocal": 0.0,
+    "rvc_music": 0.0
+}

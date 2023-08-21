@@ -951,7 +951,7 @@ Line {
                    <string notr="true">background-image: url(:/icons/images/icons/cil-volume-high.png);</string>
                   </property>
                   <property name="text">
-                   <string>Mic Setting</string>
+                   <string>Audio Setting</string>
                   </property>
                  </widget>
                 </item>
@@ -988,6 +988,42 @@ Line {
                   </property>
                   <property name="text">
                    <string>TTS Setting</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_command_setting">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>45</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>10</pointsize>
+                    <italic>false</italic>
+                    <bold>false</bold>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-image: url(:/icons/images/icons/cil-double-quote-sans-left.png);</string>
+                  </property>
+                  <property name="text">
+                   <string>Feature Setting</string>
                   </property>
                  </widget>
                 </item>
@@ -1814,7 +1850,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>2</number>
+                      <number>3</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -1853,7 +1889,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1138</width>
+                            <width>1172</width>
                             <height>583</height>
                            </rect>
                           </property>
@@ -3203,9 +3239,9 @@ QSlider::handle:horizontal:pressed {
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>-593</y>
+                            <y>-7</y>
                             <width>1183</width>
-                            <height>1234</height>
+                            <height>601</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -4763,7 +4799,147 @@ QPushButton:pressed{
                               </widget>
                              </item>
                              <item>
-                              <layout class="QHBoxLayout" name="horizontalLayout_34">
+                              <spacer name="audio_bottom_verticalSpacer">
+                               <property name="orientation">
+                                <enum>Qt::Vertical</enum>
+                               </property>
+                               <property name="sizeType">
+                                <enum>QSizePolicy::Expanding</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>20</width>
+                                 <height>60</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                            </layout>
+                           </item>
+                          </layout>
+                         </widget>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                     <widget class="QWidget" name="Command_Page">
+                      <property name="styleSheet">
+                       <string notr="true">QLineEdit {
+	border: 2px solid rgb(48, 50, 62);
+	border-radius: 10px;
+	color: #FFF;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color:rgb(34,36,44)
+}
+QLineEdit:hover {
+	border: 2px solid rgb(66, 70, 86);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(85, 170, 255);
+	background-color: rgb(43, 45, 56);
+}
+
+QSlider::groove {
+	background-color: rgb(55, 62, 76);
+}
+
+QSlider::handle:horizontal {
+    background-color: rgb(85, 170, 255);
+    border: none;
+    height: 40px;
+    width: 10px;
+    margin: -20px 0;
+    border-radius: 20px;
+    padding: -20px 0px;
+}
+QSlider::handle:horizontal:hover {
+    background-color: rgb(155, 180, 255);
+}
+
+QSlider::handle:horizontal:pressed {
+    background-color: rgb(65, 255, 195);
+}</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_33">
+                       <item>
+                        <widget class="QScrollArea" name="scrollArea_4">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="frameShape">
+                          <enum>QFrame::NoFrame</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Plain</enum>
+                         </property>
+                         <property name="verticalScrollBarPolicy">
+                          <enum>Qt::ScrollBarAsNeeded</enum>
+                         </property>
+                         <property name="sizeAdjustPolicy">
+                          <enum>QAbstractScrollArea::AdjustIgnored</enum>
+                         </property>
+                         <property name="widgetResizable">
+                          <bool>true</bool>
+                         </property>
+                         <widget class="QWidget" name="scrollAreaWidgetContents_5">
+                          <property name="geometry">
+                           <rect>
+                            <x>0</x>
+                            <y>-117</y>
+                            <width>1172</width>
+                            <height>722</height>
+                           </rect>
+                          </property>
+                          <layout class="QVBoxLayout" name="verticalLayout_34">
+                           <item>
+                            <layout class="QVBoxLayout" name="verticalLayout_28">
+                             <property name="spacing">
+                              <number>10</number>
+                             </property>
+                             <property name="leftMargin">
+                              <number>6</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>6</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>6</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>6</number>
+                             </property>
+                             <item>
+                              <widget class="QLabel" name="label_89">
+                               <property name="text">
+                                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:700;&quot;&gt;Extra Feature Settings&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="Line" name="line_audio_page_4">
+                               <property name="frameShadow">
+                                <enum>QFrame::Plain</enum>
+                               </property>
+                               <property name="lineWidth">
+                                <number>1</number>
+                               </property>
+                               <property name="midLineWidth">
+                                <number>0</number>
+                               </property>
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <layout class="QHBoxLayout" name="horizontalLayout_110">
                                <property name="spacing">
                                 <number>6</number>
                                </property>
@@ -4780,7 +4956,7 @@ QPushButton:pressed{
                                 <number>0</number>
                                </property>
                                <item>
-                                <widget class="QGroupBox" name="horizontalGroupBox">
+                                <widget class="QGroupBox" name="horizontalGroupBox_9">
                                  <property name="styleSheet">
                                   <string notr="true">QGroupBox
 {
@@ -4789,12 +4965,12 @@ QPushButton:pressed{
 }</string>
                                  </property>
                                  <property name="title">
-                                  <string>AI Sining [RVC] Settings</string>
+                                  <string>Sining [RVC]</string>
                                  </property>
                                  <property name="alignment">
                                   <set>Qt::AlignCenter</set>
                                  </property>
-                                 <layout class="QHBoxLayout" name="horizontalLayout_30">
+                                 <layout class="QHBoxLayout" name="horizontalLayout_111">
                                   <property name="leftMargin">
                                    <number>0</number>
                                   </property>
@@ -4808,7 +4984,7 @@ QPushButton:pressed{
                                    <number>3</number>
                                   </property>
                                   <item>
-                                   <layout class="QVBoxLayout" name="verticalLayout_44">
+                                   <layout class="QVBoxLayout" name="verticalLayout_79">
                                     <property name="spacing">
                                      <number>0</number>
                                     </property>
@@ -4819,7 +4995,7 @@ QPushButton:pressed{
                                      <number>0</number>
                                     </property>
                                     <item>
-                                     <layout class="QVBoxLayout" name="verticalLayout_45">
+                                     <layout class="QVBoxLayout" name="verticalLayout_80">
                                       <property name="leftMargin">
                                        <number>50</number>
                                       </property>
@@ -4833,12 +5009,12 @@ QPushButton:pressed{
                                        <number>10</number>
                                       </property>
                                       <item>
-                                       <layout class="QHBoxLayout" name="horizontalLayout_35">
+                                       <layout class="QHBoxLayout" name="horizontalLayout_112">
                                         <property name="bottomMargin">
                                          <number>0</number>
                                         </property>
                                         <item>
-                                         <spacer name="horizontalSpacer_10">
+                                         <spacer name="horizontalSpacer_63">
                                           <property name="orientation">
                                            <enum>Qt::Horizontal</enum>
                                           </property>
@@ -4851,7 +5027,7 @@ QPushButton:pressed{
                                          </spacer>
                                         </item>
                                         <item>
-                                         <widget class="QLabel" name="label_29">
+                                         <widget class="QLabel" name="label_68">
                                           <property name="sizePolicy">
                                            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                                             <horstretch>0</horstretch>
@@ -4867,7 +5043,7 @@ QPushButton:pressed{
                                          </widget>
                                         </item>
                                         <item>
-                                         <spacer name="horizontalSpacer_9">
+                                         <spacer name="horizontalSpacer_64">
                                           <property name="orientation">
                                            <enum>Qt::Horizontal</enum>
                                           </property>
@@ -4883,7 +5059,7 @@ QPushButton:pressed{
                                          </spacer>
                                         </item>
                                         <item>
-                                         <widget class="QTextEdit" name="textEdit">
+                                         <widget class="QTextEdit" name="textEdit_rvc_model">
                                           <property name="minimumSize">
                                            <size>
                                             <width>10</width>
@@ -4940,7 +5116,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                          </widget>
                                         </item>
                                         <item>
-                                         <spacer name="horizontalSpacer_20">
+                                         <spacer name="horizontalSpacer_65">
                                           <property name="orientation">
                                            <enum>Qt::Horizontal</enum>
                                           </property>
@@ -4955,7 +5131,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                        </layout>
                                       </item>
                                       <item>
-                                       <layout class="QVBoxLayout" name="verticalLayout_48">
+                                       <layout class="QVBoxLayout" name="verticalLayout_81">
                                         <property name="leftMargin">
                                          <number>10</number>
                                         </property>
@@ -4969,7 +5145,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                          <number>5</number>
                                         </property>
                                         <item>
-                                         <layout class="QHBoxLayout" name="horizontalLayout_38">
+                                         <layout class="QHBoxLayout" name="horizontalLayout_113">
                                           <property name="spacing">
                                            <number>10</number>
                                           </property>
@@ -4980,7 +5156,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                            <number>0</number>
                                           </property>
                                           <item>
-                                           <widget class="QLabel" name="label_36">
+                                           <widget class="QLabel" name="label_69">
                                             <property name="text">
                                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Index Rate&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                             </property>
@@ -5021,7 +5197,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                            </widget>
                                           </item>
                                           <item>
-                                           <widget class="QLabel" name="label_37">
+                                           <widget class="QLabel" name="label_70">
                                             <property name="text">
                                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Controls how much of the AI voice's accent to keep in the vocals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                             </property>
@@ -5031,7 +5207,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                            </widget>
                                           </item>
                                           <item>
-                                           <spacer name="horizontalSpacer_23">
+                                           <spacer name="horizontalSpacer_66">
                                             <property name="orientation">
                                              <enum>Qt::Horizontal</enum>
                                             </property>
@@ -5046,7 +5222,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                          </layout>
                                         </item>
                                         <item>
-                                         <layout class="QHBoxLayout" name="horizontalLayout_40">
+                                         <layout class="QHBoxLayout" name="horizontalLayout_114">
                                           <property name="topMargin">
                                            <number>0</number>
                                           </property>
@@ -5054,7 +5230,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                            <number>0</number>
                                           </property>
                                           <item>
-                                           <widget class="QSlider" name="horizontalSlider_rvc_pitch_2">
+                                           <widget class="QSlider" name="horizontalSlider_rvc_index_rate">
                                             <property name="styleSheet">
                                              <string notr="true"/>
                                             </property>
@@ -5083,7 +5259,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                        </layout>
                                       </item>
                                       <item>
-                                       <spacer name="verticalSpacer_12">
+                                       <spacer name="verticalSpacer_17">
                                         <property name="orientation">
                                          <enum>Qt::Vertical</enum>
                                         </property>
@@ -5099,7 +5275,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                        </spacer>
                                       </item>
                                       <item>
-                                       <widget class="QLabel" name="label_20">
+                                       <widget class="QLabel" name="label_71">
                                         <property name="text">
                                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Choose Gender type of your RVC Model, ai cover song will generated &lt;/span&gt;&lt;span style=&quot; font-weight:700; color:#00ff00;&quot;&gt;automatically&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt; adjust pitch by this choose.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                         </property>
@@ -5109,7 +5285,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                        </widget>
                                       </item>
                                       <item>
-                                       <layout class="QHBoxLayout" name="horizontalLayout_32">
+                                       <layout class="QHBoxLayout" name="horizontalLayout_115">
                                         <property name="topMargin">
                                          <number>0</number>
                                         </property>
@@ -5117,7 +5293,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                          <number>0</number>
                                         </property>
                                         <item>
-                                         <spacer name="horizontalSpacer_2">
+                                         <spacer name="horizontalSpacer_4">
                                           <property name="orientation">
                                            <enum>Qt::Horizontal</enum>
                                           </property>
@@ -5133,7 +5309,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                          </spacer>
                                         </item>
                                         <item>
-                                         <widget class="QRadioButton" name="radioButton_3">
+                                         <widget class="QRadioButton" name="radioButton_rvc_gender_female">
                                           <property name="styleSheet">
                                            <string notr="true">font-size: 16px;
 font-weight: bold;
@@ -5148,7 +5324,7 @@ color: #fb89ff;</string>
                                          </widget>
                                         </item>
                                         <item>
-                                         <spacer name="horizontalSpacer_22">
+                                         <spacer name="horizontalSpacer_67">
                                           <property name="orientation">
                                            <enum>Qt::Horizontal</enum>
                                           </property>
@@ -5161,7 +5337,7 @@ color: #fb89ff;</string>
                                          </spacer>
                                         </item>
                                         <item>
-                                         <widget class="QRadioButton" name="radioButton_2">
+                                         <widget class="QRadioButton" name="radioButton_rvc_gender_male">
                                           <property name="layoutDirection">
                                            <enum>Qt::RightToLeft</enum>
                                           </property>
@@ -5176,7 +5352,7 @@ color: #009dff;</string>
                                          </widget>
                                         </item>
                                         <item>
-                                         <spacer name="horizontalSpacer_8">
+                                         <spacer name="horizontalSpacer_68">
                                           <property name="orientation">
                                            <enum>Qt::Horizontal</enum>
                                           </property>
@@ -5194,7 +5370,7 @@ color: #009dff;</string>
                                        </layout>
                                       </item>
                                       <item>
-                                       <spacer name="verticalSpacer_6">
+                                       <spacer name="verticalSpacer_18">
                                         <property name="orientation">
                                          <enum>Qt::Vertical</enum>
                                         </property>
@@ -5210,7 +5386,7 @@ color: #009dff;</string>
                                        </spacer>
                                       </item>
                                       <item>
-                                       <layout class="QHBoxLayout" name="horizontalLayout_33">
+                                       <layout class="QHBoxLayout" name="horizontalLayout_116">
                                         <property name="topMargin">
                                          <number>0</number>
                                         </property>
@@ -5218,14 +5394,14 @@ color: #009dff;</string>
                                          <number>0</number>
                                         </property>
                                         <item>
-                                         <widget class="QLabel" name="label_28">
+                                         <widget class="QLabel" name="label_72">
                                           <property name="text">
                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ex) RVC Model &lt;span style=&quot; font-weight:700;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-weight:700; color:#aaffff;&quot;&gt;Kato Megumi&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;]&lt;/span&gt; is &lt;span style=&quot; font-weight:700; color:#fb89ff;&quot;&gt;Female&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
-                                         <widget class="QLabel" name="label_22">
+                                         <widget class="QLabel" name="label_73">
                                           <property name="text">
                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;RVC Model &lt;span style=&quot; font-weight:700;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-weight:700; color:#aaffff;&quot;&gt;Kirito&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;]&lt;/span&gt; is &lt;span style=&quot; font-weight:700; color:#009dff;&quot;&gt;Male&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
@@ -5237,7 +5413,7 @@ color: #009dff;</string>
                                        </layout>
                                       </item>
                                       <item>
-                                       <widget class="QGroupBox" name="horizontalGroupBox_2">
+                                       <widget class="QGroupBox" name="horizontalGroupBox_rvc_manual_pitch">
                                         <property name="styleSheet">
                                          <string notr="true">QGroupBox
 {
@@ -5260,7 +5436,7 @@ color: #009dff;</string>
                                         <property name="checked">
                                          <bool>false</bool>
                                         </property>
-                                        <layout class="QHBoxLayout" name="horizontalLayout_39">
+                                        <layout class="QHBoxLayout" name="horizontalLayout_117">
                                          <property name="leftMargin">
                                           <number>0</number>
                                          </property>
@@ -5274,7 +5450,7 @@ color: #009dff;</string>
                                           <number>3</number>
                                          </property>
                                          <item>
-                                          <layout class="QVBoxLayout" name="verticalLayout_47">
+                                          <layout class="QVBoxLayout" name="verticalLayout_82">
                                            <property name="leftMargin">
                                             <number>10</number>
                                            </property>
@@ -5288,7 +5464,7 @@ color: #009dff;</string>
                                             <number>5</number>
                                            </property>
                                            <item>
-                                            <widget class="QLabel" name="label_32">
+                                            <widget class="QLabel" name="label_74">
                                              <property name="text">
                                               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;If you want to adjust pitch of AI Cover song &lt;/span&gt;&lt;span style=&quot; font-weight:700; color:#00ff00;&quot;&gt;manually&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;, Check this at On and adjust pitch by Slider&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                              </property>
@@ -5298,7 +5474,7 @@ color: #009dff;</string>
                                             </widget>
                                            </item>
                                            <item>
-                                            <widget class="QLabel" name="label_35">
+                                            <widget class="QLabel" name="label_75">
                                              <property name="text">
                                               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;(Selected &lt;span style=&quot; font-weight:700;&quot;&gt;Gender Type&lt;/span&gt; will be &lt;span style=&quot; font-weight:700; color:#00ff00;&quot;&gt;unnecessary&lt;/span&gt; If you use this option)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                              </property>
@@ -5308,7 +5484,7 @@ color: #009dff;</string>
                                             </widget>
                                            </item>
                                            <item>
-                                            <layout class="QHBoxLayout" name="horizontalLayout_37">
+                                            <layout class="QHBoxLayout" name="horizontalLayout_118">
                                              <property name="spacing">
                                               <number>10</number>
                                              </property>
@@ -5319,7 +5495,7 @@ color: #009dff;</string>
                                               <number>0</number>
                                              </property>
                                              <item>
-                                              <widget class="QLabel" name="label_33">
+                                              <widget class="QLabel" name="label_76">
                                                <property name="text">
                                                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Pitch&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                </property>
@@ -5360,7 +5536,7 @@ color: #009dff;</string>
                                               </widget>
                                              </item>
                                              <item>
-                                              <spacer name="horizontalSpacer_21">
+                                              <spacer name="horizontalSpacer_69">
                                                <property name="orientation">
                                                 <enum>Qt::Horizontal</enum>
                                                </property>
@@ -5375,7 +5551,7 @@ color: #009dff;</string>
                                             </layout>
                                            </item>
                                            <item>
-                                            <layout class="QHBoxLayout" name="horizontalLayout_36">
+                                            <layout class="QHBoxLayout" name="horizontalLayout_119">
                                              <property name="topMargin">
                                               <number>0</number>
                                              </property>
@@ -5412,7 +5588,7 @@ color: #009dff;</string>
                                        </widget>
                                       </item>
                                       <item>
-                                       <spacer name="verticalSpacer_7">
+                                       <spacer name="verticalSpacer_19">
                                         <property name="orientation">
                                          <enum>Qt::Vertical</enum>
                                         </property>
@@ -5428,7 +5604,7 @@ color: #009dff;</string>
                                        </spacer>
                                       </item>
                                       <item>
-                                       <widget class="QGroupBox" name="horizontalGroupBox_3">
+                                       <widget class="QGroupBox" name="horizontalGroupBox_11">
                                         <property name="styleSheet">
                                          <string notr="true">QGroupBox
 {
@@ -5445,7 +5621,7 @@ color: #009dff;</string>
                                         <property name="checkable">
                                          <bool>false</bool>
                                         </property>
-                                        <layout class="QHBoxLayout" name="horizontalLayout_41">
+                                        <layout class="QHBoxLayout" name="horizontalLayout_120">
                                          <property name="leftMargin">
                                           <number>0</number>
                                          </property>
@@ -5459,7 +5635,7 @@ color: #009dff;</string>
                                           <number>3</number>
                                          </property>
                                          <item>
-                                          <layout class="QVBoxLayout" name="verticalLayout_Audio_mixing">
+                                          <layout class="QVBoxLayout" name="verticalLayout_Audio_mixing_5">
                                            <property name="spacing">
                                             <number>0</number>
                                            </property>
@@ -5476,7 +5652,7 @@ color: #009dff;</string>
                                             <number>10</number>
                                            </property>
                                            <item>
-                                            <widget class="QLabel" name="label_38">
+                                            <widget class="QLabel" name="label_77">
                                              <property name="text">
                                               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Volume Changes (decibels)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                              </property>
@@ -5486,7 +5662,7 @@ color: #009dff;</string>
                                             </widget>
                                            </item>
                                            <item>
-                                            <layout class="QHBoxLayout" name="horizontalLayout_44">
+                                            <layout class="QHBoxLayout" name="horizontalLayout_121">
                                              <property name="spacing">
                                               <number>0</number>
                                              </property>
@@ -5497,7 +5673,7 @@ color: #009dff;</string>
                                               <number>0</number>
                                              </property>
                                              <item>
-                                              <layout class="QVBoxLayout" name="verticalLayout_50">
+                                              <layout class="QVBoxLayout" name="verticalLayout_83">
                                                <property name="leftMargin">
                                                 <number>10</number>
                                                </property>
@@ -5511,7 +5687,7 @@ color: #009dff;</string>
                                                 <number>5</number>
                                                </property>
                                                <item>
-                                                <layout class="QHBoxLayout" name="horizontalLayout_45">
+                                                <layout class="QHBoxLayout" name="horizontalLayout_122">
                                                  <property name="spacing">
                                                   <number>10</number>
                                                  </property>
@@ -5522,7 +5698,7 @@ color: #009dff;</string>
                                                   <number>0</number>
                                                  </property>
                                                  <item>
-                                                  <widget class="QLabel" name="label_42">
+                                                  <widget class="QLabel" name="label_78">
                                                    <property name="text">
                                                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Main Vocal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                    </property>
@@ -5563,7 +5739,7 @@ color: #009dff;</string>
                                                   </widget>
                                                  </item>
                                                  <item>
-                                                  <spacer name="horizontalSpacer_26">
+                                                  <spacer name="horizontalSpacer_70">
                                                    <property name="orientation">
                                                     <enum>Qt::Horizontal</enum>
                                                    </property>
@@ -5578,7 +5754,7 @@ color: #009dff;</string>
                                                 </layout>
                                                </item>
                                                <item>
-                                                <layout class="QHBoxLayout" name="horizontalLayout_46">
+                                                <layout class="QHBoxLayout" name="horizontalLayout_123">
                                                  <property name="topMargin">
                                                   <number>0</number>
                                                  </property>
@@ -5615,7 +5791,7 @@ color: #009dff;</string>
                                               </layout>
                                              </item>
                                              <item>
-                                              <layout class="QVBoxLayout" name="verticalLayout_54">
+                                              <layout class="QVBoxLayout" name="verticalLayout_84">
                                                <property name="leftMargin">
                                                 <number>10</number>
                                                </property>
@@ -5629,7 +5805,7 @@ color: #009dff;</string>
                                                 <number>5</number>
                                                </property>
                                                <item>
-                                                <layout class="QHBoxLayout" name="horizontalLayout_47">
+                                                <layout class="QHBoxLayout" name="horizontalLayout_124">
                                                  <property name="spacing">
                                                   <number>10</number>
                                                  </property>
@@ -5640,7 +5816,7 @@ color: #009dff;</string>
                                                   <number>0</number>
                                                  </property>
                                                  <item>
-                                                  <widget class="QLabel" name="label_44">
+                                                  <widget class="QLabel" name="label_79">
                                                    <property name="text">
                                                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Backup Vocal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                    </property>
@@ -5681,7 +5857,7 @@ color: #009dff;</string>
                                                   </widget>
                                                  </item>
                                                  <item>
-                                                  <spacer name="horizontalSpacer_27">
+                                                  <spacer name="horizontalSpacer_71">
                                                    <property name="orientation">
                                                     <enum>Qt::Horizontal</enum>
                                                    </property>
@@ -5696,7 +5872,7 @@ color: #009dff;</string>
                                                 </layout>
                                                </item>
                                                <item>
-                                                <layout class="QHBoxLayout" name="horizontalLayout_48">
+                                                <layout class="QHBoxLayout" name="horizontalLayout_125">
                                                  <property name="topMargin">
                                                   <number>0</number>
                                                  </property>
@@ -5733,7 +5909,7 @@ color: #009dff;</string>
                                               </layout>
                                              </item>
                                              <item>
-                                              <layout class="QVBoxLayout" name="verticalLayout_58">
+                                              <layout class="QVBoxLayout" name="verticalLayout_85">
                                                <property name="leftMargin">
                                                 <number>10</number>
                                                </property>
@@ -5747,7 +5923,7 @@ color: #009dff;</string>
                                                 <number>5</number>
                                                </property>
                                                <item>
-                                                <layout class="QHBoxLayout" name="horizontalLayout_53">
+                                                <layout class="QHBoxLayout" name="horizontalLayout_126">
                                                  <property name="spacing">
                                                   <number>10</number>
                                                  </property>
@@ -5758,7 +5934,7 @@ color: #009dff;</string>
                                                   <number>0</number>
                                                  </property>
                                                  <item>
-                                                  <widget class="QLabel" name="label_50">
+                                                  <widget class="QLabel" name="label_80">
                                                    <property name="text">
                                                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Music&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                    </property>
@@ -5799,7 +5975,7 @@ color: #009dff;</string>
                                                   </widget>
                                                  </item>
                                                  <item>
-                                                  <spacer name="horizontalSpacer_30">
+                                                  <spacer name="horizontalSpacer_72">
                                                    <property name="orientation">
                                                     <enum>Qt::Horizontal</enum>
                                                    </property>
@@ -5814,7 +5990,7 @@ color: #009dff;</string>
                                                 </layout>
                                                </item>
                                                <item>
-                                                <layout class="QHBoxLayout" name="horizontalLayout_54">
+                                                <layout class="QHBoxLayout" name="horizontalLayout_127">
                                                  <property name="topMargin">
                                                   <number>0</number>
                                                  </property>
@@ -5858,7 +6034,7 @@ color: #009dff;</string>
                                        </widget>
                                       </item>
                                       <item>
-                                       <spacer name="verticalSpacer_11">
+                                       <spacer name="verticalSpacer_20">
                                         <property name="orientation">
                                          <enum>Qt::Vertical</enum>
                                         </property>
@@ -5883,7 +6059,7 @@ color: #009dff;</string>
                               </layout>
                              </item>
                              <item>
-                              <spacer name="audio_bottom_verticalSpacer">
+                              <spacer name="audio_bottom_verticalSpacer_2">
                                <property name="orientation">
                                 <enum>Qt::Vertical</enum>
                                </property>
@@ -7088,7 +7264,7 @@ QPushButton:pressed{
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>218</width>
+                                 <width>362</width>
                                  <height>218</height>
                                 </rect>
                                </property>
@@ -7626,7 +7802,6 @@ QPushButton:pressed{
                        </item>
                       </layout>
                      </widget>
-                     <widget class="QWidget" name="page"/>
                     </widget>
                    </item>
                   </layout>

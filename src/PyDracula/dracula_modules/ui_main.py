@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainqQmXZy.ui'
+## Form generated from reading UI file 'mainEAHTHh.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -720,6 +720,18 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addWidget(self.btn_prompt_setting)
 
+        self.btn_command_setting = QPushButton(self.topMenu)
+        self.btn_command_setting.setObjectName(u"btn_command_setting")
+        sizePolicy1.setHeightForWidth(self.btn_command_setting.sizePolicy().hasHeightForWidth())
+        self.btn_command_setting.setSizePolicy(sizePolicy1)
+        self.btn_command_setting.setMinimumSize(QSize(0, 45))
+        self.btn_command_setting.setFont(font)
+        self.btn_command_setting.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_command_setting.setLayoutDirection(Qt.LeftToRight)
+        self.btn_command_setting.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-double-quote-sans-left.png);")
+
+        self.verticalLayout_8.addWidget(self.btn_command_setting)
+
         self.btn_exit = QPushButton(self.topMenu)
         self.btn_exit.setObjectName(u"btn_exit")
         sizePolicy1.setHeightForWidth(self.btn_exit.sizePolicy().hasHeightForWidth())
@@ -1052,7 +1064,7 @@ class Ui_MainWindow(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1138, 583))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1172, 583))
         self.verticalLayout_14 = QVBoxLayout(self.scrollAreaWidgetContents_4)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.a_verticalLayout_top = QVBoxLayout()
@@ -1715,7 +1727,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -616, 1183, 1234))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -7, 1183, 601))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -2461,496 +2473,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_22.addWidget(self.line_audio_page)
 
-        self.horizontalLayout_34 = QHBoxLayout()
-        self.horizontalLayout_34.setSpacing(6)
-        self.horizontalLayout_34.setObjectName(u"horizontalLayout_34")
-        self.horizontalLayout_34.setContentsMargins(100, 0, 100, 0)
-        self.horizontalGroupBox = QGroupBox(self.scrollAreaWidgetContents_2)
-        self.horizontalGroupBox.setObjectName(u"horizontalGroupBox")
-        self.horizontalGroupBox.setStyleSheet(u"QGroupBox\n"
-"{\n"
-"    font-size: 20px;\n"
-"    font-weight: bold;\n"
-"}")
-        self.horizontalGroupBox.setAlignment(Qt.AlignCenter)
-        self.horizontalLayout_30 = QHBoxLayout(self.horizontalGroupBox)
-        self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
-        self.horizontalLayout_30.setContentsMargins(0, 0, 0, 3)
-        self.verticalLayout_44 = QVBoxLayout()
-        self.verticalLayout_44.setSpacing(0)
-        self.verticalLayout_44.setObjectName(u"verticalLayout_44")
-        self.verticalLayout_44.setContentsMargins(-1, 0, -1, 0)
-        self.verticalLayout_45 = QVBoxLayout()
-        self.verticalLayout_45.setObjectName(u"verticalLayout_45")
-        self.verticalLayout_45.setContentsMargins(50, 0, 50, 10)
-        self.horizontalLayout_35 = QHBoxLayout()
-        self.horizontalLayout_35.setObjectName(u"horizontalLayout_35")
-        self.horizontalLayout_35.setContentsMargins(-1, -1, -1, 0)
-        self.horizontalSpacer_10 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_35.addItem(self.horizontalSpacer_10)
-
-        self.label_29 = QLabel(self.horizontalGroupBox)
-        self.label_29.setObjectName(u"label_29")
-        sizePolicy12 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy12.setHorizontalStretch(0)
-        sizePolicy12.setVerticalStretch(0)
-        sizePolicy12.setHeightForWidth(self.label_29.sizePolicy().hasHeightForWidth())
-        self.label_29.setSizePolicy(sizePolicy12)
-        self.label_29.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_35.addWidget(self.label_29)
-
-        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
-
-        self.horizontalLayout_35.addItem(self.horizontalSpacer_9)
-
-        self.textEdit = QTextEdit(self.horizontalGroupBox)
-        self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setMinimumSize(QSize(10, 0))
-        self.textEdit.setMaximumSize(QSize(150, 40))
-        self.textEdit.setStyleSheet(u"QTextEdit {\n"
-"	border: 2px solid rgb(48, 50, 62);\n"
-"	border-radius: 10px;\n"
-"	color: #FFF;\n"
-"	padding-left: 10px;\n"
-"	padding-right: 10px;\n"
-"	background-color:rgb(34,36,44)\n"
-"}\n"
-"QTextEdit:hover {\n"
-"	border: 2px solid rgb(66, 70, 86);\n"
-"}")
-        self.textEdit.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.textEdit.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.textEdit.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
-        self.textEdit.setLineWrapMode(QTextEdit.NoWrap)
-        self.textEdit.setReadOnly(True)
-
-        self.horizontalLayout_35.addWidget(self.textEdit)
-
-        self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_35.addItem(self.horizontalSpacer_20)
-
-
-        self.verticalLayout_45.addLayout(self.horizontalLayout_35)
-
-        self.verticalLayout_48 = QVBoxLayout()
-        self.verticalLayout_48.setObjectName(u"verticalLayout_48")
-        self.verticalLayout_48.setContentsMargins(10, 5, 10, 5)
-        self.horizontalLayout_38 = QHBoxLayout()
-        self.horizontalLayout_38.setSpacing(10)
-        self.horizontalLayout_38.setObjectName(u"horizontalLayout_38")
-        self.horizontalLayout_38.setContentsMargins(-1, 0, -1, 0)
-        self.label_36 = QLabel(self.horizontalGroupBox)
-        self.label_36.setObjectName(u"label_36")
-        self.label_36.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.horizontalLayout_38.addWidget(self.label_36)
-
-        self.lineEdit_rvc_index_rate = QLineEdit(self.horizontalGroupBox)
-        self.lineEdit_rvc_index_rate.setObjectName(u"lineEdit_rvc_index_rate")
-        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_index_rate.sizePolicy().hasHeightForWidth())
-        self.lineEdit_rvc_index_rate.setSizePolicy(sizePolicy11)
-        self.lineEdit_rvc_index_rate.setMinimumSize(QSize(60, 0))
-        self.lineEdit_rvc_index_rate.setMaximumSize(QSize(60, 16777215))
-        self.lineEdit_rvc_index_rate.setAcceptDrops(True)
-        self.lineEdit_rvc_index_rate.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_38.addWidget(self.lineEdit_rvc_index_rate)
-
-        self.label_37 = QLabel(self.horizontalGroupBox)
-        self.label_37.setObjectName(u"label_37")
-        self.label_37.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-
-        self.horizontalLayout_38.addWidget(self.label_37)
-
-        self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_38.addItem(self.horizontalSpacer_23)
-
-
-        self.verticalLayout_48.addLayout(self.horizontalLayout_38)
-
-        self.horizontalLayout_40 = QHBoxLayout()
-        self.horizontalLayout_40.setObjectName(u"horizontalLayout_40")
-        self.horizontalLayout_40.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalSlider_rvc_pitch_2 = QSlider(self.horizontalGroupBox)
-        self.horizontalSlider_rvc_pitch_2.setObjectName(u"horizontalSlider_rvc_pitch_2")
-        self.horizontalSlider_rvc_pitch_2.setStyleSheet(u"")
-        self.horizontalSlider_rvc_pitch_2.setMinimum(0)
-        self.horizontalSlider_rvc_pitch_2.setMaximum(10)
-        self.horizontalSlider_rvc_pitch_2.setSingleStep(1)
-        self.horizontalSlider_rvc_pitch_2.setPageStep(1)
-        self.horizontalSlider_rvc_pitch_2.setValue(0)
-        self.horizontalSlider_rvc_pitch_2.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout_40.addWidget(self.horizontalSlider_rvc_pitch_2)
-
-
-        self.verticalLayout_48.addLayout(self.horizontalLayout_40)
-
-
-        self.verticalLayout_45.addLayout(self.verticalLayout_48)
-
-        self.verticalSpacer_12 = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_45.addItem(self.verticalSpacer_12)
-
-        self.label_20 = QLabel(self.horizontalGroupBox)
-        self.label_20.setObjectName(u"label_20")
-        self.label_20.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_45.addWidget(self.label_20)
-
-        self.horizontalLayout_32 = QHBoxLayout()
-        self.horizontalLayout_32.setObjectName(u"horizontalLayout_32")
-        self.horizontalLayout_32.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalSpacer_2 = QSpacerItem(50, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
-
-        self.horizontalLayout_32.addItem(self.horizontalSpacer_2)
-
-        self.radioButton_3 = QRadioButton(self.horizontalGroupBox)
-        self.radioButton_3.setObjectName(u"radioButton_3")
-        self.radioButton_3.setStyleSheet(u"font-size: 16px;\n"
-"font-weight: bold;\n"
-"color: #fb89ff;")
-        self.radioButton_3.setChecked(True)
-
-        self.horizontalLayout_32.addWidget(self.radioButton_3)
-
-        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_32.addItem(self.horizontalSpacer_22)
-
-        self.radioButton_2 = QRadioButton(self.horizontalGroupBox)
-        self.radioButton_2.setObjectName(u"radioButton_2")
-        self.radioButton_2.setLayoutDirection(Qt.RightToLeft)
-        self.radioButton_2.setStyleSheet(u"font-size: 16px;\n"
-"font-weight: bold;\n"
-"color: #009dff;")
-
-        self.horizontalLayout_32.addWidget(self.radioButton_2)
-
-        self.horizontalSpacer_8 = QSpacerItem(50, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
-
-        self.horizontalLayout_32.addItem(self.horizontalSpacer_8)
-
-
-        self.verticalLayout_45.addLayout(self.horizontalLayout_32)
-
-        self.verticalSpacer_6 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_45.addItem(self.verticalSpacer_6)
-
-        self.horizontalLayout_33 = QHBoxLayout()
-        self.horizontalLayout_33.setObjectName(u"horizontalLayout_33")
-        self.horizontalLayout_33.setContentsMargins(-1, 0, -1, 0)
-        self.label_28 = QLabel(self.horizontalGroupBox)
-        self.label_28.setObjectName(u"label_28")
-
-        self.horizontalLayout_33.addWidget(self.label_28)
-
-        self.label_22 = QLabel(self.horizontalGroupBox)
-        self.label_22.setObjectName(u"label_22")
-        self.label_22.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.horizontalLayout_33.addWidget(self.label_22)
-
-
-        self.verticalLayout_45.addLayout(self.horizontalLayout_33)
-
-        self.horizontalGroupBox_2 = QGroupBox(self.horizontalGroupBox)
-        self.horizontalGroupBox_2.setObjectName(u"horizontalGroupBox_2")
-        self.horizontalGroupBox_2.setStyleSheet(u"QGroupBox\n"
-"{\n"
-"    font-size: 18px;\n"
-"    font-weight: bold;\n"
-"}")
-        self.horizontalGroupBox_2.setAlignment(Qt.AlignCenter)
-        self.horizontalGroupBox_2.setFlat(False)
-        self.horizontalGroupBox_2.setCheckable(True)
-        self.horizontalGroupBox_2.setChecked(False)
-        self.horizontalLayout_39 = QHBoxLayout(self.horizontalGroupBox_2)
-        self.horizontalLayout_39.setObjectName(u"horizontalLayout_39")
-        self.horizontalLayout_39.setContentsMargins(0, 0, 0, 3)
-        self.verticalLayout_47 = QVBoxLayout()
-        self.verticalLayout_47.setObjectName(u"verticalLayout_47")
-        self.verticalLayout_47.setContentsMargins(10, 5, 10, 5)
-        self.label_32 = QLabel(self.horizontalGroupBox_2)
-        self.label_32.setObjectName(u"label_32")
-        self.label_32.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_47.addWidget(self.label_32)
-
-        self.label_35 = QLabel(self.horizontalGroupBox_2)
-        self.label_35.setObjectName(u"label_35")
-        self.label_35.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-
-        self.verticalLayout_47.addWidget(self.label_35)
-
-        self.horizontalLayout_37 = QHBoxLayout()
-        self.horizontalLayout_37.setSpacing(10)
-        self.horizontalLayout_37.setObjectName(u"horizontalLayout_37")
-        self.horizontalLayout_37.setContentsMargins(-1, 0, -1, 0)
-        self.label_33 = QLabel(self.horizontalGroupBox_2)
-        self.label_33.setObjectName(u"label_33")
-        self.label_33.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.horizontalLayout_37.addWidget(self.label_33)
-
-        self.lineEdit_rvc_pitch = QLineEdit(self.horizontalGroupBox_2)
-        self.lineEdit_rvc_pitch.setObjectName(u"lineEdit_rvc_pitch")
-        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_pitch.sizePolicy().hasHeightForWidth())
-        self.lineEdit_rvc_pitch.setSizePolicy(sizePolicy11)
-        self.lineEdit_rvc_pitch.setMinimumSize(QSize(60, 0))
-        self.lineEdit_rvc_pitch.setMaximumSize(QSize(60, 16777215))
-        self.lineEdit_rvc_pitch.setAcceptDrops(True)
-        self.lineEdit_rvc_pitch.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_37.addWidget(self.lineEdit_rvc_pitch)
-
-        self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_37.addItem(self.horizontalSpacer_21)
-
-
-        self.verticalLayout_47.addLayout(self.horizontalLayout_37)
-
-        self.horizontalLayout_36 = QHBoxLayout()
-        self.horizontalLayout_36.setObjectName(u"horizontalLayout_36")
-        self.horizontalLayout_36.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalSlider_rvc_pitch = QSlider(self.horizontalGroupBox_2)
-        self.horizontalSlider_rvc_pitch.setObjectName(u"horizontalSlider_rvc_pitch")
-        self.horizontalSlider_rvc_pitch.setStyleSheet(u"")
-        self.horizontalSlider_rvc_pitch.setMinimum(-240)
-        self.horizontalSlider_rvc_pitch.setMaximum(240)
-        self.horizontalSlider_rvc_pitch.setSingleStep(10)
-        self.horizontalSlider_rvc_pitch.setValue(0)
-        self.horizontalSlider_rvc_pitch.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout_36.addWidget(self.horizontalSlider_rvc_pitch)
-
-
-        self.verticalLayout_47.addLayout(self.horizontalLayout_36)
-
-
-        self.horizontalLayout_39.addLayout(self.verticalLayout_47)
-
-
-        self.verticalLayout_45.addWidget(self.horizontalGroupBox_2)
-
-        self.verticalSpacer_7 = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_45.addItem(self.verticalSpacer_7)
-
-        self.horizontalGroupBox_3 = QGroupBox(self.horizontalGroupBox)
-        self.horizontalGroupBox_3.setObjectName(u"horizontalGroupBox_3")
-        self.horizontalGroupBox_3.setStyleSheet(u"QGroupBox\n"
-"{\n"
-"    font-size: 18px;\n"
-"    font-weight: bold;\n"
-"}")
-        self.horizontalGroupBox_3.setAlignment(Qt.AlignCenter)
-        self.horizontalGroupBox_3.setCheckable(False)
-        self.horizontalLayout_41 = QHBoxLayout(self.horizontalGroupBox_3)
-        self.horizontalLayout_41.setObjectName(u"horizontalLayout_41")
-        self.horizontalLayout_41.setContentsMargins(0, 0, 0, 3)
-        self.verticalLayout_Audio_mixing = QVBoxLayout()
-        self.verticalLayout_Audio_mixing.setSpacing(0)
-        self.verticalLayout_Audio_mixing.setObjectName(u"verticalLayout_Audio_mixing")
-        self.verticalLayout_Audio_mixing.setContentsMargins(0, 0, 0, 10)
-        self.label_38 = QLabel(self.horizontalGroupBox_3)
-        self.label_38.setObjectName(u"label_38")
-        self.label_38.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_Audio_mixing.addWidget(self.label_38)
-
-        self.horizontalLayout_44 = QHBoxLayout()
-        self.horizontalLayout_44.setSpacing(0)
-        self.horizontalLayout_44.setObjectName(u"horizontalLayout_44")
-        self.horizontalLayout_44.setContentsMargins(-1, 0, -1, 0)
-        self.verticalLayout_50 = QVBoxLayout()
-        self.verticalLayout_50.setObjectName(u"verticalLayout_50")
-        self.verticalLayout_50.setContentsMargins(10, 5, 10, 5)
-        self.horizontalLayout_45 = QHBoxLayout()
-        self.horizontalLayout_45.setSpacing(10)
-        self.horizontalLayout_45.setObjectName(u"horizontalLayout_45")
-        self.horizontalLayout_45.setContentsMargins(-1, 0, -1, 0)
-        self.label_42 = QLabel(self.horizontalGroupBox_3)
-        self.label_42.setObjectName(u"label_42")
-        self.label_42.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.horizontalLayout_45.addWidget(self.label_42)
-
-        self.lineEdit_rvc_main_vocal = QLineEdit(self.horizontalGroupBox_3)
-        self.lineEdit_rvc_main_vocal.setObjectName(u"lineEdit_rvc_main_vocal")
-        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_main_vocal.sizePolicy().hasHeightForWidth())
-        self.lineEdit_rvc_main_vocal.setSizePolicy(sizePolicy11)
-        self.lineEdit_rvc_main_vocal.setMinimumSize(QSize(60, 0))
-        self.lineEdit_rvc_main_vocal.setMaximumSize(QSize(60, 16777215))
-        self.lineEdit_rvc_main_vocal.setAcceptDrops(True)
-        self.lineEdit_rvc_main_vocal.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_45.addWidget(self.lineEdit_rvc_main_vocal)
-
-        self.horizontalSpacer_26 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_45.addItem(self.horizontalSpacer_26)
-
-
-        self.verticalLayout_50.addLayout(self.horizontalLayout_45)
-
-        self.horizontalLayout_46 = QHBoxLayout()
-        self.horizontalLayout_46.setObjectName(u"horizontalLayout_46")
-        self.horizontalLayout_46.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalSlider_rvc_main_vocal = QSlider(self.horizontalGroupBox_3)
-        self.horizontalSlider_rvc_main_vocal.setObjectName(u"horizontalSlider_rvc_main_vocal")
-        self.horizontalSlider_rvc_main_vocal.setStyleSheet(u"")
-        self.horizontalSlider_rvc_main_vocal.setMinimum(-200)
-        self.horizontalSlider_rvc_main_vocal.setMaximum(200)
-        self.horizontalSlider_rvc_main_vocal.setSingleStep(10)
-        self.horizontalSlider_rvc_main_vocal.setPageStep(10)
-        self.horizontalSlider_rvc_main_vocal.setValue(0)
-        self.horizontalSlider_rvc_main_vocal.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout_46.addWidget(self.horizontalSlider_rvc_main_vocal)
-
-
-        self.verticalLayout_50.addLayout(self.horizontalLayout_46)
-
-
-        self.horizontalLayout_44.addLayout(self.verticalLayout_50)
-
-        self.verticalLayout_54 = QVBoxLayout()
-        self.verticalLayout_54.setObjectName(u"verticalLayout_54")
-        self.verticalLayout_54.setContentsMargins(10, 5, 10, 5)
-        self.horizontalLayout_47 = QHBoxLayout()
-        self.horizontalLayout_47.setSpacing(10)
-        self.horizontalLayout_47.setObjectName(u"horizontalLayout_47")
-        self.horizontalLayout_47.setContentsMargins(-1, 0, -1, 0)
-        self.label_44 = QLabel(self.horizontalGroupBox_3)
-        self.label_44.setObjectName(u"label_44")
-        self.label_44.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.horizontalLayout_47.addWidget(self.label_44)
-
-        self.lineEdit_rvc_backup_vocal = QLineEdit(self.horizontalGroupBox_3)
-        self.lineEdit_rvc_backup_vocal.setObjectName(u"lineEdit_rvc_backup_vocal")
-        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_backup_vocal.sizePolicy().hasHeightForWidth())
-        self.lineEdit_rvc_backup_vocal.setSizePolicy(sizePolicy11)
-        self.lineEdit_rvc_backup_vocal.setMinimumSize(QSize(60, 0))
-        self.lineEdit_rvc_backup_vocal.setMaximumSize(QSize(60, 16777215))
-        self.lineEdit_rvc_backup_vocal.setAcceptDrops(True)
-        self.lineEdit_rvc_backup_vocal.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_47.addWidget(self.lineEdit_rvc_backup_vocal)
-
-        self.horizontalSpacer_27 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_47.addItem(self.horizontalSpacer_27)
-
-
-        self.verticalLayout_54.addLayout(self.horizontalLayout_47)
-
-        self.horizontalLayout_48 = QHBoxLayout()
-        self.horizontalLayout_48.setObjectName(u"horizontalLayout_48")
-        self.horizontalLayout_48.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalSlider_rvc_backup_vocal = QSlider(self.horizontalGroupBox_3)
-        self.horizontalSlider_rvc_backup_vocal.setObjectName(u"horizontalSlider_rvc_backup_vocal")
-        self.horizontalSlider_rvc_backup_vocal.setStyleSheet(u"")
-        self.horizontalSlider_rvc_backup_vocal.setMinimum(-200)
-        self.horizontalSlider_rvc_backup_vocal.setMaximum(200)
-        self.horizontalSlider_rvc_backup_vocal.setSingleStep(10)
-        self.horizontalSlider_rvc_backup_vocal.setPageStep(10)
-        self.horizontalSlider_rvc_backup_vocal.setValue(0)
-        self.horizontalSlider_rvc_backup_vocal.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout_48.addWidget(self.horizontalSlider_rvc_backup_vocal)
-
-
-        self.verticalLayout_54.addLayout(self.horizontalLayout_48)
-
-
-        self.horizontalLayout_44.addLayout(self.verticalLayout_54)
-
-        self.verticalLayout_58 = QVBoxLayout()
-        self.verticalLayout_58.setObjectName(u"verticalLayout_58")
-        self.verticalLayout_58.setContentsMargins(10, 5, 10, 5)
-        self.horizontalLayout_53 = QHBoxLayout()
-        self.horizontalLayout_53.setSpacing(10)
-        self.horizontalLayout_53.setObjectName(u"horizontalLayout_53")
-        self.horizontalLayout_53.setContentsMargins(-1, 0, -1, 0)
-        self.label_50 = QLabel(self.horizontalGroupBox_3)
-        self.label_50.setObjectName(u"label_50")
-        self.label_50.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.horizontalLayout_53.addWidget(self.label_50)
-
-        self.lineEdit_rvc_music = QLineEdit(self.horizontalGroupBox_3)
-        self.lineEdit_rvc_music.setObjectName(u"lineEdit_rvc_music")
-        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_music.sizePolicy().hasHeightForWidth())
-        self.lineEdit_rvc_music.setSizePolicy(sizePolicy11)
-        self.lineEdit_rvc_music.setMinimumSize(QSize(60, 0))
-        self.lineEdit_rvc_music.setMaximumSize(QSize(60, 16777215))
-        self.lineEdit_rvc_music.setAcceptDrops(True)
-        self.lineEdit_rvc_music.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_53.addWidget(self.lineEdit_rvc_music)
-
-        self.horizontalSpacer_30 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_53.addItem(self.horizontalSpacer_30)
-
-
-        self.verticalLayout_58.addLayout(self.horizontalLayout_53)
-
-        self.horizontalLayout_54 = QHBoxLayout()
-        self.horizontalLayout_54.setObjectName(u"horizontalLayout_54")
-        self.horizontalLayout_54.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalSlider_rvc_music = QSlider(self.horizontalGroupBox_3)
-        self.horizontalSlider_rvc_music.setObjectName(u"horizontalSlider_rvc_music")
-        self.horizontalSlider_rvc_music.setStyleSheet(u"")
-        self.horizontalSlider_rvc_music.setMinimum(-200)
-        self.horizontalSlider_rvc_music.setMaximum(200)
-        self.horizontalSlider_rvc_music.setSingleStep(10)
-        self.horizontalSlider_rvc_music.setPageStep(10)
-        self.horizontalSlider_rvc_music.setValue(0)
-        self.horizontalSlider_rvc_music.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout_54.addWidget(self.horizontalSlider_rvc_music)
-
-
-        self.verticalLayout_58.addLayout(self.horizontalLayout_54)
-
-
-        self.horizontalLayout_44.addLayout(self.verticalLayout_58)
-
-
-        self.verticalLayout_Audio_mixing.addLayout(self.horizontalLayout_44)
-
-
-        self.horizontalLayout_41.addLayout(self.verticalLayout_Audio_mixing)
-
-
-        self.verticalLayout_45.addWidget(self.horizontalGroupBox_3)
-
-        self.verticalSpacer_11 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_45.addItem(self.verticalSpacer_11)
-
-
-        self.verticalLayout_44.addLayout(self.verticalLayout_45)
-
-
-        self.horizontalLayout_30.addLayout(self.verticalLayout_44)
-
-
-        self.horizontalLayout_34.addWidget(self.horizontalGroupBox)
-
-
-        self.verticalLayout_22.addLayout(self.horizontalLayout_34)
-
         self.audio_bottom_verticalSpacer = QSpacerItem(20, 60, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_22.addItem(self.audio_bottom_verticalSpacer)
@@ -2963,6 +2485,584 @@ class Ui_MainWindow(object):
         self.verticalLayout_30.addWidget(self.scrollArea_2)
 
         self.stackedWidget.addWidget(self.Audio_Page)
+        self.Command_Page = QWidget()
+        self.Command_Page.setObjectName(u"Command_Page")
+        self.Command_Page.setStyleSheet(u"QLineEdit {\n"
+"	border: 2px solid rgb(48, 50, 62);\n"
+"	border-radius: 10px;\n"
+"	color: #FFF;\n"
+"	padding-left: 10px;\n"
+"	padding-right: 10px;\n"
+"	background-color:rgb(34,36,44)\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(66, 70, 86);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(85, 170, 255);\n"
+"	background-color: rgb(43, 45, 56);\n"
+"}\n"
+"\n"
+"QSlider::groove {\n"
+"	background-color: rgb(55, 62, 76);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal {\n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border: none;\n"
+"    height: 40px;\n"
+"    width: 10px;\n"
+"    margin: -20px 0;\n"
+"    border-radius: 20px;\n"
+"    padding: -20px 0px;\n"
+"}\n"
+"QSlider::handle:horizontal:hover {\n"
+"    background-color: rgb(155, 180, 255);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:pressed {\n"
+"    background-color: rgb(65, 255, 195);\n"
+"}")
+        self.verticalLayout_33 = QVBoxLayout(self.Command_Page)
+        self.verticalLayout_33.setObjectName(u"verticalLayout_33")
+        self.scrollArea_4 = QScrollArea(self.Command_Page)
+        self.scrollArea_4.setObjectName(u"scrollArea_4")
+        sizePolicy12 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy12.setHorizontalStretch(0)
+        sizePolicy12.setVerticalStretch(0)
+        sizePolicy12.setHeightForWidth(self.scrollArea_4.sizePolicy().hasHeightForWidth())
+        self.scrollArea_4.setSizePolicy(sizePolicy12)
+        self.scrollArea_4.setFrameShape(QFrame.NoFrame)
+        self.scrollArea_4.setFrameShadow(QFrame.Plain)
+        self.scrollArea_4.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.scrollArea_4.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
+        self.scrollArea_4.setWidgetResizable(True)
+        self.scrollAreaWidgetContents_5 = QWidget()
+        self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, -117, 1172, 722))
+        self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
+        self.verticalLayout_34.setObjectName(u"verticalLayout_34")
+        self.verticalLayout_28 = QVBoxLayout()
+        self.verticalLayout_28.setSpacing(10)
+        self.verticalLayout_28.setObjectName(u"verticalLayout_28")
+        self.verticalLayout_28.setContentsMargins(6, 6, 6, 6)
+        self.label_89 = QLabel(self.scrollAreaWidgetContents_5)
+        self.label_89.setObjectName(u"label_89")
+        self.label_89.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_28.addWidget(self.label_89)
+
+        self.line_audio_page_4 = QFrame(self.scrollAreaWidgetContents_5)
+        self.line_audio_page_4.setObjectName(u"line_audio_page_4")
+        self.line_audio_page_4.setFrameShadow(QFrame.Plain)
+        self.line_audio_page_4.setLineWidth(1)
+        self.line_audio_page_4.setMidLineWidth(0)
+        self.line_audio_page_4.setFrameShape(QFrame.HLine)
+
+        self.verticalLayout_28.addWidget(self.line_audio_page_4)
+
+        self.horizontalLayout_110 = QHBoxLayout()
+        self.horizontalLayout_110.setSpacing(6)
+        self.horizontalLayout_110.setObjectName(u"horizontalLayout_110")
+        self.horizontalLayout_110.setContentsMargins(100, 0, 100, 0)
+        self.horizontalGroupBox_9 = QGroupBox(self.scrollAreaWidgetContents_5)
+        self.horizontalGroupBox_9.setObjectName(u"horizontalGroupBox_9")
+        self.horizontalGroupBox_9.setStyleSheet(u"QGroupBox\n"
+"{\n"
+"    font-size: 20px;\n"
+"    font-weight: bold;\n"
+"}")
+        self.horizontalGroupBox_9.setAlignment(Qt.AlignCenter)
+        self.horizontalLayout_111 = QHBoxLayout(self.horizontalGroupBox_9)
+        self.horizontalLayout_111.setObjectName(u"horizontalLayout_111")
+        self.horizontalLayout_111.setContentsMargins(0, 0, 0, 3)
+        self.verticalLayout_79 = QVBoxLayout()
+        self.verticalLayout_79.setSpacing(0)
+        self.verticalLayout_79.setObjectName(u"verticalLayout_79")
+        self.verticalLayout_79.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_80 = QVBoxLayout()
+        self.verticalLayout_80.setObjectName(u"verticalLayout_80")
+        self.verticalLayout_80.setContentsMargins(50, 0, 50, 10)
+        self.horizontalLayout_112 = QHBoxLayout()
+        self.horizontalLayout_112.setObjectName(u"horizontalLayout_112")
+        self.horizontalLayout_112.setContentsMargins(-1, -1, -1, 0)
+        self.horizontalSpacer_63 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_112.addItem(self.horizontalSpacer_63)
+
+        self.label_68 = QLabel(self.horizontalGroupBox_9)
+        self.label_68.setObjectName(u"label_68")
+        sizePolicy13 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy13.setHorizontalStretch(0)
+        sizePolicy13.setVerticalStretch(0)
+        sizePolicy13.setHeightForWidth(self.label_68.sizePolicy().hasHeightForWidth())
+        self.label_68.setSizePolicy(sizePolicy13)
+        self.label_68.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_112.addWidget(self.label_68)
+
+        self.horizontalSpacer_64 = QSpacerItem(40, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_112.addItem(self.horizontalSpacer_64)
+
+        self.textEdit_rvc_model = QTextEdit(self.horizontalGroupBox_9)
+        self.textEdit_rvc_model.setObjectName(u"textEdit_rvc_model")
+        self.textEdit_rvc_model.setMinimumSize(QSize(10, 0))
+        self.textEdit_rvc_model.setMaximumSize(QSize(150, 40))
+        self.textEdit_rvc_model.setStyleSheet(u"QTextEdit {\n"
+"	border: 2px solid rgb(48, 50, 62);\n"
+"	border-radius: 10px;\n"
+"	color: #FFF;\n"
+"	padding-left: 10px;\n"
+"	padding-right: 10px;\n"
+"	background-color:rgb(34,36,44)\n"
+"}\n"
+"QTextEdit:hover {\n"
+"	border: 2px solid rgb(66, 70, 86);\n"
+"}")
+        self.textEdit_rvc_model.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.textEdit_rvc_model.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.textEdit_rvc_model.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
+        self.textEdit_rvc_model.setLineWrapMode(QTextEdit.NoWrap)
+        self.textEdit_rvc_model.setReadOnly(True)
+
+        self.horizontalLayout_112.addWidget(self.textEdit_rvc_model)
+
+        self.horizontalSpacer_65 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_112.addItem(self.horizontalSpacer_65)
+
+
+        self.verticalLayout_80.addLayout(self.horizontalLayout_112)
+
+        self.verticalLayout_81 = QVBoxLayout()
+        self.verticalLayout_81.setObjectName(u"verticalLayout_81")
+        self.verticalLayout_81.setContentsMargins(10, 5, 10, 5)
+        self.horizontalLayout_113 = QHBoxLayout()
+        self.horizontalLayout_113.setSpacing(10)
+        self.horizontalLayout_113.setObjectName(u"horizontalLayout_113")
+        self.horizontalLayout_113.setContentsMargins(-1, 0, -1, 0)
+        self.label_69 = QLabel(self.horizontalGroupBox_9)
+        self.label_69.setObjectName(u"label_69")
+        self.label_69.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_113.addWidget(self.label_69)
+
+        self.lineEdit_rvc_index_rate = QLineEdit(self.horizontalGroupBox_9)
+        self.lineEdit_rvc_index_rate.setObjectName(u"lineEdit_rvc_index_rate")
+        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_index_rate.sizePolicy().hasHeightForWidth())
+        self.lineEdit_rvc_index_rate.setSizePolicy(sizePolicy11)
+        self.lineEdit_rvc_index_rate.setMinimumSize(QSize(60, 0))
+        self.lineEdit_rvc_index_rate.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_rvc_index_rate.setAcceptDrops(True)
+        self.lineEdit_rvc_index_rate.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_113.addWidget(self.lineEdit_rvc_index_rate)
+
+        self.label_70 = QLabel(self.horizontalGroupBox_9)
+        self.label_70.setObjectName(u"label_70")
+        self.label_70.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.horizontalLayout_113.addWidget(self.label_70)
+
+        self.horizontalSpacer_66 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_113.addItem(self.horizontalSpacer_66)
+
+
+        self.verticalLayout_81.addLayout(self.horizontalLayout_113)
+
+        self.horizontalLayout_114 = QHBoxLayout()
+        self.horizontalLayout_114.setObjectName(u"horizontalLayout_114")
+        self.horizontalLayout_114.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_rvc_index_rate = QSlider(self.horizontalGroupBox_9)
+        self.horizontalSlider_rvc_index_rate.setObjectName(u"horizontalSlider_rvc_index_rate")
+        self.horizontalSlider_rvc_index_rate.setStyleSheet(u"")
+        self.horizontalSlider_rvc_index_rate.setMinimum(0)
+        self.horizontalSlider_rvc_index_rate.setMaximum(10)
+        self.horizontalSlider_rvc_index_rate.setSingleStep(1)
+        self.horizontalSlider_rvc_index_rate.setPageStep(1)
+        self.horizontalSlider_rvc_index_rate.setValue(0)
+        self.horizontalSlider_rvc_index_rate.setOrientation(Qt.Horizontal)
+
+        self.horizontalLayout_114.addWidget(self.horizontalSlider_rvc_index_rate)
+
+
+        self.verticalLayout_81.addLayout(self.horizontalLayout_114)
+
+
+        self.verticalLayout_80.addLayout(self.verticalLayout_81)
+
+        self.verticalSpacer_17 = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_80.addItem(self.verticalSpacer_17)
+
+        self.label_71 = QLabel(self.horizontalGroupBox_9)
+        self.label_71.setObjectName(u"label_71")
+        self.label_71.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_80.addWidget(self.label_71)
+
+        self.horizontalLayout_115 = QHBoxLayout()
+        self.horizontalLayout_115.setObjectName(u"horizontalLayout_115")
+        self.horizontalLayout_115.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSpacer_4 = QSpacerItem(50, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_115.addItem(self.horizontalSpacer_4)
+
+        self.radioButton_rvc_gender_female = QRadioButton(self.horizontalGroupBox_9)
+        self.radioButton_rvc_gender_female.setObjectName(u"radioButton_rvc_gender_female")
+        self.radioButton_rvc_gender_female.setStyleSheet(u"font-size: 16px;\n"
+"font-weight: bold;\n"
+"color: #fb89ff;")
+        self.radioButton_rvc_gender_female.setChecked(True)
+
+        self.horizontalLayout_115.addWidget(self.radioButton_rvc_gender_female)
+
+        self.horizontalSpacer_67 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_115.addItem(self.horizontalSpacer_67)
+
+        self.radioButton_rvc_gender_male = QRadioButton(self.horizontalGroupBox_9)
+        self.radioButton_rvc_gender_male.setObjectName(u"radioButton_rvc_gender_male")
+        self.radioButton_rvc_gender_male.setLayoutDirection(Qt.RightToLeft)
+        self.radioButton_rvc_gender_male.setStyleSheet(u"font-size: 16px;\n"
+"font-weight: bold;\n"
+"color: #009dff;")
+
+        self.horizontalLayout_115.addWidget(self.radioButton_rvc_gender_male)
+
+        self.horizontalSpacer_68 = QSpacerItem(50, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_115.addItem(self.horizontalSpacer_68)
+
+
+        self.verticalLayout_80.addLayout(self.horizontalLayout_115)
+
+        self.verticalSpacer_18 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_80.addItem(self.verticalSpacer_18)
+
+        self.horizontalLayout_116 = QHBoxLayout()
+        self.horizontalLayout_116.setObjectName(u"horizontalLayout_116")
+        self.horizontalLayout_116.setContentsMargins(-1, 0, -1, 0)
+        self.label_72 = QLabel(self.horizontalGroupBox_9)
+        self.label_72.setObjectName(u"label_72")
+
+        self.horizontalLayout_116.addWidget(self.label_72)
+
+        self.label_73 = QLabel(self.horizontalGroupBox_9)
+        self.label_73.setObjectName(u"label_73")
+        self.label_73.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_116.addWidget(self.label_73)
+
+
+        self.verticalLayout_80.addLayout(self.horizontalLayout_116)
+
+        self.horizontalGroupBox_rvc_manual_pitch = QGroupBox(self.horizontalGroupBox_9)
+        self.horizontalGroupBox_rvc_manual_pitch.setObjectName(u"horizontalGroupBox_rvc_manual_pitch")
+        self.horizontalGroupBox_rvc_manual_pitch.setStyleSheet(u"QGroupBox\n"
+"{\n"
+"    font-size: 18px;\n"
+"    font-weight: bold;\n"
+"}")
+        self.horizontalGroupBox_rvc_manual_pitch.setAlignment(Qt.AlignCenter)
+        self.horizontalGroupBox_rvc_manual_pitch.setFlat(False)
+        self.horizontalGroupBox_rvc_manual_pitch.setCheckable(True)
+        self.horizontalGroupBox_rvc_manual_pitch.setChecked(False)
+        self.horizontalLayout_117 = QHBoxLayout(self.horizontalGroupBox_rvc_manual_pitch)
+        self.horizontalLayout_117.setObjectName(u"horizontalLayout_117")
+        self.horizontalLayout_117.setContentsMargins(0, 0, 0, 3)
+        self.verticalLayout_82 = QVBoxLayout()
+        self.verticalLayout_82.setObjectName(u"verticalLayout_82")
+        self.verticalLayout_82.setContentsMargins(10, 5, 10, 5)
+        self.label_74 = QLabel(self.horizontalGroupBox_rvc_manual_pitch)
+        self.label_74.setObjectName(u"label_74")
+        self.label_74.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_82.addWidget(self.label_74)
+
+        self.label_75 = QLabel(self.horizontalGroupBox_rvc_manual_pitch)
+        self.label_75.setObjectName(u"label_75")
+        self.label_75.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.verticalLayout_82.addWidget(self.label_75)
+
+        self.horizontalLayout_118 = QHBoxLayout()
+        self.horizontalLayout_118.setSpacing(10)
+        self.horizontalLayout_118.setObjectName(u"horizontalLayout_118")
+        self.horizontalLayout_118.setContentsMargins(-1, 0, -1, 0)
+        self.label_76 = QLabel(self.horizontalGroupBox_rvc_manual_pitch)
+        self.label_76.setObjectName(u"label_76")
+        self.label_76.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_118.addWidget(self.label_76)
+
+        self.lineEdit_rvc_pitch = QLineEdit(self.horizontalGroupBox_rvc_manual_pitch)
+        self.lineEdit_rvc_pitch.setObjectName(u"lineEdit_rvc_pitch")
+        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_pitch.sizePolicy().hasHeightForWidth())
+        self.lineEdit_rvc_pitch.setSizePolicy(sizePolicy11)
+        self.lineEdit_rvc_pitch.setMinimumSize(QSize(60, 0))
+        self.lineEdit_rvc_pitch.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_rvc_pitch.setAcceptDrops(True)
+        self.lineEdit_rvc_pitch.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_118.addWidget(self.lineEdit_rvc_pitch)
+
+        self.horizontalSpacer_69 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_118.addItem(self.horizontalSpacer_69)
+
+
+        self.verticalLayout_82.addLayout(self.horizontalLayout_118)
+
+        self.horizontalLayout_119 = QHBoxLayout()
+        self.horizontalLayout_119.setObjectName(u"horizontalLayout_119")
+        self.horizontalLayout_119.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_rvc_pitch = QSlider(self.horizontalGroupBox_rvc_manual_pitch)
+        self.horizontalSlider_rvc_pitch.setObjectName(u"horizontalSlider_rvc_pitch")
+        self.horizontalSlider_rvc_pitch.setStyleSheet(u"")
+        self.horizontalSlider_rvc_pitch.setMinimum(-240)
+        self.horizontalSlider_rvc_pitch.setMaximum(240)
+        self.horizontalSlider_rvc_pitch.setSingleStep(10)
+        self.horizontalSlider_rvc_pitch.setValue(0)
+        self.horizontalSlider_rvc_pitch.setOrientation(Qt.Horizontal)
+
+        self.horizontalLayout_119.addWidget(self.horizontalSlider_rvc_pitch)
+
+
+        self.verticalLayout_82.addLayout(self.horizontalLayout_119)
+
+
+        self.horizontalLayout_117.addLayout(self.verticalLayout_82)
+
+
+        self.verticalLayout_80.addWidget(self.horizontalGroupBox_rvc_manual_pitch)
+
+        self.verticalSpacer_19 = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_80.addItem(self.verticalSpacer_19)
+
+        self.horizontalGroupBox_11 = QGroupBox(self.horizontalGroupBox_9)
+        self.horizontalGroupBox_11.setObjectName(u"horizontalGroupBox_11")
+        self.horizontalGroupBox_11.setStyleSheet(u"QGroupBox\n"
+"{\n"
+"    font-size: 18px;\n"
+"    font-weight: bold;\n"
+"}")
+        self.horizontalGroupBox_11.setAlignment(Qt.AlignCenter)
+        self.horizontalGroupBox_11.setCheckable(False)
+        self.horizontalLayout_120 = QHBoxLayout(self.horizontalGroupBox_11)
+        self.horizontalLayout_120.setObjectName(u"horizontalLayout_120")
+        self.horizontalLayout_120.setContentsMargins(0, 0, 0, 3)
+        self.verticalLayout_Audio_mixing_5 = QVBoxLayout()
+        self.verticalLayout_Audio_mixing_5.setSpacing(0)
+        self.verticalLayout_Audio_mixing_5.setObjectName(u"verticalLayout_Audio_mixing_5")
+        self.verticalLayout_Audio_mixing_5.setContentsMargins(0, 0, 0, 10)
+        self.label_77 = QLabel(self.horizontalGroupBox_11)
+        self.label_77.setObjectName(u"label_77")
+        self.label_77.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_Audio_mixing_5.addWidget(self.label_77)
+
+        self.horizontalLayout_121 = QHBoxLayout()
+        self.horizontalLayout_121.setSpacing(0)
+        self.horizontalLayout_121.setObjectName(u"horizontalLayout_121")
+        self.horizontalLayout_121.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_83 = QVBoxLayout()
+        self.verticalLayout_83.setObjectName(u"verticalLayout_83")
+        self.verticalLayout_83.setContentsMargins(10, 5, 10, 5)
+        self.horizontalLayout_122 = QHBoxLayout()
+        self.horizontalLayout_122.setSpacing(10)
+        self.horizontalLayout_122.setObjectName(u"horizontalLayout_122")
+        self.horizontalLayout_122.setContentsMargins(-1, 0, -1, 0)
+        self.label_78 = QLabel(self.horizontalGroupBox_11)
+        self.label_78.setObjectName(u"label_78")
+        self.label_78.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_122.addWidget(self.label_78)
+
+        self.lineEdit_rvc_main_vocal = QLineEdit(self.horizontalGroupBox_11)
+        self.lineEdit_rvc_main_vocal.setObjectName(u"lineEdit_rvc_main_vocal")
+        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_main_vocal.sizePolicy().hasHeightForWidth())
+        self.lineEdit_rvc_main_vocal.setSizePolicy(sizePolicy11)
+        self.lineEdit_rvc_main_vocal.setMinimumSize(QSize(60, 0))
+        self.lineEdit_rvc_main_vocal.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_rvc_main_vocal.setAcceptDrops(True)
+        self.lineEdit_rvc_main_vocal.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_122.addWidget(self.lineEdit_rvc_main_vocal)
+
+        self.horizontalSpacer_70 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_122.addItem(self.horizontalSpacer_70)
+
+
+        self.verticalLayout_83.addLayout(self.horizontalLayout_122)
+
+        self.horizontalLayout_123 = QHBoxLayout()
+        self.horizontalLayout_123.setObjectName(u"horizontalLayout_123")
+        self.horizontalLayout_123.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_rvc_main_vocal = QSlider(self.horizontalGroupBox_11)
+        self.horizontalSlider_rvc_main_vocal.setObjectName(u"horizontalSlider_rvc_main_vocal")
+        self.horizontalSlider_rvc_main_vocal.setStyleSheet(u"")
+        self.horizontalSlider_rvc_main_vocal.setMinimum(-200)
+        self.horizontalSlider_rvc_main_vocal.setMaximum(200)
+        self.horizontalSlider_rvc_main_vocal.setSingleStep(10)
+        self.horizontalSlider_rvc_main_vocal.setPageStep(10)
+        self.horizontalSlider_rvc_main_vocal.setValue(0)
+        self.horizontalSlider_rvc_main_vocal.setOrientation(Qt.Horizontal)
+
+        self.horizontalLayout_123.addWidget(self.horizontalSlider_rvc_main_vocal)
+
+
+        self.verticalLayout_83.addLayout(self.horizontalLayout_123)
+
+
+        self.horizontalLayout_121.addLayout(self.verticalLayout_83)
+
+        self.verticalLayout_84 = QVBoxLayout()
+        self.verticalLayout_84.setObjectName(u"verticalLayout_84")
+        self.verticalLayout_84.setContentsMargins(10, 5, 10, 5)
+        self.horizontalLayout_124 = QHBoxLayout()
+        self.horizontalLayout_124.setSpacing(10)
+        self.horizontalLayout_124.setObjectName(u"horizontalLayout_124")
+        self.horizontalLayout_124.setContentsMargins(-1, 0, -1, 0)
+        self.label_79 = QLabel(self.horizontalGroupBox_11)
+        self.label_79.setObjectName(u"label_79")
+        self.label_79.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_124.addWidget(self.label_79)
+
+        self.lineEdit_rvc_backup_vocal = QLineEdit(self.horizontalGroupBox_11)
+        self.lineEdit_rvc_backup_vocal.setObjectName(u"lineEdit_rvc_backup_vocal")
+        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_backup_vocal.sizePolicy().hasHeightForWidth())
+        self.lineEdit_rvc_backup_vocal.setSizePolicy(sizePolicy11)
+        self.lineEdit_rvc_backup_vocal.setMinimumSize(QSize(60, 0))
+        self.lineEdit_rvc_backup_vocal.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_rvc_backup_vocal.setAcceptDrops(True)
+        self.lineEdit_rvc_backup_vocal.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_124.addWidget(self.lineEdit_rvc_backup_vocal)
+
+        self.horizontalSpacer_71 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_124.addItem(self.horizontalSpacer_71)
+
+
+        self.verticalLayout_84.addLayout(self.horizontalLayout_124)
+
+        self.horizontalLayout_125 = QHBoxLayout()
+        self.horizontalLayout_125.setObjectName(u"horizontalLayout_125")
+        self.horizontalLayout_125.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_rvc_backup_vocal = QSlider(self.horizontalGroupBox_11)
+        self.horizontalSlider_rvc_backup_vocal.setObjectName(u"horizontalSlider_rvc_backup_vocal")
+        self.horizontalSlider_rvc_backup_vocal.setStyleSheet(u"")
+        self.horizontalSlider_rvc_backup_vocal.setMinimum(-200)
+        self.horizontalSlider_rvc_backup_vocal.setMaximum(200)
+        self.horizontalSlider_rvc_backup_vocal.setSingleStep(10)
+        self.horizontalSlider_rvc_backup_vocal.setPageStep(10)
+        self.horizontalSlider_rvc_backup_vocal.setValue(0)
+        self.horizontalSlider_rvc_backup_vocal.setOrientation(Qt.Horizontal)
+
+        self.horizontalLayout_125.addWidget(self.horizontalSlider_rvc_backup_vocal)
+
+
+        self.verticalLayout_84.addLayout(self.horizontalLayout_125)
+
+
+        self.horizontalLayout_121.addLayout(self.verticalLayout_84)
+
+        self.verticalLayout_85 = QVBoxLayout()
+        self.verticalLayout_85.setObjectName(u"verticalLayout_85")
+        self.verticalLayout_85.setContentsMargins(10, 5, 10, 5)
+        self.horizontalLayout_126 = QHBoxLayout()
+        self.horizontalLayout_126.setSpacing(10)
+        self.horizontalLayout_126.setObjectName(u"horizontalLayout_126")
+        self.horizontalLayout_126.setContentsMargins(-1, 0, -1, 0)
+        self.label_80 = QLabel(self.horizontalGroupBox_11)
+        self.label_80.setObjectName(u"label_80")
+        self.label_80.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_126.addWidget(self.label_80)
+
+        self.lineEdit_rvc_music = QLineEdit(self.horizontalGroupBox_11)
+        self.lineEdit_rvc_music.setObjectName(u"lineEdit_rvc_music")
+        sizePolicy11.setHeightForWidth(self.lineEdit_rvc_music.sizePolicy().hasHeightForWidth())
+        self.lineEdit_rvc_music.setSizePolicy(sizePolicy11)
+        self.lineEdit_rvc_music.setMinimumSize(QSize(60, 0))
+        self.lineEdit_rvc_music.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_rvc_music.setAcceptDrops(True)
+        self.lineEdit_rvc_music.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_126.addWidget(self.lineEdit_rvc_music)
+
+        self.horizontalSpacer_72 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_126.addItem(self.horizontalSpacer_72)
+
+
+        self.verticalLayout_85.addLayout(self.horizontalLayout_126)
+
+        self.horizontalLayout_127 = QHBoxLayout()
+        self.horizontalLayout_127.setObjectName(u"horizontalLayout_127")
+        self.horizontalLayout_127.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_rvc_music = QSlider(self.horizontalGroupBox_11)
+        self.horizontalSlider_rvc_music.setObjectName(u"horizontalSlider_rvc_music")
+        self.horizontalSlider_rvc_music.setStyleSheet(u"")
+        self.horizontalSlider_rvc_music.setMinimum(-200)
+        self.horizontalSlider_rvc_music.setMaximum(200)
+        self.horizontalSlider_rvc_music.setSingleStep(10)
+        self.horizontalSlider_rvc_music.setPageStep(10)
+        self.horizontalSlider_rvc_music.setValue(0)
+        self.horizontalSlider_rvc_music.setOrientation(Qt.Horizontal)
+
+        self.horizontalLayout_127.addWidget(self.horizontalSlider_rvc_music)
+
+
+        self.verticalLayout_85.addLayout(self.horizontalLayout_127)
+
+
+        self.horizontalLayout_121.addLayout(self.verticalLayout_85)
+
+
+        self.verticalLayout_Audio_mixing_5.addLayout(self.horizontalLayout_121)
+
+
+        self.horizontalLayout_120.addLayout(self.verticalLayout_Audio_mixing_5)
+
+
+        self.verticalLayout_80.addWidget(self.horizontalGroupBox_11)
+
+        self.verticalSpacer_20 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_80.addItem(self.verticalSpacer_20)
+
+
+        self.verticalLayout_79.addLayout(self.verticalLayout_80)
+
+
+        self.horizontalLayout_111.addLayout(self.verticalLayout_79)
+
+
+        self.horizontalLayout_110.addWidget(self.horizontalGroupBox_9)
+
+
+        self.verticalLayout_28.addLayout(self.horizontalLayout_110)
+
+        self.audio_bottom_verticalSpacer_2 = QSpacerItem(20, 60, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_28.addItem(self.audio_bottom_verticalSpacer_2)
+
+
+        self.verticalLayout_34.addLayout(self.verticalLayout_28)
+
+        self.scrollArea_4.setWidget(self.scrollAreaWidgetContents_5)
+
+        self.verticalLayout_33.addWidget(self.scrollArea_4)
+
+        self.stackedWidget.addWidget(self.Command_Page)
         self.Prompt_Page = QWidget()
         self.Prompt_Page.setObjectName(u"Prompt_Page")
         self.Prompt_Page.setStyleSheet(u"QLineEdit {\n"
@@ -3555,7 +3655,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 362, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -3684,11 +3784,8 @@ class Ui_MainWindow(object):
         __qtablewidgetitem45 = QTableWidgetItem()
         self.tableWidget.setItem(0, 3, __qtablewidgetitem45)
         self.tableWidget.setObjectName(u"tableWidget")
-        sizePolicy13 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy13.setHorizontalStretch(0)
-        sizePolicy13.setVerticalStretch(0)
-        sizePolicy13.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
-        self.tableWidget.setSizePolicy(sizePolicy13)
+        sizePolicy12.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
+        self.tableWidget.setSizePolicy(sizePolicy12)
         palette = QPalette()
         brush = QBrush(QColor(221, 221, 221, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -3754,9 +3851,6 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.row_3)
 
         self.stackedWidget.addWidget(self.Page_example)
-        self.page = QWidget()
-        self.page.setObjectName(u"page")
-        self.stackedWidget.addWidget(self.page)
 
         self.verticalLayout_15.addWidget(self.stackedWidget)
 
@@ -4077,7 +4171,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -4090,8 +4184,9 @@ class Ui_MainWindow(object):
         self.toggleButton.setText(QCoreApplication.translate("MainWindow", u"Hide", None))
         self.btn_home.setText(QCoreApplication.translate("MainWindow", u"Home", None))
         self.btn_character.setText(QCoreApplication.translate("MainWindow", u"Character", None))
-        self.btn_audio_setting.setText(QCoreApplication.translate("MainWindow", u"Mic Setting", None))
+        self.btn_audio_setting.setText(QCoreApplication.translate("MainWindow", u"Audio Setting", None))
         self.btn_prompt_setting.setText(QCoreApplication.translate("MainWindow", u"TTS Setting", None))
+        self.btn_command_setting.setText(QCoreApplication.translate("MainWindow", u"Feature Setting", None))
         self.btn_exit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.toggleLeftBox.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.extraLabel.setText(QCoreApplication.translate("MainWindow", u"About", None))
@@ -4294,9 +4389,10 @@ class Ui_MainWindow(object):
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Post Phoneme Length</span></p></body></html>", None))
         self.lineEdit_post_phoneme_length.setText(QCoreApplication.translate("MainWindow", u"1.0", None))
         self.pushButton_spk_default_5.setText(QCoreApplication.translate("MainWindow", u"Default", None))
-        self.horizontalGroupBox.setTitle(QCoreApplication.translate("MainWindow", u"AI Sining [RVC] Settings", None))
-        self.label_29.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">RVC Model Found:</span></p></body></html>", None))
-        self.textEdit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.label_89.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; font-weight:700;\">Extra Feature Settings</span></p></body></html>", None))
+        self.horizontalGroupBox_9.setTitle(QCoreApplication.translate("MainWindow", u"Sining [RVC]", None))
+        self.label_68.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">RVC Model Found:</span></p></body></html>", None))
+        self.textEdit_rvc_model.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -4304,27 +4400,27 @@ class Ui_MainWindow(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Kato Megumi Test</p></body></html>", None))
-        self.textEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Not Found", None))
-        self.label_36.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Index Rate</span></p></body></html>", None))
+        self.textEdit_rvc_model.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Not Found", None))
+        self.label_69.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Index Rate</span></p></body></html>", None))
         self.lineEdit_rvc_index_rate.setText(QCoreApplication.translate("MainWindow", u"0.0", None))
-        self.label_37.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt;\">Controls how much of the AI voice's accent to keep in the vocals</span></p></body></html>", None))
-        self.label_20.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Choose Gender type of your RVC Model, ai cover song will generated </span><span style=\" font-weight:700; color:#00ff00;\">automatically</span><span style=\" font-weight:700;\"> adjust pitch by this choose.</span></p></body></html>", None))
-        self.radioButton_3.setText(QCoreApplication.translate("MainWindow", u"Female", None))
-        self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"Male", None))
-        self.label_28.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>ex) RVC Model <span style=\" font-weight:700;\">[</span><span style=\" font-weight:700; color:#aaffff;\">Kato Megumi</span><span style=\" font-weight:700;\">]</span> is <span style=\" font-weight:700; color:#fb89ff;\">Female</span></p></body></html>", None))
-        self.label_22.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>RVC Model <span style=\" font-weight:700;\">[</span><span style=\" font-weight:700; color:#aaffff;\">Kirito</span><span style=\" font-weight:700;\">]</span> is <span style=\" font-weight:700; color:#009dff;\">Male</span></p></body></html>", None))
-        self.horizontalGroupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Use Manual Pitch Adjustment", None))
-        self.label_32.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">If you want to adjust pitch of AI Cover song </span><span style=\" font-weight:700; color:#00ff00;\">manually</span><span style=\" font-weight:700;\">, Check this at On and adjust pitch by Slider</span></p></body></html>", None))
-        self.label_35.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\">(Selected <span style=\" font-weight:700;\">Gender Type</span> will be <span style=\" font-weight:700; color:#00ff00;\">unnecessary</span> If you use this option)</p></body></html>", None))
-        self.label_33.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Pitch</span></p></body></html>", None))
+        self.label_70.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt;\">Controls how much of the AI voice's accent to keep in the vocals</span></p></body></html>", None))
+        self.label_71.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Choose Gender type of your RVC Model, ai cover song will generated </span><span style=\" font-weight:700; color:#00ff00;\">automatically</span><span style=\" font-weight:700;\"> adjust pitch by this choose.</span></p></body></html>", None))
+        self.radioButton_rvc_gender_female.setText(QCoreApplication.translate("MainWindow", u"Female", None))
+        self.radioButton_rvc_gender_male.setText(QCoreApplication.translate("MainWindow", u"Male", None))
+        self.label_72.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>ex) RVC Model <span style=\" font-weight:700;\">[</span><span style=\" font-weight:700; color:#aaffff;\">Kato Megumi</span><span style=\" font-weight:700;\">]</span> is <span style=\" font-weight:700; color:#fb89ff;\">Female</span></p></body></html>", None))
+        self.label_73.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>RVC Model <span style=\" font-weight:700;\">[</span><span style=\" font-weight:700; color:#aaffff;\">Kirito</span><span style=\" font-weight:700;\">]</span> is <span style=\" font-weight:700; color:#009dff;\">Male</span></p></body></html>", None))
+        self.horizontalGroupBox_rvc_manual_pitch.setTitle(QCoreApplication.translate("MainWindow", u"Use Manual Pitch Adjustment", None))
+        self.label_74.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">If you want to adjust pitch of AI Cover song </span><span style=\" font-weight:700; color:#00ff00;\">manually</span><span style=\" font-weight:700;\">, Check this at On and adjust pitch by Slider</span></p></body></html>", None))
+        self.label_75.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\">(Selected <span style=\" font-weight:700;\">Gender Type</span> will be <span style=\" font-weight:700; color:#00ff00;\">unnecessary</span> If you use this option)</p></body></html>", None))
+        self.label_76.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Pitch</span></p></body></html>", None))
         self.lineEdit_rvc_pitch.setText(QCoreApplication.translate("MainWindow", u"0.0", None))
-        self.horizontalGroupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Audio Mixing Options", None))
-        self.label_38.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Volume Changes (decibels)</span></p></body></html>", None))
-        self.label_42.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Main Vocal</span></p></body></html>", None))
+        self.horizontalGroupBox_11.setTitle(QCoreApplication.translate("MainWindow", u"Audio Mixing Options", None))
+        self.label_77.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Volume Changes (decibels)</span></p></body></html>", None))
+        self.label_78.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Main Vocal</span></p></body></html>", None))
         self.lineEdit_rvc_main_vocal.setText(QCoreApplication.translate("MainWindow", u"0.0", None))
-        self.label_44.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Backup Vocal</span></p></body></html>", None))
+        self.label_79.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Backup Vocal</span></p></body></html>", None))
         self.lineEdit_rvc_backup_vocal.setText(QCoreApplication.translate("MainWindow", u"0.0", None))
-        self.label_50.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Music</span></p></body></html>", None))
+        self.label_80.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Music</span></p></body></html>", None))
         self.lineEdit_rvc_music.setText(QCoreApplication.translate("MainWindow", u"0.0", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Language Model API Url</span></p></body></html>", None))
         self.textBrowser_google_colab_link.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

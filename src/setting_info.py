@@ -43,6 +43,11 @@ class SettingInfo:
         return settings_json
 
     @staticmethod
+    def load_command_settings():
+        settings_json = read_text_file(settings_folder / 'command_settings.txt')
+        return settings_json
+
+    @staticmethod
     def get_chatlog_filename(character_name, full_path=False):
         from LangAIComm import check_chatlog
         return check_chatlog(character_name, full_path)
