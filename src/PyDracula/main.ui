@@ -3316,7 +3316,7 @@ QSlider::handle:horizontal:pressed {
                                     </widget>
                                    </item>
                                    <item>
-                                    <widget class="QPushButton" name="pushButton_mic_default">
+                                    <widget class="QPushButton" name="pushButton_mic_device_default">
                                      <property name="sizePolicy">
                                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                        <horstretch>0</horstretch>
@@ -3629,7 +3629,7 @@ QSlider::handle:horizontal:pressed {
                                   </widget>
                                  </item>
                                  <item>
-                                  <widget class="QPushButton" name="pushButton_spk_default">
+                                  <widget class="QPushButton" name="pushButton_spk_device_default">
                                    <property name="sizePolicy">
                                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                      <horstretch>0</horstretch>
@@ -4102,7 +4102,7 @@ QPushButton:pressed{
                                            </spacer>
                                           </item>
                                           <item>
-                                           <widget class="QPushButton" name="pushButton_tts_volume_default">
+                                           <widget class="QPushButton" name="pushButton_voice_volume_default">
                                             <property name="sizePolicy">
                                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                               <horstretch>0</horstretch>
@@ -4261,7 +4261,7 @@ QPushButton:pressed{
                                            </spacer>
                                           </item>
                                           <item>
-                                           <widget class="QPushButton" name="pushButton_tts_speed_default">
+                                           <widget class="QPushButton" name="pushButton_voice_speed_default">
                                             <property name="sizePolicy">
                                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                               <horstretch>0</horstretch>
@@ -4430,7 +4430,7 @@ QPushButton:pressed{
                                            </spacer>
                                           </item>
                                           <item>
-                                           <widget class="QPushButton" name="pushButton_spk_default_4">
+                                           <widget class="QPushButton" name="pushButton_intonation_scale_default">
                                             <property name="sizePolicy">
                                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                               <horstretch>0</horstretch>
@@ -4570,7 +4570,7 @@ QPushButton:pressed{
                                            </spacer>
                                           </item>
                                           <item>
-                                           <widget class="QPushButton" name="pushButton_spk_default_6">
+                                           <widget class="QPushButton" name="pushButton_pre_phoneme_length_default">
                                             <property name="sizePolicy">
                                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                               <horstretch>0</horstretch>
@@ -4710,7 +4710,7 @@ QPushButton:pressed{
                                            </spacer>
                                           </item>
                                           <item>
-                                           <widget class="QPushButton" name="pushButton_spk_default_5">
+                                           <widget class="QPushButton" name="pushButton_post_phoneme_length_default">
                                             <property name="sizePolicy">
                                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                               <horstretch>0</horstretch>
@@ -4890,7 +4890,7 @@ QSlider::handle:horizontal:pressed {
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1172</width>
+                            <width>1011</width>
                             <height>722</height>
                            </rect>
                           </property>

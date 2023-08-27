@@ -1,9 +1,9 @@
 import os
 import pyaudio
 
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"   # hide pygame print
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"  # hide pygame print
 
-import pygame   # noqa: E402
+import pygame  # noqa: E402
 import pygame._sdl2 as sdl2_audio  # noqa
 
 if __name__ == '__main__' or "modules" not in __name__:
@@ -78,10 +78,22 @@ class AudioDevice:
             self.device_list.append(_dvc)
 
     def set_selected_mic_index(self, index):
-        self.selected_mic = self.mic_list[index]
+        if len(self.mic_list) == 0:
+            raise RuntimeError("mic list is empty!")
+        elif index >= len(self.mic_list) or index < 0:
+            print("Warning [aud_device_manager]: index error, select default mic device")
+            self.selected_mic = self.default_mic
+        else:
+            self.selected_mic = self.mic_list[index]
 
     def set_selected_speaker_index(self, index):
-        self.selected_speaker = self.speaker_list[index]
+        if len(self.speaker_list) == 0:
+            raise RuntimeError("speaker list is empty!")
+        elif index >= len(self.speaker_list) or index < 0:
+            print("Warning [aud_device_manager]: index error, select default speaker device")
+            self.selected_speaker = self.default_speaker
+        else:
+            self.selected_speaker = self.speaker_list[index]
 
     def set_selected_mic(self, name):
         for item in self.mic_list:
@@ -109,24 +121,23 @@ class AudioDevice:
         print(f"\033[31mError [Audio Device]: Could not find any Speaker Device with given index: {name}\033[0m")
 
     def get_default_mic(self):
-        for device_info in self.mic_list:
-            if device_info.isDefault:
-                return device_info
-
+        if self.default_mic:
+            return self.default_mic
         print("\033[31mError [Audio Device Manager]: Could not find any default Mic\033[0m")
         return None
 
     def get_default_speaker(self):
-        for device_info in self.speaker_list:
-            if device_info.isDefault:
-                return device_info
+        if self.default_speaker:
+            return self.default_speaker
 
         print("\033[31mError [Audio Device Manager]: Could not find any default Speaker\033[0m")
         return None
 
-    def set_selected_device_to_default(self):
-        self.selected_mic = self.get_default_mic()
-        self.selected_speaker = self.get_default_speaker()
+    def set_selected_device_to_default(self, mic=True, spk=True):
+        if mic:
+            self.selected_mic = self.get_default_mic()
+        if spk:
+            self.selected_speaker = self.get_default_speaker()
 
     # noinspection PyMethodMayBeStatic
     def get_devices(self, capture_devices: bool = False):

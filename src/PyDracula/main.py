@@ -184,7 +184,8 @@ class MainWindow(QMainWindow):
 
         widgets.settingsTopBtn.clicked.connect(openCloseRightBox)
 
-        # region UPDATE CONTENT BY COMPONENT
+        # region [UPDATE CONTENT BY COMPONENT]
+        ################################################################################################
         connect_comp_list = [
             ## other settings components
             widgets.checkBox_discord_bot,
@@ -202,6 +203,10 @@ class MainWindow(QMainWindow):
             widgets.textEdit_your_name,
 
             ## audio settings components
+            widgets.comboBox_mic_device,
+            widgets.comboBox_spk_device,
+            widgets.pushButton_mic_device_default,
+            widgets.pushButton_spk_device_default,
             widgets.comboBox_tts_character,
             widgets.comboBox_tts_language,
             widgets.comboBox_tts_voice_id,
@@ -228,7 +233,8 @@ class MainWindow(QMainWindow):
         self.install_event_all(QSlider)
 
         self.init_combobox_text(connect_comp_list)
-        # endregion
+        ################################################################################################
+        # endregion [UPDATE CONTENT BY COMPONENT]
 
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
@@ -416,9 +422,9 @@ class MainWindow(QMainWindow):
         component_property = None
         setting_name = None
 
-
         if componentName is not None:
             component_type, component_key = self.component_info_by_name(componentName)
+
 
         # region CHARACTER SETTINGS
         #####################################################################################
@@ -427,22 +433,34 @@ class MainWindow(QMainWindow):
         #####################################################################################
         # endregion CHARACTER SETTINGS
 
+
         # region AUDIO SETTINGS
         #####################################################################################
+        if component_key in ["mic_device", "spk_device"]:
+            self.refresh_audio_device(update_by_combo=True)
+
+            return
+        if component_type == "pushButton" and "device_default" in component_key:
+            if "mic" in component_key:
+                self.refresh_audio_device(update_by_combo=True, def_mic=True)
+            if "spk" in component_key:
+                self.refresh_audio_device(update_by_combo=True, def_spk=True)
+            return
+
         if component_key in ["tts_character", "tts_language", "tts_voice_id"]:
-            setting_name = 'audio_settings'
             self.refresh_tts_info(update_by_combo=True)
 
             return
         #####################################################################################
         # endregion AUDIO SETTINGS
 
+
         # region PROMPT SETTINGS
         #####################################################################################
         if "ai_model_language" in componentName:
             setting_name = "prompt_settings"
 
-        if component_type == "pushButton":
+        if component_type == "pushButton" and "view" in component_key:
             if componentName == "pushButton_view_original_url":
                 # URL format api
                 self.refresh_api_url(hide_url=False)     # peek api_url temporarily
@@ -459,6 +477,7 @@ class MainWindow(QMainWindow):
             return
         #####################################################################################
         # endregion PROMPT SETTINGS
+
 
         # region OTHER SETTINGS
         #####################################################################################
@@ -528,7 +547,7 @@ class MainWindow(QMainWindow):
 
         # PROMPT SETTINGS
         #####################################################################################
-        if component_type == "pushButton":
+        if component_type == "pushButton" and "view" in component_key:
             if componentName == "pushButton_view_original_url":
                 # URL format api
                 self.refresh_api_url()  # Hide url
@@ -848,8 +867,6 @@ class MainWindow(QMainWindow):
         self.color_by_state([webhook_url_widget, webhook_username_widget, webhook_avatar_widget
                             , discord_your_name_widget, discord_your_avatar_widget], discord_webhook)
 
-
-
     def color_by_state(self, item_list: list, state = False):
         if not state:
             for item in item_list:
@@ -858,31 +875,6 @@ class MainWindow(QMainWindow):
 
         for item in item_list:
             item.setStyleSheet("color: rgb(0, 255, 38);")
-
-    def update_thread_table(self):
-        global widgets
-        table_list = [widgets.tableWidget_prompt_list, widgets.tableWidget_tts_list]
-        threadlist_zip = [self.prompt_thread_list, self.tts_thread_list]
-        row = 0
-
-        for (table, thread_list) in zip(table_list, threadlist_zip):
-            row_i = int(row/2)  # row [0, 1] -> index 0, [2, 3] -> index 1
-            table.setRowCount(len(thread_list))
-            if len(thread_list) >= 1:
-                # print(row_i, table)
-                table.setItem(row_i, 0, QTableWidgetItem("name"))
-                table.setItem(row_i, 1, QTableWidgetItem(thread_list[row_i].text))
-
-                if (thread_list[row_i].isRunning):
-                    status = "running"
-                else:
-                    status = "Waiting"
-
-                table.setItem(row_i, 2, QTableWidgetItem(status))
-
-            row = row + 1
-
-
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -929,46 +921,16 @@ class MainWindow(QMainWindow):
     # LOAD INFO EVENTS
     # ///////////////////////////////////////////////////////////////
     def load_all_info(self):
-        self.load_character_info()  # Load Character page
         self.chat_layout_update()    # Load Home Page
+        self.load_character_info()  # Load Character page
         self.load_audio_info()    # Load Audio page
+        self.prompt_page_update() # Load prompt information
         self.command_page_update()  # Load Command Page
 
         self.extra_right_menu_update()  # Load other information
-        self.prompt_page_update() # Load prompt information
 
-
-    def load_character_info(self):
-        global widgets
-        char_settings_json = SettingInfo.load_character_settings()
-        character_name = char_settings_json["character_name"]
-        user_name = char_settings_json["your_name"]
-
-        from LangAIComm import get_character_info   # noqa
-        char_dict = get_character_info(character_name)  # Dict [your_name, character_name, greeting, context, character_image]
-        # print(char_dict)
-
-        bot_image = char_dict["character_image"] # TODO: check None, if there's no image
-
-        if bot_image is not None:
-            # bot_pixmap = QPixmap.fromImage(bot_image)
-            widgets.label_char_img.setPixmap(QPixmap(bot_image))
-
-        widgets.textEdit_greeting.setText(char_dict["greeting"])
-        widgets.textEdit_context.setText(char_dict["context"])
-
-        self.char_info_dict = char_dict
-
-        # Force set 'char_name' and 'your_name' from 'Character_Settings.txt'
-        self.char_info_dict.update(char_settings_json)
-        # TODO: if your_name or character_name is changed in settings_txt, program don't know who is the user in chatlog_txt
-
-        widgets.textEdit_your_name.setText(user_name)
-        widgets.label_character_name.setText(character_name)
-
-        # print(self.char_info_dict)
-
-
+    # region [LOAD CHAT INFOS]
+    ################################################################################################
     def load_chatlog_info(self):
         global widgets
 
@@ -1026,7 +988,79 @@ class MainWindow(QMainWindow):
         # get chatlog filename
         self.chat_info_dict["chatlog_filename"] = SettingInfo.get_chatlog_filename(character_name)
 
-    def refresh_audio_device(self):
+    def get_chatlog_path(self):
+        return SettingInfo.get_chatlog_filename(self.char_info_dict["character_name"], True)
+
+    ################################################################################################
+    # endregion [LOAD CHAT INFOS]
+
+    # region [LOAD CHARACTER INFOS]
+    ################################################################################################
+    def load_character_info(self):
+        global widgets
+        char_settings_json = SettingInfo.load_character_settings()
+        character_name = char_settings_json["character_name"]
+        user_name = char_settings_json["your_name"]
+
+        from LangAIComm import get_character_info   # noqa
+        char_dict = get_character_info(character_name)  # Dict [your_name, character_name, greeting, context, character_image]
+        # print(char_dict)
+
+        bot_image = char_dict["character_image"] # TODO: check None, if there's no image
+
+        if bot_image is not None:
+            # bot_pixmap = QPixmap.fromImage(bot_image)
+            widgets.label_char_img.setPixmap(QPixmap(bot_image))
+
+        widgets.textEdit_greeting.setText(char_dict["greeting"])
+        widgets.textEdit_context.setText(char_dict["context"])
+
+        self.char_info_dict = char_dict
+
+        # Force set 'char_name' and 'your_name' from 'Character_Settings.txt'
+        self.char_info_dict.update(char_settings_json)
+        # TODO: if your_name or character_name is changed in settings_txt, program don't know who is the user in chatlog_txt
+
+        widgets.textEdit_your_name.setText(user_name)
+        widgets.label_character_name.setText(character_name)
+
+        # print(self.char_info_dict)
+
+    ################################################################################################
+    # endregion [LOAD CHARACTER INFOS]
+
+    # region [LOAD AUDIO INFOS]
+    ################################################################################################
+    def load_audio_info(self):
+        global widgets
+
+        if self.audio_info_dict is None:
+            self.audio_info_dict = {}
+
+        self.audio_info_dict.update(SettingInfo.load_audio_settings())
+        self.refresh_audio_device()
+        self.refresh_tts_info()
+
+        # region [LINEEDIT & SLIDERS]
+        ################################################################################################
+        phrase_timeout = str (self.audio_info_dict["phrase_timeout"])
+        widgets.lineEdit_phrase_timeout.setText(phrase_timeout)
+
+        self.set_qobjects_by_dict([widgets.lineEdit_mic_threshold, widgets.horizontalSlider_mic_threshold,
+                                   widgets.lineEdit_voice_volume, widgets.horizontalSlider_voice_volume],
+                                  self.audio_info_dict, 100, True)
+
+
+        self.set_qobjects_by_dict([widgets.lineEdit_voice_speed, widgets.horizontalSlider_voice_speed,
+                                   widgets.lineEdit_intonation_scale, widgets.horizontalSlider_intonation_scale,
+                                   widgets.lineEdit_pre_phoneme_length, widgets.horizontalSlider_pre_phoneme_length,
+                                   widgets.lineEdit_post_phoneme_length, widgets.horizontalSlider_post_phoneme_length],
+                                  self.audio_info_dict, 100)
+
+        ################################################################################################
+        # endregion [LINEEDIT & SLIDERS]
+
+    def refresh_audio_device(self, update_by_combo = False, def_mic=False, def_spk=False):
         global widgets
 
         # REFRESH AUDIO DEVICE INFO LIST
@@ -1034,6 +1068,9 @@ class MainWindow(QMainWindow):
 
         mic_comboBox = widgets.comboBox_mic_device
         spk_comboBox = widgets.comboBox_spk_device
+
+        pre_mic_ = mic_comboBox.currentIndex()
+        pre_spk_ = spk_comboBox.currentIndex()
 
         mic_comboBox.clear()
         spk_comboBox.clear()
@@ -1047,16 +1084,62 @@ class MainWindow(QMainWindow):
         for _combo in [mic_comboBox, spk_comboBox]:
             self.add_none_item_combobox(_combo)
 
-    def select_aud_devices_loaded_setting(self):
-        self.newAudDevice.set_selected_device_to_default()  # TODO: Load from audio_settings
+        _mic_index = None
+        _spk_index = None
 
+        if update_by_combo:
+            _mic_index = pre_mic_ - 1
+            _spk_index = pre_spk_ - 1
+        else:
+            _mic_index = self.audio_info_dict['mic_index']
+            _spk_index = self.audio_info_dict['spk_index']
+
+        _mic_i_fix, _spk_i_fix = self.select_aud_devices_loaded_setting(_mic_index, _spk_index, def_mic, def_spk)
+        print(_mic_i_fix, _spk_i_fix)
+        # region [UPDATE JSON FILE]
+        ################################################################################################
+        update_json("mic_index", _mic_i_fix, "audio_settings")
+        update_json("spk_index", _spk_i_fix, "audio_settings")
+        ################################################################################################
+        # endregion [UPDATE JSON FILE]
+
+    def select_aud_devices_loaded_setting(self, _mic_i, _spk_i, def_mic, def_spk):
         mic_comboBox = self.ui.comboBox_mic_device
         spk_comboBox = self.ui.comboBox_spk_device
 
-        print("mic: ", self.newAudDevice.selected_mic)
-        print("spk: ", self.newAudDevice.selected_speaker)
-        mic_comboBox.setCurrentText(self.newAudDevice.selected_mic.name)
-        spk_comboBox.setCurrentText(self.newAudDevice.selected_speaker.name)
+        _ret_mic_i = _mic_i
+        _ret_spk_i = _spk_i
+
+        # Set devices with index
+        if _mic_i < 0:
+            mic_comboBox.setCurrentIndex(0)
+            self.newAudDevice.selected_mic = None
+        else:
+            self.newAudDevice.set_selected_mic_index(_mic_i)
+            _ret_mic_i = self.newAudDevice.selected_mic.index
+            print(_ret_mic_i)
+
+        if _spk_i < 0:
+            spk_comboBox.setCurrentIndex(0)
+            self.newAudDevice.selected_speaker = None
+        else:
+            self.newAudDevice.set_selected_speaker_index(_spk_i)
+            _ret_spk_i = self.newAudDevice.selected_speaker.index
+
+        # Set Default devices if need
+        if def_mic:
+            self.newAudDevice.set_selected_device_to_default(def_mic, False)
+            _ret_mic_i = self.newAudDevice.selected_mic.index
+        if def_spk:
+            self.newAudDevice.set_selected_device_to_default(False, def_spk)
+            _ret_spk_i = self.newAudDevice.selected_speaker.index
+
+        if self.newAudDevice.selected_mic:
+            mic_comboBox.setCurrentText(self.newAudDevice.selected_mic.name)
+            print("mic: ", self.newAudDevice.selected_mic, _ret_mic_i)
+        if self.newAudDevice.selected_speaker:
+            spk_comboBox.setCurrentText(self.newAudDevice.selected_speaker.name)
+            print("spk: ", self.newAudDevice.selected_speaker, _ret_spk_i)
 
         for _combo in [mic_comboBox, spk_comboBox]:
             if _combo.currentIndex() == 0:
@@ -1064,6 +1147,8 @@ class MainWindow(QMainWindow):
             else:
                 _col = "white"
             self.change_color_combobox(_combo, _col)
+
+        return _ret_mic_i, _ret_spk_i
 
     # REFRESH TTS INFO LIST
     def refresh_tts_info(self, update_by_combo = False):
@@ -1107,6 +1192,7 @@ class MainWindow(QMainWindow):
         # region [LOAD 'config.json' INFO]
         ################################################################################################
         if update_by_combo:     # refresh other infos by combo text changed
+            self.audio_info_dict.update(SettingInfo.load_audio_settings())
             tts_character = self.ui.comboBox_tts_character.currentText()
         else:
             tts_character = self.audio_info_dict["tts_character"]
@@ -1148,18 +1234,19 @@ class MainWindow(QMainWindow):
                 voice_id_comboBox.addItem(_id)
         else:
             self.ui.comboBox_tts_character.setCurrentIndex(0)
-            ################################################################################################
-            # endregion [LOAD 'config.json' INFO]
+        ################################################################################################
+        # endregion [LOAD 'config.json' INFO]
 
         self.select_tts_loaded_setting(tts_character, avbl_lang, pre_tts_lang, pre_tts_v_id)
 
         # region [UPDATE JSON FILE]
+        ################################################################################################
         char_updated = self.ui.comboBox_tts_character.currentText()
         if char_updated == "[None]":
             char_updated = None
         lang_updated = self.convert_language_code(lang_comboBox.currentText())
         v_id_updated = self.ui.comboBox_tts_voice_id.currentIndex() - 1
-        ################################################################################################
+
         update_json("tts_character", char_updated, "audio_settings")
         update_json("tts_language", lang_updated, "audio_settings")
         update_json("tts_voice_id", v_id_updated, "audio_settings")
@@ -1184,8 +1271,6 @@ class MainWindow(QMainWindow):
         return combo_list
 
     def select_tts_loaded_setting(self, char_name, avbl_lang:list[str], pre_lang, pre_id):
-        self.audio_info_dict.update(SettingInfo.load_audio_settings())
-
         lang = self.audio_info_dict["tts_language"]
         v_id = self.audio_info_dict["tts_voice_id"]
 
@@ -1227,60 +1312,11 @@ class MainWindow(QMainWindow):
                 _col = "white"
             self.change_color_combobox(_combo, _col)
 
-    def change_color_combobox(self, combo_box:QComboBox, color:str):
-        combo_style = "QComboBox {" \
-                      "color: %s;" \
-                      "background-color: rgb(27, 29, 35);" \
-                      "border-radius: 5px;border: 2px;" \
-                      " solid rgb(33, 37, 43);" \
-                      "padding: 5px;padding-left: 10px;}"
+    ################################################################################################
+    # endregion [LOAD AUDIO INFOS]
 
-        combo_box.setStyleSheet(combo_style % (color))
-
-
-    def add_none_item_combobox(self, combo_box:QComboBox, text:str= "[None]", color:str= "red"):
-        model = combo_box.model()
-        combo_box.insertItem(0, text)
-        model.setData(model.index(0, 0), QColor(color), QtCore.Qt.ForegroundRole)
-
-    def load_audio_info(self):
-        global widgets
-
-        if self.audio_info_dict is None:
-            self.audio_info_dict = {}
-
-        self.audio_info_dict.update(SettingInfo.load_audio_settings())
-        self.refresh_audio_device()
-        self.refresh_tts_info()
-
-        # region [LINEEDIT & SLIDERS]
-        ################################################################################################
-        phrase_timeout = str (self.audio_info_dict["phrase_timeout"])
-        widgets.lineEdit_phrase_timeout.setText(phrase_timeout)
-
-        self.set_qobjects_by_dict([widgets.lineEdit_mic_threshold, widgets.horizontalSlider_mic_threshold,
-                                   widgets.lineEdit_voice_volume, widgets.horizontalSlider_voice_volume],
-                                  self.audio_info_dict, 100, True)
-
-
-        self.set_qobjects_by_dict([widgets.lineEdit_voice_speed, widgets.horizontalSlider_voice_speed,
-                                   widgets.lineEdit_intonation_scale, widgets.horizontalSlider_intonation_scale,
-                                   widgets.lineEdit_pre_phoneme_length, widgets.horizontalSlider_pre_phoneme_length,
-                                   widgets.lineEdit_post_phoneme_length, widgets.horizontalSlider_post_phoneme_length],
-                                  self.audio_info_dict, 100)
-
-        ################################################################################################
-        # endregion [LINEEDIT & SLIDERS]
-
-        # region [COMBO BOX]
-        ################################################################################################
-        mic_device = str(self.audio_info_dict["mic_index"])
-        spk_device = str(self.audio_info_dict["spk_index"])
-        ################################################################################################
-        # endregion [COMBO BOX]
-
-        self.select_aud_devices_loaded_setting()
-
+    # region [LOAD MORE INFOS]
+    ################################################################################################
     def load_command_info(self):
         global widgets
 
@@ -1300,6 +1336,26 @@ class MainWindow(QMainWindow):
             self.prompt_info_dict = {}
 
         self.prompt_info_dict.update(SettingInfo.load_prompt_settings())
+
+    ################################################################################################
+    # endregion [LOAD MORE INFOS]
+
+    # region [UTILS]
+    #################################################################################################
+    def change_color_combobox(self, combo_box:QComboBox, color:str):
+        combo_style = "QComboBox {" \
+                      "color: %s;" \
+                      "background-color: rgb(27, 29, 35);" \
+                      "border-radius: 5px;border: 2px;" \
+                      " solid rgb(33, 37, 43);" \
+                      "padding: 5px;padding-left: 10px;}"
+
+        combo_box.setStyleSheet(combo_style % (color))
+
+    def add_none_item_combobox(self, combo_box:QComboBox, text:str= "[None]", color:str= "red"):
+        model = combo_box.model()
+        combo_box.insertItem(0, text)
+        model.setData(model.index(0, 0), QColor(color), QtCore.Qt.ForegroundRole)
 
     def set_qobjects_by_dict(self, obj_list:list[QObject], _dict, value_multiplier=10.0, add_percent=False):
         for obj in obj_list:
@@ -1326,6 +1382,9 @@ class MainWindow(QMainWindow):
             elif "Slider" in prefix:
                 obj.setValue(int(res_value * value_multiplier))
 
+    #################################################################################################
+    # endregion [UTILS]
+
     def after_generate_reply(self, success = 1):
         if success == -1:
             self.last_scroll_value = self.chat.get_scroll_value()
@@ -1338,8 +1397,6 @@ class MainWindow(QMainWindow):
         self.chat_layout_update()
         # self.chat.scroll_to_animation()
 
-    def get_chatlog_path(self):
-        return SettingInfo.get_chatlog_filename(self.char_info_dict["character_name"],True)
 
     def convert_language_code(self, language_input):
         """
@@ -1448,6 +1505,31 @@ class MainWindow(QMainWindow):
 
         prompt_thread.PromptDone.connect(self.gen_voice_thread)
         self.update_thread_table()
+
+    # Update QTable [Qthreads table]
+    def update_thread_table(self):
+        global widgets
+        table_list = [widgets.tableWidget_prompt_list, widgets.tableWidget_tts_list]
+        threadlist_zip = [self.prompt_thread_list, self.tts_thread_list]
+        row = 0
+
+        for (table, thread_list) in zip(table_list, threadlist_zip):
+            row_i = int(row/2)  # row [0, 1] -> index 0, [2, 3] -> index 1
+            table.setRowCount(len(thread_list))
+            if len(thread_list) >= 1:
+                # print(row_i, table)
+                table.setItem(row_i, 0, QTableWidgetItem("name"))
+                table.setItem(row_i, 1, QTableWidgetItem(thread_list[row_i].text))
+
+                if (thread_list[row_i].isRunning):
+                    status = "running"
+                else:
+                    status = "Waiting"
+
+                table.setItem(row_i, 2, QTableWidgetItem(status))
+
+            row = row + 1
+
 
 class THREADMANAGER(QThread):
     prompt_done_signal = Signal()

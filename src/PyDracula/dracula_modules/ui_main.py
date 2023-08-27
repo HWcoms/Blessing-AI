@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainGVaOaT.ui'
+## Form generated from reading UI file 'mainEnBZgA.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1757,12 +1757,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_19.addWidget(self.comboBox_mic_device)
 
-        self.pushButton_mic_default = QPushButton(self.scrollAreaWidgetContents_2)
-        self.pushButton_mic_default.setObjectName(u"pushButton_mic_default")
-        sizePolicy4.setHeightForWidth(self.pushButton_mic_default.sizePolicy().hasHeightForWidth())
-        self.pushButton_mic_default.setSizePolicy(sizePolicy4)
-        self.pushButton_mic_default.setMinimumSize(QSize(130, 30))
-        self.pushButton_mic_default.setStyleSheet(u"QPushButton{\n"
+        self.pushButton_mic_device_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_mic_device_default.setObjectName(u"pushButton_mic_device_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_mic_device_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_mic_device_default.setSizePolicy(sizePolicy4)
+        self.pushButton_mic_device_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_mic_device_default.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(122, 137, 168);\n"
@@ -1776,7 +1776,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_19.addWidget(self.pushButton_mic_default)
+        self.horizontalLayout_19.addWidget(self.pushButton_mic_device_default)
 
 
         self.verticalLayout_27.addLayout(self.horizontalLayout_19)
@@ -1914,12 +1914,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.comboBox_spk_device)
 
-        self.pushButton_spk_default = QPushButton(self.scrollAreaWidgetContents_2)
-        self.pushButton_spk_default.setObjectName(u"pushButton_spk_default")
-        sizePolicy4.setHeightForWidth(self.pushButton_spk_default.sizePolicy().hasHeightForWidth())
-        self.pushButton_spk_default.setSizePolicy(sizePolicy4)
-        self.pushButton_spk_default.setMinimumSize(QSize(130, 30))
-        self.pushButton_spk_default.setStyleSheet(u"QPushButton{\n"
+        self.pushButton_spk_device_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_spk_device_default.setObjectName(u"pushButton_spk_device_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_spk_device_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_spk_device_default.setSizePolicy(sizePolicy4)
+        self.pushButton_spk_device_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_spk_device_default.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(122, 137, 168);\n"
@@ -1933,7 +1933,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_8.addWidget(self.pushButton_spk_default)
+        self.horizontalLayout_8.addWidget(self.pushButton_spk_device_default)
 
 
         self.verticalLayout_29.addLayout(self.horizontalLayout_8)
@@ -2118,12 +2118,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_50.addItem(self.horizontalSpacer_28)
 
-        self.pushButton_tts_volume_default = QPushButton(self.horizontalGroupBox_4)
-        self.pushButton_tts_volume_default.setObjectName(u"pushButton_tts_volume_default")
-        sizePolicy4.setHeightForWidth(self.pushButton_tts_volume_default.sizePolicy().hasHeightForWidth())
-        self.pushButton_tts_volume_default.setSizePolicy(sizePolicy4)
-        self.pushButton_tts_volume_default.setMinimumSize(QSize(80, 30))
-        self.pushButton_tts_volume_default.setStyleSheet(u"QPushButton{\n"
+        self.pushButton_voice_volume_default = QPushButton(self.horizontalGroupBox_4)
+        self.pushButton_voice_volume_default.setObjectName(u"pushButton_voice_volume_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_voice_volume_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_voice_volume_default.setSizePolicy(sizePolicy4)
+        self.pushButton_voice_volume_default.setMinimumSize(QSize(80, 30))
+        self.pushButton_voice_volume_default.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(122, 137, 168);\n"
@@ -2137,7 +2137,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_50.addWidget(self.pushButton_tts_volume_default)
+        self.horizontalLayout_50.addWidget(self.pushButton_voice_volume_default)
 
 
         self.verticalLayout_55.addLayout(self.horizontalLayout_50)
@@ -2192,12 +2192,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_56.addItem(self.horizontalSpacer_31)
 
-        self.pushButton_tts_speed_default = QPushButton(self.horizontalGroupBox_4)
-        self.pushButton_tts_speed_default.setObjectName(u"pushButton_tts_speed_default")
-        sizePolicy4.setHeightForWidth(self.pushButton_tts_speed_default.sizePolicy().hasHeightForWidth())
-        self.pushButton_tts_speed_default.setSizePolicy(sizePolicy4)
-        self.pushButton_tts_speed_default.setMinimumSize(QSize(80, 30))
-        self.pushButton_tts_speed_default.setStyleSheet(u"QPushButton{\n"
+        self.pushButton_voice_speed_default = QPushButton(self.horizontalGroupBox_4)
+        self.pushButton_voice_speed_default.setObjectName(u"pushButton_voice_speed_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_voice_speed_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_voice_speed_default.setSizePolicy(sizePolicy4)
+        self.pushButton_voice_speed_default.setMinimumSize(QSize(80, 30))
+        self.pushButton_voice_speed_default.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(122, 137, 168);\n"
@@ -2211,7 +2211,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_56.addWidget(self.pushButton_tts_speed_default)
+        self.horizontalLayout_56.addWidget(self.pushButton_voice_speed_default)
 
 
         self.verticalLayout_59.addLayout(self.horizontalLayout_56)
@@ -2272,12 +2272,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_73.addItem(self.horizontalSpacer_38)
 
-        self.pushButton_spk_default_4 = QPushButton(self.horizontalGroupBox_4)
-        self.pushButton_spk_default_4.setObjectName(u"pushButton_spk_default_4")
-        sizePolicy4.setHeightForWidth(self.pushButton_spk_default_4.sizePolicy().hasHeightForWidth())
-        self.pushButton_spk_default_4.setSizePolicy(sizePolicy4)
-        self.pushButton_spk_default_4.setMinimumSize(QSize(80, 30))
-        self.pushButton_spk_default_4.setStyleSheet(u"QPushButton{\n"
+        self.pushButton_intonation_scale_default = QPushButton(self.horizontalGroupBox_4)
+        self.pushButton_intonation_scale_default.setObjectName(u"pushButton_intonation_scale_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_intonation_scale_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_intonation_scale_default.setSizePolicy(sizePolicy4)
+        self.pushButton_intonation_scale_default.setMinimumSize(QSize(80, 30))
+        self.pushButton_intonation_scale_default.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(122, 137, 168);\n"
@@ -2291,7 +2291,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_73.addWidget(self.pushButton_spk_default_4)
+        self.horizontalLayout_73.addWidget(self.pushButton_intonation_scale_default)
 
 
         self.verticalLayout_65.addLayout(self.horizontalLayout_73)
@@ -2341,12 +2341,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_75.addItem(self.horizontalSpacer_39)
 
-        self.pushButton_spk_default_6 = QPushButton(self.horizontalGroupBox_4)
-        self.pushButton_spk_default_6.setObjectName(u"pushButton_spk_default_6")
-        sizePolicy4.setHeightForWidth(self.pushButton_spk_default_6.sizePolicy().hasHeightForWidth())
-        self.pushButton_spk_default_6.setSizePolicy(sizePolicy4)
-        self.pushButton_spk_default_6.setMinimumSize(QSize(80, 30))
-        self.pushButton_spk_default_6.setStyleSheet(u"QPushButton{\n"
+        self.pushButton_pre_phoneme_length_default = QPushButton(self.horizontalGroupBox_4)
+        self.pushButton_pre_phoneme_length_default.setObjectName(u"pushButton_pre_phoneme_length_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_pre_phoneme_length_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_pre_phoneme_length_default.setSizePolicy(sizePolicy4)
+        self.pushButton_pre_phoneme_length_default.setMinimumSize(QSize(80, 30))
+        self.pushButton_pre_phoneme_length_default.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(122, 137, 168);\n"
@@ -2360,7 +2360,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_75.addWidget(self.pushButton_spk_default_6)
+        self.horizontalLayout_75.addWidget(self.pushButton_pre_phoneme_length_default)
 
 
         self.verticalLayout_66.addLayout(self.horizontalLayout_75)
@@ -2410,12 +2410,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_77.addItem(self.horizontalSpacer_40)
 
-        self.pushButton_spk_default_5 = QPushButton(self.horizontalGroupBox_4)
-        self.pushButton_spk_default_5.setObjectName(u"pushButton_spk_default_5")
-        sizePolicy4.setHeightForWidth(self.pushButton_spk_default_5.sizePolicy().hasHeightForWidth())
-        self.pushButton_spk_default_5.setSizePolicy(sizePolicy4)
-        self.pushButton_spk_default_5.setMinimumSize(QSize(80, 30))
-        self.pushButton_spk_default_5.setStyleSheet(u"QPushButton{\n"
+        self.pushButton_post_phoneme_length_default = QPushButton(self.horizontalGroupBox_4)
+        self.pushButton_post_phoneme_length_default.setObjectName(u"pushButton_post_phoneme_length_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_post_phoneme_length_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_post_phoneme_length_default.setSizePolicy(sizePolicy4)
+        self.pushButton_post_phoneme_length_default.setMinimumSize(QSize(80, 30))
+        self.pushButton_post_phoneme_length_default.setStyleSheet(u"QPushButton{\n"
 "	font: bold 12pt \"Segoe UI\";\n"
 "	color: white;\n"
 "	background-color: rgb(122, 137, 168);\n"
@@ -2429,7 +2429,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(75, 84, 103);\n"
 "}")
 
-        self.horizontalLayout_77.addWidget(self.pushButton_spk_default_5)
+        self.horizontalLayout_77.addWidget(self.pushButton_post_phoneme_length_default)
 
 
         self.verticalLayout_67.addLayout(self.horizontalLayout_77)
@@ -2539,7 +2539,7 @@ class Ui_MainWindow(object):
         self.scrollArea_4.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1172, 722))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1011, 722))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()
@@ -4347,7 +4347,7 @@ class Ui_MainWindow(object):
         self.comboBox_mic_device.setItemText(1, QCoreApplication.translate("MainWindow", u"Mic 2", None))
         self.comboBox_mic_device.setItemText(2, QCoreApplication.translate("MainWindow", u"Mic 3", None))
 
-        self.pushButton_mic_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.pushButton_mic_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Threshold</span></p></body></html>", None))
         self.lineEdit_mic_threshold.setText(QCoreApplication.translate("MainWindow", u"30 %", None))
         self.label_21.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Phrase TimeOut</span></p></body></html>", None))
@@ -4358,7 +4358,7 @@ class Ui_MainWindow(object):
         self.comboBox_spk_device.setItemText(1, QCoreApplication.translate("MainWindow", u"Spk 2", None))
         self.comboBox_spk_device.setItemText(2, QCoreApplication.translate("MainWindow", u"Spk 3", None))
 
-        self.pushButton_spk_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.pushButton_spk_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
         self.horizontalGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"TTS Settings", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Character </span><span style=\" font-size:9pt;\">(VITS Model)</span></p></body></html>", None))
         self.comboBox_tts_character.setItemText(0, QCoreApplication.translate("MainWindow", u"Character 1", None))
@@ -4376,19 +4376,19 @@ class Ui_MainWindow(object):
 
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Voice Volume</span></p></body></html>", None))
         self.lineEdit_voice_volume.setText(QCoreApplication.translate("MainWindow", u"100 %", None))
-        self.pushButton_tts_volume_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
+        self.pushButton_voice_volume_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Voice Speed</span></p></body></html>", None))
         self.lineEdit_voice_speed.setText(QCoreApplication.translate("MainWindow", u"1.0", None))
-        self.pushButton_tts_speed_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
+        self.pushButton_voice_speed_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Intonation Scale</span></p></body></html>", None))
         self.lineEdit_intonation_scale.setText(QCoreApplication.translate("MainWindow", u"1.0", None))
-        self.pushButton_spk_default_4.setText(QCoreApplication.translate("MainWindow", u"Default", None))
+        self.pushButton_intonation_scale_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Pre Phoneme Length</span></p></body></html>", None))
         self.lineEdit_pre_phoneme_length.setText(QCoreApplication.translate("MainWindow", u"1.0", None))
-        self.pushButton_spk_default_6.setText(QCoreApplication.translate("MainWindow", u"Default", None))
+        self.pushButton_pre_phoneme_length_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Post Phoneme Length</span></p></body></html>", None))
         self.lineEdit_post_phoneme_length.setText(QCoreApplication.translate("MainWindow", u"1.0", None))
-        self.pushButton_spk_default_5.setText(QCoreApplication.translate("MainWindow", u"Default", None))
+        self.pushButton_post_phoneme_length_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_89.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; font-weight:700;\">Extra Feature Settings</span></p></body></html>", None))
         self.horizontalGroupBox_9.setTitle(QCoreApplication.translate("MainWindow", u"Sining [RVC]", None))
         self.label_68.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">RVC Model Found:</span></p></body></html>", None))
