@@ -203,6 +203,8 @@ class MainWindow(QMainWindow):
 
             ## audio settings components
             widgets.comboBox_tts_character,
+            widgets.comboBox_tts_language,
+            widgets.comboBox_tts_voice_id,
 
             ## prompt settings components
             widgets.pushButton_view_original_url,
@@ -224,6 +226,8 @@ class MainWindow(QMainWindow):
 
         self.install_event_all(QComboBox)
         self.install_event_all(QSlider)
+
+        self.init_combobox_text(connect_comp_list)
         # endregion
 
         # SHOW APP
@@ -275,7 +279,7 @@ class MainWindow(QMainWindow):
                 obj.clicked.connect(self.update_content_by_component)
                 # widgets.checkBox_discord_webhook.clicked.connect(self.update_content_by_component)
             elif component_type == "comboBox":
-                obj.currentIndexChanged.connect(self.update_content_by_component)
+                obj.activated.connect(self.update_content_by_component)
                 # widgets.comboBox_discord_print_language.currentIndexChanged.connect(self.update_content_by_component)
             elif component_type == "pushButton":
                 obj.pressed.connect(self.update_content_by_component)
@@ -425,10 +429,11 @@ class MainWindow(QMainWindow):
 
         # region AUDIO SETTINGS
         #####################################################################################
-        if component_key == "tts_character":
-            # TODO: Fix Error: this comboBox_tts_character has no setting_name: None
-            print(component_key)
+        if component_key in ["tts_character", "tts_language", "tts_voice_id"]:
             setting_name = 'audio_settings'
+            self.refresh_tts_info(update_by_combo=True)
+
+            return
         #####################################################################################
         # endregion AUDIO SETTINGS
 
@@ -911,6 +916,15 @@ class MainWindow(QMainWindow):
             print("\033[34m" + f"Unfocus GUI Edit:\033[32m { focused_widget.objectName() }" + "\033[0m")
         # self.mousePressEvent(self, event)
 
+    def init_combobox_text(self, combo_list:list[QObject]):   # clear all QComboboxes in list
+        for obj in combo_list:
+            component_name = obj.objectName()
+            if component_name is not None:
+                component_type, component_key = self.component_info_by_name(component_name)
+
+            if component_type == "comboBox":
+                # print("cleared combobox: ", obj)
+                obj.clear()
 
     # LOAD INFO EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -1053,9 +1067,13 @@ class MainWindow(QMainWindow):
 
     # REFRESH TTS INFO LIST
     def refresh_tts_info(self, update_by_combo = False):
+        pre_tts_char = self.ui.comboBox_tts_character.currentText()
+        pre_tts_lang = self.ui.comboBox_tts_language.currentText()
+        pre_tts_v_id = self.ui.comboBox_tts_voice_id.currentIndex()
+
         # region [TTS CHARACTER LIST]
         ################################################################################################
-        tts_comboBox = widgets.comboBox_tts_character
+        tts_comboBox = self.ui.comboBox_tts_character
         tts_comboBox.clear()
 
         tts_char_list = []
@@ -1072,28 +1090,32 @@ class MainWindow(QMainWindow):
 
         for tts_char in tts_char_list:
             tts_comboBox.addItem(tts_char)
+
         ################################################################################################
         # endregion [TTS CHARACTER LIST]
 
-        lang_comboBox = widgets.comboBox_tts_language
+        lang_comboBox = self.ui.comboBox_tts_language
         lang_comboBox.clear()
 
-        voice_id_comboBox = widgets.comboBox_tts_voice_id
+        voice_id_comboBox = self.ui.comboBox_tts_voice_id
         voice_id_comboBox.clear()
 
         for _combo in [tts_comboBox, lang_comboBox, voice_id_comboBox]:
             self.add_none_item_combobox(_combo)
 
+        tts_comboBox.setCurrentText(pre_tts_char)   # set pre selected char
         # region [LOAD 'config.json' INFO]
         ################################################################################################
         if update_by_combo:     # refresh other infos by combo text changed
-            tts_character = widgets.comboBox_tts_character.currentText()
+            tts_character = self.ui.comboBox_tts_character.currentText()
         else:
             tts_character = self.audio_info_dict["tts_character"]
-        if tts_character:
-            cfg_path = os.path.join(tts_char_dir, tts_character, "*.json")
+        cfg_path = None
         config_file = None
         avbl_lang = None
+
+        if tts_character:
+            cfg_path = os.path.join(tts_char_dir, tts_character, "*.json")
 
         try:
             config_file = glob.glob(cfg_path)[0]
@@ -1104,8 +1126,8 @@ class MainWindow(QMainWindow):
             # raise ValueError("Check tts_character")
 
         # print(f"moegoe config file: {config_file}")
-        print(config_file)
-        if config_file:
+
+        if config_file is not None:
             config_json = read_text_file(config_file)
             # print(f"settings [{config_json}]")
 
@@ -1125,11 +1147,12 @@ class MainWindow(QMainWindow):
             for _id in id_list:
                 voice_id_comboBox.addItem(_id)
         else:
-            widgets.comboBox_tts_character.setCurrentIndex(0)
+            self.ui.comboBox_tts_character.setCurrentIndex(0)
             ################################################################################################
             # endregion [LOAD 'config.json' INFO]
 
-        self.select_tts_loaded_setting(tts_character, avbl_lang)
+        self.select_tts_loaded_setting(tts_character, avbl_lang, pre_tts_lang, pre_tts_v_id)
+
         # region [UPDATE JSON FILE]
         char_updated = self.ui.comboBox_tts_character.currentText()
         if char_updated == "[None]":
@@ -1139,7 +1162,7 @@ class MainWindow(QMainWindow):
         ################################################################################################
         update_json("tts_character", char_updated, "audio_settings")
         update_json("tts_language", lang_updated, "audio_settings")
-        update_json("voice_id", v_id_updated, "audio_settings")
+        update_json("tts_voice_id", v_id_updated, "audio_settings")
         ################################################################################################
         # endregion [UPDATE JSON FILE]
 
@@ -1160,9 +1183,11 @@ class MainWindow(QMainWindow):
 
         return combo_list
 
-    def select_tts_loaded_setting(self, char_name, avbl_lang:list[str]):
+    def select_tts_loaded_setting(self, char_name, avbl_lang:list[str], pre_lang, pre_id):
+        self.audio_info_dict.update(SettingInfo.load_audio_settings())
+
         lang = self.audio_info_dict["tts_language"]
-        v_id = self.audio_info_dict["voice_id"]
+        v_id = self.audio_info_dict["tts_voice_id"]
 
         tts_comboBox = self.ui.comboBox_tts_character
         lang_comboBox = self.ui.comboBox_tts_language
@@ -1170,16 +1195,26 @@ class MainWindow(QMainWindow):
 
         tts_comboBox.setCurrentText(char_name)
 
-        if avbl_lang and lang in avbl_lang:
-            lang_comboBox.setCurrentText(self.convert_language_code(lang))
+        # select language
+        if pre_lang and avbl_lang:
+            if self.convert_language_code(pre_lang) in avbl_lang:
+                lang_comboBox.setCurrentText(pre_lang)
+            elif lang in avbl_lang:
+                lang_comboBox.setCurrentText(self.convert_language_code(lang))
+            elif len(avbl_lang) >= 1:   # select first language if there's at least 1 language
+                # print("\033[31m" + "Warning [main GUI.select_tts_loaded_setting]: " + "\033[33m" + "no available language found, selecting first id" + "\033[0m")
+                lang_comboBox.setCurrentIndex(1)
         else:
-            print("\033[31m" + "Warning [main GUI.select_tts_loaded_setting]: " + "\033[33m" + "no available language found, select none" + "\033[0m")
             lang_comboBox.setCurrentIndex(0)
 
-        # select [None] if there's no voice_id in list
+        # select voice_id
         id_count = voice_id_comboBox.count()
-        if id_count > 1 and v_id <= id_count-2 and v_id >= 0:
+        if pre_id <= id_count-1 and pre_id >= 1:
+            voice_id_comboBox.setCurrentIndex(pre_id)
+        elif id_count > 1 and v_id <= id_count-2 and v_id >= 0 and not pre_id >= 0:
             voice_id_comboBox.setCurrentIndex(v_id + 1)
+        elif id_count > 1:  # select first voice if there's at least 1 voice
+            voice_id_comboBox.setCurrentIndex(1)
         else:
             voice_id_comboBox.setCurrentIndex(0)
 

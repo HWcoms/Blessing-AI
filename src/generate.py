@@ -206,7 +206,7 @@ class GeneratorTTS:
         tts_character = audio_settings["tts_character"]
         language_code = audio_settings["tts_language"]
         voice_volume = audio_settings["voice_volume"]
-        voice_id = audio_settings["voice_id"]
+        voice_id = audio_settings["tts_voice_id"]
 
         token_id = trans_token_list[0]
         token_secret = trans_token_list[1]
