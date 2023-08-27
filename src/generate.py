@@ -203,7 +203,7 @@ class GeneratorTTS:
             print("\033[34m" + log_str + "\033[32m")
 
         spk_id = audio_settings["spk_index"]
-        tts_character_name = audio_settings["tts_character_name"]
+        tts_character = audio_settings["tts_character"]
         language_code = audio_settings["tts_language"]
         voice_volume = audio_settings["voice_volume"]
         voice_id = audio_settings["voice_id"]
@@ -230,7 +230,7 @@ class GeneratorTTS:
 
         print("test:", self.audio_path)
         # synthesize voice as wav file
-        speech_text(tts_character_name, bot_trans_speech, language_code, voice_id, voice_volume,
+        speech_text(tts_character, bot_trans_speech, language_code, voice_id, voice_volume,
                     out_path=self.audio_path)
 
         print(

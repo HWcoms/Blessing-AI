@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainEAHTHh.ui'
+## Form generated from reading UI file 'mainGVaOaT.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1064,7 +1064,7 @@ class Ui_MainWindow(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1172, 583))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1138, 583))
         self.verticalLayout_14 = QVBoxLayout(self.scrollAreaWidgetContents_4)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.a_verticalLayout_top = QVBoxLayout()
@@ -1727,7 +1727,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -7, 1183, 601))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1183, 601))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -1987,16 +1987,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_60 = QHBoxLayout()
         self.horizontalLayout_60.setObjectName(u"horizontalLayout_60")
         self.horizontalLayout_60.setContentsMargins(-1, 0, -1, 0)
-        self.comboBox_tts_charcter = QComboBox(self.horizontalGroupBox_4)
-        self.comboBox_tts_charcter.addItem("")
-        self.comboBox_tts_charcter.addItem("")
-        self.comboBox_tts_charcter.addItem("")
-        self.comboBox_tts_charcter.setObjectName(u"comboBox_tts_charcter")
-        sizePolicy1.setHeightForWidth(self.comboBox_tts_charcter.sizePolicy().hasHeightForWidth())
-        self.comboBox_tts_charcter.setSizePolicy(sizePolicy1)
-        self.comboBox_tts_charcter.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.comboBox_tts_character = QComboBox(self.horizontalGroupBox_4)
+        self.comboBox_tts_character.addItem("")
+        self.comboBox_tts_character.addItem("")
+        self.comboBox_tts_character.addItem("")
+        self.comboBox_tts_character.setObjectName(u"comboBox_tts_character")
+        sizePolicy1.setHeightForWidth(self.comboBox_tts_character.sizePolicy().hasHeightForWidth())
+        self.comboBox_tts_character.setSizePolicy(sizePolicy1)
+        self.comboBox_tts_character.setStyleSheet(u"background-color: rgb(33, 37, 43);")
 
-        self.horizontalLayout_60.addWidget(self.comboBox_tts_charcter)
+        self.horizontalLayout_60.addWidget(self.comboBox_tts_character)
 
 
         self.verticalLayout_57.addLayout(self.horizontalLayout_60)
@@ -2539,7 +2539,7 @@ class Ui_MainWindow(object):
         self.scrollArea_4.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, -117, 1172, 722))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1172, 722))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()
@@ -3655,7 +3655,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 362, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -4171,7 +4171,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -4361,9 +4361,9 @@ class Ui_MainWindow(object):
         self.pushButton_spk_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
         self.horizontalGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"TTS Settings", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Character </span><span style=\" font-size:9pt;\">(VITS Model)</span></p></body></html>", None))
-        self.comboBox_tts_charcter.setItemText(0, QCoreApplication.translate("MainWindow", u"Character 1", None))
-        self.comboBox_tts_charcter.setItemText(1, QCoreApplication.translate("MainWindow", u"Character 2", None))
-        self.comboBox_tts_charcter.setItemText(2, QCoreApplication.translate("MainWindow", u"Character 3", None))
+        self.comboBox_tts_character.setItemText(0, QCoreApplication.translate("MainWindow", u"Character 1", None))
+        self.comboBox_tts_character.setItemText(1, QCoreApplication.translate("MainWindow", u"Character 2", None))
+        self.comboBox_tts_character.setItemText(2, QCoreApplication.translate("MainWindow", u"Character 3", None))
 
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Language</span></p></body></html>", None))
         self.comboBox_tts_language.setItemText(0, QCoreApplication.translate("MainWindow", u"English", None))

@@ -1850,7 +1850,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>3</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -1889,7 +1889,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1172</width>
+                            <width>1138</width>
                             <height>583</height>
                            </rect>
                           </property>
@@ -3239,7 +3239,7 @@ QSlider::handle:horizontal:pressed {
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>-7</y>
+                            <y>0</y>
                             <width>1183</width>
                             <height>601</height>
                            </rect>
@@ -3798,7 +3798,7 @@ QPushButton:pressed{
                                            <number>0</number>
                                           </property>
                                           <item>
-                                           <widget class="QComboBox" name="comboBox_tts_charcter">
+                                           <widget class="QComboBox" name="comboBox_tts_character">
                                             <property name="sizePolicy">
                                              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                                               <horstretch>0</horstretch>
@@ -4889,7 +4889,7 @@ QSlider::handle:horizontal:pressed {
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>-117</y>
+                            <y>0</y>
                             <width>1172</width>
                             <height>722</height>
                            </rect>
@@ -7264,7 +7264,7 @@ QPushButton:pressed{
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>362</width>
+                                 <width>218</width>
                                  <height>218</height>
                                 </rect>
                                </property>

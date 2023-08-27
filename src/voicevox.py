@@ -44,7 +44,7 @@ def speak(sentence, audio_settings, prompt_settings, other_settings):
         voice_volume = voice_volume * 0.3
 
     # synthesize voice as wav file
-    speech_text(audio_settings["tts_character_name"], bot_trans_speech, language_code, audio_settings["voice_id"], voice_volume)
+    speech_text(audio_settings["tts_character"], bot_trans_speech, language_code, audio_settings["voice_id"], voice_volume)
 
     # play voice to app mic input and speakers/headphones
     # threads = [Thread(target=play_voice, args=[APP_INPUT_ID]), Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])]

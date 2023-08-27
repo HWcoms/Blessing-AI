@@ -88,7 +88,7 @@ class MainWindow(QMainWindow):
 
         self.audio_info_dict: dict = None   # [mic_index, mic_threshold, phrase_timeout,
 
-                                            # spk_index, tts_character_name, tts_language
+                                            # spk_index, tts_character, tts_language
                                             # voice_id, voice_speed, voice_volume,
                                             #  intonation_scale, pre_phoneme_length, post_phoneme_length]
 
@@ -185,30 +185,35 @@ class MainWindow(QMainWindow):
         widgets.settingsTopBtn.clicked.connect(openCloseRightBox)
 
         # region UPDATE CONTENT BY COMPONENT
-        widgets.checkBox_discord_bot.clicked.connect(self.update_content_by_component)
-        widgets.checkBox_discord_webhook.clicked.connect(self.update_content_by_component)
+        connect_comp_list = [
+            ## other settings components
+            widgets.checkBox_discord_bot,
+            widgets.checkBox_discord_webhook,
+            widgets.checkBox_tts_only,
 
-        widgets.checkBox_tts_only.clicked.connect(self.update_content_by_component)
+            widgets.comboBox_discord_print_language,
 
-        widgets.pushButton_view_original_url.pressed.connect(self.update_content_by_component)
-        widgets.pushButton_view_original_url.released.connect(self.released_component)
+            widgets.lineEdit_discord_your_name,
+            widgets.lineEdit_discord_your_avatar,
+            widgets.lineEdit_discord_webhook_username,
+            widgets.lineEdit_discord_webhook_avatar,
 
-        # other settings components
-        widgets.comboBox_discord_print_language.currentTextChanged.connect(self.update_content_by_component)
-        widgets.lineEdit_discord_your_name.textChanged.connect(self.update_content_by_component)
-        widgets.lineEdit_discord_your_avatar.textChanged.connect(self.update_content_by_component)
-        # widgets.lineEdit_discord_bot_id.textChanged.connect(self.update_content_by_component)
-        # widgets.lineEdit_discord_bot_channel_id.textChanged.connect(self.update_content_by_component)
-        # widgets.lineEdit_discord_webhook_url.textChanged.connect(self.update_content_by_component)
-        widgets.lineEdit_discord_webhook_username.textChanged.connect(self.update_content_by_component)
-        widgets.lineEdit_discord_webhook_avatar.textChanged.connect(self.update_content_by_component)
+            ## character settings components
+            widgets.textEdit_your_name,
 
-        # character settings components
-        widgets.textEdit_your_name.textChanged.connect(self.update_content_by_component)
+            ## audio settings components
+            widgets.comboBox_tts_character,
 
-        # prompt settings components
+            ## prompt settings components
+            widgets.pushButton_view_original_url,
+            widgets.pushButton_view_translator_id,
+            widgets.pushButton_view_translator_secret,
 
-        # INSTALL EVENT FILTER
+            widgets.comboBox_ai_model_language
+        ]
+        self.connect_components_with_update_method(connect_comp_list)
+
+        ## INSTALL EVENT FILTER
         widgets.lineEdit_api_url.installEventFilter(self)
         widgets.lineEdit_translator_api_id.installEventFilter(self)
         widgets.lineEdit_translator_api_secret.installEventFilter(self)
@@ -254,6 +259,33 @@ class MainWindow(QMainWindow):
             table.setColumnWidth(1, table.width() * per_b / 100)
             table.setColumnWidth(2, table.width() * per_c / 100)
             table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+    # CONNECT HANDLER BY TYPES
+    def connect_components_with_update_method(self, obj_list:list[QObject]):
+        for obj in obj_list:
+            component_name = obj.objectName()
+            if component_name is not None:
+                component_type, component_key = self.component_info_by_name(component_name)
+
+            if component_type == "lineEdit" or component_type == "textEdit":
+                obj.textChanged.connect(self.update_content_by_component)
+                # widgets.lineEdit_discord_your_name.textChanged.connect(self.update_content_by_component)
+                # widgets.textEdit_your_name.textChanged.connect(self.update_content_by_component)
+            elif component_type == "checkBox":
+                obj.clicked.connect(self.update_content_by_component)
+                # widgets.checkBox_discord_webhook.clicked.connect(self.update_content_by_component)
+            elif component_type == "comboBox":
+                obj.currentIndexChanged.connect(self.update_content_by_component)
+                # widgets.comboBox_discord_print_language.currentIndexChanged.connect(self.update_content_by_component)
+            elif component_type == "pushButton":
+                obj.pressed.connect(self.update_content_by_component)
+                obj.released.connect(self.released_component)
+                # widgets.pushButton_view_translator_secret
+            else:
+                print(
+                    "\033[31m" + f"Error [main GUI.connect_components_with_update_method]: not supported component: \033[33m{component_name}" + "\n\033[0m")
+                raise ValueError("not supported component in obj_list")
+
 
     # DEFINE EVENT FILTER
     # ///////////////////////////////////////////////////////////////
@@ -391,6 +423,37 @@ class MainWindow(QMainWindow):
         #####################################################################################
         # endregion CHARACTER SETTINGS
 
+        # region AUDIO SETTINGS
+        #####################################################################################
+        if component_key == "tts_character":
+            # TODO: Fix Error: this comboBox_tts_character has no setting_name: None
+            print(component_key)
+            setting_name = 'audio_settings'
+        #####################################################################################
+        # endregion AUDIO SETTINGS
+
+        # region PROMPT SETTINGS
+        #####################################################################################
+        if "ai_model_language" in componentName:
+            setting_name = "prompt_settings"
+
+        if component_type == "pushButton":
+            if componentName == "pushButton_view_original_url":
+                # URL format api
+                self.refresh_api_url(hide_url=False)     # peek api_url temporarily
+            else:
+                # Token format api
+                if componentName == "pushButton_view_translator_id":
+                    _comp_api_lineEdit = self.ui.lineEdit_translator_api_id
+                elif componentName == "pushButton_view_translator_secret":
+                    _comp_api_lineEdit = self.ui.lineEdit_translator_api_secret
+
+                self.refresh_api_token(_comp_api_lineEdit, hide_url=False)
+
+            print("\033[34m" + f"{componentName}: \033[32mpressed\033[0m")
+            return
+        #####################################################################################
+        # endregion PROMPT SETTINGS
 
         # region OTHER SETTINGS
         #####################################################################################
@@ -401,16 +464,6 @@ class MainWindow(QMainWindow):
         #####################################################################################
         # endregion OTHER SETTINGS
 
-
-        # region PROMPT SETTINGS
-        #####################################################################################
-        if componentName == "pushButton_view_original_url":
-            self.refresh_api_url(hide_url=False)     # peek api_url temporarily
-
-            print("\033[34m" + f"{componentName}: \033[32mpressed\033[0m")
-            return
-        #####################################################################################
-        # endregion PROMPT SETTINGS
 
         # PROPERTY HANDLER BY COMPONENT TYPE
         #####################################################################################
@@ -465,10 +518,24 @@ class MainWindow(QMainWindow):
         called_component = self.sender()
         componentName = called_component.objectName()
 
+        if componentName is not None:
+            component_type, component_key = self.component_info_by_name(componentName)
+
         # PROMPT SETTINGS
         #####################################################################################
-        if componentName == "pushButton_view_original_url":
-            self.refresh_api_url()  # Hide url
+        if component_type == "pushButton":
+            if componentName == "pushButton_view_original_url":
+                # URL format api
+                self.refresh_api_url()  # Hide url
+
+            else:
+                # Token format api
+                if componentName == "pushButton_view_translator_id":
+                    _comp_api_lineEdit = self.ui.lineEdit_translator_api_id
+                elif componentName == "pushButton_view_translator_secret":
+                    _comp_api_lineEdit = self.ui.lineEdit_translator_api_secret
+
+                self.refresh_api_token(_comp_api_lineEdit)
 
             print("\033[34m" + f"{componentName}: \033[32mreleased\033[0m")
             return
@@ -669,19 +736,24 @@ class MainWindow(QMainWindow):
         global widgets
 
         _dict = self.command_info_dict
-        widgets.textEdit_rvc_model.setText(_dict['rvc_model'])
 
+        widgets.textEdit_rvc_model.setText(_dict['rvc_model'])  # RVC model name
+
+        # region [Radio]
         gender_radio = [widgets.radioButton_rvc_gender_male, widgets.radioButton_rvc_gender_female]
 
         self.set_radio_check(gender_radio, _dict['rvc_gender'])
         widgets.horizontalGroupBox_rvc_manual_pitch.setChecked(_dict['rvc_manual_pitch'])
+        # endregion
 
+        # region [LINEEDIT & SLIDERS]
         self.set_qobjects_by_dict([widgets.lineEdit_rvc_index_rate, widgets.horizontalSlider_rvc_index_rate,
                                    widgets.lineEdit_rvc_pitch, widgets.horizontalSlider_rvc_pitch,
                                    widgets.lineEdit_rvc_main_vocal,  widgets.horizontalSlider_rvc_main_vocal,
                                    widgets.lineEdit_rvc_backup_vocal, widgets.horizontalSlider_rvc_backup_vocal,
                                    widgets.lineEdit_rvc_music, widgets.horizontalSlider_rvc_music],
                                   _dict, 10)
+        # endregion
 
     def get_radio_check(self, radio_list: list[QRadioButton]):
         for radio in radio_list:
@@ -980,10 +1052,10 @@ class MainWindow(QMainWindow):
             self.change_color_combobox(_combo, _col)
 
     # REFRESH TTS INFO LIST
-    def refresh_tts_info(self):
+    def refresh_tts_info(self, update_by_combo = False):
         # region [TTS CHARACTER LIST]
         ################################################################################################
-        tts_comboBox = widgets.comboBox_tts_charcter
+        tts_comboBox = widgets.comboBox_tts_character
         tts_comboBox.clear()
 
         tts_char_list = []
@@ -1003,51 +1075,71 @@ class MainWindow(QMainWindow):
         ################################################################################################
         # endregion [TTS CHARACTER LIST]
 
-        # region [LOAD 'config.json' INFO]
-        ################################################################################################
-        cfg_path = os.path.join(tts_char_dir, self.audio_info_dict["tts_character_name"], "*.json")
-        try:
-            config_file = glob.glob(cfg_path)[0]
-        except Exception as e:
-            print(
-                "\033[31m" + f"Error [main GUI.refresh_tts_info]: failed to search config file: \033[33m{e}" + "\n\033[0m")
-
-        # print(f"moegoe config file: {config_file}")
-
-        config_json = read_text_file(config_file)
-        # print(f"settings [{config_json}]")
-
-        # LANGUAGE LIST
-        text_cleaners = config_json['data']['text_cleaners'][0]
-        avbl_lang = self.get_available_language(text_cleaners)
-        if not avbl_lang:
-            print(
-                "\033[31m" + "Error [main GUI.refresh_tts_info]: Could not find languge options from text cleaners " + "\033[33m" + f"{text_cleaners}" + "\033[0m")
-
         lang_comboBox = widgets.comboBox_tts_language
         lang_comboBox.clear()
 
-        for _lang in avbl_lang:
-            lang_comboBox.addItem(self.convert_language_code(_lang))
-
-        # VOICE ID LIST
-        id_list = config_json['speakers']
         voice_id_comboBox = widgets.comboBox_tts_voice_id
         voice_id_comboBox.clear()
-
-        for _id in id_list:
-            voice_id_comboBox.addItem(_id)
-        ################################################################################################
-        # endregion [LOAD 'config.json' INFO]
 
         for _combo in [tts_comboBox, lang_comboBox, voice_id_comboBox]:
             self.add_none_item_combobox(_combo)
 
-        # region [UPDATE JSON FILE]
+        # region [LOAD 'config.json' INFO]
         ################################################################################################
+        if update_by_combo:     # refresh other infos by combo text changed
+            tts_character = widgets.comboBox_tts_character.currentText()
+        else:
+            tts_character = self.audio_info_dict["tts_character"]
+        if tts_character:
+            cfg_path = os.path.join(tts_char_dir, tts_character, "*.json")
+        config_file = None
+        avbl_lang = None
 
+        try:
+            config_file = glob.glob(cfg_path)[0]
+        except Exception as e:
+            print(
+                "\033[31m" + f"Error [main GUI.refresh_tts_info]: failed to search config file: [{tts_character}] \033[33m{e}" + "\n\033[0m")
 
-        # update_json(tts_character_name, component_property, "audio_settings")
+            # raise ValueError("Check tts_character")
+
+        # print(f"moegoe config file: {config_file}")
+        print(config_file)
+        if config_file:
+            config_json = read_text_file(config_file)
+            # print(f"settings [{config_json}]")
+
+            # LANGUAGE LIST
+            text_cleaners = config_json['data']['text_cleaners'][0]
+            avbl_lang = self.get_available_language(text_cleaners)
+            if not avbl_lang:
+                print(
+                    "\033[31m" + "Error [main GUI.refresh_tts_info]: Could not find langauge options from text cleaners " + "\033[33m" + f"{text_cleaners}" + "\033[0m")
+
+            for _lang in avbl_lang:
+                lang_comboBox.addItem(self.convert_language_code(_lang))
+
+            # VOICE ID LIST
+            id_list = config_json['speakers']
+
+            for _id in id_list:
+                voice_id_comboBox.addItem(_id)
+        else:
+            widgets.comboBox_tts_character.setCurrentIndex(0)
+            ################################################################################################
+            # endregion [LOAD 'config.json' INFO]
+
+        self.select_tts_loaded_setting(tts_character, avbl_lang)
+        # region [UPDATE JSON FILE]
+        char_updated = self.ui.comboBox_tts_character.currentText()
+        if char_updated == "[None]":
+            char_updated = None
+        lang_updated = self.convert_language_code(lang_comboBox.currentText())
+        v_id_updated = self.ui.comboBox_tts_voice_id.currentIndex() - 1
+        ################################################################################################
+        update_json("tts_character", char_updated, "audio_settings")
+        update_json("tts_language", lang_updated, "audio_settings")
+        update_json("voice_id", v_id_updated, "audio_settings")
         ################################################################################################
         # endregion [UPDATE JSON FILE]
 
@@ -1068,17 +1160,25 @@ class MainWindow(QMainWindow):
 
         return combo_list
 
-    def select_tts_loaded_setting(self, char_name, lang, v_id):
-        tts_comboBox = self.ui.comboBox_tts_charcter
+    def select_tts_loaded_setting(self, char_name, avbl_lang:list[str]):
+        lang = self.audio_info_dict["tts_language"]
+        v_id = self.audio_info_dict["voice_id"]
+
+        tts_comboBox = self.ui.comboBox_tts_character
         lang_comboBox = self.ui.comboBox_tts_language
         voice_id_comboBox = self.ui.comboBox_tts_voice_id
 
         tts_comboBox.setCurrentText(char_name)
-        lang_comboBox.setCurrentText(lang)
+
+        if avbl_lang and lang in avbl_lang:
+            lang_comboBox.setCurrentText(self.convert_language_code(lang))
+        else:
+            print("\033[31m" + "Warning [main GUI.select_tts_loaded_setting]: " + "\033[33m" + "no available language found, select none" + "\033[0m")
+            lang_comboBox.setCurrentIndex(0)
 
         # select [None] if there's no voice_id in list
         id_count = voice_id_comboBox.count()
-        if id_count > 1 and v_id <= id_count-2:
+        if id_count > 1 and v_id <= id_count-2 and v_id >= 0:
             voice_id_comboBox.setCurrentIndex(v_id + 1)
         else:
             voice_id_comboBox.setCurrentIndex(0)
@@ -1141,14 +1241,10 @@ class MainWindow(QMainWindow):
         ################################################################################################
         mic_device = str(self.audio_info_dict["mic_index"])
         spk_device = str(self.audio_info_dict["spk_index"])
-        tts_character_name = self.audio_info_dict["tts_character_name"]
-        tts_language = self.convert_language_code(self.audio_info_dict["tts_language"])
-        tts_voice_id = self.audio_info_dict["voice_id"]
         ################################################################################################
         # endregion [COMBO BOX]
 
         self.select_aud_devices_loaded_setting()
-        self.select_tts_loaded_setting(tts_character_name, tts_language, tts_voice_id)
 
     def load_command_info(self):
         global widgets
