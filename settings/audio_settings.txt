@@ -6,7 +6,7 @@
     "spk_index": 9,
     "tts_character_name": "Kato Megumi",
     "tts_language": "ja",
-    "voice_id": 0,
+    "tts_voice_id": 0,
     "voice_speed": 0.8,
     "voice_volume": 0.3,
     "intonation_scale": 1.5,
