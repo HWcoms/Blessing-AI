@@ -91,9 +91,9 @@ class MainWindow(QMainWindow):
 
         self.audio_info_dict: dict = None   # [mic_index, mic_threshold, phrase_timeout,
 
-                                            # spk_index, tts_character, tts_language
-                                            # voice_id, voice_speed, voice_volume,
-                                            #  intonation_scale, pre_phoneme_length, post_phoneme_length]
+                                            # spk_index, speaker_volume,
+                                            # tts_character, tts_language, voice_id,
+                                            # voice_speed, intonation_scale, pre_phoneme_length, post_phoneme_length]
 
         self.prompt_info_dict: dict = None  # [max_prompt_token, max_reply_token,
                                             # ai_model_language]
@@ -213,7 +213,15 @@ class MainWindow(QMainWindow):
 
             widgets.lineEdit_mic_threshold,
             widgets.horizontalSlider_mic_threshold,
+            widgets.pushButton_mic_threshold_default,
+
+            widgets.lineEdit_speaker_volume,
+            widgets.horizontalSlider_speaker_volume,
+            widgets.pushButton_speaker_volume_default,
+
             widgets.lineEdit_phrase_timeout,
+            widgets.horizontalSlider_phrase_timeout,
+            widgets.pushButton_phrase_timeout_default,
 
             widgets.comboBox_tts_character,
             widgets.comboBox_tts_language,
@@ -221,8 +229,6 @@ class MainWindow(QMainWindow):
 
             widgets.lineEdit_voice_speed,
             widgets.horizontalSlider_voice_speed,
-            widgets.lineEdit_voice_volume,
-            widgets.horizontalSlider_voice_volume,
             widgets.lineEdit_intonation_scale,
             widgets.horizontalSlider_intonation_scale,
             widgets.lineEdit_pre_phoneme_length,
@@ -231,7 +237,6 @@ class MainWindow(QMainWindow):
             widgets.horizontalSlider_post_phoneme_length,
 
             widgets.pushButton_voice_speed_default,
-            widgets.pushButton_voice_volume_default,
             widgets.pushButton_intonation_scale_default,
             widgets.pushButton_pre_phoneme_length_default,
             widgets.pushButton_post_phoneme_length_default,
@@ -506,7 +511,7 @@ class MainWindow(QMainWindow):
 
         ## region Synced or Only [lineEdit, Slider, PushButton] Handler | Also display value as [xx % / 0.xx]
         #####################################################################################
-        if self.check_name(component_key, ["mic_threshold", "voice_volume"]):
+        if self.check_name(component_key, ["mic_threshold", "speaker_volume"]):
             percent_obj = True
         elif self.check_name(component_key,
                              ["phrase_timeout", "voice_speed", "intonation_scale", "phoneme_length"]):
@@ -559,7 +564,7 @@ class MainWindow(QMainWindow):
                     reset_value = 5.0
                 elif self.check_name(component_key, ["intonation_scale"]):
                     reset_value = 1.5
-                elif self.check_name(component_key, ["voice_speed", "voice_volume", "phoneme_length"]):
+                elif self.check_name(component_key, ["voice_speed", "speaker_volume", "phoneme_length"]):
                     reset_value = 1.0
                 else:
                     reset_value = 0.0   # (-10.0 ~ 10.0)
@@ -575,7 +580,7 @@ class MainWindow(QMainWindow):
         #####################################################################################
         ## endregion Synced or Only [lineEdit, Slider, PushButton] Handler
 
-        if component_key == "voice_volume":
+        if component_key == "speaker_volume":
             if len (self.tts_thread_list) > 0:
                 if self.tts_thread_list[0].gen:
                     self.tts_thread_list[0].gen.change_volume(component_property)
@@ -1176,11 +1181,11 @@ class MainWindow(QMainWindow):
         widgets.lineEdit_phrase_timeout.setText(phrase_timeout)
 
         self.set_qobjects_by_dict([widgets.lineEdit_mic_threshold, widgets.horizontalSlider_mic_threshold,
-                                   widgets.lineEdit_voice_volume, widgets.horizontalSlider_voice_volume],
+                                   widgets.lineEdit_speaker_volume, widgets.horizontalSlider_speaker_volume],
                                   self.audio_info_dict, 100, True)
 
-
-        self.set_qobjects_by_dict([widgets.lineEdit_voice_speed, widgets.horizontalSlider_voice_speed,
+        self.set_qobjects_by_dict([widgets.lineEdit_phrase_timeout, widgets.horizontalSlider_phrase_timeout,
+                                   widgets.lineEdit_voice_speed, widgets.horizontalSlider_voice_speed,
                                    widgets.lineEdit_intonation_scale, widgets.horizontalSlider_intonation_scale,
                                    widgets.lineEdit_pre_phoneme_length, widgets.horizontalSlider_pre_phoneme_length,
                                    widgets.lineEdit_post_phoneme_length, widgets.horizontalSlider_post_phoneme_length],
@@ -1776,7 +1781,7 @@ class THREADMANAGER(QThread):
                     # Start next thread
                     tts_thread_list[0].adm = main_program.newAudDevice
                     spk_device = tts_thread_list[0].adm.selected_speaker
-                    spk_volume = main_program.audio_info_dict['voice_volume']
+                    spk_volume = main_program.audio_info_dict['speaker_volume']
                     tts_thread_list[0].gen.play_voice(spk_device.name, spk_volume)
                     self.tts_gen_done_signal.emit()
 
