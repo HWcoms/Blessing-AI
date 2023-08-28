@@ -575,6 +575,11 @@ class MainWindow(QMainWindow):
         #####################################################################################
         ## endregion Synced or Only [lineEdit, Slider, PushButton] Handler
 
+        if component_key == "voice_volume":
+            if len (self.tts_thread_list) > 0:
+                if self.tts_thread_list[0].gen:
+                    self.tts_thread_list[0].gen.change_volume(component_property)
+
         ## Affect others by tts_character
         # [tts_character, tts_language, tts_voice_id]
         if component_key in ["tts_character", "tts_language", "tts_voice_id"]:
