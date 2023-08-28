@@ -230,11 +230,11 @@ class MainWindow(QMainWindow):
             widgets.lineEdit_post_phoneme_length,
             widgets.horizontalSlider_post_phoneme_length,
 
-            # widgets.pushButton_voice_speed_default,
-            # widgets.pushButton_voice_volume_default,
-            # widgets.pushButton_intonation_scale_default,
-            # widgets.pushButton_pre_phoneme_length_default,
-            # widgets.pushButton_post_phoneme_length_default,
+            widgets.pushButton_voice_speed_default,
+            widgets.pushButton_voice_volume_default,
+            widgets.pushButton_intonation_scale_default,
+            widgets.pushButton_pre_phoneme_length_default,
+            widgets.pushButton_post_phoneme_length_default,
 
             ## prompt settings components
             widgets.pushButton_view_original_url,
@@ -502,55 +502,78 @@ class MainWindow(QMainWindow):
                 self.refresh_audio_device(update_by_combo=True, def_spk=True)
             return
 
-        ## lineEdit with Slider for Percent
-        # [mic_threshold, voice_volume]
-        if component_key in ["mic_threshold", "voice_volume"]:
+        percent_obj, decimal_obj = False, False
+
+        ## region Synced or Only [lineEdit, Slider, PushButton] Handler | Also display value as [xx % / 0.xx]
+        #####################################################################################
+        if self.check_name(component_key, ["mic_threshold", "voice_volume"]):
+            percent_obj = True
+        elif self.check_name(component_key,
+                             ["phrase_timeout", "voice_speed", "intonation_scale", "phoneme_length"]):
+            decimal_obj = True
+
+        if percent_obj or decimal_obj:
+            # print_log("log", f"{component_key} is",
+            #           "percent obj" if percent_obj else "decimal obj")
+            # print("any word found:", component_key)
             setting_name = "audio_settings"
-            conv_per_dec = None
-            # print(self.find_qobject_by(component_type))
 
             if component_type == "lineEdit":
-                conv_per_str = self.force_add_percent(called_component.text())  # 30 -> 30 %
-                conv_per_int = self.convert_percent_str(conv_per_str)   # 30 % -> 30
+                if percent_obj:
+                    conv_str = self.force_add_percent(called_component.text())  # 30 -> 30 %
+                    conv_int = self.convert_percent_str(conv_str)   # 30 % -> 30
+                    called_component.setText(conv_str)  # fix text (added ' %')
+                    component_property = self.convert_percent_str(conv_str, decimal=True)  # 30 -> 0.3
+                elif decimal_obj:
+                    conv_dec = round(float(component_property), 2)   # 0.357 -> 0.36
+                    conv_int = round(conv_dec, 2) * 100    # 0.36 -> 36
+                    called_component.setText(str(conv_dec))  # Fix text (round float, 2nd)
+                    component_property = conv_dec
 
-                called_component.setText(conv_per_str)  # fix text (added ' %')
                 # Find QSlider & Sync Value
-                self.find_qobject_by(component_key, QSlider).setValue(conv_per_int)
-                component_property = self.convert_percent_str(conv_per_str, decimal=True) # 30 -> 0.3
+                synced_slider = self.find_qobject_by(component_key, QSlider)
+                if synced_slider:
+                    synced_slider.setValue(int(conv_int))
             elif component_type == "horizontalSlider":
                 value_str = str(called_component.value())  # 70
-                conv_per_str = self.force_add_percent(value_str)    # 70 -> 70 %
+                value_dec = int(value_str) * 0.01   # 70 -> 0.7
+                value_dec = round(value_dec, 2) # 0.70001 -> 0.7
+
+                if percent_obj:
+                    conv_str = self.force_add_percent(value_str)    # 70 -> 70 %
+                elif decimal_obj:
+                    conv_str = str(value_dec)
 
                 # Find QLineEdit & Sync Value
-                self.find_qobject_by(component_key, QLineEdit).setText(conv_per_str)
-                component_property = int(value_str) * 0.01    # 70 -> 0.7
+                synced_lineEdit = self.find_qobject_by(component_key, QLineEdit)
+                if synced_lineEdit:
+                    synced_lineEdit.setText(conv_str)
+                component_property = value_dec    # 0.7
+            elif component_type == "pushButton":
+                reset_value = 0.0
+                component_key = component_key.replace("_default", "")   # remove '_default' to find/update synced object
+                # if any(word in component_key for word in ["mic_threshold"]):    # no button yet
+                if self.check_name(component_key, ["mic_threshold"]):   # no button yet
+                    reset_value = 0.4
+                elif self.check_name(component_key, ["phrase_timeout"]):    # no button yet
+                    reset_value = 5.0
+                elif self.check_name(component_key, ["intonation_scale"]):
+                    reset_value = 1.5
+                elif self.check_name(component_key, ["voice_speed", "voice_volume", "phoneme_length"]):
+                    reset_value = 1.0
+                else:
+                    reset_value = 0.0   # (-10.0 ~ 10.0)
 
-        ## lineEdit Only [phrase_timeout]
-        if component_key == "phrase_timeout":
-            setting_name = "audio_settings"
+                component_property = reset_value
 
-            component_property = round(float(component_property), 2)
-            called_component.setText(str(component_property))
-
-        ## lineEdit with Slider for Decimal
-        # [voice_speed, voice_volume, intonation_scale, pre/post_phoneme_length]
-        if component_key in ["voice_speed", "intonation_scale",
-                             "pre_phoneme_length", "post_phoneme_length"]:
-            setting_name = "audio_settings"
-            return
-            if component_type == "lineEdit":
-                conv_per_str = self.force_add_percent(called_component.text())  # 30 -> 30 %
-                conv_per_int = self.convert_percent_str(conv_per_str)  # 30 % -> 30
-
-                self.ui.lineEdit_mic_threshold.setText(conv_per_str)
-                self.ui.horizontalSlider_mic_threshold.setValue(conv_per_int)
-                component_property = self.convert_percent_str(conv_per_str, decimal=True)  # 30 -> 0.3
-            elif component_type == "horizontalSlider":
-                value_str = str(called_component.value())  # 70
-                conv_per_str = self.force_add_percent(value_str)  # 70 -> 70 %
-
-                self.ui.lineEdit_mic_threshold.setText(conv_per_str)
-                component_property = int(value_str) * 0.01  # 70 -> 0.7
+                # Find QSlider & Sync Value (lineEdit will automatically follow)
+                synced_slider = self.find_qobject_by(component_key, QSlider)
+                if synced_slider:
+                    synced_slider.setValue(reset_value * 100)
+                else:
+                    print_log("error", "no slider found to reset", componentName)
+        #####################################################################################
+        ## endregion Synced or Only [lineEdit, Slider, PushButton] Handler
 
         ## Affect others by tts_character
         # [tts_character, tts_language, tts_voice_id]
@@ -620,7 +643,7 @@ class MainWindow(QMainWindow):
 
         print(
             "\033[34m" + "called component: " +
-            "\033[32m" + f"{called_component.objectName()}" +
+            "\033[32m" + f"{componentName}" +
             "\033[34m" + " | Type: " +
             "\033[32m" + f"{type(called_component).__name__}" +
             "\033[34m" + " | Property: " +
@@ -1480,7 +1503,7 @@ class MainWindow(QMainWindow):
             type: put type (:py:class:`QObject`)
 
         Returns:
-            :py:class:`QObject`
+            :py:class:`QObject` or None
         """
 
         # Error (not enough hints to find)
@@ -1495,8 +1518,8 @@ class MainWindow(QMainWindow):
             if name in obj.objectName():
                 return obj
 
-        print_log("error", "Could not find any QObject with", f"name={name}, type={type}")
-        raise ValueError()
+        print_log("warning", "Could not find any QObject with", f"name={name}, type={type}")
+        return None
 
     def set_qobjects_by_dict(self, obj_list:list[QObject], _dict, value_multiplier=10.0, add_percent=False):
         """
