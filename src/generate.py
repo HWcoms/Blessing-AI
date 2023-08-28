@@ -206,6 +206,10 @@ class GeneratorTTS:
         # spk_id = audio_settings["spk_index"]
         tts_character = audio_settings["tts_character"]
         language_code = audio_settings["tts_language"]
+        voice_speed = audio_settings["voice_speed"]
+        if voice_speed == 0:
+            voice_speed = 0.01  # Avoid [ZeroDivisionError: float division by zero]
+
         voice_volume = 2.0
         voice_id = audio_settings["tts_voice_id"]
 
@@ -229,7 +233,7 @@ class GeneratorTTS:
 
         print("test:", self.audio_path)
         # synthesize voice as wav file
-        speech_text(tts_character, bot_trans_speech, language_code, voice_id, voice_volume,
+        speech_text(tts_character, bot_trans_speech, language_code, voice_id, voice_volume, voice_speed,
                     out_path=self.audio_path)
 
         print(

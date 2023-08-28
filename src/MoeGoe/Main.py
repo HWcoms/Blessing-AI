@@ -140,7 +140,7 @@ def voice_conversion():
 """
 
 
-def speech_text(character_name, msg, lang, spk_id, audio_volume, out_path = out_file_path):
+def speech_text(character_name, msg, lang, spk_id, audio_volume, voice_speed, out_path = out_file_path):
     # Load model path
     hps_ms, n_speakers, n_symbols, speakers, use_f0, emotion_embedding, net_g_ms = load_model(character_name)
     # print(hps_ms['data']['text_cleaners'][0])
@@ -170,7 +170,7 @@ def speech_text(character_name, msg, lang, spk_id, audio_volume, out_path = out_
                 #     text, 'NOISEW', 0.8, 'deviation of noise')
                 cleaned, text = get_label(text, 'CLEANED')
 
-                length_scale = 1
+                length_scale = 1.0 / voice_speed
                 noise_scale = 0.667
                 noise_scale_w = 0.8
                 # cleaned
