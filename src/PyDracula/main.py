@@ -1769,7 +1769,10 @@ class THREADMANAGER(QThread):
                 if tts_thread_list[0].gen.gen_done and not tts_thread_list[0].gen.speech_done:
                     print("tts wav file is generated: ", tts_thread_list[0].text, tts_thread_list[0].gen, f"Path[{tts_thread_list[0].gen.audio_path}]")
                     # Start next thread
-                    tts_thread_list[0].gen.play_voice()
+                    tts_thread_list[0].adm = main_program.newAudDevice
+                    spk_device = tts_thread_list[0].adm.selected_speaker
+                    spk_volume = main_program.audio_info_dict['voice_volume']
+                    tts_thread_list[0].gen.play_voice(spk_device.name, spk_volume)
                     self.tts_gen_done_signal.emit()
 
                 if tts_thread_list[0].gen.speech_done:

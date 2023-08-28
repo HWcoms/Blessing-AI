@@ -9,6 +9,11 @@ import yt_dlp
 from youtube_search import YoutubeSearch
 from urllib.parse import urlparse, parse_qs
 
+if __name__ != "__main__":
+    import sys  # noqa: E402
+    script_path = os.path.abspath(os.path.dirname(__file__))
+    sys.path.append(script_path)
+
 # demucs
 from rvc_modules.mdx import run_mdx
 from rvc_modules.download_rvc_models import download_required_models
@@ -159,9 +164,9 @@ class BotCommand:
             # cover_audio = bot_cmd.do_sing(value, self.gender_type, [0.0, False])
             self.command_done = True
 
-            wk = Worker("test thread", self)
-            wk.daemon = True
-            wk.start()
+            # wk = Worker("test thread", self)
+            # wk.daemon = True
+            # wk.start()
             self.play_music(result_cover_path, self.play_volume)
         elif cmd_type == '!draw':
             # do_draw(cmd_value)
@@ -688,9 +693,9 @@ def find_all(dir_path, ext):
 if __name__ == '__main__':
     download_required_models()
 
-    bot_cmd = BotCommand("Karen Kujou", "female")
+    bot_cmd = BotCommand("Muhyun", "male")
     bot_cmd.device_name = AudioDevice().set_selected_speaker("VoiceMeeter Input").name
-    bot_cmd.fast_search = False
+    bot_cmd.fast_search = True
     # print(bot_cmd.device_name)
     # bot_cmd.device_name = "VoiceMeeter Aux Input(VB-Audio VoiceMeeter AUX VAIO)"
-    bot_cmd.check_do_command("!sing Snow halation [자막 ⧸ 발음]")
+    bot_cmd.check_do_command("!sing Dame Dame yakuza")

@@ -15,15 +15,15 @@ from MoeGoe.Main import speech_text
 # from modules.audio_to_device import play_voice
 from discordbot import SendDiscordMessage, ExcuteDiscordWebhook
 
-# BotCommand
-from modules.sing_command import BotCommand
-
 # Play
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"   # hide pygame print
 import pygame                                       # noqa: E402
 
 tts_wav_path = Path(__file__).resolve().parent / r'audio\tts.wav'
+
+# BotCommand
+from modules.sing_command import BotCommand
 
 
 class Generator:
@@ -158,7 +158,6 @@ class GeneratorTTS:
         self.logging = True
         self.audio_path = ""
         self.audio_dir = ""
-        self.device_id = 0
         self.gen_done = False
         self.speech_done = False
 
@@ -202,16 +201,14 @@ class GeneratorTTS:
         if self.logging:
             print("\033[34m" + log_str + "\033[32m")
 
-        spk_id = audio_settings["spk_index"]
+        # spk_id = audio_settings["spk_index"]
         tts_character = audio_settings["tts_character"]
         language_code = audio_settings["tts_language"]
-        voice_volume = audio_settings["voice_volume"]
+        voice_volume = 2.0
         voice_id = audio_settings["tts_voice_id"]
 
         token_id = trans_token_list[0]
         token_secret = trans_token_list[1]
-
-        self.device_id = spk_id
 
         bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code, token_id,
                                        token_secret)  # Translate reply
@@ -238,10 +235,7 @@ class GeneratorTTS:
 
         self.gen_done = True
 
-    def play_voice(self):
-        # TODO: Test if it's working well
-        from modules.aud_device_manager import AudioDevice
-        device_name = AudioDevice().set_selected_speaker_index(self.device_id).name
+    def play_voice(self, device_name, volume):
         print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
 
         if device_name is None or device_name == "":
@@ -251,7 +245,7 @@ class GeneratorTTS:
 
         pygame.mixer.init(devicename=device_name)
         sounda = pygame.mixer.Sound(self.audio_path)
-        # sounda.set_volume(0.3)
+        sounda.set_volume(volume * 0.5)    # [0.0 ~ 2.0] to [0.0 ~ 1.0]
         sounda.play()
         pygame.time.wait(int(sounda.get_length() * 1000))
 
