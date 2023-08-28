@@ -207,6 +207,11 @@ class MainWindow(QMainWindow):
             widgets.comboBox_spk_device,
             widgets.pushButton_mic_device_default,
             widgets.pushButton_spk_device_default,
+
+            widgets.lineEdit_mic_threshold,
+            widgets.horizontalSlider_mic_threshold,
+            widgets.lineEdit_phrase_timeout,
+
             widgets.comboBox_tts_character,
             widgets.comboBox_tts_language,
             widgets.comboBox_tts_voice_id,
@@ -218,6 +223,7 @@ class MainWindow(QMainWindow):
 
             widgets.comboBox_ai_model_language
         ]
+        self.init_combobox_text(connect_comp_list)
         self.connect_components_with_update_method(connect_comp_list)
 
         ## INSTALL EVENT FILTER
@@ -232,7 +238,7 @@ class MainWindow(QMainWindow):
         self.install_event_all(QComboBox)
         self.install_event_all(QSlider)
 
-        self.init_combobox_text(connect_comp_list)
+
         ################################################################################################
         # endregion [UPDATE CONTENT BY COMPONENT]
 
@@ -277,10 +283,12 @@ class MainWindow(QMainWindow):
             if component_name is not None:
                 component_type, component_key = self.component_info_by_name(component_name)
 
-            if component_type == "lineEdit" or component_type == "textEdit":
+            if component_type == "lineEdit":
+                obj.editingFinished.connect(self.update_content_by_component)
+                # self.ui.lineEdit_discord_your_name.editingFinished.connect
+                # self.ui.textEdit_your_name.textChanged
+            elif component_type == "textEdit":
                 obj.textChanged.connect(self.update_content_by_component)
-                # widgets.lineEdit_discord_your_name.textChanged.connect(self.update_content_by_component)
-                # widgets.textEdit_your_name.textChanged.connect(self.update_content_by_component)
             elif component_type == "checkBox":
                 obj.clicked.connect(self.update_content_by_component)
                 # widgets.checkBox_discord_webhook.clicked.connect(self.update_content_by_component)
@@ -291,14 +299,16 @@ class MainWindow(QMainWindow):
                 obj.pressed.connect(self.update_content_by_component)
                 obj.released.connect(self.released_component)
                 # widgets.pushButton_view_translator_secret
+            elif component_type == "horizontalSlider":
+                obj.valueChanged.connect(self.update_content_by_component)
             else:
                 print(
                     "\033[31m" + f"Error [main GUI.connect_components_with_update_method]: not supported component: \033[33m{component_name}" + "\n\033[0m")
                 raise ValueError("not supported component in obj_list")
 
 
-    # DEFINE EVENT FILTER
-    # ///////////////////////////////////////////////////////////////
+    # region [DEFINE EVENT FILTER]
+    #####################################################################################
     def eventFilter(self, source, event):
         global widgets
         if widgets is None:
@@ -400,8 +410,12 @@ class MainWindow(QMainWindow):
             if "_" in obj.objectName():
                 obj.installEventFilter(self)
 
-    # GUI COMPONENT CALLBACK
-    # ///////////////////////////////////////////////////////////////
+    #####################################################################################
+    # endregion [DEFINE EVENT FILTER]
+
+
+    # region [GUI COMPONENT CALLBACK]
+    #####################################################################################
     def update_content_by_component(self):
         global widgets
         if widgets is None:
@@ -436,6 +450,7 @@ class MainWindow(QMainWindow):
 
         # region AUDIO SETTINGS
         #####################################################################################
+        ## mic/spk_device
         if component_key in ["mic_device", "spk_device"]:
             self.refresh_audio_device(update_by_combo=True)
 
@@ -447,6 +462,29 @@ class MainWindow(QMainWindow):
                 self.refresh_audio_device(update_by_combo=True, def_spk=True)
             return
 
+        ## lineEdit with Slider [mic_threshold]
+        if component_key in ["mic_threshold"]:
+            setting_name = "audio_settings"
+            conv_per_dec = None
+
+            if component_type == "lineEdit":
+                conv_per_str = self.force_add_percent(called_component.text())  # 30 -> 30 %
+
+                self.ui.lineEdit_mic_threshold.setText(conv_per_str)
+                conv_per_int = self.convert_percent_str(conv_per_str)   # 30 % -> 30
+                self.ui.horizontalSlider_mic_threshold.setValue(conv_per_int)
+
+                conv_per_dec = self.convert_percent_str(conv_per_str, decimal=True) # 30 -> 0.3
+
+                update_json(component_key, conv_per_dec, setting_name)
+            return
+
+        ## lineEdit Only [phrase_timeout]
+        if component_key == "phrase_timeout":
+            setting_name = "audio_settings"
+
+
+        ## tts_character/language/voice_id
         if component_key in ["tts_character", "tts_language", "tts_voice_id"]:
             self.refresh_tts_info(update_by_combo=True)
 
@@ -632,9 +670,14 @@ class MainWindow(QMainWindow):
 
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
+    #####################################################################################
+    # endregion [GUI COMPONENT CALLBACK]
 
-    # [GUI] DRAW CHAT
+    # [GUI] GUI DRAW PAGE
     # ///////////////////////////////////////////////////////////////
+
+    # region [DRAW CHAT PAGE]
+    #####################################################################################
     def chat_layout_update(self, dest_scroll_value = -1):
         global widgets
         ###########################################################################
@@ -691,8 +734,11 @@ class MainWindow(QMainWindow):
         # self.chat.set_scroll_value(last_scroll_value)
         self.chat.scroll_to_animation(last_value=self.last_scroll_value, value=dest_scroll_value)
 
-    # [GUI] DRAW PROMPT PAGE
-    # ///////////////////////////////////////////////////////////////
+    #####################################################################################
+    # endregion [DRAW CHAT PAGE]
+
+    # region [DRAW PROMPT PAGE]
+    #####################################################################################
     def prompt_page_update(self):
         self.load_prompt_info()
         global widgets
@@ -753,8 +799,11 @@ class MainWindow(QMainWindow):
 
         component.setText(_final_url)    # LineEdit or TextEdit
 
-    # [GUI] DRAW COMMAND PAGE
-    # ///////////////////////////////////////////////////////////////
+    #####################################################################################
+    # endregion [DRAW PROMPT PAGE]
+
+    # region [DRAW COMMAND PAGE]
+    #####################################################################################
     def command_page_update(self):
         self.load_command_info()
         global widgets
@@ -797,9 +846,11 @@ class MainWindow(QMainWindow):
 
         raise RuntimeError("No radio is Found with value")
 
+    #####################################################################################
+    # endregion [DRAW COMMAND PAGE]
 
-    # [GUI] DRAW EXTRA RIGHT MENU
-    # ///////////////////////////////////////////////////////////////
+    # region [DRAW EXTRA RIGHT MENU]
+    #####################################################################################
     def extra_right_menu_update(self, only_color = False):
         self.load_other_info()
         global widgets
@@ -876,6 +927,9 @@ class MainWindow(QMainWindow):
         for item in item_list:
             item.setStyleSheet("color: rgb(0, 255, 38);")
 
+    #####################################################################################
+    # endregion [DRAW EXTRA RIGHT MENU]
+
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
     def resizeEvent(self, event):
@@ -907,16 +961,6 @@ class MainWindow(QMainWindow):
             focused_widget.clearFocus()
             print("\033[34m" + f"Unfocus GUI Edit:\033[32m { focused_widget.objectName() }" + "\033[0m")
         # self.mousePressEvent(self, event)
-
-    def init_combobox_text(self, combo_list:list[QObject]):   # clear all QComboboxes in list
-        for obj in combo_list:
-            component_name = obj.objectName()
-            if component_name is not None:
-                component_type, component_key = self.component_info_by_name(component_name)
-
-            if component_type == "comboBox":
-                # print("cleared combobox: ", obj)
-                obj.clear()
 
     # LOAD INFO EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -1095,7 +1139,7 @@ class MainWindow(QMainWindow):
             _spk_index = self.audio_info_dict['spk_index']
 
         _mic_i_fix, _spk_i_fix = self.select_aud_devices_loaded_setting(_mic_index, _spk_index, def_mic, def_spk)
-        print(_mic_i_fix, _spk_i_fix)
+
         # region [UPDATE JSON FILE]
         ################################################################################################
         update_json("mic_index", _mic_i_fix, "audio_settings")
@@ -1117,7 +1161,6 @@ class MainWindow(QMainWindow):
         else:
             self.newAudDevice.set_selected_mic_index(_mic_i)
             _ret_mic_i = self.newAudDevice.selected_mic.index
-            print(_ret_mic_i)
 
         if _spk_i < 0:
             spk_comboBox.setCurrentIndex(0)
@@ -1152,10 +1195,12 @@ class MainWindow(QMainWindow):
 
     # REFRESH TTS INFO LIST
     def refresh_tts_info(self, update_by_combo = False):
+        if update_by_combo:
+            print("update by combo")
         pre_tts_char = self.ui.comboBox_tts_character.currentText()
         pre_tts_lang = self.ui.comboBox_tts_language.currentText()
         pre_tts_v_id = self.ui.comboBox_tts_voice_id.currentIndex()
-
+        # TODO: tts_language get overwritten as '[None]' at first
         # region [TTS CHARACTER LIST]
         ################################################################################################
         tts_comboBox = self.ui.comboBox_tts_character
@@ -1287,7 +1332,11 @@ class MainWindow(QMainWindow):
             elif lang in avbl_lang:
                 lang_comboBox.setCurrentText(self.convert_language_code(lang))
             elif len(avbl_lang) >= 1:   # select first language if there's at least 1 language
-                # print("\033[31m" + "Warning [main GUI.select_tts_loaded_setting]: " + "\033[33m" + "no available language found, selecting first id" + "\033[0m")
+                lang_comboBox.setCurrentIndex(1)
+        elif avbl_lang:
+            if lang in avbl_lang:
+                lang_comboBox.setCurrentText(self.convert_language_code(lang))
+            elif len(avbl_lang) >= 1:  # select first language if there's at least 1 language
                 lang_comboBox.setCurrentIndex(1)
         else:
             lang_comboBox.setCurrentIndex(0)
@@ -1342,6 +1391,16 @@ class MainWindow(QMainWindow):
 
     # region [UTILS]
     #################################################################################################
+    def init_combobox_text(self, combo_list:list[QObject]):   # clear all QComboboxes in list
+        for obj in combo_list:
+            component_name = obj.objectName()
+            if component_name is not None:
+                component_type, component_key = self.component_info_by_name(component_name)
+
+            if component_type == "comboBox":
+                # print("cleared combobox: ", obj)
+                obj.clear()
+
     def change_color_combobox(self, combo_box:QComboBox, color:str):
         combo_style = "QComboBox {" \
                       "color: %s;" \
@@ -1382,6 +1441,32 @@ class MainWindow(QMainWindow):
             elif "Slider" in prefix:
                 obj.setValue(int(res_value * value_multiplier))
 
+    def force_add_percent(self, per_str:str):
+        res_value = per_str
+        if "%" not in res_value:
+            res_value = res_value.strip()
+            res_value += " %"
+        elif " %" not in res_value:
+            res_value = res_value.replace("%", " %")
+
+        return res_value
+
+    def convert_percent_str(self, per_str:str, decimal=False):
+        res_value = per_str
+        if "%" in res_value:
+            res_value = res_value.replace("%", "")
+            res_value.strip()
+
+            res_value = int(float(res_value))
+            if decimal:
+                res_value = float(res_value) * 0.01
+        else:
+            if decimal:
+                res_value = float(res_value) * 100.0
+            res_value = int(res_value)
+            res_value = str(res_value) + " %"
+
+        return res_value
     #################################################################################################
     # endregion [UTILS]
 
