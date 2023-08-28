@@ -47,6 +47,9 @@ from dracula_modules.page_messages import Chat # Chat Widget
 from modules.aud_device_manager import AudioDevice
 import glob # find moegoe config file
 
+# COLOR LOG
+from modules.color_log import print_log
+
 #####################################################################################
 #                                                                                   #
 #                    Remove [import resources_rc] in ui_main.py!!                   #
@@ -215,6 +218,23 @@ class MainWindow(QMainWindow):
             widgets.comboBox_tts_character,
             widgets.comboBox_tts_language,
             widgets.comboBox_tts_voice_id,
+
+            widgets.lineEdit_voice_speed,
+            widgets.horizontalSlider_voice_speed,
+            widgets.lineEdit_voice_volume,
+            widgets.horizontalSlider_voice_volume,
+            widgets.lineEdit_intonation_scale,
+            widgets.horizontalSlider_intonation_scale,
+            widgets.lineEdit_pre_phoneme_length,
+            widgets.horizontalSlider_pre_phoneme_length,
+            widgets.lineEdit_post_phoneme_length,
+            widgets.horizontalSlider_post_phoneme_length,
+
+            # widgets.pushButton_voice_speed_default,
+            # widgets.pushButton_voice_volume_default,
+            # widgets.pushButton_intonation_scale_default,
+            # widgets.pushButton_pre_phoneme_length_default,
+            # widgets.pushButton_post_phoneme_length_default,
 
             ## prompt settings components
             widgets.pushButton_view_original_url,
@@ -422,12 +442,6 @@ class MainWindow(QMainWindow):
             widgets = self.ui
 
         called_component = self.sender()
-        print(
-            "\033[34m" + "called component: " +
-            "\033[32m" + f"{called_component.objectName()}" +
-            "\033[34m" + " | Type: " +
-            "\033[32m" + f"{type(called_component).__name__}"
-        )
 
         componentName = called_component.objectName()
 
@@ -438,6 +452,32 @@ class MainWindow(QMainWindow):
 
         if componentName is not None:
             component_type, component_key = self.component_info_by_name(componentName)
+
+
+        # region [PROPERTY HANDLER BY COMPONENT TYPE]
+        #####################################################################################
+        if isinstance(called_component, QCheckBox):
+            component_property = called_component.isChecked()
+
+        if isinstance(called_component, QComboBox):
+            if "language" in component_key:
+                component_property = self.convert_language_code(called_component.currentText())
+            else:
+                component_property = called_component.currentText()
+
+        if isinstance(called_component, QLineEdit):
+            comp_text = str(called_component.text())
+            if not comp_text or comp_text == "":
+                comp_text = ""
+            component_property = comp_text
+
+        if isinstance(called_component, QTextEdit):
+            comp_text = str(called_component.toPlainText())
+            if not comp_text or comp_text == "":
+                comp_text = ""
+            component_property = comp_text
+        #####################################################################################
+        # endregion [PROPERTY HANDLER]
 
 
         # region CHARACTER SETTINGS
@@ -458,33 +498,62 @@ class MainWindow(QMainWindow):
         if component_type == "pushButton" and "device_default" in component_key:
             if "mic" in component_key:
                 self.refresh_audio_device(update_by_combo=True, def_mic=True)
-            if "spk" in component_key:
+            elif "spk" in component_key:
                 self.refresh_audio_device(update_by_combo=True, def_spk=True)
             return
 
-        ## lineEdit with Slider [mic_threshold]
-        if component_key in ["mic_threshold"]:
+        ## lineEdit with Slider for Percent
+        # [mic_threshold, voice_volume]
+        if component_key in ["mic_threshold", "voice_volume"]:
             setting_name = "audio_settings"
             conv_per_dec = None
+            # print(self.find_qobject_by(component_type))
 
             if component_type == "lineEdit":
                 conv_per_str = self.force_add_percent(called_component.text())  # 30 -> 30 %
-
-                self.ui.lineEdit_mic_threshold.setText(conv_per_str)
                 conv_per_int = self.convert_percent_str(conv_per_str)   # 30 % -> 30
-                self.ui.horizontalSlider_mic_threshold.setValue(conv_per_int)
 
-                conv_per_dec = self.convert_percent_str(conv_per_str, decimal=True) # 30 -> 0.3
+                called_component.setText(conv_per_str)  # fix text (added ' %')
+                # Find QSlider & Sync Value
+                self.find_qobject_by(component_key, QSlider).setValue(conv_per_int)
+                component_property = self.convert_percent_str(conv_per_str, decimal=True) # 30 -> 0.3
+            elif component_type == "horizontalSlider":
+                value_str = str(called_component.value())  # 70
+                conv_per_str = self.force_add_percent(value_str)    # 70 -> 70 %
 
-                update_json(component_key, conv_per_dec, setting_name)
-            return
+                # Find QLineEdit & Sync Value
+                self.find_qobject_by(component_key, QLineEdit).setText(conv_per_str)
+                component_property = int(value_str) * 0.01    # 70 -> 0.7
 
         ## lineEdit Only [phrase_timeout]
         if component_key == "phrase_timeout":
             setting_name = "audio_settings"
 
+            component_property = round(float(component_property), 2)
+            called_component.setText(str(component_property))
 
-        ## tts_character/language/voice_id
+        ## lineEdit with Slider for Decimal
+        # [voice_speed, voice_volume, intonation_scale, pre/post_phoneme_length]
+        if component_key in ["voice_speed", "intonation_scale",
+                             "pre_phoneme_length", "post_phoneme_length"]:
+            setting_name = "audio_settings"
+            return
+            if component_type == "lineEdit":
+                conv_per_str = self.force_add_percent(called_component.text())  # 30 -> 30 %
+                conv_per_int = self.convert_percent_str(conv_per_str)  # 30 % -> 30
+
+                self.ui.lineEdit_mic_threshold.setText(conv_per_str)
+                self.ui.horizontalSlider_mic_threshold.setValue(conv_per_int)
+                component_property = self.convert_percent_str(conv_per_str, decimal=True)  # 30 -> 0.3
+            elif component_type == "horizontalSlider":
+                value_str = str(called_component.value())  # 70
+                conv_per_str = self.force_add_percent(value_str)  # 70 -> 70 %
+
+                self.ui.lineEdit_mic_threshold.setText(conv_per_str)
+                component_property = int(value_str) * 0.01  # 70 -> 0.7
+
+        ## Affect others by tts_character
+        # [tts_character, tts_language, tts_voice_id]
         if component_key in ["tts_character", "tts_language", "tts_voice_id"]:
             self.refresh_tts_info(update_by_combo=True)
 
@@ -527,34 +596,10 @@ class MainWindow(QMainWindow):
         # endregion OTHER SETTINGS
 
 
-        # PROPERTY HANDLER BY COMPONENT TYPE
-        #####################################################################################
-        if isinstance(called_component, QCheckBox):
-            component_property = called_component.isChecked()
-
-        if isinstance(called_component, QComboBox):
-            if "language" in component_key:
-                component_property = self.convert_language_code(called_component.currentText())
-            else:
-                component_property = called_component.currentText()
-
-        if isinstance(called_component, QLineEdit):
-            comp_text = str(called_component.text())
-            if not comp_text or comp_text == "":
-                comp_text = ""
-            component_property = comp_text
-
-        if isinstance(called_component, QTextEdit):
-            comp_text = str(called_component.toPlainText())
-            if not comp_text or comp_text == "":
-                comp_text = ""
-            component_property = comp_text
-        #####################################################################################
-        # endregion PROPERTY HANDLER
-
-
         # region Error Handler
+        #####################################################################################
         err_log = "\033[31m" + "Error [main GUI.update_content_by_component]:"
+
         # IF ANY INFORMATION IS NONE
         if componentName is None:
             print(f"{err_log} this component has no componentName: \033[33m{componentName}" + "\033[0m")
@@ -570,12 +615,24 @@ class MainWindow(QMainWindow):
         if setting_name is None:
             print(f"{err_log} setting_name: \033[33m{setting_name}" + "\033[0m")
             return
-        # endregion
+        #####################################################################################
+        # endregion Error Handler
 
-        print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}" + "\033[0m")
+        print(
+            "\033[34m" + "called component: " +
+            "\033[32m" + f"{called_component.objectName()}" +
+            "\033[34m" + " | Type: " +
+            "\033[32m" + f"{type(called_component).__name__}" +
+            "\033[34m" + " | Property: " +
+            "\033[32m" + f"{component_property}" +
+            "\033[0m"
+        )
+
+        # print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}" + "\033[0m")
 
         update_json(component_key, component_property, setting_name)
 
+    # GUI Release Handler
     def released_component(self):
         called_component = self.sender()
         componentName = called_component.objectName()
@@ -583,7 +640,7 @@ class MainWindow(QMainWindow):
         if componentName is not None:
             component_type, component_key = self.component_info_by_name(componentName)
 
-        # PROMPT SETTINGS
+        # region PROMPT SETTINGS
         #####################################################################################
         if component_type == "pushButton" and "view" in component_key:
             if componentName == "pushButton_view_original_url":
@@ -602,7 +659,7 @@ class MainWindow(QMainWindow):
             print("\033[34m" + f"{componentName}: \033[32mreleased\033[0m")
             return
         #####################################################################################
-        # PROMPT SETTINGS
+        # endregion PROMPT SETTINGS
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -840,7 +897,7 @@ class MainWindow(QMainWindow):
 
         for radio in radio_list:
             if value in radio.objectName():
-                print("found: " ,radio.objectName())
+                print_log("log", "RVC Gender", value, False)
                 radio.setChecked(True)
                 return radio
 
@@ -1179,10 +1236,10 @@ class MainWindow(QMainWindow):
 
         if self.newAudDevice.selected_mic:
             mic_comboBox.setCurrentText(self.newAudDevice.selected_mic.name)
-            print("mic: ", self.newAudDevice.selected_mic, _ret_mic_i)
+            print_log("log", "mic", self.newAudDevice.selected_mic)
         if self.newAudDevice.selected_speaker:
             spk_comboBox.setCurrentText(self.newAudDevice.selected_speaker.name)
-            print("spk: ", self.newAudDevice.selected_speaker, _ret_spk_i)
+            print_log("log", "spk", self.newAudDevice.selected_speaker)
 
         for _combo in [mic_comboBox, spk_comboBox]:
             if _combo.currentIndex() == 0:
@@ -1195,12 +1252,10 @@ class MainWindow(QMainWindow):
 
     # REFRESH TTS INFO LIST
     def refresh_tts_info(self, update_by_combo = False):
-        if update_by_combo:
-            print("update by combo")
         pre_tts_char = self.ui.comboBox_tts_character.currentText()
         pre_tts_lang = self.ui.comboBox_tts_language.currentText()
         pre_tts_v_id = self.ui.comboBox_tts_voice_id.currentIndex()
-        # TODO: tts_language get overwritten as '[None]' at first
+
         # region [TTS CHARACTER LIST]
         ################################################################################################
         tts_comboBox = self.ui.comboBox_tts_character
@@ -1416,7 +1471,40 @@ class MainWindow(QMainWindow):
         combo_box.insertItem(0, text)
         model.setData(model.index(0, 0), QColor(color), QtCore.Qt.ForegroundRole)
 
+    def find_qobject_by(self, name:str, type:QObject) -> QObject:
+        """
+        find 1 or List of :py:class:`QObject` by name and type
+
+        Args:
+            name: put name (:py:class:`str`)
+            type: put type (:py:class:`QObject`)
+
+        Returns:
+            :py:class:`QObject`
+        """
+
+        # Error (not enough hints to find)
+        if not name or not type:
+            print_log("error", "Not enough hints to find QObject", f"name={name}, type={type}")
+            raise ValueError()
+
+        # Get matching QObjects list
+        _found_obj_list = self.findChildren(type)
+
+        for obj in _found_obj_list:
+            if name in obj.objectName():
+                return obj
+
+        print_log("error", "Could not find any QObject with", f"name={name}, type={type}")
+        raise ValueError()
+
     def set_qobjects_by_dict(self, obj_list:list[QObject], _dict, value_multiplier=10.0, add_percent=False):
+        """
+        set value of QObjects in obj_list with certain pattern by _dict property
+        Args:
+            text: string to convert to a sequence
+            cleaner_names: names of the cleaner functions to run the text through
+        """
         for obj in obj_list:
             prefix = ""
             if isinstance(obj, QLineEdit):
@@ -1432,7 +1520,7 @@ class MainWindow(QMainWindow):
             res_str = ""
             if add_percent:
                 res_int = int(res_value * value_multiplier)
-                res_str = str(res_int) + " %"
+                res_str = self.force_add_percent(str(res_int))
             else:
                 res_str = str(res_value)
 
