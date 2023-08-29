@@ -11,6 +11,7 @@ from urllib.parse import urlparse, parse_qs
 
 if __name__ != "__main__":
     import sys  # noqa: E402
+
     script_path = os.path.abspath(os.path.dirname(__file__))
     sys.path.append(script_path)
 
@@ -31,11 +32,9 @@ import inspect
 
 # Play
 from aud_device_manager import AudioDevice
+
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"  # hide pygame print
 import pygame  # noqa: E402
-
-# Test
-import threading    # noqa: E402
 
 ############################## Packages Import ##############################
 
@@ -100,7 +99,9 @@ class BotCommand:
         self.video_id = ""
 
         self.final_result_path = ""
-        self.command_done = False
+
+        self.state_signal = None  # Emit Signal When some precess is done
+        self.gen_done = False
         self.play_done = False
 
     # region [LOG]
@@ -156,26 +157,7 @@ class BotCommand:
     ############################################################################
     def check_do_command(self, text):
         cmd_type, cmd_value = self.check_command(text)
-
-        if cmd_type == '!sing':
-            result_cover_path = bot_cmd.do_sing(cmd_value, self.fast_search,
-                                                self.gender_type, [self.pitch, self.auto_pitch_bool],
-                                                self.index_rate)
-            # cover_audio = bot_cmd.do_sing(value, self.gender_type, [0.0, False])
-            self.command_done = True
-
-            # wk = Worker("test thread", self)
-            # wk.daemon = True
-            # wk.start()
-            self.play_music(result_cover_path, self.play_volume)
-        elif cmd_type == '!draw':
-            # do_draw(cmd_value)
-            pass
-        elif cmd_type == '!emote':
-            # do_emote(cmd_value)
-            pass
-        else:
-            print("prompt: ", cmd_value)
+        return self.do_command(cmd_type, cmd_value)
 
     def check_command(self, text):
         command_prefixes = ['!sing', '!draw', '!emote']
@@ -184,7 +166,7 @@ class BotCommand:
 
         text_parts = text.split()
         for i, part in enumerate(text_parts):
-            if part in command_prefixes:
+            if part.lower() in command_prefixes:
                 command_prefix = part
                 command_value = ' '.join(text_parts[i + 1:]).strip()
                 break
@@ -193,9 +175,32 @@ class BotCommand:
             if self.logging:
                 # print("\033[31m" + f"No command found in text: {text}" + "\033[0m")
                 self.print_log("warning", "No command found in text", text)
-            return command_prefix, command_value
+            return None, text
 
         return command_prefix, command_value
+
+    def do_command(self, cmd_type, cmd_value):
+        if cmd_type == '!sing':
+            self.final_result_path = self.do_sing(cmd_value, self.fast_search,
+                                            self.gender_type, [self.pitch, self.auto_pitch_bool],
+                                            self.index_rate)
+            # cover_audio = bot_cmd.do_sing(value, self.gender_type, [0.0, False])
+
+            # self.play_by_bot(result_cover_path, self.play_volume)
+        elif cmd_type == '!draw':
+            # do_draw(cmd_value)
+            pass
+        elif cmd_type == '!emote':
+            # do_emote(cmd_value)
+            pass
+        else:
+            # print("no command found!: ", cmd_value)
+            pass
+
+        self.gen_done = True
+        self.state_signal.emit()
+
+        return cmd_type, cmd_value
 
     def do_sing(self, song_name, fast_search: bool = False,
                 ai_gender_type='female', pitch=None,
@@ -496,21 +501,21 @@ class BotCommand:
         for _process in process_list:
             self.find_one_filename(file_dir, _dict, _process[0], _process[1], _process[2])
 
-    def play_music(self, in_audio, volume=1.0, start_sec=0, quite_mode=False):
+    def play_by_bot(self, device_name, volume=1.0, start_sec=0, quite_mode=False):
+        in_audio = self.final_result_path
         if in_audio is None or in_audio == "":
             self.print_log("error", "No Audio path to play!")
             raise RuntimeError()
         else:
             if not quite_mode:
                 self.print_log("log", "Playing Final Cover Result", in_audio)
-            self.final_result_path = in_audio
 
-        if self.device_name is None or self.device_name == "":
+        if not device_name:
             self.print_log("error", "No device name specified!")
             raise RuntimeError()
         else:
             if not quite_mode:
-                self.print_log("log", "Using Audio Device (Speaker)", f"[{self.device_name}]")
+                self.print_log("log", "Using Audio Device (Speaker)", f"[{device_name}]")
 
         pygame_mixer = pygame.mixer.get_init()
         _st_sec = start_sec
@@ -520,31 +525,39 @@ class BotCommand:
             self.print_log("log", "pygame mixer already exist!", f"Starting music at {_st_sec} seconds")
             pygame.mixer.quit()
 
-        pygame.mixer.init(devicename=self.device_name)
+        pygame.mixer.init(devicename=device_name)
         sounda = pygame.mixer.Sound(in_audio)
         pygame.mixer.music.load(in_audio)
         pygame.mixer.music.play(start=_st_sec)
-        pygame.mixer.music.set_volume(volume)
+        pygame.mixer.music.set_volume(volume * 0.5)
         pygame.time.wait(int((sounda.get_length() * 1000) - _st_sec))
 
         self.play_done = True
+        self.state_signal.emit()
 
     def update_ad_and_play(self, device_name=None):
         if device_name or device_name != "":
             self.device_name = device_name
 
         self.print_log("log", "[Changing Audio Device for playing music]", self.device_name)
-        self.play_music(self.final_result_path, self.play_volume, self.device_name, True)
+        self.play_by_bot(self.device_name, self.play_volume, True)
+
+    def change_volume(self, volume):
+        if pygame.mixer.music:
+            # print("changing pygame volume!", volume, self.sounda)
+            pygame.mixer.music.set_volume(volume * 0.5)
 
     def __repr__(self):
         front_msg_list = ["RVC Model", "Gender Type", "Auto Pitch", "Pitch (manual)", "FastSearch", "Speaker"]
-        back_msg_list = [self.char_model_name, self.gender_type, str(self.auto_pitch_bool), "False" if self.auto_pitch_bool else str(self.pitch), str(self.fast_search), self.device_name]
+        back_msg_list = [self.char_model_name, self.gender_type, str(self.auto_pitch_bool),
+                         "False" if self.auto_pitch_bool else str(self.pitch), str(self.fast_search), self.device_name]
         print_msg = ""
         for f_m, b_m in zip(front_msg_list, back_msg_list):
             if not b_m:
                 b_m = "None"
             print_msg += f"\033[35m{f_m}: \033[34m{b_m} \033[0m| "
         return print_msg
+
     ############################################################################
     # endregion [UTILS]
 
@@ -675,20 +688,6 @@ class BotCommand:
 
     ############################################################################
     # endregion [SoundFX]
-
-
-class Worker(threading.Thread):
-    def __init__(self, name, bot_command: BotCommand):
-        super().__init__()
-        self.name = name
-        self.bot_command = bot_command
-
-    def run(self):
-        import time
-        print("sub thread start", threading.current_thread().name)
-        time.sleep(3)
-        print("sub thread end", threading.current_thread().name)
-        self.bot_command.update_ad_and_play("VoiceMeeter Aux Input(VB-Audio VoiceMeeter AUX VAIO)")
 
 
 def find_all(dir_path, ext):

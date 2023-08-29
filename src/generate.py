@@ -12,24 +12,25 @@ from modules.translator import DoTranslate, detect_language
 from modules.convert_roma_ja import english_to_katakana
 from MoeGoe.Main import speech_text
 
-# from modules.audio_to_device import play_voice
 from discordbot import SendDiscordMessage, ExcuteDiscordWebhook
-
-# Play
-import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"   # hide pygame print
-import pygame                                       # noqa: E402
-
-tts_wav_path = Path(__file__).resolve().parent / r'audio\tts.wav'
 
 # BotCommand
 from modules.sing_command import BotCommand
+
+# Play
+import os
+
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"  # hide pygame print
+import pygame  # noqa: E402
+
+tts_wav_path = Path(__file__).resolve().parent / r'audio\tts.wav'
 
 
 class Generator:
     def __init__(self):
         super().__init__()
         self.logging = True
+        self.gen_done = False
 
     def generate(self, text, settings_list: list = None):
         log_str = ""
@@ -151,17 +152,26 @@ class Generator:
         if self.logging:
             print("\033[0m")
 
+    @staticmethod
+    def split_botcommand(text):
+        bot_cmd = BotCommand()
+
+        command, value = bot_cmd.check_command(text)
+        print(command, value)
+        return command, value
+
 
 class GeneratorTTS:
     def __init__(self):
         super().__init__()
         self.logging = True
-        self.audio_path = ""
+        self.final_result_path = ""
         self.audio_dir = ""
-        self.gen_done = False
-
         self.sounda = None
-        self.speech_done = False
+
+        self.state_signal = None    # Emit Signal When some precess is done
+        self.gen_done = False
+        self.play_done = False
 
     def speak_tts(self, text, settings_list: list = None):
         # Load Program Settings
@@ -229,34 +239,40 @@ class GeneratorTTS:
 
         print("\033[34m" + f"[GeneratorTTS.run]: start speech process! [\033[32m{sentence}\033[34m]" + "\033[0m")
 
-        self.audio_path = self.new_audio_path()  # assign output directory to self.audio_path before run this method!
+        self.final_result_path = self.new_audio_path()  # assign output directory to self.final_result_path before run this method!
 
-        print("test:", self.audio_path)
         # synthesize voice as wav file
         speech_text(tts_character, bot_trans_speech, language_code, voice_id, voice_volume, voice_speed,
-                    out_path=self.audio_path)
+                    out_path=self.final_result_path)
 
         print(
-            "\033[34m" + f"[GeneratorTTS.speak_moegoe]: Created TTS as Wav File! [\033[32m{sentence}\033[34m] [{self.audio_path}]" + "\033[0m")
+            "\033[34m" + f"[GeneratorTTS.speak_moegoe]: Created TTS as Wav File! [\033[32m{sentence}\033[34m] [{self.final_result_path}]" + "\033[0m")
 
         self.gen_done = True
+        self.state_signal.emit()
 
-    def play_voice(self, device_name, volume):
-        print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
+    def play_by_bot(self, device_name, volume, quite_mode=False):
+        if not quite_mode:
+            print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
 
         if device_name is None or device_name == "":
             print("Error: No device name specified!: ", f"[{device_name}]")
         else:
-            print("Using Audio Device (Speaker): ", f"[{device_name}]")
+            if not quite_mode:
+                print("Using Audio Device (Speaker): ", f"[{device_name}]")
 
         pygame.mixer.init(devicename=device_name)
-        self.sounda = pygame.mixer.Sound(self.audio_path)
-        self.sounda.set_volume(volume * 0.5)    # [0.0 ~ 2.0] to [0.0 ~ 1.0]
+        self.sounda = pygame.mixer.Sound(self.final_result_path)
+        self.sounda.set_volume(volume * 0.5)  # [0.0 ~ 2.0] to [0.0 ~ 1.0]
         self.sounda.play()
         pygame.time.wait(int(self.sounda.get_length() * 1000))
-        print("speech done!")
+
+        if not quite_mode:
+            print("speech done!")
         self.sounda.stop()
-        self.speech_done = True
+
+        self.play_done = True
+        self.state_signal.emit()
 
     def change_volume(self, volume):
         mixer = pygame.mixer.get_init()
