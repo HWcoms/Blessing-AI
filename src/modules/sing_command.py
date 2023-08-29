@@ -536,6 +536,15 @@ class BotCommand:
         self.print_log("log", "[Changing Audio Device for playing music]", self.device_name)
         self.play_music(self.final_result_path, self.play_volume, self.device_name, True)
 
+    def __repr__(self):
+        front_msg_list = ["RVC Model", "Gender Type", "Auto Pitch", "Pitch (manual)", "FastSearch", "Speaker"]
+        back_msg_list = [self.char_model_name, self.gender_type, str(self.auto_pitch_bool), "False" if self.auto_pitch_bool else str(self.pitch), str(self.fast_search), self.device_name]
+        print_msg = ""
+        for f_m, b_m in zip(front_msg_list, back_msg_list):
+            if not b_m:
+                b_m = "None"
+            print_msg += f"\033[35m{f_m}: \033[34m{b_m} \033[0m| "
+        return print_msg
     ############################################################################
     # endregion [UTILS]
 
@@ -693,9 +702,10 @@ def find_all(dir_path, ext):
 if __name__ == '__main__':
     download_required_models()
 
-    bot_cmd = BotCommand("Muhyun", "male")
+    bot_cmd = BotCommand("Karen Kujou", "female")
     bot_cmd.device_name = AudioDevice().set_selected_speaker("VoiceMeeter Input").name
     bot_cmd.fast_search = True
-    # print(bot_cmd.device_name)
+    # bot_cmd.auto_pitch_bool = False
+    # print(bot_cmd)
     # bot_cmd.device_name = "VoiceMeeter Aux Input(VB-Audio VoiceMeeter AUX VAIO)"
-    bot_cmd.check_do_command("!sing Dame Dame yakuza")
+    bot_cmd.check_do_command("!sing アニメ「BanG Dream! It's MyGO!!!!!」#10 挿入歌")
