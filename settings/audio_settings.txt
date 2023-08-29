@@ -2,13 +2,12 @@
     "mic_index": 1,
     "mic_threshold": 30,
     "phrase_timeout": 2,
-
-    "spk_index": 9,
+    "spk_index": 1,
     "tts_character_name": "Kato Megumi",
     "tts_language": "ja",
     "tts_voice_id": 0,
     "voice_speed": 0.8,
-    "voice_volume": 0.3,
+    "speaker_volume": 1.0,
     "intonation_scale": 1.5,
     "pre_phoneme_length": 1.0,
     "post_phoneme_length": 1.0
