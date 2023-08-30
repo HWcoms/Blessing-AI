@@ -30,7 +30,6 @@ class Generator:
     def __init__(self):
         super().__init__()
         self.logging = True
-        self.gen_done = False
 
     def generate(self, text, settings_list: list = None):
         log_str = ""
@@ -169,10 +168,6 @@ class GeneratorTTS:
         self.audio_dir = ""
         self.sounda = None
 
-        self.state_signal = None    # Emit Signal When some precess is done
-        self.gen_done = False
-        self.play_done = False
-
     def speak_tts(self, text, settings_list: list = None):
         # Load Program Settings
         if settings_list is None or len(settings_list) == 0:
@@ -248,9 +243,6 @@ class GeneratorTTS:
         print(
             "\033[34m" + f"[GeneratorTTS.speak_moegoe]: Created TTS as Wav File! [\033[32m{sentence}\033[34m] [{self.final_result_path}]" + "\033[0m")
 
-        self.gen_done = True
-        self.state_signal.emit()
-
     def play_by_bot(self, device_name, volume, quite_mode=False):
         if not quite_mode:
             print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
@@ -270,9 +262,6 @@ class GeneratorTTS:
         if not quite_mode:
             print("speech done!")
         self.sounda.stop()
-
-        self.play_done = True
-        self.state_signal.emit()
 
     def change_volume(self, volume):
         mixer = pygame.mixer.get_init()

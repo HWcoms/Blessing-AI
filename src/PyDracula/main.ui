@@ -1850,7 +1850,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>2</number>
+                      <number>3</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -3238,7 +3238,7 @@ QSlider::handle:horizontal:pressed {
                          <widget class="QWidget" name="scrollAreaWidgetContents_2">
                           <property name="geometry">
                            <rect>
-                            <x>-2</x>
+                            <x>0</x>
                             <y>0</y>
                             <width>1182</width>
                             <height>636</height>
@@ -5384,9 +5384,9 @@ QSlider::handle:horizontal:pressed {
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>-60</y>
+                            <y>-194</y>
                             <width>1172</width>
-                            <height>722</height>
+                            <height>799</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_34">
@@ -5451,7 +5451,7 @@ QSlider::handle:horizontal:pressed {
                                 <number>0</number>
                                </property>
                                <item>
-                                <widget class="QGroupBox" name="horizontalGroupBox_9">
+                                <widget class="QGroupBox" name="horizontalGroupBox_cmd_sing">
                                  <property name="styleSheet">
                                   <string notr="true">QGroupBox
 {
@@ -5464,6 +5464,12 @@ QSlider::handle:horizontal:pressed {
                                  </property>
                                  <property name="alignment">
                                   <set>Qt::AlignCenter</set>
+                                 </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="checked">
+                                  <bool>true</bool>
                                  </property>
                                  <layout class="QHBoxLayout" name="horizontalLayout_111">
                                   <property name="leftMargin">
@@ -6132,7 +6138,7 @@ color: #009dff;</string>
                                          <item>
                                           <layout class="QVBoxLayout" name="verticalLayout_Audio_mixing_5">
                                            <property name="spacing">
-                                            <number>0</number>
+                                            <number>6</number>
                                            </property>
                                            <property name="leftMargin">
                                             <number>0</number>
@@ -6518,6 +6524,124 @@ color: #009dff;</string>
                                                   </widget>
                                                  </item>
                                                 </layout>
+                                               </item>
+                                              </layout>
+                                             </item>
+                                            </layout>
+                                           </item>
+                                           <item>
+                                            <layout class="QVBoxLayout" name="verticalLayout_86">
+                                             <property name="leftMargin">
+                                              <number>10</number>
+                                             </property>
+                                             <property name="topMargin">
+                                              <number>5</number>
+                                             </property>
+                                             <property name="rightMargin">
+                                              <number>10</number>
+                                             </property>
+                                             <property name="bottomMargin">
+                                              <number>5</number>
+                                             </property>
+                                             <item>
+                                              <layout class="QHBoxLayout" name="horizontalLayout_128">
+                                               <property name="spacing">
+                                                <number>10</number>
+                                               </property>
+                                               <property name="topMargin">
+                                                <number>0</number>
+                                               </property>
+                                               <property name="bottomMargin">
+                                                <number>0</number>
+                                               </property>
+                                               <item>
+                                                <widget class="QLabel" name="label_81">
+                                                 <property name="text">
+                                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Master Gain&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                 </property>
+                                                 <property name="alignment">
+                                                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                                 </property>
+                                                </widget>
+                                               </item>
+                                               <item>
+                                                <widget class="QLineEdit" name="lineEdit_rvc_master_gain">
+                                                 <property name="sizePolicy">
+                                                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                                   <horstretch>0</horstretch>
+                                                   <verstretch>0</verstretch>
+                                                  </sizepolicy>
+                                                 </property>
+                                                 <property name="minimumSize">
+                                                  <size>
+                                                   <width>60</width>
+                                                   <height>0</height>
+                                                  </size>
+                                                 </property>
+                                                 <property name="maximumSize">
+                                                  <size>
+                                                   <width>60</width>
+                                                   <height>16777215</height>
+                                                  </size>
+                                                 </property>
+                                                 <property name="acceptDrops">
+                                                  <bool>true</bool>
+                                                 </property>
+                                                 <property name="text">
+                                                  <string>0.0</string>
+                                                 </property>
+                                                 <property name="alignment">
+                                                  <set>Qt::AlignCenter</set>
+                                                 </property>
+                                                </widget>
+                                               </item>
+                                               <item>
+                                                <spacer name="horizontalSpacer_73">
+                                                 <property name="orientation">
+                                                  <enum>Qt::Horizontal</enum>
+                                                 </property>
+                                                 <property name="sizeHint" stdset="0">
+                                                  <size>
+                                                   <width>40</width>
+                                                   <height>20</height>
+                                                  </size>
+                                                 </property>
+                                                </spacer>
+                                               </item>
+                                              </layout>
+                                             </item>
+                                             <item>
+                                              <layout class="QHBoxLayout" name="horizontalLayout_129">
+                                               <property name="topMargin">
+                                                <number>0</number>
+                                               </property>
+                                               <property name="bottomMargin">
+                                                <number>0</number>
+                                               </property>
+                                               <item>
+                                                <widget class="QSlider" name="horizontalSlider_rvc_master_gain">
+                                                 <property name="styleSheet">
+                                                  <string notr="true"/>
+                                                 </property>
+                                                 <property name="minimum">
+                                                  <number>-200</number>
+                                                 </property>
+                                                 <property name="maximum">
+                                                  <number>200</number>
+                                                 </property>
+                                                 <property name="singleStep">
+                                                  <number>10</number>
+                                                 </property>
+                                                 <property name="pageStep">
+                                                  <number>10</number>
+                                                 </property>
+                                                 <property name="value">
+                                                  <number>0</number>
+                                                 </property>
+                                                 <property name="orientation">
+                                                  <enum>Qt::Horizontal</enum>
+                                                 </property>
+                                                </widget>
                                                </item>
                                               </layout>
                                              </item>

@@ -76,6 +76,8 @@ t_val_col_b = 60
 t_val_col_c = 20
 
 class MainWindow(QMainWindow):
+    update_table_signal = Signal()
+
     def __init__(self):
         QMainWindow.__init__(self)
 
@@ -130,9 +132,15 @@ class MainWindow(QMainWindow):
 
         self.thread_manager = THREADMANAGER(self)
         self.thread_manager.start()
+        # THREAD SIGNAL
         self.thread_manager.prompt_done_signal.connect(self.delete_first_prompt_thread)
         self.thread_manager.tts_gen_done_signal.connect(self.start_next_tts_thread)
         self.thread_manager.tts_play_done_signal.connect(self.delete_first_tts_thread)
+        self.update_table_signal.connect(self.update_thread_table)      # updating table
+        # TODO: [Fix Bug] when cmd_thread is playing audio,
+        #   Also trying to add mode tts_thread, table update and threadmanager stops working..
+        #   User name is not visible when generating RVC cover
+
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -1716,15 +1724,11 @@ class MainWindow(QMainWindow):
     def gen_command_thread(self, cmd, text):
         cmd_thread = COMMANDTHREAD(self, cmd, text)
         self.tts_thread_list.append(cmd_thread)
-        cmd_thread.StateChange.connect(self.update_thread_table)
-        # TODO: [Fix Bug] when cmd_thread is playing audio,
-        #   Also trying to add mode tts_thread, table update and threadmanager stops working..
 
     # Generate and Play TTS Using QThread
     def gen_voice_thread(self, text):
         tts_thread = TTSTHREAD(self, text)
         self.tts_thread_list.append(tts_thread)
-        tts_thread.StateChange.connect(self.update_thread_table)
 
     # Generate Prompt Using QThread
     def gen_prompt_thread(self, text):
@@ -1732,7 +1736,6 @@ class MainWindow(QMainWindow):
         self.prompt_thread_list.append(prompt_thread)
 
         prompt_thread.PromptDone.connect(self.command_handler)
-        prompt_thread.StateChange.connect(self.update_thread_table)
 
     # Update QTable [Qthreads table]
     def update_thread_table(self):
@@ -1747,23 +1750,24 @@ class MainWindow(QMainWindow):
 
             thread_index = 0
             for thread in thread_list:
-                table.setItem(thread_index, 0, QTableWidgetItem(thread.character))
-                table.setItem(thread_index, 1, QTableWidgetItem(thread.text))
+                _class_type = type(thread).__name__
 
-                if thread.isRunning:
-                    if thread.gen:
-                        if thread.gen.gen_done:
-                            status = "Now Playing"
-                        elif thread.gen.play_done:
-                            status = "Closing"
-                        else:
-                            status = "Generating"
-                    else:
-                        status = "Initializing"
+                if _class_type == "TTSTHREAD":
+                    _msg = '🔊 ' + thread.text
+                    pass
+                elif _class_type == "COMMANDTHREAD":
+                    if thread.cmd_type == '!sing':
+                        _type = '🎵'
+
+                    _msg = f'{_type} ' + thread.text
+
+                    pass
                 else:
-                    status = "Waiting"
+                    _msg = thread.text
 
-                table.setItem(thread_index, 2, QTableWidgetItem(status))
+                table.setItem(thread_index, 0, QTableWidgetItem(thread.character))
+                table.setItem(thread_index, 1, QTableWidgetItem(_msg))
+                table.setItem(thread_index, 2, QTableWidgetItem(thread.state[1]))
                 thread_index += 1
 
 
@@ -1800,23 +1804,17 @@ class THREADMANAGER(QThread):
 
             if len(tts_thread_list) >= 1:
                 # Start first thread if not running
-                if not tts_thread_list[0].isRunning() and not tts_thread_list[0].gen.play_done:
+                # for tts_thread in tts_thread_list:
+                # Todo:20230830 tts thread check for loop
+
+                if not tts_thread_list[0].isRunning() and tts_thread_list[0].state[0] == "init":
                     tts_thread_list[0].start()
                     print(f"start tts thread: [{tts_thread_list[0].text}]")
 
                 tts_thread_list[0].print_thread_list()
 
-                if tts_thread_list[0].gen.gen_done and not tts_thread_list[0].gen.play_done:
-                    print("tts wav file is generated: ", tts_thread_list[0].text, tts_thread_list[0].gen, f"Path[{tts_thread_list[0].gen.final_result_path}]")
-                    # Start next thread
-                    tts_thread_list[0].adm = main_program.newAudDevice
-                    spk_device = tts_thread_list[0].adm.selected_speaker
-                    spk_volume = main_program.audio_info_dict['speaker_volume']
-                    tts_thread_list[0].gen.play_by_bot(spk_device.name, spk_volume, quite_mode=False)
-                    # self.tts_gen_done_signal.emit()
-
-                if tts_thread_list[0].gen.play_done:
-                    print("tts process all done: ", tts_thread_list[0].text, tts_thread_list[0].gen.play_done)
+                if tts_thread_list[0].state[0] == "close":
+                    print("tts process all done: ", tts_thread_list[0].text, tts_thread_list[0].state[1])
                     # Remove current thraed
                     self.tts_play_done_signal.emit()
 
@@ -1825,40 +1823,35 @@ class THREADMANAGER(QThread):
 
 class PROMPTTHREAD(QThread):
     PromptDone = Signal(str, str)
-    StateChange = Signal()
     def __init__(self, parent, text="", logging=True):
         super().__init__(parent)
         self.parent = parent
         self.text = text
         self.gen = None
-        self.logging = logging
+        self.character = self.parent.char_info_dict["character_name"]
         self.reply_text = ""
-        self.character = ""
+
+        self.state = ["",""]
+        change_state(self, "init")
+        self.logging = logging
 
     def run(self):
         self.gen = Generator()
-
-        self.character = self.parent.char_info_dict["character_name"]
-        tts_only = self.parent.chat_info_dict['tts_only']
-
         in_text = self.text
+        change_state(self, "gen")
 
+        tts_only = self.parent.chat_info_dict['tts_only']
         if not tts_only:
             self.reply_text = self.gen.generate(in_text)
         else:
             self.reply_text = in_text
 
-        self.gen.gen_done = True
-        self.StateChange.emit()
-
+        change_state(self, "check", "Check Command")
         # print("PromptThread created reply: ", self.reply_text, f"| text: {self.text}")
         cmd, value = self.gen.split_botcommand(self.reply_text)
 
         self.PromptDone.emit(cmd, value)
-        # self.PromptDone.emit(self.reply_text)
-
-        # time.sleep(1)
-        # self.remove_from_thread_list()
+        change_state(self, "close")
 
     def remove_from_thread_list(self):
         self.parent.prompt_thread_list.remove(self)
@@ -1867,29 +1860,33 @@ class PROMPTTHREAD(QThread):
         if self.logging:
             print_thread_list("Prompt", self.parent.prompt_thread_list)
 
-
 class TTSTHREAD(QThread):
     # TTSDone = Signal()
-    StateChange = Signal()
     def __init__(self, parent, text="", logging=True):
         super().__init__(parent)
         self.parent = parent
         self.gen = GeneratorTTS()
-        self.gen.state_signal = self.StateChange
-        self.character = ""
-
         self.text = text
-        self.logging = True
+        self.character = self.parent.audio_info_dict["tts_character"]
 
+        self.state = ["",""]
+        change_state(self, "init")
+        self.logging = True
     def run(self):
         global tts_wav_dir
         self.gen.audio_dir = tts_wav_dir
-        self.character = self.parent.audio_info_dict["tts_character"]
 
+        change_state(self, "gen", "Generating TTS")
         self.gen.speak_tts(text=self.text)
 
-        # self.speak_tts(text=self.text)
-        # self.remove_from_thread_list()
+        print("tts wav file is generated: ", self.text, self.gen,
+              f"Path[{self.gen.final_result_path}]")
+        spk_device = self.parent.newAudDevice.selected_speaker
+        spk_volume = self.parent.audio_info_dict['speaker_volume']
+
+        change_state(self, "play", "Playing TTS")
+        self.gen.play_by_bot(spk_device.name, spk_volume, quite_mode=False)
+        change_state(self, "close")
 
     def remove_from_thread_list(self):
         self.parent.tts_thread_list.remove(self)
@@ -1900,31 +1897,36 @@ class TTSTHREAD(QThread):
 
 class COMMANDTHREAD(QThread):
     # CommandDone = Signal()
-    StateChange = Signal()
     def __init__(self, parent, cmd_type="", text="", logging=True):
         super().__init__(parent)
         self.parent = parent
         self.gen = BotCommand()
-        self.gen.state_signal = self.StateChange
         self.cmd_type = cmd_type
         self.text = text
-        self.character = ""
+        self.character = self.parent.command_info_dict["rvc_model"]
 
+        self.state = ["",""]
+        change_state(self, "init")
         self.logging = True
 
     def run(self):
         bot_cmd = self.gen
-
-        rvc_model = self.parent.command_info_dict['rvc_model']
-        bot_cmd.char_model_name = rvc_model
-        self.character = rvc_model
+        bot_cmd.char_model_name = self.character
 
         bot_cmd.gender_type = self.parent.command_info_dict['rvc_gender']
         bot_cmd.fast_search = True
+
+        change_state(self, "gen", f"Generating [{self.cmd_type}]")
         bot_cmd.do_command(self.cmd_type, self.text)
 
-        # self.speak_tts(text=self.text)
-        # self.remove_from_thread_list()
+        print("RVC wav file is generated: ", self.text, self.gen,
+              f"Path[{self.gen.final_result_path}]")
+        spk_device = self.parent.newAudDevice.selected_speaker
+        spk_volume = self.parent.audio_info_dict['speaker_volume']
+
+        change_state(self, "play", f"Doing [{self.cmd_type}]")
+        self.gen.play_by_bot(spk_device.name, spk_volume, quite_mode=False)
+        change_state(self, "close")
 
     def remove_from_thread_list(self):
         self.parent.tts_thread_list.remove(self)
@@ -1933,6 +1935,33 @@ class COMMANDTHREAD(QThread):
         if self.logging:
             print_thread_list("TTS/COMMAND", self.parent.tts_thread_list)
 
+def change_state(thread_self, state_code, custom_state=""):
+    """
+    Change State of processings (Prompt/TTS/Command..)
+    Args:
+        thread_self: thread itself (:py:class:`QThread`)
+        state_code: ['init','gen','play','close'] :py:class:`str`
+        custom_state: custom print :py:class:`str` of state
+    """
+    final_state = None
+    _state_to_print = None
+    if custom_state:
+        _state_to_print = custom_state
+    else:
+        if state_code == 'init':
+            _state_to_print = 'Initializing'
+        elif state_code == 'gen':
+            _state_to_print = 'Generating'
+        elif state_code == 'play':
+            _state_to_print = 'Playing'
+        elif state_code == 'close':
+            _state_to_print = 'Closing'
+    final_state = [state_code, _state_to_print]
+
+    thread_self.state = final_state
+    thread_self.parent.update_table_signal.emit()
+
+
 def print_thread_list(list_type_name, list):
     thread_logging_str = f"==================== {list_type_name} Thread List ===================="
 
@@ -1940,11 +1969,11 @@ def print_thread_list(list_type_name, list):
     for i, qthread in enumerate(list):
         _class_type = type(qthread.gen).__name__  # get class of gen [Generator/TTS/BotCommand]
         if _class_type == "Generator":
-            _msg = f"QThread ({i}): [{qthread.text}] | Gen Done: {qthread.gen.gen_done}"
+            _msg = f"QThread ({i}): [{qthread.text}] | State: {qthread.state[1]}"
         elif _class_type == "GeneratorTTS":
-            _msg = f"QThread ({i}): [{qthread.text}] | Gen Done: {qthread.gen.gen_done} | Speech Done: {qthread.gen.play_done}"
+            _msg = f"QThread ({i}): [{qthread.text}] | State: {qthread.state[1]}"
         elif _class_type == "BotCommand":
-            _msg = f"QThread ({i}): [{qthread.text}] | Command Type/Done: {qthread.cmd_type} / {qthread.gen.gen_done} | Command Process Done: {qthread.gen.play_done}"
+            _msg = f"QThread ({i}): [{qthread.text}] | Command Type: {qthread.cmd_type}| State: {qthread.state[1]}"
         else:
             _msg = f"QThread ({i}) [{qthread.text}]"
 

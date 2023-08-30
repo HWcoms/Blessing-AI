@@ -99,10 +99,7 @@ class BotCommand:
         self.video_id = ""
 
         self.final_result_path = ""
-
-        self.state_signal = None  # Emit Signal When some precess is done
-        self.gen_done = False
-        self.play_done = False
+        self.sounda = None
 
     # region [LOG]
     ############################################################################
@@ -182,8 +179,8 @@ class BotCommand:
     def do_command(self, cmd_type, cmd_value):
         if cmd_type == '!sing':
             self.final_result_path = self.do_sing(cmd_value, self.fast_search,
-                                            self.gender_type, [self.pitch, self.auto_pitch_bool],
-                                            self.index_rate)
+                                                  self.gender_type, [self.pitch, self.auto_pitch_bool],
+                                                  self.index_rate)
             # cover_audio = bot_cmd.do_sing(value, self.gender_type, [0.0, False])
 
             # self.play_by_bot(result_cover_path, self.play_volume)
@@ -196,9 +193,6 @@ class BotCommand:
         else:
             # print("no command found!: ", cmd_value)
             pass
-
-        self.gen_done = True
-        self.state_signal.emit()
 
         return cmd_type, cmd_value
 
@@ -526,14 +520,13 @@ class BotCommand:
             pygame.mixer.quit()
 
         pygame.mixer.init(devicename=device_name)
-        sounda = pygame.mixer.Sound(in_audio)
-        pygame.mixer.music.load(in_audio)
-        pygame.mixer.music.play(start=_st_sec)
-        pygame.mixer.music.set_volume(volume * 0.5)
-        pygame.time.wait(int((sounda.get_length() * 1000) - _st_sec))
-
-        self.play_done = True
-        self.state_signal.emit()
+        m_info = pygame.mixer.Sound(in_audio)
+        self.sounda = pygame.mixer.music
+        self.sounda.load(in_audio)
+        self.sounda.play(start=_st_sec)
+        self.sounda.set_volume(volume * 0.5)
+        pygame.time.wait(int((m_info.get_length() * 1000) - _st_sec))
+        print(f"m_info: {m_info}, length: {m_info.get_length()}")
 
     def update_ad_and_play(self, device_name=None):
         if device_name or device_name != "":
@@ -543,9 +536,9 @@ class BotCommand:
         self.play_by_bot(self.device_name, self.play_volume, True)
 
     def change_volume(self, volume):
-        if pygame.mixer.music:
+        if self.sounda:
             # print("changing pygame volume!", volume, self.sounda)
-            pygame.mixer.music.set_volume(volume * 0.5)
+            self.sounda.set_volume(volume * 0.5)
 
     def __repr__(self):
         front_msg_list = ["RVC Model", "Gender Type", "Auto Pitch", "Pitch (manual)", "FastSearch", "Speaker"]
