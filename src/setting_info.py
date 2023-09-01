@@ -1,7 +1,10 @@
 import json
 from pathlib import Path
+import os
+from modules.color_log import print_log
 
 settings_folder = Path(__file__).resolve().parent.parent / 'settings'
+gender_settings_path = Path(__file__).resolve().parent.parent / 'cache' / 'rvc' / 'rvc_gender_settings.txt'
 
 
 class SettingInfo:
@@ -51,6 +54,16 @@ class SettingInfo:
     def get_chatlog_filename(character_name, full_path=False):
         from LangAIComm import check_chatlog
         return check_chatlog(character_name, full_path)
+
+    @staticmethod
+    def load_rvc_gender_settings():
+        if not os.path.exists(gender_settings_path):
+            with open(gender_settings_path, 'w') as f:
+                f.write('{}')
+            print_log("warning", "Created RVC Gender Setting File", f'[{gender_settings_path}]')
+
+        settings_json = read_text_file(gender_settings_path)
+        return settings_json
 
     # will be deprecated
     @staticmethod
@@ -107,7 +120,32 @@ def update_json(key_str, data, filename):
         json.dump(json_data, file, indent="\t")
 
 
+def add_item_json(key_str, data, file_path=gender_settings_path):
+    # Load the JSON file
+    with open(file_path, 'r', encoding='utf-8') as file:
+        json_data = json.load(file)
+
+    # Split the key string into individual keys
+    keys = key_str.split('.')
+
+    # Traverse the JSON data to find the specified keys
+    current_dict = json_data
+    for key in keys[:-1]:
+        if key not in current_dict:
+            current_dict[key] = {}  # Add a new empty dictionary if the key doesn't exist
+        current_dict = current_dict[key]
+
+    # Update the value of the last key or add a new key
+    last_key = keys[-1]
+    current_dict[last_key] = data
+
+    # Save the updated JSON back to the file
+    with open(file_path, 'w', encoding='utf-8') as file:
+        json.dump(json_data, file, indent="\t")
+
+
 if __name__ == "__main__":
     print()
+    print(SettingInfo.load_rvc_gender_settings())
     # Example usage
     # update_json('discord_bot', False, settings_folder / 'other_settings.txt')

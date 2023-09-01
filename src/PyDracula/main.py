@@ -40,7 +40,7 @@ from dracula_modules import *
 from widgets import *
 
 # Settings
-from setting_info import SettingInfo, update_json, read_text_file  # noqa
+from setting_info import SettingInfo, update_json, read_text_file, add_item_json  # noqa
 # CHATLOAD
 from dracula_modules.page_messages import Chat # Chat Widget
 # AUDIO DEVICE
@@ -259,7 +259,23 @@ class MainWindow(QMainWindow):
             widgets.pushButton_view_translator_id,
             widgets.pushButton_view_translator_secret,
 
-            widgets.comboBox_ai_model_language
+            widgets.comboBox_ai_model_language,
+
+            ## command settings components
+            widgets.horizontalGroupBox_cmd_sing,
+            widgets.horizontalGroupBox_rvc_manual_pitch,
+
+            widgets.lineEdit_rvc_pitch,
+            widgets.horizontalSlider_rvc_pitch,
+
+            widgets.lineEdit_rvc_main_vocal,
+            widgets.horizontalSlider_rvc_main_vocal,
+            widgets.lineEdit_rvc_backup_vocal,
+            widgets.horizontalSlider_rvc_backup_vocal,
+            widgets.lineEdit_rvc_music,
+            widgets.horizontalSlider_rvc_music,
+            widgets.lineEdit_rvc_master_gain,
+            widgets.horizontalSlider_rvc_master_gain
         ]
         self.init_combobox_text(connect_comp_list)
         self.connect_components_with_update_method(connect_comp_list)
@@ -339,6 +355,8 @@ class MainWindow(QMainWindow):
                 # widgets.pushButton_view_translator_secret
             elif component_type == "horizontalSlider":
                 obj.valueChanged.connect(self.update_content_by_component)
+            elif component_type == "horizontalGroupBox":
+                obj.toggled.connect(self.update_content_by_component)
             else:
                 print(
                     "\033[31m" + f"Error [main GUI.connect_components_with_update_method]: not supported component: \033[33m{component_name}" + "\n\033[0m")
@@ -494,6 +512,11 @@ class MainWindow(QMainWindow):
             if not comp_text or comp_text == "":
                 comp_text = ""
             component_property = comp_text
+
+        if isinstance(called_component, QGroupBox):
+            if component_key in ['cmd_sing', 'rvc_manual_pitch']:
+                setting_name = 'command_settings'
+            component_property = called_component.isChecked()
         #####################################################################################
         # endregion [PROPERTY HANDLER]
 
@@ -526,15 +549,21 @@ class MainWindow(QMainWindow):
         #####################################################################################
         if self.check_name(component_key, ["mic_threshold", "speaker_volume"]):
             percent_obj = True
+            setting_name = "audio_settings"
         elif self.check_name(component_key,
                              ["phrase_timeout", "voice_speed", "intonation_scale", "phoneme_length"]):
             decimal_obj = True
+            setting_name = "audio_settings"
+
+        if self.check_name(component_key,
+                           ["rvc_pitch", "rvc_main_vocal", "rvc_backup_vocal", "rvc_music", "rvc_master_gain"]):
+            decimal_obj = True
+            setting_name = "command_settings"
 
         if percent_obj or decimal_obj:
             # print_log("log", f"{component_key} is",
             #           "percent obj" if percent_obj else "decimal obj")
             # print("any word found:", component_key)
-            setting_name = "audio_settings"
 
             if component_type == "lineEdit":
                 if percent_obj:
@@ -750,7 +779,7 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
 
-            self.load_audio_info()
+            self.audio_page_update()
 
         if btnName == "btn_command_setting":
             widgets.stackedWidget.setCurrentWidget(widgets.Command_Page)  # SET PAGE
@@ -842,357 +871,17 @@ class MainWindow(QMainWindow):
     #####################################################################################
     # endregion [DRAW CHAT PAGE]
 
-    # region [DRAW PROMPT PAGE]
+    # region [DRAW AUDIO PAGE]
     #####################################################################################
-    def prompt_page_update(self):
-        self.load_prompt_info()
-        global widgets
+    def audio_page_update(self):
+        self.load_audio_info()
 
-        max_prompt_token = self.prompt_info_dict["max_prompt_token"]
-        max_reply_token = self.prompt_info_dict["max_reply_token"]
-        ai_model_language = self.convert_language_code(self.prompt_info_dict["ai_model_language"])
-
-        self.refresh_api_url()
-
-        lineEdit_api_token_list = [widgets.lineEdit_translator_api_id, widgets.lineEdit_translator_api_secret]
-
-        for _token_comp in lineEdit_api_token_list:
-            self.refresh_api_token(_token_comp)
-
-        widgets.lineEdit_max_prompt_token.setText( str(max_prompt_token) )
-        widgets.horizontalSlider_max_prompt_token.setValue(max_prompt_token)
-
-        widgets.lineEdit_max_reply_token.setText( str(max_reply_token) )
-        widgets.horizontalSlider_max_reply_token.setValue(max_reply_token)
-
-        widgets.comboBox_ai_model_language.setCurrentText(ai_model_language)
-
-    def refresh_api_url(self, hide_url:bool=True):
-        self.load_prompt_info()
-
-        _widget = self.ui.lineEdit_api_url
-        _url = self.prompt_info_dict["api_url"]
-
-        self.refresh_url_widget(_widget, _url, hide_url, True)
-
-    def refresh_api_token(self, component:QLineEdit, hide_url:bool=True):
-        self.load_prompt_info()
-        component_key = component.objectName().replace("lineEdit_", "")  # lineEdit_translator_api_id
-
-        _token = self.prompt_info_dict[component_key]
-        self.refresh_url_widget(component, _token, hide_url, False)
-
-    def refresh_discord_url(self, component:QLineEdit, hide_url=True):
-        self.load_other_info()
-        component_key = component.objectName().replace("lineEdit_", "")   # lineEdit_discord_bot_id
-        # print(component_key)
-        _url = self.chat_info_dict[component_key]
-
-        self.refresh_url_widget(component, _url, hide_url, False)
-
-    def refresh_url_widget(self, component:QObject, custom_url:str=None, hide_url:bool=True, add_prefix:bool=True):
-        _final_url = custom_url
-
-        if add_prefix:
-            _final_url = self.prefix_url(_final_url)    # add 'http://' if there's no prefix
-
-        if hide_url:
-            _final_url = self.hide_url(_final_url, '●')  # convert _final_url to hidden_url
-
-        if _final_url is None or _final_url == "":  # if url is blank
-            print("\033[31m" + "Warning [main GUI.refresh_url_widget]: " + "\033[33m" + f"url is empty: { str(component.objectName()) }" + "\033[0m")
-
-        component.setText(_final_url)    # LineEdit or TextEdit
-
-    #####################################################################################
-    # endregion [DRAW PROMPT PAGE]
-
-    # region [DRAW COMMAND PAGE]
-    #####################################################################################
-    def command_page_update(self):
-        self.load_command_info()
-        global widgets
-
-        _dict = self.command_info_dict
-
-        widgets.textEdit_rvc_model.setText(_dict['rvc_model'])  # RVC model name
-
-        # region [Radio]
-        gender_radio = [widgets.radioButton_rvc_gender_male, widgets.radioButton_rvc_gender_female]
-
-        self.set_radio_check(gender_radio, _dict['rvc_gender'])
-        widgets.horizontalGroupBox_rvc_manual_pitch.setChecked(_dict['rvc_manual_pitch'])
-        # endregion
-
-        # region [LINEEDIT & SLIDERS]
-        self.set_qobjects_by_dict([widgets.lineEdit_rvc_index_rate, widgets.horizontalSlider_rvc_index_rate,
-                                   widgets.lineEdit_rvc_pitch, widgets.horizontalSlider_rvc_pitch,
-                                   widgets.lineEdit_rvc_main_vocal,  widgets.horizontalSlider_rvc_main_vocal,
-                                   widgets.lineEdit_rvc_backup_vocal, widgets.horizontalSlider_rvc_backup_vocal,
-                                   widgets.lineEdit_rvc_music, widgets.horizontalSlider_rvc_music],
-                                  _dict, 10)
-        # endregion
-
-    def get_radio_check(self, radio_list: list[QRadioButton]):
-        for radio in radio_list:
-            if radio.isChecked():
-                return radio
-        raise RuntimeError("No radio is checked Found")
-
-    def set_radio_check(self, radio_list: list[QRadioButton], value):
-        if value is None:
-            raise ValueError("value is not specified!")
-
-        for radio in radio_list:
-            if value in radio.objectName():
-                print_log("log", "RVC Gender", value, False)
-                radio.setChecked(True)
-                return radio
-
-        raise RuntimeError("No radio is Found with value")
-
-    #####################################################################################
-    # endregion [DRAW COMMAND PAGE]
-
-    # region [DRAW EXTRA RIGHT MENU]
-    #####################################################################################
-    def extra_right_menu_update(self, only_color = False):
-        self.load_other_info()
-        global widgets
-
-        # INFO VARIABLES (PARENT CHECKBOX)
-        ############################################################################################
-        if not only_color:
-            discord_bot = self.chat_info_dict["discord_bot"]
-            discord_webhook = self.chat_info_dict["discord_webhook"]
-            tts_only = self.chat_info_dict["tts_only"]
-
-            # INFO VARIABLES
-            ############################################################################################
-            # Convert 'en' -> 'English'
-            discord_print_language = self.convert_language_code( self.chat_info_dict["discord_print_language"] )
-
-            # Unuse for now
-            # chat_display_language = self.chat_info_dict["chat_display_language"]
-
-            # DISCORD SHARED SETTING WIDGETS
-            ############################################################################################
-            widgets.comboBox_discord_print_language.setCurrentText(discord_print_language)
-
-            # DISCORD BOT SETTING WIDGETS
-            ############################################################################################
-            widgets.checkBox_discord_bot.setChecked(discord_bot)
-        else:
-            discord_bot = widgets.checkBox_discord_bot.isChecked()
-            discord_webhook = widgets.checkBox_discord_webhook.isChecked()
-            tts_only = widgets.checkBox_tts_only.isChecked()
-
-        bot_id_widget = widgets.lineEdit_discord_bot_id
-        bot_channel_id_widget = widgets.lineEdit_discord_bot_channel_id
-
-        if not only_color:
-            # UPDATE TEXT WIDGETS
-            ############################################################################################
-            self.refresh_discord_url(bot_id_widget)             # Hide token
-            self.refresh_discord_url(bot_channel_id_widget)     # Hide channel id
-
-        self.color_by_state([bot_id_widget, bot_channel_id_widget]
-                            , discord_bot)
-
-        if not only_color:
-            # DISCORD WEBHOOK SETTING WIDGETS
-            ############################################################################################
-            widgets.checkBox_discord_webhook.setChecked(discord_webhook)
-            widgets.checkBox_tts_only.setChecked(tts_only)
-
-        webhook_url_widget = widgets.lineEdit_discord_webhook_url
-        webhook_username_widget = widgets.lineEdit_discord_webhook_username
-        webhook_avatar_widget = widgets.lineEdit_discord_webhook_avatar
-        discord_your_name_widget = widgets.lineEdit_discord_your_name
-        discord_your_avatar_widget = widgets.lineEdit_discord_your_avatar
-
-        if not only_color:
-            # UPDATE TEXT WIDGETS
-            ############################################################################################
-            self.refresh_discord_url(webhook_url_widget)        # Hide token
-            webhook_username_widget.setText(self.chat_info_dict["discord_webhook_username"])
-            webhook_avatar_widget.setText(self.chat_info_dict["discord_webhook_avatar"])
-            discord_your_name_widget.setText(self.chat_info_dict["discord_your_name"])
-            discord_your_avatar_widget.setText(self.chat_info_dict["discord_your_avatar"])
-
-        self.color_by_state([webhook_url_widget, webhook_username_widget, webhook_avatar_widget
-                            , discord_your_name_widget, discord_your_avatar_widget], discord_webhook)
-
-    def color_by_state(self, item_list: list, state = False):
-        if not state:
-            for item in item_list:
-                item.setStyleSheet("")
-            return
-
-        for item in item_list:
-            item.setStyleSheet("color: rgb(0, 255, 38);")
-
-    #####################################################################################
-    # endregion [DRAW EXTRA RIGHT MENU]
-
-    # RESIZE EVENTS
-    # ///////////////////////////////////////////////////////////////
-    def resizeEvent(self, event):
-        # Update Size Grips
-        UIFunctions.resize_grips(self)
-
-        # Update Thread Table Columns Size
-        global t_val_col_a, t_val_col_b, t_val_col_c
-        self.resize_thread_table(t_val_col_a, t_val_col_b, t_val_col_c)
-
-    # MOUSE CLICK EVENTS
-    # ///////////////////////////////////////////////////////////////
-    def mousePressEvent(self, event):
-        # SET DRAG POS WINDOW
-        # self.dragPos = event.globalPosition()
-        self.dragPos = event.globalPos()  # deprecated
-
-        # print(f"mouse position: {self.dragPos}")
-
-        # PRINT MOUSE EVENTS
-        if event.buttons() == Qt.LeftButton:
-            print('Mouse click: LEFT CLICK')
-        if event.buttons() == Qt.RightButton:
-            print('Mouse click: RIGHT CLICK')
-
-        # UNFOCUS LINE EDIT IF CLICK OUTSIDE
-        focused_widget = QApplication.focusWidget()
-        if isinstance(focused_widget, QLineEdit) or isinstance(focused_widget, QTextEdit):
-            focused_widget.clearFocus()
-            print("\033[34m" + f"Unfocus GUI Edit:\033[32m { focused_widget.objectName() }" + "\033[0m")
-        # self.mousePressEvent(self, event)
-
-    # LOAD INFO EVENTS
-    # ///////////////////////////////////////////////////////////////
-    def load_all_info(self):
-        self.chat_layout_update()    # Load Home Page
-        self.load_character_info()  # Load Character page
-        self.load_audio_info()    # Load Audio page
-        self.prompt_page_update() # Load prompt information
-        self.command_page_update()  # Load Command Page
-
-        self.extra_right_menu_update()  # Load other information
-
-    # region [LOAD CHAT INFOS]
-    ################################################################################################
-    def load_chatlog_info(self):
-        global widgets
-
-        if self.char_info_dict is None:
-            print("[GUI] : Chat info dict is None, now loading character info...")
-            self.load_character_info()
-
-        if self.chat_info_dict is None:
-            self.chat_info_dict = {}
-
-        char_settings_json = SettingInfo.load_character_settings()
-        character_name = self.char_info_dict["character_name"]
-        user_name = self.char_info_dict["your_name"]
-        # print(f"charname: {character_name}")
-
-        from LangAIComm import get_chatlog_info # noqa
-
-        chatlog_txt = get_chatlog_info(character_name)
-        # print(f"chatlog: {chatlog_txt}")
-        self.chat_info_dict["chatlog"] = chatlog_txt
-
-        # widgets.listView_chatlog.addItem(chatlog_txt)
-        # widgets.textEdit_chatlog.setText(chatlog_txt)
-
-        ## Get Last 2 messages
-        messages = chatlog_txt.split("\n")
-
-        last_user_message = ""
-        last_bot_reply = ""
-        count = 0
-
-        if len(messages) >= 2:
-            for message in reversed(messages):
-                if (count >= 2):
-                    break
-
-                if message.startswith(f"{character_name}:"):
-                    # last_bot_message = message.replace("Kato Megumi:", "").strip()
-                    last_bot_reply = message
-                    # print(last_bot_message)
-                    count = count + 1
-                    continue
-                elif message.startswith(f"{user_name}:"):
-                    # last_user_message = message.replace("coms:", "").strip()
-                    last_user_message = message
-                    # print(last_user_message)
-                    count = count + 1
-                    continue
-        else:
-            print("Not enough messages in the chat log.")
-
-        widgets.textEdit_user_message.setText(last_user_message)
-        widgets.textEdit_bot_reply.setText(last_bot_reply)
-
-        # get chatlog filename
-        self.chat_info_dict["chatlog_filename"] = SettingInfo.get_chatlog_filename(character_name)
-
-    def get_chatlog_path(self):
-        return SettingInfo.get_chatlog_filename(self.char_info_dict["character_name"], True)
-
-    ################################################################################################
-    # endregion [LOAD CHAT INFOS]
-
-    # region [LOAD CHARACTER INFOS]
-    ################################################################################################
-    def load_character_info(self):
-        global widgets
-        char_settings_json = SettingInfo.load_character_settings()
-        character_name = char_settings_json["character_name"]
-        user_name = char_settings_json["your_name"]
-
-        from LangAIComm import get_character_info   # noqa
-        char_dict = get_character_info(character_name)  # Dict [your_name, character_name, greeting, context, character_image]
-        # print(char_dict)
-
-        bot_image = char_dict["character_image"] # TODO: check None, if there's no image
-
-        if bot_image is not None:
-            # bot_pixmap = QPixmap.fromImage(bot_image)
-            widgets.label_char_img.setPixmap(QPixmap(bot_image))
-
-        widgets.textEdit_greeting.setText(char_dict["greeting"])
-        widgets.textEdit_context.setText(char_dict["context"])
-
-        self.char_info_dict = char_dict
-
-        # Force set 'char_name' and 'your_name' from 'Character_Settings.txt'
-        self.char_info_dict.update(char_settings_json)
-        # TODO: if your_name or character_name is changed in settings_txt, program don't know who is the user in chatlog_txt
-
-        widgets.textEdit_your_name.setText(user_name)
-        widgets.label_character_name.setText(character_name)
-
-        # print(self.char_info_dict)
-
-    ################################################################################################
-    # endregion [LOAD CHARACTER INFOS]
-
-    # region [LOAD AUDIO INFOS]
-    ################################################################################################
-    def load_audio_info(self):
-        global widgets
-
-        if self.audio_info_dict is None:
-            self.audio_info_dict = {}
-
-        self.audio_info_dict.update(SettingInfo.load_audio_settings())
         self.refresh_audio_device()
         self.refresh_tts_info()
 
         # region [LINEEDIT & SLIDERS]
         ################################################################################################
-        phrase_timeout = str (self.audio_info_dict["phrase_timeout"])
+        phrase_timeout = str(self.audio_info_dict["phrase_timeout"])
         widgets.lineEdit_phrase_timeout.setText(phrase_timeout)
 
         self.set_qobjects_by_dict([widgets.lineEdit_mic_threshold, widgets.horizontalSlider_mic_threshold,
@@ -1464,10 +1153,361 @@ class MainWindow(QMainWindow):
                 _col = "white"
             self.change_color_combobox(_combo, _col)
 
+    #####################################################################################
+    # endregion [DRAW AUDIO PAGE]
+
+    # region [DRAW PROMPT PAGE]
+    #####################################################################################
+    def prompt_page_update(self):
+        self.load_prompt_info()
+        global widgets
+
+        max_prompt_token = self.prompt_info_dict["max_prompt_token"]
+        max_reply_token = self.prompt_info_dict["max_reply_token"]
+        ai_model_language = self.convert_language_code(self.prompt_info_dict["ai_model_language"])
+
+        self.refresh_api_url()
+
+        lineEdit_api_token_list = [widgets.lineEdit_translator_api_id, widgets.lineEdit_translator_api_secret]
+
+        for _token_comp in lineEdit_api_token_list:
+            self.refresh_api_token(_token_comp)
+
+        widgets.lineEdit_max_prompt_token.setText( str(max_prompt_token) )
+        widgets.horizontalSlider_max_prompt_token.setValue(max_prompt_token)
+
+        widgets.lineEdit_max_reply_token.setText( str(max_reply_token) )
+        widgets.horizontalSlider_max_reply_token.setValue(max_reply_token)
+
+        widgets.comboBox_ai_model_language.setCurrentText(ai_model_language)
+
+    def refresh_api_url(self, hide_url:bool=True):
+        self.load_prompt_info()
+
+        _widget = self.ui.lineEdit_api_url
+        _url = self.prompt_info_dict["api_url"]
+
+        self.refresh_url_widget(_widget, _url, hide_url, True)
+
+    def refresh_api_token(self, component:QLineEdit, hide_url:bool=True):
+        self.load_prompt_info()
+        component_key = component.objectName().replace("lineEdit_", "")  # lineEdit_translator_api_id
+
+        _token = self.prompt_info_dict[component_key]
+        self.refresh_url_widget(component, _token, hide_url, False)
+
+    def refresh_discord_url(self, component:QLineEdit, hide_url=True):
+        self.load_other_info()
+        component_key = component.objectName().replace("lineEdit_", "")   # lineEdit_discord_bot_id
+        # print(component_key)
+        _url = self.chat_info_dict[component_key]
+
+        self.refresh_url_widget(component, _url, hide_url, False)
+
+    def refresh_url_widget(self, component:QObject, custom_url:str=None, hide_url:bool=True, add_prefix:bool=True):
+        _final_url = custom_url
+
+        if add_prefix:
+            _final_url = self.prefix_url(_final_url)    # add 'http://' if there's no prefix
+
+        if hide_url:
+            _final_url = self.hide_url(_final_url, '●')  # convert _final_url to hidden_url
+
+        if _final_url is None or _final_url == "":  # if url is blank
+            print("\033[31m" + "Warning [main GUI.refresh_url_widget]: " + "\033[33m" + f"url is empty: { str(component.objectName()) }" + "\033[0m")
+
+        component.setText(_final_url)    # LineEdit or TextEdit
+
+    #####################################################################################
+    # endregion [DRAW PROMPT PAGE]
+
+    # region [DRAW COMMAND PAGE]
+    #####################################################################################
+    def command_page_update(self):
+        self.load_command_info()
+        global widgets
+
+        self.refresh_rvc_model()
+
+        _dict = self.command_info_dict
+
+        # widgets.textEdit_rvc_model.setText(_dict['rvc_model'])  # RVC model name
+
+        # region [Radio]
+        gender_radio = [widgets.radioButton_rvc_gender_male, widgets.radioButton_rvc_gender_female]
+
+        self.set_radio_check(gender_radio, _dict['rvc_gender'])
+        widgets.horizontalGroupBox_rvc_manual_pitch.setChecked(_dict['rvc_manual_pitch'])
+        # endregion
+
+        # region [LINEEDIT & SLIDERS]
+        self.set_qobjects_by_dict([widgets.lineEdit_rvc_index_rate, widgets.horizontalSlider_rvc_index_rate,
+                                   widgets.lineEdit_rvc_pitch, widgets.horizontalSlider_rvc_pitch,
+                                   widgets.lineEdit_rvc_main_vocal,  widgets.horizontalSlider_rvc_main_vocal,
+                                   widgets.lineEdit_rvc_backup_vocal, widgets.horizontalSlider_rvc_backup_vocal,
+                                   widgets.lineEdit_rvc_music, widgets.horizontalSlider_rvc_music],
+                                  _dict, 10)
+        # endregion
+
+    def get_radio_check(self, radio_list: list[QRadioButton]):
+        for radio in radio_list:
+            if radio.isChecked():
+                return radio.text()
+        raise RuntimeError("No radio is checked Found")
+
+    def set_radio_check(self, radio_list: list[QRadioButton], value):
+        if value is None:
+            raise ValueError("value is not specified!")
+
+        for radio in radio_list:
+            if value in radio.objectName():
+                print_log("log", "RVC Gender", value, False)
+                radio.setChecked(True)
+                return radio
+
+        raise RuntimeError("No radio is Found with value")
+
+    #####################################################################################
+    # endregion [DRAW COMMAND PAGE]
+
+    # region [DRAW EXTRA RIGHT MENU]
+    #####################################################################################
+    def extra_right_menu_update(self, only_color = False):
+        self.load_other_info()
+        global widgets
+
+        # INFO VARIABLES (PARENT CHECKBOX)
+        ############################################################################################
+        if not only_color:
+            discord_bot = self.chat_info_dict["discord_bot"]
+            discord_webhook = self.chat_info_dict["discord_webhook"]
+            tts_only = self.chat_info_dict["tts_only"]
+
+            # INFO VARIABLES
+            ############################################################################################
+            # Convert 'en' -> 'English'
+            discord_print_language = self.convert_language_code( self.chat_info_dict["discord_print_language"] )
+
+            # Unuse for now
+            # chat_display_language = self.chat_info_dict["chat_display_language"]
+
+            # DISCORD SHARED SETTING WIDGETS
+            ############################################################################################
+            widgets.comboBox_discord_print_language.setCurrentText(discord_print_language)
+
+            # DISCORD BOT SETTING WIDGETS
+            ############################################################################################
+            widgets.checkBox_discord_bot.setChecked(discord_bot)
+        else:
+            discord_bot = widgets.checkBox_discord_bot.isChecked()
+            discord_webhook = widgets.checkBox_discord_webhook.isChecked()
+            tts_only = widgets.checkBox_tts_only.isChecked()
+
+        bot_id_widget = widgets.lineEdit_discord_bot_id
+        bot_channel_id_widget = widgets.lineEdit_discord_bot_channel_id
+
+        if not only_color:
+            # UPDATE TEXT WIDGETS
+            ############################################################################################
+            self.refresh_discord_url(bot_id_widget)             # Hide token
+            self.refresh_discord_url(bot_channel_id_widget)     # Hide channel id
+
+        self.color_by_state([bot_id_widget, bot_channel_id_widget]
+                            , discord_bot)
+
+        if not only_color:
+            # DISCORD WEBHOOK SETTING WIDGETS
+            ############################################################################################
+            widgets.checkBox_discord_webhook.setChecked(discord_webhook)
+            widgets.checkBox_tts_only.setChecked(tts_only)
+
+        webhook_url_widget = widgets.lineEdit_discord_webhook_url
+        webhook_username_widget = widgets.lineEdit_discord_webhook_username
+        webhook_avatar_widget = widgets.lineEdit_discord_webhook_avatar
+        discord_your_name_widget = widgets.lineEdit_discord_your_name
+        discord_your_avatar_widget = widgets.lineEdit_discord_your_avatar
+
+        if not only_color:
+            # UPDATE TEXT WIDGETS
+            ############################################################################################
+            self.refresh_discord_url(webhook_url_widget)        # Hide token
+            webhook_username_widget.setText(self.chat_info_dict["discord_webhook_username"])
+            webhook_avatar_widget.setText(self.chat_info_dict["discord_webhook_avatar"])
+            discord_your_name_widget.setText(self.chat_info_dict["discord_your_name"])
+            discord_your_avatar_widget.setText(self.chat_info_dict["discord_your_avatar"])
+
+        self.color_by_state([webhook_url_widget, webhook_username_widget, webhook_avatar_widget
+                            , discord_your_name_widget, discord_your_avatar_widget], discord_webhook)
+
+    def color_by_state(self, item_list: list, state = False):
+        if not state:
+            for item in item_list:
+                item.setStyleSheet("")
+            return
+
+        for item in item_list:
+            item.setStyleSheet("color: rgb(0, 255, 38);")
+
+    #####################################################################################
+    # endregion [DRAW EXTRA RIGHT MENU]
+
+    # RESIZE EVENTS
+    # ///////////////////////////////////////////////////////////////
+    def resizeEvent(self, event):
+        # Update Size Grips
+        UIFunctions.resize_grips(self)
+
+        # Update Thread Table Columns Size
+        global t_val_col_a, t_val_col_b, t_val_col_c
+        self.resize_thread_table(t_val_col_a, t_val_col_b, t_val_col_c)
+
+    # MOUSE CLICK EVENTS
+    # ///////////////////////////////////////////////////////////////
+    def mousePressEvent(self, event):
+        # SET DRAG POS WINDOW
+        # self.dragPos = event.globalPosition()
+        self.dragPos = event.globalPos()  # deprecated
+
+        # print(f"mouse position: {self.dragPos}")
+
+        # PRINT MOUSE EVENTS
+        if event.buttons() == Qt.LeftButton:
+            print('Mouse click: LEFT CLICK')
+        if event.buttons() == Qt.RightButton:
+            print('Mouse click: RIGHT CLICK')
+
+        # UNFOCUS LINE EDIT IF CLICK OUTSIDE
+        focused_widget = QApplication.focusWidget()
+        if isinstance(focused_widget, QLineEdit) or isinstance(focused_widget, QTextEdit):
+            focused_widget.clearFocus()
+            print("\033[34m" + f"Unfocus GUI Edit:\033[32m { focused_widget.objectName() }" + "\033[0m")
+        # self.mousePressEvent(self, event)
+
+    # LOAD INFO EVENTS
+    # ///////////////////////////////////////////////////////////////
+    def load_all_info(self):
+        self.chat_layout_update()    # Load Home Page
+        self.load_character_info()  # Load Character page
+        self.audio_page_update()    # Load Audio page
+        self.prompt_page_update() # Load prompt information
+        self.command_page_update()  # Load Command Page
+
+        self.extra_right_menu_update()  # Load other information
+
+    # region [LOAD CHAT INFOS]
+    ################################################################################################
+    def load_chatlog_info(self):
+        global widgets
+
+        if self.char_info_dict is None:
+            print("[GUI] : Chat info dict is None, now loading character info...")
+            self.load_character_info()
+
+        if self.chat_info_dict is None:
+            self.chat_info_dict = {}
+
+        char_settings_json = SettingInfo.load_character_settings()
+        character_name = self.char_info_dict["character_name"]
+        user_name = self.char_info_dict["your_name"]
+        # print(f"charname: {character_name}")
+
+        from LangAIComm import get_chatlog_info # noqa
+
+        chatlog_txt = get_chatlog_info(character_name)
+        # print(f"chatlog: {chatlog_txt}")
+        self.chat_info_dict["chatlog"] = chatlog_txt
+
+        # widgets.listView_chatlog.addItem(chatlog_txt)
+        # widgets.textEdit_chatlog.setText(chatlog_txt)
+
+        ## Get Last 2 messages
+        messages = chatlog_txt.split("\n")
+
+        last_user_message = ""
+        last_bot_reply = ""
+        count = 0
+
+        if len(messages) >= 2:
+            for message in reversed(messages):
+                if (count >= 2):
+                    break
+
+                if message.startswith(f"{character_name}:"):
+                    # last_bot_message = message.replace("Kato Megumi:", "").strip()
+                    last_bot_reply = message
+                    # print(last_bot_message)
+                    count = count + 1
+                    continue
+                elif message.startswith(f"{user_name}:"):
+                    # last_user_message = message.replace("coms:", "").strip()
+                    last_user_message = message
+                    # print(last_user_message)
+                    count = count + 1
+                    continue
+        else:
+            print("Not enough messages in the chat log.")
+
+        widgets.textEdit_user_message.setText(last_user_message)
+        widgets.textEdit_bot_reply.setText(last_bot_reply)
+
+        # get chatlog filename
+        self.chat_info_dict["chatlog_filename"] = SettingInfo.get_chatlog_filename(character_name)
+
+    def get_chatlog_path(self):
+        return SettingInfo.get_chatlog_filename(self.char_info_dict["character_name"], True)
+
+    ################################################################################################
+    # endregion [LOAD CHAT INFOS]
+
+    # region [LOAD CHARACTER INFOS]
+    ################################################################################################
+    def load_character_info(self):
+        global widgets
+        char_settings_json = SettingInfo.load_character_settings()
+        character_name = char_settings_json["character_name"]
+        user_name = char_settings_json["your_name"]
+
+        from LangAIComm import get_character_info   # noqa
+        char_dict = get_character_info(character_name)  # Dict [your_name, character_name, greeting, context, character_image]
+        # print(char_dict)
+
+        bot_image = char_dict["character_image"] # TODO: check None, if there's no image
+
+        if bot_image is not None:
+            # bot_pixmap = QPixmap.fromImage(bot_image)
+            widgets.label_char_img.setPixmap(QPixmap(bot_image))
+
+        widgets.textEdit_greeting.setText(char_dict["greeting"])
+        widgets.textEdit_context.setText(char_dict["context"])
+
+        self.char_info_dict = char_dict
+
+        # Force set 'char_name' and 'your_name' from 'Character_Settings.txt'
+        self.char_info_dict.update(char_settings_json)
+        # TODO: if your_name or character_name is changed in settings_txt, program don't know who is the user in chatlog_txt
+
+        widgets.textEdit_your_name.setText(user_name)
+        widgets.label_character_name.setText(character_name)
+
+        # print(self.char_info_dict)
+
+    ################################################################################################
+    # endregion [LOAD CHARACTER INFOS]
+
+    # region [LOAD AUDIO INFOS]
+    ################################################################################################
+    def load_audio_info(self):
+        global widgets
+
+        if self.audio_info_dict is None:
+            self.audio_info_dict = {}
+
+        self.audio_info_dict.update(SettingInfo.load_audio_settings())
+
     ################################################################################################
     # endregion [LOAD AUDIO INFOS]
 
-    # region [LOAD MORE INFOS]
+    # region [LOAD COMMAND INFOS]
     ################################################################################################
     def load_command_info(self):
         global widgets
@@ -1477,6 +1517,68 @@ class MainWindow(QMainWindow):
 
         self.command_info_dict.update(SettingInfo.load_command_settings())
 
+    def refresh_rvc_model(self):
+        self.load_audio_info()
+        _tts_model_name = self.audio_info_dict["tts_character"]
+        _rvc_model_from_dict = self.command_info_dict['rvc_model']
+
+        # region [RVC CHARACTER LIST]
+        ################################################################################################
+        rvc_model_comboBox = self.ui.comboBox_rvc_model
+        rvc_model_comboBox.clear()
+
+        rvc_char_list = []
+        rvc_char_dir = os.path.join(root_path, 'Models', 'rvc_voice')
+
+        # check rvc_voice folder name, same as tts model
+        for _folder in os.scandir(rvc_char_dir):
+            if _folder.is_dir():
+                rvc_char_list.append(_folder.name)
+
+        if len(rvc_char_list) == 0:
+            print_log("error", "Could not find any RVC Character folders in", f"{tts_char_dir}")
+            return None
+
+        for rvc_char in rvc_char_list:
+            rvc_model_comboBox.addItem(rvc_char)
+
+        for _combo in [rvc_model_comboBox]:
+            self.add_none_item_combobox(_combo)
+
+        if _tts_model_name in rvc_char_list:
+            rvc_model_comboBox.setCurrentText(_tts_model_name)
+        elif _rvc_model_from_dict in rvc_char_list:
+            rvc_model_comboBox.setCurrentText(_rvc_model_from_dict)
+        else:
+            rvc_model_comboBox.setCurrentIndex(0)
+
+        rvc_model_name = rvc_model_comboBox.currentText()
+
+        self.check_gender_setting(rvc_model_name)
+
+        ################################################################################################
+        # endregion [RVC CHARACTER LIST]
+
+    def check_gender_setting(self, rvc_model_name):
+        # check cache folder exist
+        settings_json = SettingInfo.load_rvc_gender_settings()
+
+        key = rvc_model_name
+        if rvc_model_name in settings_json:
+            value = settings_json[key]
+            update_json("rvc_gender", value, "command_settings")
+        else:
+            gender_radio = [self.ui.radioButton_rvc_gender_male, self.ui.radioButton_rvc_gender_female]
+            value = self.get_radio_check(gender_radio).lower()  # female or male in radio button
+            print_log("warning", "no gender key found! Saving on Settings", f"[{key}, {value}]")
+            add_item_json(rvc_model_name, value)
+        self.command_info_dict["rvc_gender"] = value
+
+    ################################################################################################
+    # endregion [LOAD COMMAND INFOS]
+
+    # region [LOAD MORE INFOS]
+    ################################################################################################
     def load_other_info(self):
         if self.chat_info_dict is None:
             self.chat_info_dict = {}
@@ -1722,7 +1824,7 @@ class MainWindow(QMainWindow):
             self.gen_command_thread(cmd, value)
 
     def gen_command_thread(self, cmd, text):
-        cmd_thread = COMMANDTHREAD(self, cmd, text)
+        cmd_thread = COMMANDTHREAD(self, cmd, text, logging=False)
         self.tts_thread_list.append(cmd_thread)
 
     # Generate and Play TTS Using QThread
@@ -1871,7 +1973,7 @@ class TTSTHREAD(QThread):
 
         self.state = ["",""]
         change_state(self, "init")
-        self.logging = True
+        self.logging = logging
     def run(self):
         global tts_wav_dir
         self.gen.audio_dir = tts_wav_dir
@@ -1907,7 +2009,7 @@ class COMMANDTHREAD(QThread):
 
         self.state = ["",""]
         change_state(self, "init")
-        self.logging = True
+        self.logging = logging
 
     def run(self):
         bot_cmd = self.gen

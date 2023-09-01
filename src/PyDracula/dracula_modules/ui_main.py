@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainDbvjLi.ui'
+## Form generated from reading UI file 'mainOlBNJc.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -568,7 +568,12 @@ class Ui_MainWindow(object):
 "	color: rgb(121, 133, "
                         "157)\n"
 "}\n"
-"")
+"\n"
+"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
+"GroupBox Enabled Disabled */\n"
+":disabled {\n"
+"	color: rgb(83, 91, 108)\n"
+"}")
         self.appMargins = QVBoxLayout(self.styleSheet)
         self.appMargins.setSpacing(0)
         self.appMargins.setObjectName(u"appMargins")
@@ -2739,7 +2744,7 @@ class Ui_MainWindow(object):
         self.scrollArea_4.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, -194, 1172, 799))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, -128, 1172, 793))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()
@@ -2807,28 +2812,16 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_112.addItem(self.horizontalSpacer_64)
 
-        self.textEdit_rvc_model = QTextEdit(self.horizontalGroupBox_cmd_sing)
-        self.textEdit_rvc_model.setObjectName(u"textEdit_rvc_model")
-        self.textEdit_rvc_model.setMinimumSize(QSize(10, 0))
-        self.textEdit_rvc_model.setMaximumSize(QSize(150, 40))
-        self.textEdit_rvc_model.setStyleSheet(u"QTextEdit {\n"
-"	border: 2px solid rgb(48, 50, 62);\n"
-"	border-radius: 10px;\n"
-"	color: #FFF;\n"
-"	padding-left: 10px;\n"
-"	padding-right: 10px;\n"
-"	background-color:rgb(34,36,44)\n"
-"}\n"
-"QTextEdit:hover {\n"
-"	border: 2px solid rgb(66, 70, 86);\n"
-"}")
-        self.textEdit_rvc_model.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.textEdit_rvc_model.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.textEdit_rvc_model.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
-        self.textEdit_rvc_model.setLineWrapMode(QTextEdit.NoWrap)
-        self.textEdit_rvc_model.setReadOnly(True)
+        self.comboBox_rvc_model = QComboBox(self.horizontalGroupBox_cmd_sing)
+        self.comboBox_rvc_model.addItem("")
+        self.comboBox_rvc_model.addItem("")
+        self.comboBox_rvc_model.addItem("")
+        self.comboBox_rvc_model.setObjectName(u"comboBox_rvc_model")
+        self.comboBox_rvc_model.setMinimumSize(QSize(200, 0))
+        self.comboBox_rvc_model.setLayoutDirection(Qt.LeftToRight)
+        self.comboBox_rvc_model.setStyleSheet(u"background-color: rgb(33, 37, 43);")
 
-        self.horizontalLayout_112.addWidget(self.textEdit_rvc_model)
+        self.horizontalLayout_112.addWidget(self.comboBox_rvc_model)
 
         self.horizontalSpacer_65 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -3025,8 +3018,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider_rvc_pitch = QSlider(self.horizontalGroupBox_rvc_manual_pitch)
         self.horizontalSlider_rvc_pitch.setObjectName(u"horizontalSlider_rvc_pitch")
         self.horizontalSlider_rvc_pitch.setStyleSheet(u"")
-        self.horizontalSlider_rvc_pitch.setMinimum(-240)
-        self.horizontalSlider_rvc_pitch.setMaximum(240)
+        self.horizontalSlider_rvc_pitch.setMinimum(-2400)
+        self.horizontalSlider_rvc_pitch.setMaximum(2400)
         self.horizontalSlider_rvc_pitch.setSingleStep(10)
         self.horizontalSlider_rvc_pitch.setValue(0)
         self.horizontalSlider_rvc_pitch.setOrientation(Qt.Horizontal)
@@ -3109,8 +3102,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider_rvc_main_vocal = QSlider(self.horizontalGroupBox_11)
         self.horizontalSlider_rvc_main_vocal.setObjectName(u"horizontalSlider_rvc_main_vocal")
         self.horizontalSlider_rvc_main_vocal.setStyleSheet(u"")
-        self.horizontalSlider_rvc_main_vocal.setMinimum(-200)
-        self.horizontalSlider_rvc_main_vocal.setMaximum(200)
+        self.horizontalSlider_rvc_main_vocal.setMinimum(-1000)
+        self.horizontalSlider_rvc_main_vocal.setMaximum(1000)
         self.horizontalSlider_rvc_main_vocal.setSingleStep(10)
         self.horizontalSlider_rvc_main_vocal.setPageStep(10)
         self.horizontalSlider_rvc_main_vocal.setValue(0)
@@ -3161,8 +3154,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider_rvc_backup_vocal = QSlider(self.horizontalGroupBox_11)
         self.horizontalSlider_rvc_backup_vocal.setObjectName(u"horizontalSlider_rvc_backup_vocal")
         self.horizontalSlider_rvc_backup_vocal.setStyleSheet(u"")
-        self.horizontalSlider_rvc_backup_vocal.setMinimum(-200)
-        self.horizontalSlider_rvc_backup_vocal.setMaximum(200)
+        self.horizontalSlider_rvc_backup_vocal.setMinimum(-1000)
+        self.horizontalSlider_rvc_backup_vocal.setMaximum(1000)
         self.horizontalSlider_rvc_backup_vocal.setSingleStep(10)
         self.horizontalSlider_rvc_backup_vocal.setPageStep(10)
         self.horizontalSlider_rvc_backup_vocal.setValue(0)
@@ -3213,8 +3206,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider_rvc_music = QSlider(self.horizontalGroupBox_11)
         self.horizontalSlider_rvc_music.setObjectName(u"horizontalSlider_rvc_music")
         self.horizontalSlider_rvc_music.setStyleSheet(u"")
-        self.horizontalSlider_rvc_music.setMinimum(-200)
-        self.horizontalSlider_rvc_music.setMaximum(200)
+        self.horizontalSlider_rvc_music.setMinimum(-1000)
+        self.horizontalSlider_rvc_music.setMaximum(1000)
         self.horizontalSlider_rvc_music.setSingleStep(10)
         self.horizontalSlider_rvc_music.setPageStep(10)
         self.horizontalSlider_rvc_music.setValue(0)
@@ -3268,8 +3261,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider_rvc_master_gain = QSlider(self.horizontalGroupBox_11)
         self.horizontalSlider_rvc_master_gain.setObjectName(u"horizontalSlider_rvc_master_gain")
         self.horizontalSlider_rvc_master_gain.setStyleSheet(u"")
-        self.horizontalSlider_rvc_master_gain.setMinimum(-200)
-        self.horizontalSlider_rvc_master_gain.setMaximum(200)
+        self.horizontalSlider_rvc_master_gain.setMinimum(-1000)
+        self.horizontalSlider_rvc_master_gain.setMaximum(1000)
         self.horizontalSlider_rvc_master_gain.setSingleStep(10)
         self.horizontalSlider_rvc_master_gain.setPageStep(10)
         self.horizontalSlider_rvc_master_gain.setValue(0)
@@ -4069,16 +4062,20 @@ class Ui_MainWindow(object):
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
         palette.setBrush(QPalette.Inactive, QPalette.PlaceholderText, brush3)
 #endif
-        palette.setBrush(QPalette.Disabled, QPalette.WindowText, brush)
+        brush5 = QBrush(QColor(83, 91, 108, 255))
+        brush5.setStyle(Qt.SolidPattern)
+        palette.setBrush(QPalette.Disabled, QPalette.WindowText, brush5)
         palette.setBrush(QPalette.Disabled, QPalette.Button, brush1)
-        palette.setBrush(QPalette.Disabled, QPalette.Text, brush)
-        palette.setBrush(QPalette.Disabled, QPalette.ButtonText, brush)
-        brush5 = QBrush(QColor(0, 0, 0, 255))
-        brush5.setStyle(Qt.NoBrush)
-        palette.setBrush(QPalette.Disabled, QPalette.Base, brush5)
+        palette.setBrush(QPalette.Disabled, QPalette.Text, brush5)
+        palette.setBrush(QPalette.Disabled, QPalette.ButtonText, brush5)
+        brush6 = QBrush(QColor(0, 0, 0, 255))
+        brush6.setStyle(Qt.NoBrush)
+        palette.setBrush(QPalette.Disabled, QPalette.Base, brush6)
         palette.setBrush(QPalette.Disabled, QPalette.Window, brush1)
+        brush7 = QBrush(QColor(83, 91, 108, 128))
+        brush7.setStyle(Qt.SolidPattern)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush3)
+        palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush7)
 #endif
         self.tableWidget.setPalette(palette)
         self.tableWidget.setFrameShape(QFrame.NoFrame)
@@ -4648,15 +4645,10 @@ class Ui_MainWindow(object):
         self.label_89.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; font-weight:700;\">Extra Feature Settings</span></p></body></html>", None))
         self.horizontalGroupBox_cmd_sing.setTitle(QCoreApplication.translate("MainWindow", u"Sining [RVC]", None))
         self.label_68.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">RVC Model Found:</span></p></body></html>", None))
-        self.textEdit_rvc_model.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Kato Megumi Test</p></body></html>", None))
-        self.textEdit_rvc_model.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Not Found", None))
+        self.comboBox_rvc_model.setItemText(0, QCoreApplication.translate("MainWindow", u"test", None))
+        self.comboBox_rvc_model.setItemText(1, QCoreApplication.translate("MainWindow", u"test2", None))
+        self.comboBox_rvc_model.setItemText(2, QCoreApplication.translate("MainWindow", u"test3", None))
+
         self.label_69.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Index Rate</span></p></body></html>", None))
         self.lineEdit_rvc_index_rate.setText(QCoreApplication.translate("MainWindow", u"0.0", None))
         self.label_70.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:9pt;\">Controls how much of the AI voice's accent to keep in the vocals</span></p></body></html>", None))
