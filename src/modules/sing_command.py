@@ -87,6 +87,7 @@ class BotCommand:
         self.main_gain = 0.0
         self.backup_gain = 0.0
         self.music_gain = 0.0
+        self.master_gain = 0.0
         self.play_volume = 0.1
 
         # Reverb Settings
@@ -275,7 +276,7 @@ class BotCommand:
 
         audios_to_mix = [ai_vocals_mixed_path, backup_vocals_path, instrumentals_path]
         audio_mix_settings = [self.main_gain, self.backup_gain,
-                              self.music_gain]  # Main Vocal, Backup Vocal, Inst Volume
+                              self.music_gain, self.master_gain]  # Main Vocal, Backup Vocal, Inst Volume, Master Gain
 
         # Fix final filename
         final_cover_prefix = instrumentals_path.replace("_Instrumental.wav", ".wav")
@@ -671,9 +672,10 @@ class BotCommand:
         return output_path
 
     def merge_audio(self, in_audio: list, out_dir, volume_settings: list):
-        main_vocal_audio = AudioSegment.from_wav(in_audio[0]) - 4 + volume_settings[0]
-        backup_vocal_audio = AudioSegment.from_wav(in_audio[1]) - 6 + volume_settings[1]
-        instrumental_audio = AudioSegment.from_wav(in_audio[2]) - 7 + volume_settings[2]
+        master_gain = volume_settings[3]
+        main_vocal_audio = AudioSegment.from_wav(in_audio[0]) - 4 + volume_settings[0] + master_gain
+        backup_vocal_audio = AudioSegment.from_wav(in_audio[1]) - 6 + volume_settings[1] + master_gain
+        instrumental_audio = AudioSegment.from_wav(in_audio[2]) - 7 + volume_settings[2] + master_gain
 
         main_vocal_audio.overlay(backup_vocal_audio).overlay(instrumental_audio).export(out_dir, format='mp3')
 

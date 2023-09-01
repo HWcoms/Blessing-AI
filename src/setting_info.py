@@ -4,7 +4,7 @@ import os
 from modules.color_log import print_log
 
 settings_folder = Path(__file__).resolve().parent.parent / 'settings'
-gender_settings_path = Path(__file__).resolve().parent.parent / 'cache' / 'rvc' / 'rvc_gender_settings.txt'
+gender_settings_dir = Path(__file__).resolve().parent.parent / 'cache' / 'rvc'
 
 
 class SettingInfo:
@@ -57,12 +57,13 @@ class SettingInfo:
 
     @staticmethod
     def load_rvc_gender_settings():
-        if not os.path.exists(gender_settings_path):
-            with open(gender_settings_path, 'w') as f:
+        file_path = gender_settings_dir / 'rvc_gender_settings.txt'
+        if not os.path.exists(file_path):
+            with open(file_path, 'w') as f:
                 f.write('{}')
-            print_log("warning", "Created RVC Gender Setting File", f'[{gender_settings_path}]')
+            print_log("warning", "Created RVC Gender Setting File", f'[{file_path}]')
 
-        settings_json = read_text_file(gender_settings_path)
+        settings_json = read_text_file(file_path)
         return settings_json
 
     # will be deprecated
@@ -92,8 +93,8 @@ def read_text_file(filename):
     return json_data
 
 
-def update_json(key_str, data, filename):
-    fixed_file_name = settings_folder / f'{filename}.txt'
+def update_json(key_str, data, filename, folderpath=settings_folder):
+    fixed_file_name = folderpath / f'{filename}.txt'
 
     # Load the JSON file
     with open(fixed_file_name, 'r', encoding='utf-8') as file:
@@ -120,7 +121,8 @@ def update_json(key_str, data, filename):
         json.dump(json_data, file, indent="\t")
 
 
-def add_item_json(key_str, data, file_path=gender_settings_path):
+def add_item_json(key_str, data, filename, folderpath=settings_folder):
+    file_path = folderpath / f'{filename}.txt'
     # Load the JSON file
     with open(file_path, 'r', encoding='utf-8') as file:
         json_data = json.load(file)

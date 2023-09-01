@@ -36,11 +36,29 @@ if __name__ != "__main__":
     sys.path.append(script_path)
     sys.path.append(root_path)
 
-from dracula_modules import *
+try:
+    from dracula_modules import *
+except Exception as e:
+    if type(e).__name__ == 'ModuleNotFoundError':   # Auto Remove 'import resources_rc'
+        file_path = os.path.join(script_path, 'dracula_modules', 'ui_main.py')
+        # Read the file
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+        # Modify the lines to replace 'import resources_rc' with '# import resources_rc'
+        for i, line in enumerate(lines):
+            if 'import resources_rc' in line:
+                lines[i] = '# ' + line
+        # Write the modified lines back to the file
+        with open(file_path, 'w') as file:
+            file.writelines(lines)
+
+        print(f"'import resources_rc' has been replaced with '# import resources_rc' in {file_path}")
+
 from widgets import *
 
 # Settings
-from setting_info import SettingInfo, update_json, read_text_file, add_item_json  # noqa
+from setting_info import SettingInfo, update_json, read_text_file, add_item_json, gender_settings_dir
+
 # CHATLOAD
 from dracula_modules.page_messages import Chat # Chat Widget
 # AUDIO DEVICE
@@ -263,19 +281,31 @@ class MainWindow(QMainWindow):
 
             ## command settings components
             widgets.horizontalGroupBox_cmd_sing,
-            widgets.horizontalGroupBox_rvc_manual_pitch,
+            widgets.comboBox_rvc_model,
+            widgets.lineEdit_rvc_index_rate,
+            widgets.horizontalSlider_rvc_index_rate,
+            widgets.pushButton_rvc_index_rate_default,
 
+            widgets.radioButton_rvc_gender_male,
+            widgets.radioButton_rvc_gender_female,
+
+            widgets.horizontalGroupBox_rvc_manual_pitch,
             widgets.lineEdit_rvc_pitch,
             widgets.horizontalSlider_rvc_pitch,
+            widgets.pushButton_rvc_pitch_default,
 
             widgets.lineEdit_rvc_main_vocal,
             widgets.horizontalSlider_rvc_main_vocal,
+            widgets.pushButton_rvc_main_vocal_default,
             widgets.lineEdit_rvc_backup_vocal,
             widgets.horizontalSlider_rvc_backup_vocal,
+            widgets.pushButton_rvc_backup_vocal_default,
             widgets.lineEdit_rvc_music,
             widgets.horizontalSlider_rvc_music,
+            widgets.pushButton_rvc_music_default,
             widgets.lineEdit_rvc_master_gain,
-            widgets.horizontalSlider_rvc_master_gain
+            widgets.horizontalSlider_rvc_master_gain,
+            widgets.pushButton_rvc_master_gain_default
         ]
         self.init_combobox_text(connect_comp_list)
         self.connect_components_with_update_method(connect_comp_list)
@@ -291,7 +321,6 @@ class MainWindow(QMainWindow):
 
         self.install_event_all(QComboBox)
         self.install_event_all(QSlider)
-
 
         ################################################################################################
         # endregion [UPDATE CONTENT BY COMPONENT]
@@ -343,8 +372,8 @@ class MainWindow(QMainWindow):
                 # self.ui.textEdit_your_name.textChanged
             elif component_type == "textEdit":
                 obj.textChanged.connect(self.update_content_by_component)
-            elif component_type == "checkBox":
-                obj.clicked.connect(self.update_content_by_component)
+            elif component_type in ["checkBox", "horizontalGroupBox", "radioButton"]:
+                obj.toggled.connect(self.update_content_by_component)
                 # widgets.checkBox_discord_webhook.clicked.connect(self.update_content_by_component)
             elif component_type == "comboBox":
                 obj.activated.connect(self.update_content_by_component)
@@ -355,8 +384,6 @@ class MainWindow(QMainWindow):
                 # widgets.pushButton_view_translator_secret
             elif component_type == "horizontalSlider":
                 obj.valueChanged.connect(self.update_content_by_component)
-            elif component_type == "horizontalGroupBox":
-                obj.toggled.connect(self.update_content_by_component)
             else:
                 print(
                     "\033[31m" + f"Error [main GUI.connect_components_with_update_method]: not supported component: \033[33m{component_name}" + "\n\033[0m")
@@ -514,9 +541,11 @@ class MainWindow(QMainWindow):
             component_property = comp_text
 
         if isinstance(called_component, QGroupBox):
-            if component_key in ['cmd_sing', 'rvc_manual_pitch']:
-                setting_name = 'command_settings'
             component_property = called_component.isChecked()
+
+        if isinstance(called_component, QRadioButton):
+            gender_radio, component_key = self.get_radio_object_by_name(component_key)
+            component_property = self.get_radio_check(gender_radio).lower()  # female or male in radio button
         #####################################################################################
         # endregion [PROPERTY HANDLER]
 
@@ -556,15 +585,12 @@ class MainWindow(QMainWindow):
             setting_name = "audio_settings"
 
         if self.check_name(component_key,
-                           ["rvc_pitch", "rvc_main_vocal", "rvc_backup_vocal", "rvc_music", "rvc_master_gain"]):
+                           ["rvc_index_rate", "rvc_pitch", "rvc_main_vocal", "rvc_backup_vocal", "rvc_music", "rvc_master_gain"]):
             decimal_obj = True
             setting_name = "command_settings"
 
-        if percent_obj or decimal_obj:
-            # print_log("log", f"{component_key} is",
-            #           "percent obj" if percent_obj else "decimal obj")
-            # print("any word found:", component_key)
 
+        if percent_obj or decimal_obj:
             if component_type == "lineEdit":
                 if percent_obj:
                     conv_str = self.force_add_percent(called_component.text())  # 30 -> 30 %
@@ -600,14 +626,16 @@ class MainWindow(QMainWindow):
                 reset_value = 0.0
                 component_key = component_key.replace("_default", "")   # remove '_default' to find/update synced object
                 # if any(word in component_key for word in ["mic_threshold"]):    # no button yet
-                if self.check_name(component_key, ["mic_threshold"]):   # no button yet
+                if self.check_name(component_key, ["mic_threshold"]):
                     reset_value = 0.4
-                elif self.check_name(component_key, ["phrase_timeout"]):    # no button yet
+                elif self.check_name(component_key, ["phrase_timeout"]):
                     reset_value = 5.0
                 elif self.check_name(component_key, ["intonation_scale"]):
                     reset_value = 1.5
                 elif self.check_name(component_key, ["voice_speed", "speaker_volume", "phoneme_length"]):
                     reset_value = 1.0
+                elif self.check_name(component_key, ["rvc_index_rate"]):
+                    reset_value = 0.5
                 else:
                     reset_value = 0.0   # (-10.0 ~ 10.0)
 
@@ -659,6 +687,26 @@ class MainWindow(QMainWindow):
             return
         #####################################################################################
         # endregion PROMPT SETTINGS
+
+
+        # endregion COMMAND SETTINGS
+        #####################################################################################
+        if component_key in ['cmd_sing', 'rvc_manual_pitch', 'rvc_index_rate']:
+            setting_name = 'command_settings'
+
+        if "rvc_gender" in component_key:
+            setting_name = 'command_settings'
+
+            # update rvc_gender_settings.txt
+            model_name = self.command_info_dict['rvc_model']
+            update_json(model_name, component_property, 'rvc_gender_settings', gender_settings_dir)
+
+        if component_key in ["rvc_model"]:
+            self.refresh_rvc_model(update_by_combo=True)
+
+            return
+        #####################################################################################
+        # endregion COMMAND SETTINGS
 
 
         # region OTHER SETTINGS
@@ -1229,25 +1277,21 @@ class MainWindow(QMainWindow):
 
         self.refresh_rvc_model()
 
-        _dict = self.command_info_dict
-
-        # widgets.textEdit_rvc_model.setText(_dict['rvc_model'])  # RVC model name
-
-        # region [Radio]
-        gender_radio = [widgets.radioButton_rvc_gender_male, widgets.radioButton_rvc_gender_female]
-
-        self.set_radio_check(gender_radio, _dict['rvc_gender'])
-        widgets.horizontalGroupBox_rvc_manual_pitch.setChecked(_dict['rvc_manual_pitch'])
-        # endregion
-
         # region [LINEEDIT & SLIDERS]
         self.set_qobjects_by_dict([widgets.lineEdit_rvc_index_rate, widgets.horizontalSlider_rvc_index_rate,
                                    widgets.lineEdit_rvc_pitch, widgets.horizontalSlider_rvc_pitch,
                                    widgets.lineEdit_rvc_main_vocal,  widgets.horizontalSlider_rvc_main_vocal,
                                    widgets.lineEdit_rvc_backup_vocal, widgets.horizontalSlider_rvc_backup_vocal,
-                                   widgets.lineEdit_rvc_music, widgets.horizontalSlider_rvc_music],
-                                  _dict, 10)
+                                   widgets.lineEdit_rvc_music, widgets.horizontalSlider_rvc_music,
+                                   widgets.lineEdit_rvc_master_gain, widgets.horizontalSlider_rvc_master_gain],
+                                  self.command_info_dict, 100)
         # endregion
+
+    def get_radio_object_by_name(self, key_name:str):
+        _key_name = key_name.rsplit('_',1)[0]
+        radios = self.find_qobject_by(_key_name, QRadioButton)   # list of radio btns
+        if radios:
+            return radios, _key_name
 
     def get_radio_check(self, radio_list: list[QRadioButton]):
         for radio in radio_list:
@@ -1517,44 +1561,50 @@ class MainWindow(QMainWindow):
 
         self.command_info_dict.update(SettingInfo.load_command_settings())
 
-    def refresh_rvc_model(self):
-        self.load_audio_info()
-        _tts_model_name = self.audio_info_dict["tts_character"]
-        _rvc_model_from_dict = self.command_info_dict['rvc_model']
-
-        # region [RVC CHARACTER LIST]
-        ################################################################################################
+    def refresh_rvc_model(self, update_by_combo=False):
         rvc_model_comboBox = self.ui.comboBox_rvc_model
-        rvc_model_comboBox.clear()
 
-        rvc_char_list = []
-        rvc_char_dir = os.path.join(root_path, 'Models', 'rvc_voice')
+        if not update_by_combo:
+            self.load_audio_info()
+            _tts_model_name = self.audio_info_dict["tts_character"]
+            _rvc_model_from_dict = self.command_info_dict['rvc_model']
 
-        # check rvc_voice folder name, same as tts model
-        for _folder in os.scandir(rvc_char_dir):
-            if _folder.is_dir():
-                rvc_char_list.append(_folder.name)
+            # region [RVC CHARACTER LIST]
+            ################################################################################################
+            rvc_model_comboBox.clear()
 
-        if len(rvc_char_list) == 0:
-            print_log("error", "Could not find any RVC Character folders in", f"{tts_char_dir}")
-            return None
+            rvc_char_list = []
+            rvc_char_dir = os.path.join(root_path, 'Models', 'rvc_voice')
 
-        for rvc_char in rvc_char_list:
-            rvc_model_comboBox.addItem(rvc_char)
+            # check rvc_voice folder name, same as tts model
+            for _folder in os.scandir(rvc_char_dir):
+                if _folder.is_dir():
+                    rvc_char_list.append(_folder.name)
 
-        for _combo in [rvc_model_comboBox]:
-            self.add_none_item_combobox(_combo)
+            if len(rvc_char_list) == 0:
+                print_log("error", "Could not find any RVC Character folders in", f"{tts_char_dir}")
+                return None
 
-        if _tts_model_name in rvc_char_list:
-            rvc_model_comboBox.setCurrentText(_tts_model_name)
-        elif _rvc_model_from_dict in rvc_char_list:
-            rvc_model_comboBox.setCurrentText(_rvc_model_from_dict)
-        else:
-            rvc_model_comboBox.setCurrentIndex(0)
+            for rvc_char in rvc_char_list:
+                rvc_model_comboBox.addItem(rvc_char)
+
+            for _combo in [rvc_model_comboBox]:
+                self.add_none_item_combobox(_combo)
+
+            if _tts_model_name in rvc_char_list:
+                rvc_model_comboBox.setCurrentText(_tts_model_name)
+            elif _rvc_model_from_dict in rvc_char_list:
+                rvc_model_comboBox.setCurrentText(_rvc_model_from_dict)
+            else:
+                rvc_model_comboBox.setCurrentIndex(0)
 
         rvc_model_name = rvc_model_comboBox.currentText()
 
         self.check_gender_setting(rvc_model_name)
+
+        gender_radio = [widgets.radioButton_rvc_gender_male, widgets.radioButton_rvc_gender_female]
+        self.set_radio_check(gender_radio, self.command_info_dict['rvc_gender'])
+        widgets.horizontalGroupBox_rvc_manual_pitch.setChecked(self.command_info_dict['rvc_manual_pitch'])
 
         ################################################################################################
         # endregion [RVC CHARACTER LIST]
@@ -1567,13 +1617,13 @@ class MainWindow(QMainWindow):
         if rvc_model_name in settings_json:
             value = settings_json[key]
             update_json("rvc_gender", value, "command_settings")
+
         else:
             gender_radio = [self.ui.radioButton_rvc_gender_male, self.ui.radioButton_rvc_gender_female]
             value = self.get_radio_check(gender_radio).lower()  # female or male in radio button
-            print_log("warning", "no gender key found! Saving on Settings", f"[{key}, {value}]")
-            add_item_json(rvc_model_name, value)
+            print_log("warning", f"model [{rvc_model_name}] doesn't have gender setting! Saving new", f"[{key}, {value}]")
+            add_item_json(rvc_model_name, value, 'rvc_gender_settings', gender_settings_dir)
         self.command_info_dict["rvc_gender"] = value
-
     ################################################################################################
     # endregion [LOAD COMMAND INFOS]
 
@@ -1630,7 +1680,7 @@ class MainWindow(QMainWindow):
             type: put type (:py:class:`QObject`)
 
         Returns:
-            :py:class:`QObject` or None
+            :py:class:`QObject` or List or None
         """
 
         # Error (not enough hints to find)
@@ -1641,9 +1691,15 @@ class MainWindow(QMainWindow):
         # Get matching QObjects list
         _found_obj_list = self.findChildren(type)
 
+        _matching_obj_list = []
         for obj in _found_obj_list:
             if name in obj.objectName():
-                return obj
+                _matching_obj_list.append(obj)
+
+        if len(_matching_obj_list) == 1:
+            return _matching_obj_list[0]
+        elif len(_matching_obj_list) > 1:
+            return _matching_obj_list
 
         print_log("warning", "Could not find any QObject with", f"name={name}, type={type}")
         return None
@@ -1853,12 +1909,17 @@ class MainWindow(QMainWindow):
             thread_index = 0
             for thread in thread_list:
                 _class_type = type(thread).__name__
+                _user = thread.character
 
                 if _class_type == "TTSTHREAD":
                     _msg = '🔊 ' + thread.text
                     pass
                 elif _class_type == "COMMANDTHREAD":
                     if thread.cmd_type == '!sing':
+                        if thread.gen.auto_pitch_bool:
+                            _user += f' [AutoP:{thread.gen.genderType}]'
+                        else:
+                            _user += f' [Pitch:{thread.gen.pitch}]'
                         _type = '🎵'
 
                     _msg = f'{_type} ' + thread.text

@@ -3210,6 +3210,20 @@ QSlider::handle:horizontal:hover {
 
 QSlider::handle:horizontal:pressed {
     background-color: rgb(65, 255, 195);
+}
+
+QPushButton{
+	font: bold 12pt &quot;Segoe UI&quot;;
+	color: white;
+	background-color: rgb(122, 137, 168);
+	border-radius: 5px;
+}
+
+QPushButton:hover{
+	background-color: rgb(163, 184, 225);
+}
+QPushButton:pressed{
+	background-color: rgb(75, 84, 103);
 }</string>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_30">
@@ -3372,19 +3386,7 @@ QSlider::handle:horizontal:pressed {
                                       </size>
                                      </property>
                                      <property name="styleSheet">
-                                      <string notr="true">QPushButton{
-	font: bold 12pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(122, 137, 168);
-	border-radius: 5px;
-}
-
-QPushButton:hover{
-	background-color: rgb(163, 184, 225);
-}
-QPushButton:pressed{
-	background-color: rgb(75, 84, 103);
-}</string>
+                                      <string notr="true"/>
                                      </property>
                                      <property name="text">
                                       <string>Set to Default</string>
@@ -3515,19 +3517,7 @@ QPushButton:pressed{
                                       </size>
                                      </property>
                                      <property name="styleSheet">
-                                      <string notr="true">QPushButton{
-	font: bold 12pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(122, 137, 168);
-	border-radius: 5px;
-}
-
-QPushButton:hover{
-	background-color: rgb(163, 184, 225);
-}
-QPushButton:pressed{
-	background-color: rgb(75, 84, 103);
-}</string>
+                                      <string notr="true"/>
                                      </property>
                                      <property name="text">
                                       <string>Set to Default</string>
@@ -3737,19 +3727,7 @@ QPushButton:pressed{
                                       </size>
                                      </property>
                                      <property name="styleSheet">
-                                      <string notr="true">QPushButton{
-	font: bold 12pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(122, 137, 168);
-	border-radius: 5px;
-}
-
-QPushButton:hover{
-	background-color: rgb(163, 184, 225);
-}
-QPushButton:pressed{
-	background-color: rgb(75, 84, 103);
-}</string>
+                                      <string notr="true"/>
                                      </property>
                                      <property name="text">
                                       <string>Default</string>
@@ -3804,6 +3782,9 @@ QSlider::handle:horizontal:pressed {
                                      </property>
                                      <property name="maximum">
                                       <number>100</number>
+                                     </property>
+                                     <property name="singleStep">
+                                      <number>10</number>
                                      </property>
                                      <property name="orientation">
                                       <enum>Qt::Horizontal</enum>
@@ -3937,19 +3918,7 @@ QSlider::handle:horizontal:pressed {
                                       </size>
                                      </property>
                                      <property name="styleSheet">
-                                      <string notr="true">QPushButton{
-	font: bold 12pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(122, 137, 168);
-	border-radius: 5px;
-}
-
-QPushButton:hover{
-	background-color: rgb(163, 184, 225);
-}
-QPushButton:pressed{
-	background-color: rgb(75, 84, 103);
-}</string>
+                                      <string notr="true"/>
                                      </property>
                                      <property name="text">
                                       <string>Default</string>
@@ -3987,7 +3956,7 @@ QPushButton:pressed{
                                       <number>200</number>
                                      </property>
                                      <property name="singleStep">
-                                      <number>0</number>
+                                      <number>10</number>
                                      </property>
                                      <property name="value">
                                       <number>100</number>
@@ -4189,19 +4158,7 @@ QPushButton:pressed{
                                       </size>
                                      </property>
                                      <property name="styleSheet">
-                                      <string notr="true">QPushButton{
-	font: bold 12pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(122, 137, 168);
-	border-radius: 5px;
-}
-
-QPushButton:hover{
-	background-color: rgb(163, 184, 225);
-}
-QPushButton:pressed{
-	background-color: rgb(75, 84, 103);
-}</string>
+                                      <string notr="true"/>
                                      </property>
                                      <property name="text">
                                       <string>Default</string>
@@ -4248,6 +4205,9 @@ QSlider::handle:horizontal:pressed {
                                    </property>
                                    <property name="maximum">
                                     <number>3000</number>
+                                   </property>
+                                   <property name="singleStep">
+                                    <number>10</number>
                                    </property>
                                    <property name="value">
                                     <number>200</number>
@@ -4743,19 +4703,7 @@ QSlider::handle:horizontal:pressed {
                                              </size>
                                             </property>
                                             <property name="styleSheet">
-                                             <string notr="true">QPushButton{
-	font: bold 12pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(122, 137, 168);
-	border-radius: 5px;
-}
-
-QPushButton:hover{
-	background-color: rgb(163, 184, 225);
-}
-QPushButton:pressed{
-	background-color: rgb(75, 84, 103);
-}</string>
+                                             <string notr="true"/>
                                             </property>
                                             <property name="text">
                                              <string>Default</string>
@@ -4779,6 +4727,9 @@ QPushButton:pressed{
                                             </property>
                                             <property name="maximum">
                                              <number>200</number>
+                                            </property>
+                                            <property name="singleStep">
+                                             <number>10</number>
                                             </property>
                                             <property name="value">
                                              <number>100</number>
@@ -4883,19 +4834,7 @@ QPushButton:pressed{
                                              </size>
                                             </property>
                                             <property name="styleSheet">
-                                             <string notr="true">QPushButton{
-	font: bold 12pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(122, 137, 168);
-	border-radius: 5px;
-}
-
-QPushButton:hover{
-	background-color: rgb(163, 184, 225);
-}
-QPushButton:pressed{
-	background-color: rgb(75, 84, 103);
-}</string>
+                                             <string notr="true"/>
                                             </property>
                                             <property name="text">
                                              <string>Default</string>
@@ -4919,6 +4858,9 @@ QPushButton:pressed{
                                             </property>
                                             <property name="maximum">
                                              <number>200</number>
+                                            </property>
+                                            <property name="singleStep">
+                                             <number>10</number>
                                             </property>
                                             <property name="value">
                                              <number>100</number>
@@ -5068,19 +5010,7 @@ QPushButton:pressed{
                                              </size>
                                             </property>
                                             <property name="styleSheet">
-                                             <string notr="true">QPushButton{
-	font: bold 12pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(122, 137, 168);
-	border-radius: 5px;
-}
-
-QPushButton:hover{
-	background-color: rgb(163, 184, 225);
-}
-QPushButton:pressed{
-	background-color: rgb(75, 84, 103);
-}</string>
+                                             <string notr="true"/>
                                             </property>
                                             <property name="text">
                                              <string>Default</string>
@@ -5104,6 +5034,9 @@ QPushButton:pressed{
                                             </property>
                                             <property name="maximum">
                                              <number>200</number>
+                                            </property>
+                                            <property name="singleStep">
+                                             <number>10</number>
                                             </property>
                                             <property name="value">
                                              <number>100</number>
@@ -5208,19 +5141,7 @@ QPushButton:pressed{
                                              </size>
                                             </property>
                                             <property name="styleSheet">
-                                             <string notr="true">QPushButton{
-	font: bold 12pt &quot;Segoe UI&quot;;
-	color: white;
-	background-color: rgb(122, 137, 168);
-	border-radius: 5px;
-}
-
-QPushButton:hover{
-	background-color: rgb(163, 184, 225);
-}
-QPushButton:pressed{
-	background-color: rgb(75, 84, 103);
-}</string>
+                                             <string notr="true"/>
                                             </property>
                                             <property name="text">
                                              <string>Default</string>
@@ -5244,6 +5165,9 @@ QPushButton:pressed{
                                             </property>
                                             <property name="maximum">
                                              <number>200</number>
+                                            </property>
+                                            <property name="singleStep">
+                                             <number>10</number>
                                             </property>
                                             <property name="value">
                                              <number>100</number>
@@ -5359,6 +5283,20 @@ QSlider::handle:horizontal:hover {
 
 QSlider::handle:horizontal:pressed {
     background-color: rgb(65, 255, 195);
+}
+
+QPushButton{
+	font: bold 12pt &quot;Segoe UI&quot;;
+	color: white;
+	background-color: rgb(122, 137, 168);
+	border-radius: 5px;
+}
+
+QPushButton:hover{
+	background-color: rgb(163, 184, 225);
+}
+QPushButton:pressed{
+	background-color: rgb(75, 84, 103);
 }</string>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_33">
@@ -5369,6 +5307,9 @@ QSlider::handle:horizontal:pressed {
                            <horstretch>0</horstretch>
                            <verstretch>0</verstretch>
                           </sizepolicy>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true"/>
                          </property>
                          <property name="frameShape">
                           <enum>QFrame::NoFrame</enum>
@@ -5389,9 +5330,9 @@ QSlider::handle:horizontal:pressed {
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>-8</y>
+                            <y>0</y>
                             <width>1172</width>
-                            <height>793</height>
+                            <height>821</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_34">
@@ -5541,7 +5482,7 @@ QSlider::handle:horizontal:pressed {
                                            </sizepolicy>
                                           </property>
                                           <property name="text">
-                                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;RVC Model Found:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;RVC Model Available:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                           <property name="alignment">
                                            <set>Qt::AlignCenter</set>
@@ -5558,7 +5499,7 @@ QSlider::handle:horizontal:pressed {
                                           </property>
                                           <property name="sizeHint" stdset="0">
                                            <size>
-                                            <width>40</width>
+                                            <width>20</width>
                                             <height>20</height>
                                            </size>
                                           </property>
@@ -5699,6 +5640,19 @@ QSlider::handle:horizontal:pressed {
                                             </property>
                                            </spacer>
                                           </item>
+                                          <item>
+                                           <widget class="QPushButton" name="pushButton_rvc_index_rate_default">
+                                            <property name="minimumSize">
+                                             <size>
+                                              <width>130</width>
+                                              <height>30</height>
+                                             </size>
+                                            </property>
+                                            <property name="text">
+                                             <string>Default</string>
+                                            </property>
+                                           </widget>
+                                          </item>
                                          </layout>
                                         </item>
                                         <item>
@@ -5718,13 +5672,13 @@ QSlider::handle:horizontal:pressed {
                                              <number>0</number>
                                             </property>
                                             <property name="maximum">
-                                             <number>10</number>
+                                             <number>100</number>
                                             </property>
                                             <property name="singleStep">
-                                             <number>1</number>
+                                             <number>10</number>
                                             </property>
                                             <property name="pageStep">
-                                             <number>1</number>
+                                             <number>10</number>
                                             </property>
                                             <property name="value">
                                              <number>0</number>
@@ -6028,6 +5982,19 @@ color: #009dff;</string>
                                                </property>
                                               </spacer>
                                              </item>
+                                             <item>
+                                              <widget class="QPushButton" name="pushButton_rvc_pitch_default">
+                                               <property name="minimumSize">
+                                                <size>
+                                                 <width>130</width>
+                                                 <height>30</height>
+                                                </size>
+                                               </property>
+                                               <property name="text">
+                                                <string>Default</string>
+                                               </property>
+                                              </widget>
+                                             </item>
                                             </layout>
                                            </item>
                                            <item>
@@ -6225,11 +6192,24 @@ color: #009dff;</string>
                                                    </property>
                                                    <property name="sizeHint" stdset="0">
                                                     <size>
-                                                     <width>40</width>
+                                                     <width>0</width>
                                                      <height>20</height>
                                                     </size>
                                                    </property>
                                                   </spacer>
+                                                 </item>
+                                                 <item>
+                                                  <widget class="QPushButton" name="pushButton_rvc_main_vocal_default">
+                                                   <property name="minimumSize">
+                                                    <size>
+                                                     <width>70</width>
+                                                     <height>30</height>
+                                                    </size>
+                                                   </property>
+                                                   <property name="text">
+                                                    <string>Default</string>
+                                                   </property>
+                                                  </widget>
                                                  </item>
                                                 </layout>
                                                </item>
@@ -6343,11 +6323,24 @@ color: #009dff;</string>
                                                    </property>
                                                    <property name="sizeHint" stdset="0">
                                                     <size>
-                                                     <width>40</width>
+                                                     <width>0</width>
                                                      <height>20</height>
                                                     </size>
                                                    </property>
                                                   </spacer>
+                                                 </item>
+                                                 <item>
+                                                  <widget class="QPushButton" name="pushButton_rvc_backup_vocal_default">
+                                                   <property name="minimumSize">
+                                                    <size>
+                                                     <width>70</width>
+                                                     <height>30</height>
+                                                    </size>
+                                                   </property>
+                                                   <property name="text">
+                                                    <string>Default</string>
+                                                   </property>
+                                                  </widget>
                                                  </item>
                                                 </layout>
                                                </item>
@@ -6461,11 +6454,24 @@ color: #009dff;</string>
                                                    </property>
                                                    <property name="sizeHint" stdset="0">
                                                     <size>
-                                                     <width>40</width>
+                                                     <width>0</width>
                                                      <height>20</height>
                                                     </size>
                                                    </property>
                                                   </spacer>
+                                                 </item>
+                                                 <item>
+                                                  <widget class="QPushButton" name="pushButton_rvc_music_default">
+                                                   <property name="minimumSize">
+                                                    <size>
+                                                     <width>70</width>
+                                                     <height>30</height>
+                                                    </size>
+                                                   </property>
+                                                   <property name="text">
+                                                    <string>Default</string>
+                                                   </property>
+                                                  </widget>
                                                  </item>
                                                 </layout>
                                                </item>
@@ -6586,6 +6592,19 @@ color: #009dff;</string>
                                                   </size>
                                                  </property>
                                                 </spacer>
+                                               </item>
+                                               <item>
+                                                <widget class="QPushButton" name="pushButton_rvc_master_gain_default">
+                                                 <property name="minimumSize">
+                                                  <size>
+                                                   <width>130</width>
+                                                   <height>30</height>
+                                                  </size>
+                                                 </property>
+                                                 <property name="text">
+                                                  <string>Default</string>
+                                                 </property>
+                                                </widget>
                                                </item>
                                               </layout>
                                              </item>
