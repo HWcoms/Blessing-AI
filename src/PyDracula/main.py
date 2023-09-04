@@ -123,14 +123,14 @@ class MainWindow(QMainWindow):
         self.prompt_info_dict: dict = None  # [max_prompt_token, max_reply_token,
                                             # ai_model_language]
 
-        self.command_info_dict: dict = None # rvc_model, rvc_index_rate, rvc_gender (radio),
-                                            # rvc_manual_pitch (bool), rvc_pitch,
-                                            # rvc_main_vocal, rvc_backup_vocal, rvc_music
+        self.command_info_dict: dict = None # cmd_sing, use_rvc_model_tts_name, rvc_model,
+                                            # rvc_index_rate, rvc_fast_search, rvc_auto_pitch (bool),
+                                            # rvc_gender (radio), rvc_pitch, rvc_overwrite_final,
+                                            # rvc_main_vocal, rvc_backup_vocal, rvc_music, rvc_master_gain
 
 
         # AUDIO DEVICE MANAGER
         self.newAudDevice = AudioDevice()
-
         # SET AS GLOBAL WIDGETS
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -282,6 +282,8 @@ class MainWindow(QMainWindow):
             ## command settings components
             widgets.horizontalGroupBox_cmd_sing,
             widgets.comboBox_rvc_model,
+            widgets.checkBox_use_rvc_model_tts_name,
+
             widgets.lineEdit_rvc_index_rate,
             widgets.horizontalSlider_rvc_index_rate,
             widgets.pushButton_rvc_index_rate_default,
@@ -289,10 +291,13 @@ class MainWindow(QMainWindow):
             widgets.radioButton_rvc_gender_male,
             widgets.radioButton_rvc_gender_female,
 
-            widgets.horizontalGroupBox_rvc_manual_pitch,
+            widgets.checkBox_rvc_fast_search,
+            widgets.horizontalGroupBox_rvc_auto_pitch,
             widgets.lineEdit_rvc_pitch,
             widgets.horizontalSlider_rvc_pitch,
             widgets.pushButton_rvc_pitch_default,
+
+            widgets.checkBox_rvc_overwrite_final,
 
             widgets.lineEdit_rvc_main_vocal,
             widgets.horizontalSlider_rvc_main_vocal,
@@ -691,14 +696,16 @@ class MainWindow(QMainWindow):
 
         # endregion COMMAND SETTINGS
         #####################################################################################
-        if component_key in ['cmd_sing', 'rvc_manual_pitch', 'rvc_index_rate']:
+        if component_key in ['cmd_sing', 'rvc_auto_pitch', 'rvc_index_rate',
+                             "use_rvc_model_tts_name", "rvc_fast_search", "rvc_overwrite_final"]:
             setting_name = 'command_settings'
 
         if "rvc_gender" in component_key:
             setting_name = 'command_settings'
 
             # update rvc_gender_settings.txt
-            model_name = self.command_info_dict['rvc_model']
+            model_name = self.ui.comboBox_rvc_model.currentText()
+            # model_name = self.command_info_dict['rvc_model']
             update_json(model_name, component_property, 'rvc_gender_settings', gender_settings_dir)
 
         if component_key in ["rvc_model"]:
@@ -1094,8 +1101,6 @@ class MainWindow(QMainWindow):
             print(
                 "\033[31m" + f"Error [main GUI.refresh_tts_info]: failed to search config file: [{tts_character}] \033[33m{e}" + "\n\033[0m")
 
-            # raise ValueError("Check tts_character")
-
         # print(f"moegoe config file: {config_file}")
 
         if config_file is not None:
@@ -1277,14 +1282,21 @@ class MainWindow(QMainWindow):
 
         self.refresh_rvc_model()
 
-        # region [LINEEDIT & SLIDERS]
-        self.set_qobjects_by_dict([widgets.lineEdit_rvc_index_rate, widgets.horizontalSlider_rvc_index_rate,
-                                   widgets.lineEdit_rvc_pitch, widgets.horizontalSlider_rvc_pitch,
-                                   widgets.lineEdit_rvc_main_vocal,  widgets.horizontalSlider_rvc_main_vocal,
-                                   widgets.lineEdit_rvc_backup_vocal, widgets.horizontalSlider_rvc_backup_vocal,
-                                   widgets.lineEdit_rvc_music, widgets.horizontalSlider_rvc_music,
-                                   widgets.lineEdit_rvc_master_gain, widgets.horizontalSlider_rvc_master_gain],
-                                  self.command_info_dict, 100)
+        # region [LINEEDIT & SLIDERS & CHECKBOX]
+        self.set_qobjects_by_dict([
+                                # GROUPBOX
+                                widgets.horizontalGroupBox_cmd_sing, widgets.horizontalGroupBox_rvc_auto_pitch,
+                                # LINEEIDT & SLIDERS
+                                widgets.lineEdit_rvc_index_rate, widgets.horizontalSlider_rvc_index_rate,
+                                widgets.lineEdit_rvc_pitch, widgets.horizontalSlider_rvc_pitch,
+                                widgets.lineEdit_rvc_main_vocal,  widgets.horizontalSlider_rvc_main_vocal,
+                                widgets.lineEdit_rvc_backup_vocal, widgets.horizontalSlider_rvc_backup_vocal,
+                                widgets.lineEdit_rvc_music, widgets.horizontalSlider_rvc_music,
+                                widgets.lineEdit_rvc_master_gain, widgets.horizontalSlider_rvc_master_gain,
+                                # CHECK BOX
+                                widgets.checkBox_use_rvc_model_tts_name, widgets.checkBox_rvc_fast_search,
+                                widgets.checkBox_rvc_overwrite_final
+                                ], self.command_info_dict, 100)
         # endregion
 
     def get_radio_object_by_name(self, key_name:str):
@@ -1568,6 +1580,7 @@ class MainWindow(QMainWindow):
             self.load_audio_info()
             _tts_model_name = self.audio_info_dict["tts_character"]
             _rvc_model_from_dict = self.command_info_dict['rvc_model']
+            _use_tts_name = self.command_info_dict['use_rvc_model_tts_name']
 
             # region [RVC CHARACTER LIST]
             ################################################################################################
@@ -1591,7 +1604,7 @@ class MainWindow(QMainWindow):
             for _combo in [rvc_model_comboBox]:
                 self.add_none_item_combobox(_combo)
 
-            if _tts_model_name in rvc_char_list:
+            if _tts_model_name in rvc_char_list and _use_tts_name:
                 rvc_model_comboBox.setCurrentText(_tts_model_name)
             elif _rvc_model_from_dict in rvc_char_list:
                 rvc_model_comboBox.setCurrentText(_rvc_model_from_dict)
@@ -1599,13 +1612,15 @@ class MainWindow(QMainWindow):
                 rvc_model_comboBox.setCurrentIndex(0)
 
         rvc_model_name = rvc_model_comboBox.currentText()
+        update_json("rvc_model", rvc_model_name, 'command_settings')
 
         self.check_gender_setting(rvc_model_name)
 
         gender_radio = [widgets.radioButton_rvc_gender_male, widgets.radioButton_rvc_gender_female]
         self.set_radio_check(gender_radio, self.command_info_dict['rvc_gender'])
-        widgets.horizontalGroupBox_rvc_manual_pitch.setChecked(self.command_info_dict['rvc_manual_pitch'])
+        widgets.horizontalGroupBox_rvc_auto_pitch.setChecked(self.command_info_dict['rvc_auto_pitch'])
 
+        return rvc_model_name
         ################################################################################################
         # endregion [RVC CHARACTER LIST]
 
@@ -1717,6 +1732,12 @@ class MainWindow(QMainWindow):
                 prefix = "lineEdit_"
             elif isinstance(obj, QSlider):
                 prefix = f"{obj.orientation().name.lower()}Slider_"
+            elif isinstance(obj, QCheckBox):
+                prefix = "checkBox_"
+            elif isinstance(obj, QGroupBox):
+                prefix = f"horizontalGroupBox_"
+
+                print(type(obj.alignment()))
             else:
                 raise ValueError("No QObject Found or Not Supported QObject")
 
@@ -1734,6 +1755,9 @@ class MainWindow(QMainWindow):
                 obj.setText(res_str)
             elif "Slider" in prefix:
                 obj.setValue(int(res_value * value_multiplier))
+            elif self.check_name(prefix, ["checkBox", "GroupBox"]):
+                obj.setChecked(res_value)
+                print("test:", obj.objectName())
 
     def force_add_percent(self, per_str:str):
         res_value = per_str
@@ -1800,8 +1824,9 @@ class MainWindow(QMainWindow):
         for key, value in language_mapping.items():
             if value == language_input:
                 return key
-        print(
-            "\033[31m" + f"Error [main GUI.convert_language_code]: \033[33m{language_input}\033[31m is not supported: " + "\033[0m")
+        if language_input != '[None]':
+            print(
+                "\033[31m" + f"Error [main GUI.convert_language_code]: \033[33m{language_input}\033[31m is not supported: " + "\033[0m")
         return None
 
     def hide_url(self, url:str, mark:str='*'):
@@ -1917,10 +1942,12 @@ class MainWindow(QMainWindow):
                 elif _class_type == "COMMANDTHREAD":
                     if thread.cmd_type == '!sing':
                         if thread.gen.auto_pitch_bool:
-                            _user += f' [AutoP:{thread.gen.genderType}]'
+                            _user += f' [AutoP:{thread.gen.gender_type}]'
                         else:
                             _user += f' [Pitch:{thread.gen.pitch}]'
                         _type = '🎵'
+                        if thread.gen.fast_search:
+                            _type += '🚀'
 
                     _msg = f'{_type} ' + thread.text
 
@@ -2066,7 +2093,23 @@ class COMMANDTHREAD(QThread):
         self.gen = BotCommand()
         self.cmd_type = cmd_type
         self.text = text
-        self.character = self.parent.command_info_dict["rvc_model"]
+
+        # Assign values for bot_cmd
+        self.character = parent.refresh_rvc_model()  # check using tts_char_name or not
+        bot_cmd = self.gen
+        bot_cmd.char_model_name = self.character
+        bot_cmd.index_rate = parent.command_info_dict['rvc_index_rate']
+        bot_cmd.fast_search = parent.command_info_dict['rvc_fast_search']
+        bot_cmd.auto_pitch_bool = parent.command_info_dict['rvc_auto_pitch']
+        bot_cmd.gender_type = parent.command_info_dict['rvc_gender']
+        bot_cmd.pitch = parent.command_info_dict['rvc_pitch']
+
+        bot_cmd.overwrite_final = parent.command_info_dict['rvc_overwrite_final']
+        bot_cmd.main_gain = parent.command_info_dict['rvc_main_vocal']
+        bot_cmd.backup_gain = parent.command_info_dict['rvc_backup_vocal']
+        bot_cmd.music_gain = parent.command_info_dict['rvc_music']
+        bot_cmd.master_gain = parent.command_info_dict['rvc_master_gain']
+        bot_cmd.device_name = self.parent.newAudDevice.selected_speaker
 
         self.state = ["",""]
         change_state(self, "init")
@@ -2074,10 +2117,6 @@ class COMMANDTHREAD(QThread):
 
     def run(self):
         bot_cmd = self.gen
-        bot_cmd.char_model_name = self.character
-
-        bot_cmd.gender_type = self.parent.command_info_dict['rvc_gender']
-        bot_cmd.fast_search = True
 
         change_state(self, "gen", f"Generating [{self.cmd_type}]")
         bot_cmd.do_command(self.cmd_type, self.text)

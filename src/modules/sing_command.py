@@ -67,9 +67,12 @@ class BotCommand:
         super().__init__()
         self.logging = True
 
-        self.device_name = ""  # Speaker name
         self.char_model_name = char_model_name
         self.fast_search = True
+
+        # region [Sing Command]
+        #####################################################################################
+        self.device_name = ""  # Speaker name
 
         # Pitch Settings
         self.auto_pitch_bool = True
@@ -99,8 +102,12 @@ class BotCommand:
         self.dl_url = ""
         self.video_id = ""
 
-        self.final_result_path = ""
         self.sounda = None
+        #####################################################################################
+        # region [Sing Command]
+
+        self.overwrite_final = False
+        self.final_result_path = ""
 
     # region [LOG]
     ############################################################################
@@ -243,7 +250,7 @@ class BotCommand:
 
         # region POST-PROCESS
         # Skip process if 'final' exist
-        if 'final' in rvc_process_dict:
+        if 'final' in rvc_process_dict and not self.overwrite_final:
             final_cover_path = rvc_process_dict['final']
             # BotCommand.fix_uri_to_print(os.path.dirname(final_cover_path), "!Sing Result Folder")
 
@@ -454,11 +461,21 @@ class BotCommand:
 
         # Search final result, ignoring pitch and index-rate settings
         if fast_search:
-            self.print_log("warning", "Using [Fast Search] to find", "Final Result!")
-            final_exist = self.find_one_filename(work_dir, result_dict, "final", f"*{char_name}*Ver*)*.mp3",
-                                                 "[Fast] Final Cover")
-            if final_exist:
+            if self.overwrite_final:
+                self.print_log("warning", "Using [Fast Search] to find", "RVC Vocal / Audio FX Result")
+                search_dict_log_list = [['fx', f'*_{char_name}_p*_i{index_rate}_mixed.wav', 'Audio FX Result'],
+                                        ['rvc', f'*_{char_name}_p*_i{index_rate}.wav', 'RVC Result']]
+                self.find_list_filename(search_dict_log_list, work_dir, result_dict)
+
                 return result_dict
+            else:
+                self.print_log("warning", "Using [Fast Search] to find", "Final Result!")
+                final_exist = self.find_one_filename(work_dir, result_dict, "final", f"*{char_name}*Ver*)*.mp3",
+                                                     "[Fast] Final Cover")
+                if final_exist:
+                    return result_dict
+                else:
+                    self.print_log("warning", "Using [Fast Search]", "Final Result is Not Found! Searching Remain Processes by pitch info...")
 
         if pitch[1]:  # if Auto_pitch -> True
             from rvc_modules.gender_detect import get_pitch_with_audio
