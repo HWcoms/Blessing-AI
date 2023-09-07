@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainkAzOpC.ui'
+## Form generated from reading UI file 'maindtpEnO.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1086,11 +1086,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_24.addItem(self._home_top_verticalSpacer)
 
-        self.scrollArea_3 = QScrollArea(self.Home_Page)
-        self.scrollArea_3.setObjectName(u"scrollArea_3")
-        self.scrollArea_3.setFrameShape(QFrame.NoFrame)
-        self.scrollArea_3.setLineWidth(0)
-        self.scrollArea_3.setWidgetResizable(True)
+        self.scrollArea_home_page = QScrollArea(self.Home_Page)
+        self.scrollArea_home_page.setObjectName(u"scrollArea_home_page")
+        self.scrollArea_home_page.setFrameShape(QFrame.NoFrame)
+        self.scrollArea_home_page.setLineWidth(0)
+        self.scrollArea_home_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
         self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1172, 583))
@@ -1446,9 +1446,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_14.addLayout(self.c_verticalLayout_lower)
 
-        self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_4)
+        self.scrollArea_home_page.setWidget(self.scrollAreaWidgetContents_4)
 
-        self.verticalLayout_24.addWidget(self.scrollArea_3)
+        self.verticalLayout_24.addWidget(self.scrollArea_home_page)
 
         self.horizontalLayout_command_button = QHBoxLayout()
         self.horizontalLayout_command_button.setSpacing(70)
@@ -1764,11 +1764,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_30.addItem(self._audio_top_verticalSpacer)
 
-        self.scrollArea_2 = QScrollArea(self.Audio_Page)
-        self.scrollArea_2.setObjectName(u"scrollArea_2")
-        self.scrollArea_2.setFrameShape(QFrame.NoFrame)
-        self.scrollArea_2.setFrameShadow(QFrame.Plain)
-        self.scrollArea_2.setWidgetResizable(True)
+        self.scrollArea_audio_page = QScrollArea(self.Audio_Page)
+        self.scrollArea_audio_page.setObjectName(u"scrollArea_audio_page")
+        self.scrollArea_audio_page.setFrameShape(QFrame.NoFrame)
+        self.scrollArea_audio_page.setFrameShadow(QFrame.Plain)
+        self.scrollArea_audio_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
         self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1182, 636))
@@ -2622,9 +2622,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_31.addLayout(self.verticalLayout_22)
 
-        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+        self.scrollArea_audio_page.setWidget(self.scrollAreaWidgetContents_2)
 
-        self.verticalLayout_30.addWidget(self.scrollArea_2)
+        self.verticalLayout_30.addWidget(self.scrollArea_audio_page)
 
         self.stackedWidget.addWidget(self.Audio_Page)
         self.Command_Page = QWidget()
@@ -2682,22 +2682,22 @@ class Ui_MainWindow(object):
 "}")
         self.verticalLayout_33 = QVBoxLayout(self.Command_Page)
         self.verticalLayout_33.setObjectName(u"verticalLayout_33")
-        self.scrollArea_4 = QScrollArea(self.Command_Page)
-        self.scrollArea_4.setObjectName(u"scrollArea_4")
+        self.scrollArea_command_page = QScrollArea(self.Command_Page)
+        self.scrollArea_command_page.setObjectName(u"scrollArea_command_page")
         sizePolicy12 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy12.setHorizontalStretch(0)
         sizePolicy12.setVerticalStretch(0)
-        sizePolicy12.setHeightForWidth(self.scrollArea_4.sizePolicy().hasHeightForWidth())
-        self.scrollArea_4.setSizePolicy(sizePolicy12)
-        self.scrollArea_4.setStyleSheet(u"")
-        self.scrollArea_4.setFrameShape(QFrame.NoFrame)
-        self.scrollArea_4.setFrameShadow(QFrame.Plain)
-        self.scrollArea_4.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.scrollArea_4.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
-        self.scrollArea_4.setWidgetResizable(True)
+        sizePolicy12.setHeightForWidth(self.scrollArea_command_page.sizePolicy().hasHeightForWidth())
+        self.scrollArea_command_page.setSizePolicy(sizePolicy12)
+        self.scrollArea_command_page.setStyleSheet(u"")
+        self.scrollArea_command_page.setFrameShape(QFrame.NoFrame)
+        self.scrollArea_command_page.setFrameShadow(QFrame.Plain)
+        self.scrollArea_command_page.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.scrollArea_command_page.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
+        self.scrollArea_command_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, -548, 1172, 1153))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1172, 1153))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()
@@ -3036,29 +3036,29 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_35.addWidget(self.horizontalGroupBox_rvc_auto_pitch)
 
-        self.horizontalGroupBox_rvc_manual_pitch = QGroupBox(self.verticalGroupBox_2)
-        self.horizontalGroupBox_rvc_manual_pitch.setObjectName(u"horizontalGroupBox_rvc_manual_pitch")
-        self.horizontalGroupBox_rvc_manual_pitch.setEnabled(True)
-        self.horizontalGroupBox_rvc_manual_pitch.setStyleSheet(u"QGroupBox:enabled\n"
+        self.verticalGroupBox_rvc_manual_pitch = QGroupBox(self.verticalGroupBox_2)
+        self.verticalGroupBox_rvc_manual_pitch.setObjectName(u"verticalGroupBox_rvc_manual_pitch")
+        self.verticalGroupBox_rvc_manual_pitch.setEnabled(True)
+        self.verticalGroupBox_rvc_manual_pitch.setStyleSheet(u"QGroupBox:enabled\n"
 "{\n"
 "    font-size: 16px;\n"
 "}")
-        self.horizontalGroupBox_rvc_manual_pitch.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
-        self.horizontalGroupBox_rvc_manual_pitch.setCheckable(False)
-        self.horizontalGroupBox_rvc_manual_pitch.setChecked(False)
-        self.horizontalLayout_117 = QHBoxLayout(self.horizontalGroupBox_rvc_manual_pitch)
+        self.verticalGroupBox_rvc_manual_pitch.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        self.verticalGroupBox_rvc_manual_pitch.setCheckable(False)
+        self.verticalGroupBox_rvc_manual_pitch.setChecked(False)
+        self.horizontalLayout_117 = QHBoxLayout(self.verticalGroupBox_rvc_manual_pitch)
         self.horizontalLayout_117.setObjectName(u"horizontalLayout_117")
         self.horizontalLayout_117.setContentsMargins(0, 0, 0, 3)
         self.verticalLayout_82 = QVBoxLayout()
         self.verticalLayout_82.setObjectName(u"verticalLayout_82")
         self.verticalLayout_82.setContentsMargins(10, 5, 10, 5)
-        self.label_74 = QLabel(self.horizontalGroupBox_rvc_manual_pitch)
+        self.label_74 = QLabel(self.verticalGroupBox_rvc_manual_pitch)
         self.label_74.setObjectName(u"label_74")
         self.label_74.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_82.addWidget(self.label_74)
 
-        self.label_75 = QLabel(self.horizontalGroupBox_rvc_manual_pitch)
+        self.label_75 = QLabel(self.verticalGroupBox_rvc_manual_pitch)
         self.label_75.setObjectName(u"label_75")
         self.label_75.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
@@ -3068,13 +3068,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_118.setSpacing(10)
         self.horizontalLayout_118.setObjectName(u"horizontalLayout_118")
         self.horizontalLayout_118.setContentsMargins(-1, 0, -1, 0)
-        self.label_76 = QLabel(self.horizontalGroupBox_rvc_manual_pitch)
+        self.label_76 = QLabel(self.verticalGroupBox_rvc_manual_pitch)
         self.label_76.setObjectName(u"label_76")
         self.label_76.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_118.addWidget(self.label_76)
 
-        self.lineEdit_rvc_pitch = QLineEdit(self.horizontalGroupBox_rvc_manual_pitch)
+        self.lineEdit_rvc_pitch = QLineEdit(self.verticalGroupBox_rvc_manual_pitch)
         self.lineEdit_rvc_pitch.setObjectName(u"lineEdit_rvc_pitch")
         sizePolicy11.setHeightForWidth(self.lineEdit_rvc_pitch.sizePolicy().hasHeightForWidth())
         self.lineEdit_rvc_pitch.setSizePolicy(sizePolicy11)
@@ -3089,7 +3089,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_118.addItem(self.horizontalSpacer_69)
 
-        self.pushButton_rvc_pitch_default = QPushButton(self.horizontalGroupBox_rvc_manual_pitch)
+        self.pushButton_rvc_pitch_default = QPushButton(self.verticalGroupBox_rvc_manual_pitch)
         self.pushButton_rvc_pitch_default.setObjectName(u"pushButton_rvc_pitch_default")
         self.pushButton_rvc_pitch_default.setMinimumSize(QSize(130, 30))
 
@@ -3101,7 +3101,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_119 = QHBoxLayout()
         self.horizontalLayout_119.setObjectName(u"horizontalLayout_119")
         self.horizontalLayout_119.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalSlider_rvc_pitch = QSlider(self.horizontalGroupBox_rvc_manual_pitch)
+        self.horizontalSlider_rvc_pitch = QSlider(self.verticalGroupBox_rvc_manual_pitch)
         self.horizontalSlider_rvc_pitch.setObjectName(u"horizontalSlider_rvc_pitch")
         self.horizontalSlider_rvc_pitch.setStyleSheet(u"")
         self.horizontalSlider_rvc_pitch.setMinimum(-2400)
@@ -3119,7 +3119,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_117.addLayout(self.verticalLayout_82)
 
 
-        self.verticalLayout_35.addWidget(self.horizontalGroupBox_rvc_manual_pitch)
+        self.verticalLayout_35.addWidget(self.verticalGroupBox_rvc_manual_pitch)
 
 
         self.verticalLayout_80.addWidget(self.verticalGroupBox_2)
@@ -3465,9 +3465,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_34.addLayout(self.verticalLayout_28)
 
-        self.scrollArea_4.setWidget(self.scrollAreaWidgetContents_5)
+        self.scrollArea_command_page.setWidget(self.scrollAreaWidgetContents_5)
 
-        self.verticalLayout_33.addWidget(self.scrollArea_4)
+        self.verticalLayout_33.addWidget(self.scrollArea_command_page)
 
         self.stackedWidget.addWidget(self.Command_Page)
         self.Prompt_Page = QWidget()
@@ -4297,9 +4297,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_13.setSpacing(0)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
         self.verticalLayout_13.setContentsMargins(6, 0, 6, 0)
-        self.scrollArea_stylesheet = QScrollArea(self.contentSettings)
-        self.scrollArea_stylesheet.setObjectName(u"scrollArea_stylesheet")
-        self.scrollArea_stylesheet.setStyleSheet(u"QLineEdit {\n"
+        self.scrollArea_right_extra = QScrollArea(self.contentSettings)
+        self.scrollArea_right_extra.setObjectName(u"scrollArea_right_extra")
+        self.scrollArea_right_extra.setStyleSheet(u"QLineEdit {\n"
 "	border: 2px solid rgb(48, 50, 62);\n"
 "	border-radius: 10px;\n"
 "	color: #FFF;\n"
@@ -4334,12 +4334,12 @@ class Ui_MainWindow(object):
 "QComboBox {\n"
 "	background-color: rgb(33, 37, 43);\n"
 "}")
-        self.scrollArea_stylesheet.setFrameShape(QFrame.NoFrame)
-        self.scrollArea_stylesheet.setFrameShadow(QFrame.Plain)
-        self.scrollArea_stylesheet.setLineWidth(0)
-        self.scrollArea_stylesheet.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.scrollArea_stylesheet.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.scrollArea_stylesheet.setWidgetResizable(True)
+        self.scrollArea_right_extra.setFrameShape(QFrame.NoFrame)
+        self.scrollArea_right_extra.setFrameShadow(QFrame.Plain)
+        self.scrollArea_right_extra.setLineWidth(0)
+        self.scrollArea_right_extra.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.scrollArea_right_extra.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scrollArea_right_extra.setWidgetResizable(True)
         self.scrollAreaWidgetContents_3 = QWidget()
         self.scrollAreaWidgetContents_3.setObjectName(u"scrollAreaWidgetContents_3")
         self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 200, 620))
@@ -4516,9 +4516,9 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_28.addLayout(self.verticalLayout_46)
 
-        self.scrollArea_stylesheet.setWidget(self.scrollAreaWidgetContents_3)
+        self.scrollArea_right_extra.setWidget(self.scrollAreaWidgetContents_3)
 
-        self.verticalLayout_13.addWidget(self.scrollArea_stylesheet)
+        self.verticalLayout_13.addWidget(self.scrollArea_right_extra)
 
 
         self.verticalLayout_7.addWidget(self.contentSettings)
@@ -4582,7 +4582,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(4)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -4831,7 +4831,7 @@ class Ui_MainWindow(object):
         self.radioButton_rvc_gender_male.setText(QCoreApplication.translate("MainWindow", u"Male", None))
         self.label_72.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>ex) RVC Model <span style=\" font-weight:700;\">[</span><span style=\" font-weight:700; color:#aaffff;\">Kato Megumi</span><span style=\" font-weight:700;\">]</span> is <span style=\" font-weight:700; color:#fb89ff;\">Female</span></p></body></html>", None))
         self.label_73.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>RVC Model <span style=\" font-weight:700;\">[</span><span style=\" font-weight:700; color:#aaffff;\">Kirito</span><span style=\" font-weight:700;\">]</span> is <span style=\" font-weight:700; color:#009dff;\">Male</span></p></body></html>", None))
-        self.horizontalGroupBox_rvc_manual_pitch.setTitle(QCoreApplication.translate("MainWindow", u"Manual Pitch Adjustment", None))
+        self.verticalGroupBox_rvc_manual_pitch.setTitle(QCoreApplication.translate("MainWindow", u"Manual Pitch Adjustment", None))
         self.label_74.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">If you want to adjust pitch of AI Cover song </span><span style=\" font-weight:700; color:#00ff00;\">manually</span><span style=\" font-weight:700;\">, Check this at On and adjust pitch by Slider</span></p></body></html>", None))
         self.label_75.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\">(Selected <span style=\" font-weight:700;\">Gender Type</span> will be <span style=\" font-weight:700; color:#00ff00;\">unnecessary</span> If you use this option)</p></body></html>", None))
         self.label_76.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Pitch</span></p></body></html>", None))

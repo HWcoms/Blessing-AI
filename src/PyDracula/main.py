@@ -407,13 +407,16 @@ class MainWindow(QMainWindow):
         # SCROLL EVENT HANDLER
         if event.type() == QEvent.Type.Wheel:
             if self.check_name(obj_name, ["comboBox", "horizontalSlider"]):
-                # print(f"source: {source}, type: {event.type()}, event: {event}")
-                scroll_widget = self.ui.scrollArea_2.verticalScrollBar()
+                scroll_widget = self.find_parent_qobject(source, "scrollArea_")
+                if scroll_widget:
+                    # print("scroll parent:", scroll_widget.objectName())
+                    scroll_widget = scroll_widget.verticalScrollBar()
+                else:
+                    # print("no scrollArea found in page")
+                    return True
                 cur_scroll_val = scroll_widget.value()
                 dir = -1 if event.angleDelta().y() > 0 else 1
                 scroll_amount = 80 * dir
-
-                # print(f"scroll event: [{obj_name}]")
 
                 # Simulate Scroll Event
                 scroll_widget.setValue(cur_scroll_val + scroll_amount)
@@ -1685,6 +1688,18 @@ class MainWindow(QMainWindow):
         model = combo_box.model()
         combo_box.insertItem(0, text)
         model.setData(model.index(0, 0), QColor(color), QtCore.Qt.ForegroundRole)
+
+    def find_parent_qobject(self, child_object, search_name):
+        _result = None
+        _p = child_object.parent()
+        while (_p.objectName() != "MainWindow" and _p != None):
+            _p = _p.parent()
+            if search_name in _p.objectName():
+                _result = _p
+                break
+        # if _result:
+        #     print("final: ", _result.objectName())
+        return _result
 
     def find_qobject_by(self, name:str, type:QObject) -> QObject:
         """

@@ -1879,7 +1879,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>3</number>
+                      <number>4</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -1903,7 +1903,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                         </spacer>
                        </item>
                        <item>
-                        <widget class="QScrollArea" name="scrollArea_3">
+                        <widget class="QScrollArea" name="scrollArea_home_page">
                          <property name="frameShape">
                           <enum>QFrame::NoFrame</enum>
                          </property>
@@ -3268,7 +3268,7 @@ QPushButton:pressed{
                         </spacer>
                        </item>
                        <item>
-                        <widget class="QScrollArea" name="scrollArea_2">
+                        <widget class="QScrollArea" name="scrollArea_audio_page">
                          <property name="frameShape">
                           <enum>QFrame::NoFrame</enum>
                          </property>
@@ -5325,7 +5325,7 @@ QPushButton:pressed{
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_33">
                        <item>
-                        <widget class="QScrollArea" name="scrollArea_4">
+                        <widget class="QScrollArea" name="scrollArea_command_page">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                            <horstretch>0</horstretch>
@@ -5354,7 +5354,7 @@ QPushButton:pressed{
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>-248</y>
+                            <y>0</y>
                             <width>1172</width>
                             <height>1153</height>
                            </rect>
@@ -8894,7 +8894,7 @@ QPushButton:pressed{
                        <number>0</number>
                       </property>
                       <item>
-                       <widget class="QScrollArea" name="scrollArea_stylesheet">
+                       <widget class="QScrollArea" name="scrollArea_right_extra">
                         <property name="styleSheet">
                          <string notr="true">QLineEdit {
 	border: 2px solid rgb(48, 50, 62);
