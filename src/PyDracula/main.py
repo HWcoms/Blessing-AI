@@ -699,8 +699,7 @@ class MainWindow(QMainWindow):
 
         # endregion COMMAND SETTINGS
         #####################################################################################
-        if component_key in ['cmd_sing', 'rvc_auto_pitch', 'rvc_index_rate',
-                             "use_rvc_model_tts_name", "rvc_fast_search", "rvc_overwrite_final"]:
+        if component_key in ['rvc_index_rate', "use_rvc_model_tts_name", "rvc_fast_search", "rvc_overwrite_final"]:
             setting_name = 'command_settings'
 
         if "rvc_gender" in component_key:
@@ -715,6 +714,17 @@ class MainWindow(QMainWindow):
             self.refresh_rvc_model(update_by_combo=True)
 
             return
+
+        # Group Box
+        if component_key in ['cmd_sing', 'rvc_auto_pitch']:
+            setting_name = 'command_settings'
+
+            # Mirror setEnable of 'rvc_auto_pitch' with 'rvc_manual_pitch'
+            GB_rvc_auto_pitch = self.ui.horizontalGroupBox_rvc_auto_pitch
+            GB_rvc_manaul_pitch = self.ui.verticalGroupBox_rvc_manual_pitch
+            auto_pitch_enabled = GB_rvc_auto_pitch.isChecked() and GB_rvc_auto_pitch.isEnabled()
+            GB_rvc_manaul_pitch.setEnabled(not auto_pitch_enabled)
+
         #####################################################################################
         # endregion COMMAND SETTINGS
 
@@ -1742,22 +1752,11 @@ class MainWindow(QMainWindow):
             cleaner_names: names of the cleaner functions to run the text through
         """
         for obj in obj_list:
-            prefix = ""
-            if isinstance(obj, QLineEdit):
-                prefix = "lineEdit_"
-            elif isinstance(obj, QSlider):
-                prefix = f"{obj.orientation().name.lower()}Slider_"
-            elif isinstance(obj, QCheckBox):
-                prefix = "checkBox_"
-            elif isinstance(obj, QGroupBox):
-                prefix = f"horizontalGroupBox_"
+            componentName = obj.objectName()
+            if componentName is not None:
+                component_type, component_key = self.component_info_by_name(componentName)
 
-                print(type(obj.alignment()))
-            else:
-                raise ValueError("No QObject Found or Not Supported QObject")
-
-            key_name = obj.objectName().replace(prefix, "")
-            res_value = _dict[key_name]
+            res_value = _dict[component_key]
 
             res_str = ""
             if add_percent:
@@ -1766,13 +1765,14 @@ class MainWindow(QMainWindow):
             else:
                 res_str = str(res_value)
 
-            if "lineEdit" in prefix:
+            if isinstance(obj, QLineEdit):
                 obj.setText(res_str)
-            elif "Slider" in prefix:
+            elif isinstance(obj, QSlider):
                 obj.setValue(int(res_value * value_multiplier))
-            elif self.check_name(prefix, ["checkBox", "GroupBox"]):
+            elif isinstance(obj, QCheckBox) or isinstance(obj, QGroupBox):
                 obj.setChecked(res_value)
-                print("test:", obj.objectName())
+            else:
+                raise ValueError("No QObject Found or Not Supported QObject")
 
     def force_add_percent(self, per_str:str):
         res_value = per_str
