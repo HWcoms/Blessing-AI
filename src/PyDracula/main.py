@@ -722,8 +722,7 @@ class MainWindow(QMainWindow):
             # Mirror setEnable of 'rvc_auto_pitch' with 'rvc_manual_pitch'
             GB_rvc_auto_pitch = self.ui.horizontalGroupBox_rvc_auto_pitch
             GB_rvc_manaul_pitch = self.ui.verticalGroupBox_rvc_manual_pitch
-            auto_pitch_enabled = GB_rvc_auto_pitch.isChecked() and GB_rvc_auto_pitch.isEnabled()
-            GB_rvc_manaul_pitch.setEnabled(not auto_pitch_enabled)
+            self.mirror_groupbox(GB_rvc_auto_pitch, GB_rvc_manaul_pitch)
 
         #####################################################################################
         # endregion COMMAND SETTINGS
@@ -1310,7 +1309,47 @@ class MainWindow(QMainWindow):
                                 widgets.checkBox_use_rvc_model_tts_name, widgets.checkBox_rvc_fast_search,
                                 widgets.checkBox_rvc_overwrite_final
                                 ], self.command_info_dict, 100)
+
+        # Mirror setEnable of 'rvc_auto_pitch' with 'rvc_manual_pitch'
+        GB_rvc_auto_pitch = widgets.horizontalGroupBox_rvc_auto_pitch
+        GB_rvc_manaul_pitch = widgets.verticalGroupBox_rvc_manual_pitch
+        self.mirror_groupbox(GB_rvc_auto_pitch, GB_rvc_manaul_pitch)
+
         # endregion
+    def mirror_groupbox(self, checkbox_grp:QGroupBox, non_checkbox_grp:QGroupBox):
+        checkbox_grp_enabled = checkbox_grp.isChecked() and checkbox_grp.isEnabled()
+        # print(f"{checkbox_grp.isChecked()}, {non_checkbox_grp.isEnabled()}: ", checkbox_grp_enabled)
+        non_checkbox_grp.setEnabled(not checkbox_grp_enabled)
+
+        self.disable_rich_texts_color_in(checkbox_grp)
+        self.disable_rich_texts_color_in(non_checkbox_grp)
+
+    def disable_rich_texts_color_in(self, qobj:QObject):
+        label_list = qobj.findChildren(QLabel)
+        # print(label_list)
+        _disabled_label_list = []
+
+        if len(label_list) == 0:
+            raise RuntimeError(f"no label found in this QObject [{qobj}]")
+        import re
+        for _label in label_list:
+            string_html = _label.text()
+
+            # Define a regular expression pattern to remove <!-- and -->
+            pattern = r'<!--color:(#[0-9a-fA-F]{6});-->'
+
+            # Use re.sub to remove the comment markers
+            uncommented_html = re.sub(pattern, lambda match: 'color:' + match.group(1) + ';', string_html)
+
+            _label.setText(uncommented_html)
+            if not _label.isEnabled():
+                # Define a regular expression pattern to find color styles within span tags
+                pattern = r'<span style="(.*?)color:(#[0-9a-fA-F]{6});">(.*?)<\/span>'
+
+                # Use re.sub with a lambda function to replace the color styles
+                result = re.sub(pattern, lambda match: '<span style="' + match.group(1) + '<!--color:' + match.group(
+                    2) + ';-->' + '">' + match.group(3) + '</span>', string_html)
+                _label.setText(result)
 
     def get_radio_object_by_name(self, key_name:str):
         _key_name = key_name.rsplit('_',1)[0]
@@ -1724,12 +1763,15 @@ class MainWindow(QMainWindow):
         """
 
         # Error (not enough hints to find)
-        if not name or not type:
-            print_log("error", "Not enough hints to find QObject", f"name={name}, type={type}")
+        if not type:
+            print_log("error", "type should be specify to find QObject", f"name={name}, type={type}")
             raise ValueError()
 
         # Get matching QObjects list
         _found_obj_list = self.findChildren(type)
+
+        if not name:
+            return _found_obj_list
 
         _matching_obj_list = []
         for obj in _found_obj_list:

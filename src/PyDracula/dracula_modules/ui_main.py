@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'maindtpEnO.ui'
+## Form generated from reading UI file 'mainfYOvvk.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -2697,7 +2697,7 @@ class Ui_MainWindow(object):
         self.scrollArea_command_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1172, 1153))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, -120, 1172, 1153))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()
@@ -4582,7 +4582,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(4)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -4819,14 +4819,7 @@ class Ui_MainWindow(object):
         self.checkBox_rvc_fast_search.setText(QCoreApplication.translate("MainWindow", u"Use Fast Search", None))
         self.label_84.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:9pt;\">If the result file already exists, Use result file, (search with only character name regardless pitch info)</span></p></body></html>", None))
         self.horizontalGroupBox_rvc_auto_pitch.setTitle(QCoreApplication.translate("MainWindow", u"Use Auto Pitch Adjustment", None))
-        self.label_71.setText(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:700;\">Choose Gender type of your RVC Model, ai cover song will generated </span><span style=\" font-weight:700; color:#00ff00;\">automatically</span><span style=\" font-weight:700;\"> adjust pitch by this choose.</span></p></body></html>", None))
+        self.label_71.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Choose Gender type of your RVC Model, ai cover song will generated </span><span style=\" font-weight:700; color:#ff0000;\">automatically</span><span style=\" font-weight:700;\"> adjust pitch by this choose.</span></p></body></html>", None))
         self.radioButton_rvc_gender_female.setText(QCoreApplication.translate("MainWindow", u"Female", None))
         self.radioButton_rvc_gender_male.setText(QCoreApplication.translate("MainWindow", u"Male", None))
         self.label_72.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>ex) RVC Model <span style=\" font-weight:700;\">[</span><span style=\" font-weight:700; color:#aaffff;\">Kato Megumi</span><span style=\" font-weight:700;\">]</span> is <span style=\" font-weight:700; color:#fb89ff;\">Female</span></p></body></html>", None))
