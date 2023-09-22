@@ -5354,7 +5354,7 @@ QPushButton:pressed{
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>-240</y>
+                            <y>-120</y>
                             <width>1172</width>
                             <height>1153</height>
                            </rect>
@@ -5995,7 +5995,7 @@ QPushButton:disabled{
                                                  <string notr="true"/>
                                                 </property>
                                                 <property name="text">
-                                                 <string>&lt;span style=&quot; font-weight:700;&quot;&gt;Choose Gender type of your RVC Model, ai cover song will generated &lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;automatically&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt; adjust pitch by this choose.&lt;/span&gt;</string>
+                                                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Choose Gender type of your RVC Model, ai cover song will generated &lt;/span&gt;&lt;span style=&quot; font-weight:700; color:#ff0000;&quot;&gt;automatically&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt; adjust pitch by this choose.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                 </property>
                                                 <property name="alignment">
                                                  <set>Qt::AlignCenter</set>

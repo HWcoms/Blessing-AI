@@ -140,7 +140,6 @@ class MainWindow(QMainWindow):
         widgets.textBrowser_google_colab_link.setOpenExternalLinks(True)
         widgets.textBrowser_papago_token_link.setOpenExternalLinks(True)
         self.chat = None
-        self.last_scroll_value = -1
 
         # QTHREADS LIST
         self.tts_thread_list = []
@@ -821,8 +820,7 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
-            self.last_scroll_value = self.chat.get_scroll_value()
-            self.chat_layout_update(self.last_scroll_value)
+            self.chat_layout_update()
 
         # SHOW CHARACTER PAGE
         if btnName == "btn_character":
@@ -877,8 +875,10 @@ class MainWindow(QMainWindow):
 
     # region [DRAW CHAT PAGE]
     #####################################################################################
-    def chat_layout_update(self, dest_scroll_value = -1):
+    def chat_layout_update(self, dest_scroll_value=-1):
         global widgets
+        last_scroll_value = -1
+
         ###########################################################################
         #   CHECK DIFFERENCE BETWEEN OLD / NOW CHATLOG
         ###########################################################################
@@ -888,50 +888,53 @@ class MainWindow(QMainWindow):
             self.load_character_info()
         new_chatlog_str = get_chatlog_info(self.char_info_dict["character_name"])
 
-        if self.chat_info_dict:
+        refresh_chat = False
+
+        if not self.chat_info_dict:
+            refresh_chat = True
+        else:
             if self.chat_info_dict['chatlog'] == new_chatlog_str:
                 print("\033[34m" + f"[main GUI.chat_layout_update]: Prev / Current Content of Chatlog are same! No need to update" + "\033[0m" )
-                return
+            else:
+                refresh_chat = True
 
-            elif self.last_scroll_value == dest_scroll_value and self.last_scroll_value != -1:
-                print("\033[34m" + f"[main GUI.chat_layout_update]: scroll value is same! No need to scroll" + "\033[0m")
-                return
+        if refresh_chat:
+            print("\033[34m" + f"[main GUI.chat_layout_update]: Loading ChatLog info!" + "\033[0m")
+            self.load_chatlog_info()  # Load chatlog information
         ###########################################################################
         #   END
         ###########################################################################
-        self.load_chatlog_info()    # Load chatlog information
 
-        if self.last_scroll_value == -1:
-            self.last_scroll_value = 0
-        elif self.chat:
-                self.last_scroll_value = self.chat.get_scroll_value()
-        else:
-            print("\033[31m" + "Error [main GUI.chat_layout_update]: failed to load chat" + "\033[0m" )
-            return 0
+        if self.chat:
+            last_scroll_value = self.chat.get_scroll_value()
 
-        # print(f"[main GUI.chat_layout_update]: last_scroll_value = {last_scroll_value}")
+            if last_scroll_value != self.chat.get_scroll_max_value():
+                dest_scroll_value = -2  # scroll to end
 
+            self.chat.last_scroll_value = last_scroll_value
+            self.chat.dest_scroll_value = dest_scroll_value
+
+        # print("last: ", last_scroll_value, "dest: ", dest_scroll_value)
 
         ###########################################################################
         #   REFRESH CHAT
         ###########################################################################
-        # REMOVE CHAT
-        for chat in reversed(range(self.ui.chat_layout.count())):
-            widgets.chat_layout.itemAt(chat).widget().deleteLater()
-        self.chat = None
+        if refresh_chat:
+            # REMOVE CHAT
+            for chat in reversed(range(self.ui.chat_layout.count())):
+                widgets.chat_layout.itemAt(chat).widget().deleteLater()
+            self.chat = None
 
-        # SET CHAT WIDGET
-        self.chat = Chat(self, self.char_info_dict, self.chat_info_dict)
+            # SET CHAT WIDGET
+            self.chat = Chat(self, self.char_info_dict, self.chat_info_dict, last_scroll_value, dest_scroll_value)
 
-        # ADD WIDGET TO LAYOUT
-        widgets.chat_layout.addWidget(self.chat)
-        ###########################################################################
-        #   END
-        ###########################################################################
+            # ADD WIDGET TO LAYOUT
+            widgets.chat_layout.addWidget(self.chat)
 
-
-        # self.chat.set_scroll_value(last_scroll_value)
-        self.chat.scroll_to_animation(last_value=self.last_scroll_value, value=dest_scroll_value)
+            # TODO: change token count labels to other (unnecessary items + using for other debug for now)
+            ###########################################################################
+            #   END
+            ###########################################################################
 
         self.update_thread_table()
 
@@ -1845,19 +1848,6 @@ class MainWindow(QMainWindow):
     #################################################################################################
     # endregion [UTILS]
 
-    def after_generate_reply(self, success = 1):
-        if success == -1:
-            self.last_scroll_value = self.chat.get_scroll_value()
-            self.chat.scroll_to_animation(last_value=self.last_scroll_value)
-            self.last_scroll_value = self.chat.get_scroll_max_value()
-            return
-
-        print("\033[34m" + "[main GUI]: generated_reply" + "\033[0m")
-
-        self.chat_layout_update()
-        # self.chat.scroll_to_animation()
-
-
     def convert_language_code(self, language_input):
         """
         convert language code to full name of language or opposite.
@@ -1936,6 +1926,17 @@ class MainWindow(QMainWindow):
             print ("\033[31m" + f"[main GUI.component_info_by_name]: Invalid input format: \033[33m{componentName_str}" + "\033[0m")
             return None, None
 
+    # region [Thread Control Methods]
+    #################################################################################################
+    def after_generate_reply(self, success = 1):
+        if success == -1:
+            return
+
+        print("\033[34m" + "[main GUI]: generated_reply" + "\033[0m")
+
+        self.chat_layout_update()
+        # self.chat.scroll_to_animation()
+
     def delete_first_prompt_thread(self):
         self.prompt_thread_list[0].remove_from_thread_list()
         self.update_thread_table()
@@ -1967,12 +1968,12 @@ class MainWindow(QMainWindow):
 
     # Generate and Play TTS Using QThread
     def gen_voice_thread(self, text):
-        tts_thread = TTSTHREAD(self, text)
+        tts_thread = TTSTHREAD(self, text, logging=False)
         self.tts_thread_list.append(tts_thread)
 
     # Generate Prompt Using QThread
     def gen_prompt_thread(self, text):
-        prompt_thread = PROMPTTHREAD(self, text)
+        prompt_thread = PROMPTTHREAD(self, text, logging=False)
         self.prompt_thread_list.append(prompt_thread)
 
         prompt_thread.PromptDone.connect(self.command_handler)
@@ -2017,7 +2018,12 @@ class MainWindow(QMainWindow):
                 table.setItem(thread_index, 2, QTableWidgetItem(thread.state[1]))
                 thread_index += 1
 
+    #################################################################################################
+    # region [Thread Control Methods]
 
+
+# region [Thread Classes & Static Methods]
+#################################################################################################
 class THREADMANAGER(QThread):
     prompt_done_signal = Signal()
     tts_gen_done_signal = Signal()
@@ -2066,7 +2072,6 @@ class THREADMANAGER(QThread):
                     self.tts_play_done_signal.emit()
 
             time.sleep(0.3)
-
 
 class PROMPTTHREAD(QThread):
     PromptDone = Signal(str, str)
@@ -2220,7 +2225,6 @@ def change_state(thread_self, state_code, custom_state=""):
     thread_self.state = final_state
     thread_self.parent.update_table_signal.emit()
 
-
 def print_thread_list(list_type_name, list):
     thread_logging_str = f"==================== {list_type_name} Thread List ===================="
 
@@ -2238,6 +2242,10 @@ def print_thread_list(list_type_name, list):
 
         print(_msg)
     print("\033[32m" + thread_logging_str + "\033[0m")
+
+#################################################################################################
+# endregion [Thread Classes & Static Methods]
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

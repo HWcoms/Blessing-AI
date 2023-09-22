@@ -46,7 +46,9 @@ class Chat(QWidget):
             self,
             main_window,
             char_dict,
-            chat_dict
+            chat_dict,
+            last_scroll_value,
+            dest_scroll_value
     ):
         QWidget.__init__(self)
 
@@ -63,6 +65,8 @@ class Chat(QWidget):
 
         self.scroll_bar = None
         self.scroll_anim = None
+        self.last_scroll_value = last_scroll_value
+        self.dest_scroll_value = dest_scroll_value
 
         # profile image [bot, user, other]
         self.pf_img_dict: dict = {'bot': None, 'user': "mouse.png", 'other': "me.png"}
@@ -117,7 +121,7 @@ class Chat(QWidget):
         except Exception as e:
             print("\033[31m" + f"[GUI] ERROR: \033[33m{e}" + "\033[0m")
             # define default image
-            btn_image = "ai.png"   # modify this if want to change
+            btn_image = "ai.png"  # modify this if want to change
             self.pf_img_dict['bot'] = btn_image
 
             # Change top left bot's profile image
@@ -147,6 +151,9 @@ class Chat(QWidget):
         # LOAD CHAT LOG
         self.load_chat_log()
 
+        self.scroll_bar = self.page.chat_messages.verticalScrollBar()
+        self.scroll_bar.rangeChanged.connect(self.handle_scroll)
+
     # ENTER / RETURN SEND MESSAGE
     def enter_return_release(self, event):
         if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
@@ -158,7 +165,7 @@ class Chat(QWidget):
         if entry_text != "":
             self.send_by_user(entry_text, self.pf_img_dict['user'])
             # self.message = Message(self.page.line_edit_message.text(), 'user')
-            self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
+            # self.page.chat_messages_layout.addWidget(self.message, Qt.AlignCenter, Qt.AlignBottom)
             self.page.line_edit_message.setText("")
             self.message.data_message.setText(self.char_info_dict["your_name"])
 
@@ -219,7 +226,12 @@ class Chat(QWidget):
     def set_scroll_value(self, value):
         if self.scroll_bar is None:
             self.scroll_bar = self.page.chat_messages.verticalScrollBar()
-        self.scroll_bar.setValue(value)
+
+        max_scroll = self.get_scroll_max_value()
+        if value > max_scroll:
+            self.scroll_bar.setValue(max_scroll)
+        else:
+            self.scroll_bar.setValue(value)
 
     def scroll_to_end(self):
         if self.scroll_bar is None:
@@ -239,13 +251,28 @@ class Chat(QWidget):
 
     # EMULATE SCROLL ANIMATION
     # last_value = start_scroll_value, value = end_scrol_value, time = seconds_to_animation
+    def handle_scroll(self):
+        if self.scroll_anim:
+            self.scroll_anim.stop()
+
+        self.set_scroll_value(self.last_scroll_value)
+
+        cur_scroll = self.get_scroll_value()
+        # max_scroll = self.get_scroll_max_value()
+
+        if self.dest_scroll_value == -2:
+            print("\033[34m" + f"[page_messages.handle_scroll]: prevent scrolling" + "\033[0m")
+            return
+
+        self.scroll_to_animation(cur_scroll, self.dest_scroll_value)
+
     def scroll_to_animation(self, last_value=0, value=-1, time=1):
         try:
             if self.scroll_bar is None:
                 self.scroll_bar = self.page.chat_messages.verticalScrollBar()
 
             if self.scroll_anim is None:
-                self.scroll_anim = self.scroll_anim = QPropertyAnimation(self.scroll_bar, b"value")
+                self.scroll_anim = QPropertyAnimation(self.scroll_bar, b"value")
 
             time = time * 1000  # time: 1 -> 1000ms
             self.scroll_anim.setDuration(time)
@@ -266,10 +293,10 @@ class Chat(QWidget):
         # Refresh all info before generate
         self.mWindow.load_all_info()
 
-        char_info_dict = self.mWindow.char_info_dict
-        audio_info_dict = self.mWindow.audio_info_dict
-        prompt_info_dict = self.mWindow.prompt_info_dict
-        chat_info_dict = self.mWindow.chat_info_dict
+        # char_info_dict = self.mWindow.char_info_dict
+        # audio_info_dict = self.mWindow.audio_info_dict
+        # prompt_info_dict = self.mWindow.prompt_info_dict
+        # chat_info_dict = self.mWindow.chat_info_dict
 
         self.mWindow.gen_prompt_thread(text)
         # self.mWindow.gen_voice_thread(text)
