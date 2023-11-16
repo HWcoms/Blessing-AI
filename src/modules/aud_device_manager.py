@@ -163,6 +163,22 @@ class AudioDevice:
 
         return str_list
 
+    # CONVERT TO PYAUDIO INDEX
+    def get_pyaudio_index(self, name):
+        p = pyaudio.PyAudio()
+        info = p.get_host_api_info_by_index(0)
+        numdevices = info.get('deviceCount')
+
+        if name == '' or name is None:
+            return None
+
+        for i in range(0, numdevices):
+            cur_info = p.get_device_info_by_host_api_device_index(0, i)
+            if (cur_info.get('maxInputChannels')) > 0:
+                if name in cur_info.get('name') or cur_info.get('name') in name:
+                    return cur_info.get('index'), cur_info.get('name')
+
+        return None
     def __str__(self):
         _line_str = '\033[33m================================================================\033[0m'
         _split_str = '\033[34m----------------------------------------------------------------\033[0m'

@@ -73,6 +73,9 @@ from generate import Generator, GeneratorTTS
 # BOT COMMAND
 from modules.sing_command import BotCommand
 
+# MIC RECORD & THRESHOLD
+from modules.pygame_mic import MicRecorder
+
 #####################################################################################
 #                                                                                   #
 #                    Remove [import resources_rc] in ui_main.py!!                   #
@@ -140,6 +143,9 @@ class MainWindow(QMainWindow):
         widgets.textBrowser_google_colab_link.setOpenExternalLinks(True)
         widgets.textBrowser_papago_token_link.setOpenExternalLinks(True)
         self.chat = None
+
+
+        self.default_slider_stylesheet = self.ui.horizontalSlider_mic_threshold.styleSheet()
 
         # QTHREADS LIST
         self.tts_thread_list = []
@@ -570,6 +576,9 @@ class MainWindow(QMainWindow):
         ## mic/spk_device
         if component_key in ["mic_device", "spk_device"]:
             self.refresh_audio_device(update_by_combo=True)
+
+            # Update mic_thread & adm
+            self.thread_manager.mic_thread.check_mic_changed()
 
             return
         if component_type == "pushButton" and "device_default" in component_key:
@@ -2031,8 +2040,16 @@ class THREADMANAGER(QThread):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
+
+        # Mic
+        self.mic_thread = MicRecorder()
+        self.mic_thread.rec_duration = -1.0
     def run(self):
         main_program = self.parent
+
+        self.mic_thread.adm = main_program.newAudDevice
+        self.mic_thread.main_program = main_program
+
         while True:
             prompt_thread_list = main_program.prompt_thread_list
             tts_thread_list = main_program.tts_thread_list
@@ -2070,6 +2087,18 @@ class THREADMANAGER(QThread):
                     print("tts process all done: ", tts_thread_list[0].text, tts_thread_list[0].state[1])
                     # Remove current thraed
                     self.tts_play_done_signal.emit()
+
+            # MIC RECORDER & ADM
+            if self.mic_thread.adm:
+                if self.mic_thread.adm.selected_mic:
+                    if self.mic_thread.adm.selected_mic.name:
+                        if not self.mic_thread.device_name:
+                            # print("assign first mic device name")
+                            self.mic_thread.device_name = self.mic_thread.adm.selected_mic.name
+
+                        if not self.mic_thread.isRunning():
+                            print_log("red", "Start Mic thread")
+                            self.mic_thread.start()
 
             time.sleep(0.3)
 

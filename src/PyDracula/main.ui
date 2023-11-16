@@ -1879,7 +1879,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>3</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -1918,7 +1918,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1172</width>
+                            <width>1138</width>
                             <height>583</height>
                            </rect>
                           </property>
@@ -3785,23 +3785,6 @@ QPushButton:pressed{
                                      <property name="styleSheet">
                                       <string notr="true">QSlider::groove {
 	background-color: rgb(55, 62, 76);
-}
-
-QSlider::handle:horizontal {
-    background-color: rgb(85, 170, 255);
-    border: none;
-    height: 40px;
-    width: 10px;
-    margin: -20px 0;
-    border-radius: 20px;
-    padding: -20px 0px;
-}
-QSlider::handle:horizontal:hover {
-    background-color: rgb(155, 180, 255);
-}
-
-QSlider::handle:horizontal:pressed {
-    background-color: rgb(65, 255, 195);
 }</string>
                                      </property>
                                      <property name="maximum">
@@ -5354,7 +5337,7 @@ QPushButton:pressed{
                           <property name="geometry">
                            <rect>
                             <x>0</x>
-                            <y>-120</y>
+                            <y>0</y>
                             <width>1172</width>
                             <height>1153</height>
                            </rect>
@@ -8260,7 +8243,7 @@ QPushButton:pressed{
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>360</width>
+                                 <width>218</width>
                                  <height>218</height>
                                 </rect>
                                </property>

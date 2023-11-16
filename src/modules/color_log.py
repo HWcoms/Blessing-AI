@@ -30,6 +30,12 @@ def print_log(log_type="log", text="", detail_text="", print_func_name=True):
         _first_col = "\033[33m"
         _second_col = "\033[32m"
         prefix = "Warning! "
+    elif log_type == "white":
+        print(_result)
+        return
+    elif log_type == "red":
+        _first_col = "\033[31m"
+        _second_col = "\033[31m"
 
     if print_func_name:
         file_name = os.path.basename(inspect.stack()[1].filename)

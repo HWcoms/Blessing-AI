@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainfYOvvk.ui'
+## Form generated from reading UI file 'mainMfKPpF.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1093,7 +1093,7 @@ class Ui_MainWindow(object):
         self.scrollArea_home_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1172, 583))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1138, 583))
         self.verticalLayout_14 = QVBoxLayout(self.scrollAreaWidgetContents_4)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.a_verticalLayout_top = QVBoxLayout()
@@ -1965,23 +1965,6 @@ class Ui_MainWindow(object):
         self.horizontalSlider_mic_threshold.setMinimumSize(QSize(0, 0))
         self.horizontalSlider_mic_threshold.setStyleSheet(u"QSlider::groove {\n"
 "	background-color: rgb(55, 62, 76);\n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal {\n"
-"    background-color: rgb(85, 170, 255);\n"
-"    border: none;\n"
-"    height: 40px;\n"
-"    width: 10px;\n"
-"    margin: -20px 0;\n"
-"    border-radius: 20px;\n"
-"    padding: -20px 0px;\n"
-"}\n"
-"QSlider::handle:horizontal:hover {\n"
-"    background-color: rgb(155, 180, 255);\n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal:pressed {\n"
-"    background-color: rgb(65, 255, 195);\n"
 "}")
         self.horizontalSlider_mic_threshold.setMaximum(100)
         self.horizontalSlider_mic_threshold.setSingleStep(10)
@@ -2697,7 +2680,7 @@ class Ui_MainWindow(object):
         self.scrollArea_command_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, -120, 1172, 1153))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1172, 1153))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()
@@ -4062,7 +4045,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 360, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -4582,7 +4565,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
