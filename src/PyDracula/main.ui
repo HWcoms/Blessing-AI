@@ -1425,7 +1425,7 @@ QGroupBox::indicator:checked {
                  <widget class="QTextBrowser" name="textBrowser">
                   <property name="minimumSize">
                    <size>
-                    <width>222</width>
+                    <width>0</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -1457,7 +1457,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; color:#ff79c6;&quot;&gt;Blessing AI&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;this python program is made for communicating prompt and result from chatbot interface (e.g oobabooga/text-generation-webui), also able to use TTS, voice recognition or text from User.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://github.com/HWcomss/Blessing-AI/blob/main/LICENSE.md&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#00aaff;&quot;&gt;MIT License&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://github.com/HWcoms/Blessing-AI/blob/main/LICENSE.md&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#00aaff;&quot;&gt;MIT License&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#bd93f9;&quot;&gt;Created by: HWcoms&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
@@ -5338,7 +5338,7 @@ QPushButton:pressed{
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1172</width>
+                            <width>1089</width>
                             <height>1153</height>
                            </rect>
                           </property>

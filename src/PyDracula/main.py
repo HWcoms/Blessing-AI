@@ -866,7 +866,7 @@ class MainWindow(QMainWindow):
         if btnName == "btn_share":
             import webbrowser
 
-            webbrowser.open('https://github.com/HWcomss/Blessing-AI')  # Go to Github Page
+            webbrowser.open('https://github.com/HWcoms/Blessing-AI')  # Go to Github Page
             print("Link BTN Clicked!")
 
         # EXIT PROGRAM
