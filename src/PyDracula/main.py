@@ -582,20 +582,28 @@ class MainWindow(QMainWindow):
         # region AUDIO SETTINGS
         #####################################################################################
         ## mic/spk_device
-        if component_key in ["mic_device", "sub_mic_device", "spk_device"]:
+        if component_type == "comboBox" and component_key in ["mic_device", "sub_mic_device", "spk_device"]:
             self.refresh_audio_device(update_by_combo=True)
 
             # Update mic_thread & adm
             self.thread_manager.mic_thread.check_mic_changed()
+            self.thread_manager.sub_mic_thread.check_mic_changed()
 
             return
         if component_type == "pushButton" and "device_default" in component_key:
+            _def_mic, _def_sub_mic, _def_spk = False, False, False
             if "sub_mic" in component_key:
-                self.refresh_audio_device(update_by_combo=True, def_sub_mic=True)
-            if "mic" in component_key:
-                self.refresh_audio_device(update_by_combo=True, def_mic=True)
+                _def_sub_mic=True
+            elif "mic" in component_key:
+                _def_mic=True
             elif "spk" in component_key:
-                self.refresh_audio_device(update_by_combo=True, def_spk=True)
+                _def_spk=True
+
+            self.refresh_audio_device(True, _def_mic, _def_sub_mic, _def_spk)
+
+            # Update mic_thread & adm
+            self.thread_manager.mic_thread.check_mic_changed()
+            self.thread_manager.sub_mic_thread.check_mic_changed()
             return
 
         percent_obj, decimal_obj = False, False
@@ -1072,22 +1080,30 @@ class MainWindow(QMainWindow):
 
         # Set Default devices if need
         self.newAudDevice.set_selected_device_to_default(def_mic, def_sub_mic, def_spk)
-        # if def_mic:
-        _ret_mic_i = self.newAudDevice.selected_mic.index
-        # if def_sub_mic:
-        _ret_sub_mic_i = self.newAudDevice.selected_sub_mic.index
-        # if def_spk:
-        _ret_spk_i = self.newAudDevice.selected_speaker.index
+
+        if self.newAudDevice.selected_mic:
+            _ret_mic_i = self.newAudDevice.selected_mic.index
+        if self.newAudDevice.selected_sub_mic:
+            _ret_sub_mic_i = self.newAudDevice.selected_sub_mic.index
+        if self.newAudDevice.selected_speaker:
+            _ret_spk_i = self.newAudDevice.selected_speaker.index
 
         if self.newAudDevice.selected_mic:
             mic_comboBox.setCurrentText(self.newAudDevice.selected_mic.name)
             print_log("log", "mic", self.newAudDevice.selected_mic)
+        else:
+            print_log("error", "mic", "None")
         if self.newAudDevice.selected_sub_mic:
             sub_mic_comboBox.setCurrentText(self.newAudDevice.selected_sub_mic.name)
             print_log("log", "sub_mic", self.newAudDevice.selected_sub_mic)
+        else:
+            print_log("error", "sub_mic", "None")
         if self.newAudDevice.selected_speaker:
             spk_comboBox.setCurrentText(self.newAudDevice.selected_speaker.name)
             print_log("log", "spk", self.newAudDevice.selected_speaker)
+        else:
+            print_log("error", "spk", "None")
+
 
         for _combo in [mic_comboBox, sub_mic_comboBox, spk_comboBox]:
             if _combo.currentIndex() == 0:
@@ -2092,17 +2108,19 @@ class THREADMANAGER(QThread):
         self.parent = parent
 
         # Mic
-        self.mic_thread = MicRecorder(self.parent.ui.horizontalSlider_mic_threshold)
+        self.mic_thread = MicRecorder(parent.ui.horizontalSlider_mic_threshold, is_sub=False)
         self.mic_thread.rec_duration = -1.0
+        self.mic_thread.main_program = parent
 
         # Sub Mic
-        self.sub_mic_thread = MicRecorder(self.parent.ui.horizontalSlider_sub_mic_threshold)
+        self.sub_mic_thread = MicRecorder(parent.ui.horizontalSlider_sub_mic_threshold, is_sub=True)
         self.sub_mic_thread.rec_duration = -1.0
+        self.sub_mic_thread.main_program = parent
     def run(self):
         main_program = self.parent
 
         self.mic_thread.adm = main_program.newAudDevice
-        self.mic_thread.main_program = main_program
+        self.sub_mic_thread.adm = main_program.newAudDevice
 
         while True:
             prompt_thread_list = main_program.prompt_thread_list
@@ -2153,6 +2171,17 @@ class THREADMANAGER(QThread):
                         if not self.mic_thread.isRunning():
                             print_log("red", "Start Mic thread")
                             self.mic_thread.start()
+
+            if self.sub_mic_thread.adm:
+                if self.sub_mic_thread.adm.selected_sub_mic:
+                    if self.sub_mic_thread.adm.selected_sub_mic.name:
+                        if not self.sub_mic_thread.device_name:
+                            # print("assign first sub mic device name")
+                            self.sub_mic_thread.device_name = self.sub_mic_thread.adm.selected_sub_mic.name
+
+                        if not self.sub_mic_thread.isRunning():
+                            print_log("red", "Start Sub Mic thread")
+                            self.sub_mic_thread.start()
 
             time.sleep(0.3)
 

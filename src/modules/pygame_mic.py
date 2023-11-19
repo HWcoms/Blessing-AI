@@ -15,14 +15,15 @@ CHANNELS = 1
 
 
 class MicRecorder(QThread):
-    def __init__(self, target_gui: QObject):
+    def __init__(self, target_gui: QObject, is_sub: bool):
         super().__init__()
 
         # for meter settings
         self.adm = None
         self.init_meters()
-        self.target_gui = target_gui    # ex) Slider_mic_threshold or Slider_sub_mic_threshold
+        self.target_gui = target_gui  # ex) Slider_mic_threshold or Slider_sub_mic_threshold
         self.main_program = None
+        self.is_sub = is_sub
 
     def init_meters(self):
         self.device_name = None
@@ -54,26 +55,39 @@ class MicRecorder(QThread):
         self.record_mic(_adm=self.adm, duration=self.rec_duration)
 
     def record_mic(self, _adm: AudioDevice, chunk=1024, duration=-1):
-        print_log("red", "Mic start recording..")
+        log_str = ''
+        if self.is_sub:
+            log_str = 'Sub '
+
+        print_log("red", f"{log_str}Mic start recording..")
 
         if _adm is None:
             raise RuntimeError("ADM is None")
 
-        if _adm.selected_mic:
-            if not _adm.selected_mic.name:
-                raise RuntimeError("No Mic Device Set")
+        adm_mic = None
+
+        if self.is_sub:
+            if _adm.selected_sub_mic:
+                if not _adm.selected_sub_mic.name:
+                    raise RuntimeError("No Sub Mic Device Set")
+                adm_mic = _adm.selected_sub_mic
+        else:
+            if _adm.selected_mic:
+                if not _adm.selected_mic.name:
+                    raise RuntimeError("No Mic Device Set")
+                adm_mic = _adm.selected_mic
 
         self.sample_rate = int(self.p.get_default_input_device_info()['defaultSampleRate'])
 
-        device_index, _ = _adm.get_pyaudio_index(_adm.selected_mic.name)
+        device_index, _ = _adm.get_pyaudio_index(adm_mic.name)
 
         self.stream = self.p.open(format=pyaudio.paInt16,
-                             channels=CHANNELS,
-                             rate=self.sample_rate,
-                             input=True,
-                             output=False,
-                             frames_per_buffer=chunk,
-                             input_device_index=device_index)
+                                  channels=CHANNELS,
+                                  rate=self.sample_rate,
+                                  input=True,
+                                  output=False,
+                                  frames_per_buffer=chunk,
+                                  input_device_index=device_index)
         cur_i = 0
 
         while not self.done:
@@ -110,10 +124,13 @@ class MicRecorder(QThread):
             self.cur_db = round(float(db), 2)
             self.draw_mic_threshold()
             # print_log(color_type, f'[{self.cur_db}] db, max: {self.max_db}', print_func_name=False)
-            time.sleep(0.03)
+            time.sleep(0.02)
         self.done = False
+        self.cur_db = 0
+        self.draw_mic_threshold()   # clear threshold drawn to 0 level
+
         self.close_stream()
-        print_log("red", "Mic Stop recording")
+        print_log("red", f"{log_str}Mic Stop recording")
 
     def close_stream(self):
         # Terminate Stream
@@ -150,15 +167,30 @@ class MicRecorder(QThread):
 
     def check_mic_changed(self):
         if self.adm:
-            if self.adm.selected_mic:
-                if not self.adm.selected_mic.name:
-                    return
-
+            if self.is_sub:
+                if self.adm.selected_sub_mic:
+                    if not self.adm.selected_sub_mic.name:
+                        self.done = True
+                else:
+                    self.done = True
+            else:
+                if self.adm.selected_mic:
+                    if not self.adm.selected_mic.name:
+                        self.done = True
+                else:
+                    self.done = True
+        if self.done:
+            return
         # check changed
-        if self.adm.selected_mic.name != self.device_name:
-            print_log('warning', "mic device got changed")
-            self.device_name = self.adm.selected_mic.name
-            self.done = True
+        if self.is_sub:
+            adm_mic = self.adm.selected_sub_mic
+        else:
+            adm_mic = self.adm.selected_mic
+        if adm_mic:
+            if adm_mic.name != self.device_name:
+                print_log('warning', "mic device got changed")
+                self.device_name = adm_mic.name
+                self.done = True
 
     def draw_mic_threshold(self):
         if self.main_program:
