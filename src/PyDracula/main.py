@@ -98,6 +98,7 @@ t_val_col_c = 20
 
 class MainWindow(QMainWindow):
     update_table_signal = Signal()
+    update_threshold_gui_signal = Signal(float, QObject)
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -117,7 +118,7 @@ class MainWindow(QMainWindow):
                                             # discord_bot, discord_webhook,
                                             # discord_print_language, chat_display_language
 
-        self.audio_info_dict: dict = None   # [mic_index, mic_threshold, phrase_timeout,
+        self.audio_info_dict: dict = None   # [mic_index, mic_threshold, sub_mic_index, sub_mic_threshold, phrase_timeout,
 
                                             # spk_index, speaker_volume,
                                             # tts_character, tts_language, voice_id,
@@ -160,6 +161,8 @@ class MainWindow(QMainWindow):
         self.thread_manager.tts_gen_done_signal.connect(self.start_next_tts_thread)
         self.thread_manager.tts_play_done_signal.connect(self.delete_first_tts_thread)
         self.update_table_signal.connect(self.update_thread_table)      # updating table
+
+        self.update_threshold_gui_signal.connect(self.update_threshold_gui)
         # TODO: [Fix Bug] when cmd_thread is playing audio,
         #   Also trying to add mode tts_thread, table update and threadmanager stops working..
         #   User name is not visible when generating RVC cover
@@ -243,13 +246,18 @@ class MainWindow(QMainWindow):
 
             ## audio settings components
             widgets.comboBox_mic_device,
+            widgets.comboBox_sub_mic_device,
             widgets.comboBox_spk_device,
             widgets.pushButton_mic_device_default,
+            widgets.pushButton_sub_mic_device_default,
             widgets.pushButton_spk_device_default,
 
             widgets.lineEdit_mic_threshold,
             widgets.horizontalSlider_mic_threshold,
             widgets.pushButton_mic_threshold_default,
+            widgets.lineEdit_sub_mic_threshold,
+            widgets.horizontalSlider_sub_mic_threshold,
+            widgets.pushButton_sub_mic_threshold_default,
 
             widgets.lineEdit_speaker_volume,
             widgets.horizontalSlider_speaker_volume,
@@ -574,7 +582,7 @@ class MainWindow(QMainWindow):
         # region AUDIO SETTINGS
         #####################################################################################
         ## mic/spk_device
-        if component_key in ["mic_device", "spk_device"]:
+        if component_key in ["mic_device", "sub_mic_device", "spk_device"]:
             self.refresh_audio_device(update_by_combo=True)
 
             # Update mic_thread & adm
@@ -582,6 +590,8 @@ class MainWindow(QMainWindow):
 
             return
         if component_type == "pushButton" and "device_default" in component_key:
+            if "sub_mic" in component_key:
+                self.refresh_audio_device(update_by_combo=True, def_sub_mic=True)
             if "mic" in component_key:
                 self.refresh_audio_device(update_by_combo=True, def_mic=True)
             elif "spk" in component_key:
@@ -592,7 +602,7 @@ class MainWindow(QMainWindow):
 
         ## region Synced or Only [lineEdit, Slider, PushButton] Handler | Also display value as [xx % / 0.xx]
         #####################################################################################
-        if self.check_name(component_key, ["mic_threshold", "speaker_volume"]):
+        if self.check_name(component_key, ["mic_threshold", "sub_mic_threshold", "speaker_volume"]):
             percent_obj = True
             setting_name = "audio_settings"
         elif self.check_name(component_key,
@@ -620,7 +630,7 @@ class MainWindow(QMainWindow):
                     component_property = conv_dec
 
                 # Find QSlider & Sync Value
-                synced_slider = self.find_qobject_by(component_key, QSlider)
+                synced_slider = self.find_qobject_by(component_key, QSlider, get_only_one=True)
                 if synced_slider:
                     synced_slider.setValue(int(conv_int))
             elif component_type == "horizontalSlider":
@@ -634,14 +644,14 @@ class MainWindow(QMainWindow):
                     conv_str = str(value_dec)
 
                 # Find QLineEdit & Sync Value
-                synced_lineEdit = self.find_qobject_by(component_key, QLineEdit)
+                synced_lineEdit = self.find_qobject_by(component_key, QLineEdit, get_only_one=True)
                 if synced_lineEdit:
                     synced_lineEdit.setText(conv_str)
                 component_property = value_dec    # 0.7
             elif component_type == "pushButton":
                 reset_value = 0.0
                 component_key = component_key.replace("_default", "")   # remove '_default' to find/update synced object
-                # if any(word in component_key for word in ["mic_threshold"]):    # no button yet
+
                 if self.check_name(component_key, ["mic_threshold"]):
                     reset_value = 0.4
                 elif self.check_name(component_key, ["phrase_timeout"]):
@@ -658,7 +668,7 @@ class MainWindow(QMainWindow):
                 component_property = reset_value
 
                 # Find QSlider & Sync Value (lineEdit will automatically follow)
-                synced_slider = self.find_qobject_by(component_key, QSlider)
+                synced_slider = self.find_qobject_by(component_key, QSlider, get_only_one=True)
                 if synced_slider:
                     synced_slider.setValue(reset_value * 100)
                 else:
@@ -964,6 +974,7 @@ class MainWindow(QMainWindow):
         widgets.lineEdit_phrase_timeout.setText(phrase_timeout)
 
         self.set_qobjects_by_dict([widgets.lineEdit_mic_threshold, widgets.horizontalSlider_mic_threshold,
+                                   widgets.lineEdit_sub_mic_threshold, widgets.horizontalSlider_sub_mic_threshold,
                                    widgets.lineEdit_speaker_volume, widgets.horizontalSlider_speaker_volume],
                                   self.audio_info_dict, 100, True)
 
@@ -977,54 +988,64 @@ class MainWindow(QMainWindow):
         ################################################################################################
         # endregion [LINEEDIT & SLIDERS]
 
-    def refresh_audio_device(self, update_by_combo = False, def_mic=False, def_spk=False):
+    def refresh_audio_device(self, update_by_combo = False, def_mic=False, def_sub_mic=False, def_spk=False):
         global widgets
 
         # REFRESH AUDIO DEVICE INFO LIST
         self.newAudDevice.get_all_device()
 
         mic_comboBox = widgets.comboBox_mic_device
+        sub_mic_comboBox = widgets.comboBox_sub_mic_device
         spk_comboBox = widgets.comboBox_spk_device
 
         pre_mic_ = mic_comboBox.currentIndex()
+        pre_sub_mic_ = sub_mic_comboBox.currentIndex()
         pre_spk_ = spk_comboBox.currentIndex()
 
         mic_comboBox.clear()
+        sub_mic_comboBox.clear()
         spk_comboBox.clear()
 
         for _mic in self.newAudDevice.mic_list:
             mic_comboBox.addItem(_mic.name)
+            sub_mic_comboBox.addItem(_mic.name)
         for _spk in self.newAudDevice.speaker_list:
             spk_comboBox.addItem(_spk.name)
 
         # SET COLOR BY ITEM TEXT [None] OR NOT
-        for _combo in [mic_comboBox, spk_comboBox]:
+        for _combo in [mic_comboBox, sub_mic_comboBox, spk_comboBox]:
             self.add_none_item_combobox(_combo)
 
         _mic_index = None
+        _sub_mic_index = None
         _spk_index = None
 
         if update_by_combo:
             _mic_index = pre_mic_ - 1
+            _sub_mic_index = pre_sub_mic_ - 1
             _spk_index = pre_spk_ - 1
         else:
             _mic_index = self.audio_info_dict['mic_index']
+            _sub_mic_index = self.audio_info_dict['sub_mic_index']
             _spk_index = self.audio_info_dict['spk_index']
 
-        _mic_i_fix, _spk_i_fix = self.select_aud_devices_loaded_setting(_mic_index, _spk_index, def_mic, def_spk)
+        _mic_i_fix, _sub_mic_i_fix, _spk_i_fix = self.select_aud_devices_loaded_setting(_mic_index, _sub_mic_index, _spk_index, def_mic, def_sub_mic, def_spk)
 
         # region [UPDATE JSON FILE]
         ################################################################################################
         update_json("mic_index", _mic_i_fix, "audio_settings")
+        update_json("sub_mic_index", _sub_mic_i_fix, "audio_settings")
         update_json("spk_index", _spk_i_fix, "audio_settings")
         ################################################################################################
         # endregion [UPDATE JSON FILE]
 
-    def select_aud_devices_loaded_setting(self, _mic_i, _spk_i, def_mic, def_spk):
+    def select_aud_devices_loaded_setting(self, _mic_i, _sub_mic_i, _spk_i, def_mic, def_sub_mic, def_spk):
         mic_comboBox = self.ui.comboBox_mic_device
+        sub_mic_comboBox = self.ui.comboBox_sub_mic_device
         spk_comboBox = self.ui.comboBox_spk_device
 
         _ret_mic_i = _mic_i
+        _ret_sub_mic_i = _sub_mic_i
         _ret_spk_i = _spk_i
 
         # Set devices with index
@@ -1035,6 +1056,13 @@ class MainWindow(QMainWindow):
             self.newAudDevice.set_selected_mic_index(_mic_i)
             _ret_mic_i = self.newAudDevice.selected_mic.index
 
+        if _sub_mic_i < 0:
+            sub_mic_comboBox.setCurrentIndex(0)
+            self.newAudDevice.selected_sub_mic = None
+        else:
+            self.newAudDevice.set_selected_sub_mic_index(_sub_mic_i)
+            _ret_sub_mic_i = self.newAudDevice.selected_sub_mic.index
+
         if _spk_i < 0:
             spk_comboBox.setCurrentIndex(0)
             self.newAudDevice.selected_speaker = None
@@ -1043,28 +1071,32 @@ class MainWindow(QMainWindow):
             _ret_spk_i = self.newAudDevice.selected_speaker.index
 
         # Set Default devices if need
-        if def_mic:
-            self.newAudDevice.set_selected_device_to_default(def_mic, False)
-            _ret_mic_i = self.newAudDevice.selected_mic.index
-        if def_spk:
-            self.newAudDevice.set_selected_device_to_default(False, def_spk)
-            _ret_spk_i = self.newAudDevice.selected_speaker.index
+        self.newAudDevice.set_selected_device_to_default(def_mic, def_sub_mic, def_spk)
+        # if def_mic:
+        _ret_mic_i = self.newAudDevice.selected_mic.index
+        # if def_sub_mic:
+        _ret_sub_mic_i = self.newAudDevice.selected_sub_mic.index
+        # if def_spk:
+        _ret_spk_i = self.newAudDevice.selected_speaker.index
 
         if self.newAudDevice.selected_mic:
             mic_comboBox.setCurrentText(self.newAudDevice.selected_mic.name)
             print_log("log", "mic", self.newAudDevice.selected_mic)
+        if self.newAudDevice.selected_sub_mic:
+            sub_mic_comboBox.setCurrentText(self.newAudDevice.selected_sub_mic.name)
+            print_log("log", "sub_mic", self.newAudDevice.selected_sub_mic)
         if self.newAudDevice.selected_speaker:
             spk_comboBox.setCurrentText(self.newAudDevice.selected_speaker.name)
             print_log("log", "spk", self.newAudDevice.selected_speaker)
 
-        for _combo in [mic_comboBox, spk_comboBox]:
+        for _combo in [mic_comboBox, sub_mic_comboBox, spk_comboBox]:
             if _combo.currentIndex() == 0:
                 _col = "red"
             else:
                 _col = "white"
             self.change_color_combobox(_combo, _col)
 
-        return _ret_mic_i, _ret_spk_i
+        return _ret_mic_i, _ret_sub_mic_i, _ret_spk_i
 
     # REFRESH TTS INFO LIST
     def refresh_tts_info(self, update_by_combo = False):
@@ -1762,7 +1794,7 @@ class MainWindow(QMainWindow):
         #     print("final: ", _result.objectName())
         return _result
 
-    def find_qobject_by(self, name:str, type:QObject) -> QObject:
+    def find_qobject_by(self, name:str, type:QObject, get_only_one=False) -> QObject:
         """
         find 1 or List of :py:class:`QObject` by name and type
 
@@ -1793,6 +1825,14 @@ class MainWindow(QMainWindow):
         if len(_matching_obj_list) == 1:
             return _matching_obj_list[0]
         elif len(_matching_obj_list) > 1:
+            if get_only_one:
+                # Try to get only exact same name
+                for obj in _matching_obj_list:
+                    _, cur_obj_name = self.component_info_by_name(obj.objectName())
+                    if name == cur_obj_name:
+                        return obj
+
+            print_log("warning", "found multiple objs with", f"name={name},\n obj list={_matching_obj_list}")
             return _matching_obj_list
 
         print_log("warning", "Could not find any QObject with", f"name={name}, type={type}")
@@ -2027,6 +2067,16 @@ class MainWindow(QMainWindow):
                 table.setItem(thread_index, 2, QTableWidgetItem(thread.state[1]))
                 thread_index += 1
 
+    # Update Mic Threshold GUI
+    def update_threshold_gui(self, value, component:QObject):
+        stop_x = value * 0.01
+
+        lines = self.default_slider_stylesheet.splitlines()
+        lines[1] = f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:{stop_x} rgb(11, 211, 0), stop:{stop_x+0.001} rgb(55, 62, 76));'
+        # result_string = 'QSlider::groove {'+f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:.5 rgb(11, 211, 0), stop:0.501 rgb(55, 62, 76));'+'}'
+        result_string = '\n'.join(lines)
+
+        component.setStyleSheet(result_string)
     #################################################################################################
     # region [Thread Control Methods]
 
@@ -2042,8 +2092,12 @@ class THREADMANAGER(QThread):
         self.parent = parent
 
         # Mic
-        self.mic_thread = MicRecorder()
+        self.mic_thread = MicRecorder(self.parent.ui.horizontalSlider_mic_threshold)
         self.mic_thread.rec_duration = -1.0
+
+        # Sub Mic
+        self.sub_mic_thread = MicRecorder(self.parent.ui.horizontalSlider_sub_mic_threshold)
+        self.sub_mic_thread.rec_duration = -1.0
     def run(self):
         main_program = self.parent
 

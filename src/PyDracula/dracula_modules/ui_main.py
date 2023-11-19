@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainOYIJmL.ui'
+## Form generated from reading UI file 'mainarfVUP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1771,7 +1771,7 @@ class Ui_MainWindow(object):
         self.scrollArea_audio_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1182, 636))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1182, 732))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -1786,60 +1786,6 @@ class Ui_MainWindow(object):
         self.horizontalSpacer_2 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_13.addItem(self.horizontalSpacer_2)
-
-        self.verticalLayout_62 = QVBoxLayout()
-        self.verticalLayout_62.setObjectName(u"verticalLayout_62")
-        self.verticalLayout_62.setSizeConstraint(QLayout.SetFixedSize)
-        self.verticalLayout_62.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_65 = QHBoxLayout()
-        self.horizontalLayout_65.setSpacing(10)
-        self.horizontalLayout_65.setObjectName(u"horizontalLayout_65")
-        self.horizontalLayout_65.setContentsMargins(-1, 0, -1, 0)
-        self.label_18 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_18.setObjectName(u"label_18")
-
-        self.horizontalLayout_65.addWidget(self.label_18)
-
-        self.horizontalSpacer_36 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_65.addItem(self.horizontalSpacer_36)
-
-        self.pushButton_mic_device_default = QPushButton(self.scrollAreaWidgetContents_2)
-        self.pushButton_mic_device_default.setObjectName(u"pushButton_mic_device_default")
-        sizePolicy4.setHeightForWidth(self.pushButton_mic_device_default.sizePolicy().hasHeightForWidth())
-        self.pushButton_mic_device_default.setSizePolicy(sizePolicy4)
-        self.pushButton_mic_device_default.setMinimumSize(QSize(130, 30))
-        self.pushButton_mic_device_default.setStyleSheet(u"")
-
-        self.horizontalLayout_65.addWidget(self.pushButton_mic_device_default)
-
-
-        self.verticalLayout_62.addLayout(self.horizontalLayout_65)
-
-        self.horizontalLayout_66 = QHBoxLayout()
-        self.horizontalLayout_66.setObjectName(u"horizontalLayout_66")
-        self.horizontalLayout_66.setContentsMargins(-1, 0, -1, 0)
-        self.comboBox_mic_device = QComboBox(self.scrollAreaWidgetContents_2)
-        self.comboBox_mic_device.addItem("")
-        self.comboBox_mic_device.addItem("")
-        self.comboBox_mic_device.addItem("")
-        self.comboBox_mic_device.setObjectName(u"comboBox_mic_device")
-        sizePolicy1.setHeightForWidth(self.comboBox_mic_device.sizePolicy().hasHeightForWidth())
-        self.comboBox_mic_device.setSizePolicy(sizePolicy1)
-        self.comboBox_mic_device.setMinimumSize(QSize(0, 0))
-        self.comboBox_mic_device.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-
-        self.horizontalLayout_66.addWidget(self.comboBox_mic_device)
-
-
-        self.verticalLayout_62.addLayout(self.horizontalLayout_66)
-
-
-        self.horizontalLayout_13.addLayout(self.verticalLayout_62)
-
-        self.horizontalSpacer_5 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_13.addItem(self.horizontalSpacer_5)
 
         self.verticalLayout_58 = QVBoxLayout()
         self.verticalLayout_58.setObjectName(u"verticalLayout_58")
@@ -1890,16 +1836,217 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_13.addLayout(self.verticalLayout_58)
 
+        self.horizontalSpacer_5 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_13.addItem(self.horizontalSpacer_5)
+
+        self.verticalLayout_55 = QVBoxLayout()
+        self.verticalLayout_55.setObjectName(u"verticalLayout_55")
+        self.verticalLayout_55.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_50 = QHBoxLayout()
+        self.horizontalLayout_50.setSpacing(10)
+        self.horizontalLayout_50.setObjectName(u"horizontalLayout_50")
+        self.horizontalLayout_50.setContentsMargins(-1, 0, -1, 0)
+        self.label_10 = QLabel(self.scrollAreaWidgetContents_2)
+        self.label_10.setObjectName(u"label_10")
+
+        self.horizontalLayout_50.addWidget(self.label_10)
+
+        self.horizontalSpacer_20 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_50.addItem(self.horizontalSpacer_20)
+
+        self.lineEdit_speaker_volume = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_speaker_volume.setObjectName(u"lineEdit_speaker_volume")
+        sizePolicy11 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy11.setHorizontalStretch(0)
+        sizePolicy11.setVerticalStretch(0)
+        sizePolicy11.setHeightForWidth(self.lineEdit_speaker_volume.sizePolicy().hasHeightForWidth())
+        self.lineEdit_speaker_volume.setSizePolicy(sizePolicy11)
+        self.lineEdit_speaker_volume.setMinimumSize(QSize(60, 0))
+        self.lineEdit_speaker_volume.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_speaker_volume.setAcceptDrops(True)
+        self.lineEdit_speaker_volume.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_50.addWidget(self.lineEdit_speaker_volume)
+
+        self.horizontalSpacer_28 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_50.addItem(self.horizontalSpacer_28)
+
+        self.pushButton_speaker_volume_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_speaker_volume_default.setObjectName(u"pushButton_speaker_volume_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_speaker_volume_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_speaker_volume_default.setSizePolicy(sizePolicy4)
+        self.pushButton_speaker_volume_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_speaker_volume_default.setStyleSheet(u"")
+
+        self.horizontalLayout_50.addWidget(self.pushButton_speaker_volume_default)
+
+
+        self.verticalLayout_55.addLayout(self.horizontalLayout_50)
+
+        self.horizontalLayout_51 = QHBoxLayout()
+        self.horizontalLayout_51.setObjectName(u"horizontalLayout_51")
+        self.horizontalLayout_51.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_speaker_volume = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalSlider_speaker_volume.setObjectName(u"horizontalSlider_speaker_volume")
+        sizePolicy1.setHeightForWidth(self.horizontalSlider_speaker_volume.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider_speaker_volume.setSizePolicy(sizePolicy1)
+        self.horizontalSlider_speaker_volume.setMinimumSize(QSize(0, 0))
+        self.horizontalSlider_speaker_volume.setStyleSheet(u"")
+        self.horizontalSlider_speaker_volume.setMaximum(200)
+        self.horizontalSlider_speaker_volume.setSingleStep(10)
+        self.horizontalSlider_speaker_volume.setValue(100)
+        self.horizontalSlider_speaker_volume.setOrientation(Qt.Horizontal)
+
+        self.horizontalLayout_51.addWidget(self.horizontalSlider_speaker_volume)
+
+
+        self.verticalLayout_55.addLayout(self.horizontalLayout_51)
+
+
+        self.horizontalLayout_13.addLayout(self.verticalLayout_55)
+
         self.horizontalSpacer_3 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_13.addItem(self.horizontalSpacer_3)
 
         self.horizontalLayout_13.setStretch(0, 6)
-        self.horizontalLayout_13.setStretch(1, 20)
-        self.horizontalLayout_13.setStretch(3, 20)
+        self.horizontalLayout_13.setStretch(1, 16)
+        self.horizontalLayout_13.setStretch(2, 2)
+        self.horizontalLayout_13.setStretch(3, 16)
         self.horizontalLayout_13.setStretch(4, 6)
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_13)
+
+        self.verticalSpacer_spk_device = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_22.addItem(self.verticalSpacer_spk_device)
+
+        self.horizontalLayout_15 = QHBoxLayout()
+        self.horizontalLayout_15.setSpacing(0)
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.horizontalLayout_15.setContentsMargins(0, -1, 0, 0)
+        self.horizontalSpacer_9 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_15.addItem(self.horizontalSpacer_9)
+
+        self.verticalLayout_62 = QVBoxLayout()
+        self.verticalLayout_62.setObjectName(u"verticalLayout_62")
+        self.verticalLayout_62.setSizeConstraint(QLayout.SetFixedSize)
+        self.verticalLayout_62.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_65 = QHBoxLayout()
+        self.horizontalLayout_65.setSpacing(10)
+        self.horizontalLayout_65.setObjectName(u"horizontalLayout_65")
+        self.horizontalLayout_65.setContentsMargins(-1, 0, -1, 0)
+        self.label_18 = QLabel(self.scrollAreaWidgetContents_2)
+        self.label_18.setObjectName(u"label_18")
+
+        self.horizontalLayout_65.addWidget(self.label_18)
+
+        self.horizontalSpacer_36 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_65.addItem(self.horizontalSpacer_36)
+
+        self.pushButton_mic_device_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_mic_device_default.setObjectName(u"pushButton_mic_device_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_mic_device_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_mic_device_default.setSizePolicy(sizePolicy4)
+        self.pushButton_mic_device_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_mic_device_default.setStyleSheet(u"")
+
+        self.horizontalLayout_65.addWidget(self.pushButton_mic_device_default)
+
+
+        self.verticalLayout_62.addLayout(self.horizontalLayout_65)
+
+        self.horizontalLayout_66 = QHBoxLayout()
+        self.horizontalLayout_66.setObjectName(u"horizontalLayout_66")
+        self.horizontalLayout_66.setContentsMargins(-1, 0, -1, 0)
+        self.comboBox_mic_device = QComboBox(self.scrollAreaWidgetContents_2)
+        self.comboBox_mic_device.addItem("")
+        self.comboBox_mic_device.addItem("")
+        self.comboBox_mic_device.addItem("")
+        self.comboBox_mic_device.setObjectName(u"comboBox_mic_device")
+        sizePolicy1.setHeightForWidth(self.comboBox_mic_device.sizePolicy().hasHeightForWidth())
+        self.comboBox_mic_device.setSizePolicy(sizePolicy1)
+        self.comboBox_mic_device.setMinimumSize(QSize(0, 0))
+        self.comboBox_mic_device.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+
+        self.horizontalLayout_66.addWidget(self.comboBox_mic_device)
+
+
+        self.verticalLayout_62.addLayout(self.horizontalLayout_66)
+
+
+        self.horizontalLayout_15.addLayout(self.verticalLayout_62)
+
+        self.horizontalSpacer_11 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_15.addItem(self.horizontalSpacer_11)
+
+        self.verticalLayout_64 = QVBoxLayout()
+        self.verticalLayout_64.setObjectName(u"verticalLayout_64")
+        self.verticalLayout_64.setSizeConstraint(QLayout.SetFixedSize)
+        self.verticalLayout_64.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_69 = QHBoxLayout()
+        self.horizontalLayout_69.setSpacing(10)
+        self.horizontalLayout_69.setObjectName(u"horizontalLayout_69")
+        self.horizontalLayout_69.setContentsMargins(-1, 0, -1, 0)
+        self.label_20 = QLabel(self.scrollAreaWidgetContents_2)
+        self.label_20.setObjectName(u"label_20")
+
+        self.horizontalLayout_69.addWidget(self.label_20)
+
+        self.horizontalSpacer_41 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_69.addItem(self.horizontalSpacer_41)
+
+        self.pushButton_sub_mic_device_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_sub_mic_device_default.setObjectName(u"pushButton_sub_mic_device_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_sub_mic_device_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_sub_mic_device_default.setSizePolicy(sizePolicy4)
+        self.pushButton_sub_mic_device_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_sub_mic_device_default.setStyleSheet(u"")
+
+        self.horizontalLayout_69.addWidget(self.pushButton_sub_mic_device_default)
+
+
+        self.verticalLayout_64.addLayout(self.horizontalLayout_69)
+
+        self.horizontalLayout_70 = QHBoxLayout()
+        self.horizontalLayout_70.setObjectName(u"horizontalLayout_70")
+        self.horizontalLayout_70.setContentsMargins(-1, 0, -1, 0)
+        self.comboBox_sub_mic_device = QComboBox(self.scrollAreaWidgetContents_2)
+        self.comboBox_sub_mic_device.addItem("")
+        self.comboBox_sub_mic_device.addItem("")
+        self.comboBox_sub_mic_device.addItem("")
+        self.comboBox_sub_mic_device.setObjectName(u"comboBox_sub_mic_device")
+        sizePolicy1.setHeightForWidth(self.comboBox_sub_mic_device.sizePolicy().hasHeightForWidth())
+        self.comboBox_sub_mic_device.setSizePolicy(sizePolicy1)
+        self.comboBox_sub_mic_device.setMinimumSize(QSize(0, 0))
+        self.comboBox_sub_mic_device.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+
+        self.horizontalLayout_70.addWidget(self.comboBox_sub_mic_device)
+
+
+        self.verticalLayout_64.addLayout(self.horizontalLayout_70)
+
+
+        self.horizontalLayout_15.addLayout(self.verticalLayout_64)
+
+        self.horizontalSpacer_14 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_15.addItem(self.horizontalSpacer_14)
+
+        self.horizontalLayout_15.setStretch(0, 6)
+        self.horizontalLayout_15.setStretch(1, 16)
+        self.horizontalLayout_15.setStretch(2, 2)
+        self.horizontalLayout_15.setStretch(3, 16)
+        self.horizontalLayout_15.setStretch(4, 6)
+
+        self.verticalLayout_22.addLayout(self.horizontalLayout_15)
 
         self.horizontalLayout_10 = QHBoxLayout()
         self.horizontalLayout_10.setSpacing(0)
@@ -1927,9 +2074,6 @@ class Ui_MainWindow(object):
 
         self.lineEdit_mic_threshold = QLineEdit(self.scrollAreaWidgetContents_2)
         self.lineEdit_mic_threshold.setObjectName(u"lineEdit_mic_threshold")
-        sizePolicy11 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy11.setHorizontalStretch(0)
-        sizePolicy11.setVerticalStretch(0)
         sizePolicy11.setHeightForWidth(self.lineEdit_mic_threshold.sizePolicy().hasHeightForWidth())
         self.lineEdit_mic_threshold.setSizePolicy(sizePolicy11)
         self.lineEdit_mic_threshold.setMinimumSize(QSize(60, 0))
@@ -1978,89 +2122,86 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_10.addLayout(self.verticalLayout_63)
 
-        self.horizontalSpacer_8 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_21 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_10.addItem(self.horizontalSpacer_8)
+        self.horizontalLayout_10.addItem(self.horizontalSpacer_21)
 
-        self.verticalLayout_55 = QVBoxLayout()
-        self.verticalLayout_55.setObjectName(u"verticalLayout_55")
-        self.verticalLayout_55.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_50 = QHBoxLayout()
-        self.horizontalLayout_50.setSpacing(10)
-        self.horizontalLayout_50.setObjectName(u"horizontalLayout_50")
-        self.horizontalLayout_50.setContentsMargins(-1, 0, -1, 0)
-        self.label_10 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_10.setObjectName(u"label_10")
+        self.verticalLayout_68 = QVBoxLayout()
+        self.verticalLayout_68.setObjectName(u"verticalLayout_68")
+        self.verticalLayout_68.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_71 = QHBoxLayout()
+        self.horizontalLayout_71.setSpacing(10)
+        self.horizontalLayout_71.setObjectName(u"horizontalLayout_71")
+        self.horizontalLayout_71.setContentsMargins(-1, 0, -1, 0)
+        self.label_22 = QLabel(self.scrollAreaWidgetContents_2)
+        self.label_22.setObjectName(u"label_22")
 
-        self.horizontalLayout_50.addWidget(self.label_10)
+        self.horizontalLayout_71.addWidget(self.label_22)
 
-        self.horizontalSpacer_20 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_30 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
-        self.horizontalLayout_50.addItem(self.horizontalSpacer_20)
+        self.horizontalLayout_71.addItem(self.horizontalSpacer_30)
 
-        self.lineEdit_speaker_volume = QLineEdit(self.scrollAreaWidgetContents_2)
-        self.lineEdit_speaker_volume.setObjectName(u"lineEdit_speaker_volume")
-        sizePolicy11.setHeightForWidth(self.lineEdit_speaker_volume.sizePolicy().hasHeightForWidth())
-        self.lineEdit_speaker_volume.setSizePolicy(sizePolicy11)
-        self.lineEdit_speaker_volume.setMinimumSize(QSize(60, 0))
-        self.lineEdit_speaker_volume.setMaximumSize(QSize(60, 16777215))
-        self.lineEdit_speaker_volume.setAcceptDrops(True)
-        self.lineEdit_speaker_volume.setAlignment(Qt.AlignCenter)
+        self.lineEdit_sub_mic_threshold = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_sub_mic_threshold.setObjectName(u"lineEdit_sub_mic_threshold")
+        sizePolicy11.setHeightForWidth(self.lineEdit_sub_mic_threshold.sizePolicy().hasHeightForWidth())
+        self.lineEdit_sub_mic_threshold.setSizePolicy(sizePolicy11)
+        self.lineEdit_sub_mic_threshold.setMinimumSize(QSize(60, 0))
+        self.lineEdit_sub_mic_threshold.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_sub_mic_threshold.setAcceptDrops(True)
+        self.lineEdit_sub_mic_threshold.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_50.addWidget(self.lineEdit_speaker_volume)
+        self.horizontalLayout_71.addWidget(self.lineEdit_sub_mic_threshold)
 
-        self.horizontalSpacer_28 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_42 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_50.addItem(self.horizontalSpacer_28)
+        self.horizontalLayout_71.addItem(self.horizontalSpacer_42)
 
-        self.pushButton_speaker_volume_default = QPushButton(self.scrollAreaWidgetContents_2)
-        self.pushButton_speaker_volume_default.setObjectName(u"pushButton_speaker_volume_default")
-        sizePolicy4.setHeightForWidth(self.pushButton_speaker_volume_default.sizePolicy().hasHeightForWidth())
-        self.pushButton_speaker_volume_default.setSizePolicy(sizePolicy4)
-        self.pushButton_speaker_volume_default.setMinimumSize(QSize(130, 30))
-        self.pushButton_speaker_volume_default.setStyleSheet(u"")
+        self.pushButton_sub_mic_threshold_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_sub_mic_threshold_default.setObjectName(u"pushButton_sub_mic_threshold_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_sub_mic_threshold_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_sub_mic_threshold_default.setSizePolicy(sizePolicy4)
+        self.pushButton_sub_mic_threshold_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_sub_mic_threshold_default.setStyleSheet(u"")
 
-        self.horizontalLayout_50.addWidget(self.pushButton_speaker_volume_default)
-
-
-        self.verticalLayout_55.addLayout(self.horizontalLayout_50)
-
-        self.horizontalLayout_51 = QHBoxLayout()
-        self.horizontalLayout_51.setObjectName(u"horizontalLayout_51")
-        self.horizontalLayout_51.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalSlider_speaker_volume = QSlider(self.scrollAreaWidgetContents_2)
-        self.horizontalSlider_speaker_volume.setObjectName(u"horizontalSlider_speaker_volume")
-        sizePolicy1.setHeightForWidth(self.horizontalSlider_speaker_volume.sizePolicy().hasHeightForWidth())
-        self.horizontalSlider_speaker_volume.setSizePolicy(sizePolicy1)
-        self.horizontalSlider_speaker_volume.setMinimumSize(QSize(0, 0))
-        self.horizontalSlider_speaker_volume.setStyleSheet(u"")
-        self.horizontalSlider_speaker_volume.setMaximum(200)
-        self.horizontalSlider_speaker_volume.setSingleStep(10)
-        self.horizontalSlider_speaker_volume.setValue(100)
-        self.horizontalSlider_speaker_volume.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout_51.addWidget(self.horizontalSlider_speaker_volume)
+        self.horizontalLayout_71.addWidget(self.pushButton_sub_mic_threshold_default)
 
 
-        self.verticalLayout_55.addLayout(self.horizontalLayout_51)
+        self.verticalLayout_68.addLayout(self.horizontalLayout_71)
+
+        self.horizontalLayout_79 = QHBoxLayout()
+        self.horizontalLayout_79.setObjectName(u"horizontalLayout_79")
+        self.horizontalLayout_79.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalSlider_sub_mic_threshold = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalSlider_sub_mic_threshold.setObjectName(u"horizontalSlider_sub_mic_threshold")
+        sizePolicy1.setHeightForWidth(self.horizontalSlider_sub_mic_threshold.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider_sub_mic_threshold.setSizePolicy(sizePolicy1)
+        self.horizontalSlider_sub_mic_threshold.setMinimumSize(QSize(0, 0))
+        self.horizontalSlider_sub_mic_threshold.setStyleSheet(u"QSlider::groove {\n"
+"	background-color: rgb(55, 62, 76);\n"
+"}")
+        self.horizontalSlider_sub_mic_threshold.setMaximum(100)
+        self.horizontalSlider_sub_mic_threshold.setSingleStep(10)
+        self.horizontalSlider_sub_mic_threshold.setOrientation(Qt.Horizontal)
+
+        self.horizontalLayout_79.addWidget(self.horizontalSlider_sub_mic_threshold)
 
 
-        self.horizontalLayout_10.addLayout(self.verticalLayout_55)
+        self.verticalLayout_68.addLayout(self.horizontalLayout_79)
+
+
+        self.horizontalLayout_10.addLayout(self.verticalLayout_68)
 
         self.horizontalSpacer_7 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_10.addItem(self.horizontalSpacer_7)
 
         self.horizontalLayout_10.setStretch(0, 6)
-        self.horizontalLayout_10.setStretch(1, 20)
-        self.horizontalLayout_10.setStretch(3, 20)
+        self.horizontalLayout_10.setStretch(1, 16)
+        self.horizontalLayout_10.setStretch(2, 2)
         self.horizontalLayout_10.setStretch(4, 6)
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_10)
-
-        self.verticalSpacer_spk_device = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_22.addItem(self.verticalSpacer_spk_device)
 
         self.horizontalLayout_14 = QHBoxLayout()
         self.horizontalLayout_14.setSpacing(0)
@@ -2161,9 +2302,9 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_14.addItem(self.horizontalSpacer_12)
 
-        self.horizontalLayout_14.setStretch(0, 1)
-        self.horizontalLayout_14.setStretch(1, 2)
-        self.horizontalLayout_14.setStretch(2, 1)
+        self.horizontalLayout_14.setStretch(0, 6)
+        self.horizontalLayout_14.setStretch(1, 33)
+        self.horizontalLayout_14.setStretch(2, 6)
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_14)
 
@@ -4736,24 +4877,33 @@ class Ui_MainWindow(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">this is AI language model. chat assistance.</p></body></html>", None))
-        self.label_18.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Device</span></p></body></html>", None))
-        self.pushButton_mic_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
-        self.comboBox_mic_device.setItemText(0, QCoreApplication.translate("MainWindow", u"Mic device 1", None))
-        self.comboBox_mic_device.setItemText(1, QCoreApplication.translate("MainWindow", u"Mic 2", None))
-        self.comboBox_mic_device.setItemText(2, QCoreApplication.translate("MainWindow", u"Mic 3", None))
-
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Speaker Device</span></p></body></html>", None))
         self.pushButton_spk_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
         self.comboBox_spk_device.setItemText(0, QCoreApplication.translate("MainWindow", u"Spk device 1", None))
         self.comboBox_spk_device.setItemText(1, QCoreApplication.translate("MainWindow", u"Spk 2", None))
         self.comboBox_spk_device.setItemText(2, QCoreApplication.translate("MainWindow", u"Spk 3", None))
 
-        self.label_19.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Threshold</span></p></body></html>", None))
-        self.lineEdit_mic_threshold.setText(QCoreApplication.translate("MainWindow", u"30 %", None))
-        self.pushButton_mic_threshold_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Speaker Volume</span></p></body></html>", None))
         self.lineEdit_speaker_volume.setText(QCoreApplication.translate("MainWindow", u"100 %", None))
         self.pushButton_speaker_volume_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Device</span></p></body></html>", None))
+        self.pushButton_mic_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.comboBox_mic_device.setItemText(0, QCoreApplication.translate("MainWindow", u"Mic device 1", None))
+        self.comboBox_mic_device.setItemText(1, QCoreApplication.translate("MainWindow", u"Mic 2", None))
+        self.comboBox_mic_device.setItemText(2, QCoreApplication.translate("MainWindow", u"Mic 3", None))
+
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Sub Mic Device </span><span style=\" font-size:7pt; font-weight:700;\">(For Other User)</span></p></body></html>", None))
+        self.pushButton_sub_mic_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.comboBox_sub_mic_device.setItemText(0, QCoreApplication.translate("MainWindow", u"Sub Mic device 1", None))
+        self.comboBox_sub_mic_device.setItemText(1, QCoreApplication.translate("MainWindow", u"Sub Mic 2", None))
+        self.comboBox_sub_mic_device.setItemText(2, QCoreApplication.translate("MainWindow", u"Sub Mic 3", None))
+
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Threshold</span></p></body></html>", None))
+        self.lineEdit_mic_threshold.setText(QCoreApplication.translate("MainWindow", u"30 %", None))
+        self.pushButton_mic_threshold_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
+        self.label_22.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Sub Mic Threshold</span></p></body></html>", None))
+        self.lineEdit_sub_mic_threshold.setText(QCoreApplication.translate("MainWindow", u"30 %", None))
+        self.pushButton_sub_mic_threshold_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.label_21.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Phrase TimeOut</span></p></body></html>", None))
         self.lineEdit_phrase_timeout.setText(QCoreApplication.translate("MainWindow", u"2", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>seconds</p></body></html>", None))

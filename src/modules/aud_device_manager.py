@@ -19,6 +19,7 @@ class AudioDevice:
     default_speaker: SpeakerDevice  # SpeakerDevice - Default Speaker
 
     selected_mic: MicDevice  # MicDevice - Selected Mic
+    selected_sub_mic: MicDevice  # MicDevice - selected Mic
     selected_speaker: SpeakerDevice  # SpeakerDevice - Selected Speaker
 
     mic_list: list  # List of MicDevice - List of Mics
@@ -28,8 +29,9 @@ class AudioDevice:
         self.device_list = []
         self.mic_list = []
         self.speaker_list = []
-        self.selected_speaker = SpeakerDevice()
         self.selected_mic = MicDevice()
+        self.selected_sub_mic = MicDevice()
+        self.selected_speaker = SpeakerDevice()
         self.get_all_device()
         # self.set_selected_device_to_default()
         # self.get_spk_mic_list("compact")
@@ -86,6 +88,15 @@ class AudioDevice:
         else:
             self.selected_mic = self.mic_list[index]
 
+    def set_selected_sub_mic_index(self, index):
+        if len(self.mic_list) == 0:
+            raise RuntimeError("sub mic list is empty!")
+        elif index >= len(self.mic_list) or index < 0:
+            print("Warning [aud_device_manager]: index error, select default sub mic device")
+            self.selected_sub_mic = self.default_mic
+        else:
+            self.selected_sub_mic = self.mic_list[index]
+
     def set_selected_speaker_index(self, index):
         if len(self.speaker_list) == 0:
             raise RuntimeError("speaker list is empty!")
@@ -106,6 +117,18 @@ class AudioDevice:
                 self.selected_mic = item
                 return item
         print(f"\033[31mError [Audio Device]: Could not find any Mic Device with given name: {name}\033[0m")
+
+    def set_selected_sub_mic(self, name):
+        for item in self.mic_list:
+            if name in item.name:
+                if item.input_count == 0:
+                    print(
+                        f"\033[31mError [Audio Device]: trying to select {self.selected_sub_mic.input_count} input channel device to Sub Mic: {item.name}\033[0m")
+                    return None
+
+                self.selected_sub_mic = item
+                return item
+        print(f"\033[31mError [Audio Device]: Could not find any Sub Mic Device with given name: {name}\033[0m")
 
     def set_selected_speaker(self, name):
         for item in self.speaker_list:
@@ -133,9 +156,11 @@ class AudioDevice:
         print("\033[31mError [Audio Device Manager]: Could not find any default Speaker\033[0m")
         return None
 
-    def set_selected_device_to_default(self, mic=True, spk=True):
+    def set_selected_device_to_default(self, mic=True, sub_mic=True, spk=True):
         if mic:
             self.selected_mic = self.get_default_mic()
+        if sub_mic:
+            self.selected_sub_mic = self.get_default_mic()
         if spk:
             self.selected_speaker = self.get_default_speaker()
 
@@ -179,6 +204,7 @@ class AudioDevice:
                     return cur_info.get('index'), cur_info.get('name')
 
         return None
+
     def __str__(self):
         _line_str = '\033[33m================================================================\033[0m'
         _split_str = '\033[34m----------------------------------------------------------------\033[0m'

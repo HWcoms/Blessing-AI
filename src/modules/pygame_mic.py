@@ -1,4 +1,4 @@
-from PySide6.QtCore import QThread
+from PySide6.QtCore import QThread, QObject
 
 import pyaudio
 import audioop
@@ -15,12 +15,13 @@ CHANNELS = 1
 
 
 class MicRecorder(QThread):
-    def __init__(self):
+    def __init__(self, target_gui: QObject):
         super().__init__()
 
         # for meter settings
         self.adm = None
         self.init_meters()
+        self.target_gui = target_gui    # ex) Slider_mic_threshold or Slider_sub_mic_threshold
         self.main_program = None
 
     def init_meters(self):
@@ -112,6 +113,7 @@ class MicRecorder(QThread):
             time.sleep(0.03)
         self.done = False
         self.close_stream()
+        print_log("red", "Mic Stop recording")
 
     def close_stream(self):
         # Terminate Stream
@@ -159,17 +161,13 @@ class MicRecorder(QThread):
             self.done = True
 
     def draw_mic_threshold(self):
-        # TODO: emit signal instead of changing stylesheet from other thread (crash problem)
-        stop_x = self.cur_db * 0.01
-        # default_slider_stylesheet = self.main_program.default_slider_stylesheet
-
-        # lines = default_slider_stylesheet.splitlines()
-        # lines[1] = f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:{stop_x} rgb(11, 211, 0), stop:{stop_x+0.001} rgb(55, 62, 76));'
-        result_string = 'QSlider::groove {'+f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:{stop_x} rgb(11, 211, 0), stop:{stop_x+0.001} rgb(55, 62, 76));'+'}'
-        # result_string = 'QSlider::groove {'+f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:.5 rgb(11, 211, 0), stop:0.501 rgb(55, 62, 76));'+'}'
-        # result_string = '\n'.join(lines)
-        # print(result_string)
-        self.main_program.ui.horizontalSlider_mic_threshold.setStyleSheet(result_string)
+        if self.main_program:
+            try:
+                self.main_program.update_threshold_gui_signal.emit(self.cur_db, self.target_gui)
+            except RuntimeError as e:
+                print_log("warning", "no main program! maybe program ended", e)
+                del self.main_program
+                self.done = True
 
 
 if __name__ == "__main__":
