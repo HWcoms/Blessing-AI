@@ -1,5 +1,6 @@
 from PySide6.QtCore import QThread, QObject
 
+import os
 import pyaudio
 import audioop
 from math import log10
@@ -13,15 +14,25 @@ from aud_device_manager import AudioDevice
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+cache_dir = os.path.join(root_dir, 'cache', 'user_mic')
+dest_file_path = os.path.join(cache_dir, 'test.wav')
+
+# CHECK VOICE CACHE FOLDER
+if not os.path.exists(cache_dir):
+    os.makedirs(cache_dir)
+    print_log("warning", "Created user voice cache folder!", cache_dir)
+
 
 class MicRecorder(QThread):
-    def __init__(self, target_gui: QObject, is_sub: bool):
+    def __init__(self, target_gui: QObject, timeout_gui: QObject, is_sub: bool):
         super().__init__()
 
         # for meter settings
         self.adm = None
         self.init_meters()
         self.target_gui = target_gui  # ex) Slider_mic_threshold or Slider_sub_mic_threshold
+        self.timeout_gui = timeout_gui  # ex) Slider_main_phrase_timeout or Slider_sub_phrase_timeout
         self.main_program = None
         self.is_sub = is_sub
 
@@ -39,6 +50,7 @@ class MicRecorder(QThread):
         # self.adm = None
         self.rec_duration = -1
         self.done = False
+        self.is_recording = False
 
         self.margin = 1
         self.samples_per_section = int(720.0 / 3.0 - 2 * self.margin)
@@ -59,7 +71,7 @@ class MicRecorder(QThread):
         if self.is_sub:
             log_str = 'Sub '
 
-        print_log("red", f"{log_str}Mic start recording..")
+        print_log("red", f"{log_str}Mic Recorder start..")
 
         if _adm is None:
             raise RuntimeError("ADM is None")
@@ -90,12 +102,26 @@ class MicRecorder(QThread):
                                   input_device_index=device_index)
         cur_i = 0
 
+        if not self.target_gui:
+            print_log("error", "No target gui(threshold) found!",
+                      "Check Error, if this code called from other python file")
+            cur_threshold = 50
+        if not self.timeout_gui:
+            print_log("error", "No timeout gui found!", "Check Error, if this code called from other python file")
+            cur_timeout = 3.0
+
         while not self.done:
+            # Get current threshold
+            if self.target_gui:
+                cur_threshold = self.target_gui.value()
+
+            if self.timeout_gui:
+                cur_timeout = self.timeout_gui.value()
 
             if duration != -1:  # Loop if duration -1
                 max_i = int(self.sample_rate / chunk * duration)
                 if cur_i > max_i:
-                    print('Record Mic Loop Finished' + f' duration: {duration}')
+                    print('Mic Recorder Loop Finished' + f' duration: {duration}')
                     self.done = True
                 cur_i = cur_i + 1
             # for i in range(0, int(self.sample_rate / chunk * seconds)):
@@ -124,13 +150,37 @@ class MicRecorder(QThread):
             self.cur_db = round(float(db), 2)
             self.draw_mic_threshold()
             # print_log(color_type, f'[{self.cur_db}] db, max: {self.max_db}', print_func_name=False)
+
+            # delta_time = [-1.0, -1.0]
+
+            # Compare with threshold
+            if not self.is_recording:
+                if cur_threshold < self.cur_db:
+                    print_log("white", f"{log_str}Mic exceed Threshold! Recording Started!")
+                    self.is_recording = True
+                    start_time = time.time()
+            else:
+                # Recording...
+                cur_time = time.time()
+                self.frames.append(data)
+
+                # stop condition
+                if abs(cur_time - start_time) > 3.0:
+                    self.save_audio_file()
+                    self.frames.clear()
+                    self.is_recording = False
+                # else:
+                #     print(f'{cur_time - start_time:.5f}', " secs")
+
+                # print(f"{self.cur_db} | {log_str}Mic recording! [Realtime]")
             time.sleep(0.02)
         self.done = False
         self.cur_db = 0
-        self.draw_mic_threshold()   # clear threshold drawn to 0 level
+        self.draw_mic_threshold()  # clear threshold drawn to 0 level
+        self.is_recording = False
 
         self.close_stream()
-        print_log("red", f"{log_str}Mic Stop recording")
+        print_log("red", f"{log_str}Mic Recorder Stop")
 
     def close_stream(self):
         # Terminate Stream
@@ -141,7 +191,15 @@ class MicRecorder(QThread):
         # self.save_audio_file()
 
     def save_audio_file(self):
-        s_file = wave.open("testing.wav", "wb")
+        file_path = self.new_audio_path()
+
+        if self.is_sub:
+            prefix = 'Sub'
+        else:
+            prefix = 'Main'
+
+        s_file = wave.open(file_path, "wb")
+        print_log("log", f"{prefix} Mic Recorded your Voice", file_path)
         s_file.setnchannels(CHANNELS)
         s_file.setsampwidth(self.p.get_sample_size(pyaudio.paInt16))
         s_file.setframerate(self.sample_rate)
@@ -201,6 +259,28 @@ class MicRecorder(QThread):
                 del self.main_program
                 self.done = True
 
+    def new_audio_path(self):
+        import glob
+
+        if self.is_sub:
+            prefix = 'sub'
+        else:
+            prefix = 'main'
+
+        num = 0
+        while True:
+            check_name = f'mic_{num}_*.wav'
+            file_path = os.path.join(cache_dir, check_name)
+            file_list = glob.glob(file_path)
+            if not file_list:
+                file_name = f'mic_{num}_{prefix}.wav'
+                new_file_path = os.path.join(cache_dir, file_name)
+                return new_file_path
+
+            # if not os.path.exists(file_path):
+            #     return file_path
+            num += 1
+
 
 if __name__ == "__main__":
     adm = AudioDevice()
@@ -208,8 +288,11 @@ if __name__ == "__main__":
     adm.set_selected_mic("VoiceMeeter Aux Output")
     print(adm.selected_mic)
 
-    mic_rec = MicRecorder()
+    mic_rec = MicRecorder(None, None, False)
     mic_rec.adm = adm
     mic_rec.rec_duration = -1.0
 
     mic_rec.start()
+    # print(mic_rec.new_audio_path())
+    time.sleep(100)
+    # print(dest_file_path)

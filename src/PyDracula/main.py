@@ -118,7 +118,7 @@ class MainWindow(QMainWindow):
                                             # discord_bot, discord_webhook,
                                             # discord_print_language, chat_display_language
 
-        self.audio_info_dict: dict = None   # [mic_index, mic_threshold, sub_mic_index, sub_mic_threshold, phrase_timeout,
+        self.audio_info_dict: dict = None   # [mic_index, mic_threshold, sub_mic_index, sub_mic_threshold, main/sub_phrase_timeout,
 
                                             # spk_index, speaker_volume,
                                             # tts_character, tts_language, voice_id,
@@ -263,9 +263,12 @@ class MainWindow(QMainWindow):
             widgets.horizontalSlider_speaker_volume,
             widgets.pushButton_speaker_volume_default,
 
-            widgets.lineEdit_phrase_timeout,
-            widgets.horizontalSlider_phrase_timeout,
-            widgets.pushButton_phrase_timeout_default,
+            widgets.lineEdit_main_phrase_timeout,
+            widgets.horizontalSlider_main_phrase_timeout,
+            widgets.pushButton_main_phrase_timeout_default,
+            widgets.lineEdit_sub_phrase_timeout,
+            widgets.horizontalSlider_sub_phrase_timeout,
+            widgets.pushButton_sub_phrase_timeout_default,
 
             widgets.comboBox_tts_character,
             widgets.comboBox_tts_language,
@@ -978,15 +981,18 @@ class MainWindow(QMainWindow):
 
         # region [LINEEDIT & SLIDERS]
         ################################################################################################
-        phrase_timeout = str(self.audio_info_dict["phrase_timeout"])
-        widgets.lineEdit_phrase_timeout.setText(phrase_timeout)
+        main_phrase_timeout = str(self.audio_info_dict["main_phrase_timeout"])
+        sub_phrase_timeout = str(self.audio_info_dict["sub_phrase_timeout"])
+        widgets.lineEdit_main_phrase_timeout.setText(main_phrase_timeout)
+        widgets.lineEdit_sub_phrase_timeout.setText(sub_phrase_timeout)
 
         self.set_qobjects_by_dict([widgets.lineEdit_mic_threshold, widgets.horizontalSlider_mic_threshold,
                                    widgets.lineEdit_sub_mic_threshold, widgets.horizontalSlider_sub_mic_threshold,
                                    widgets.lineEdit_speaker_volume, widgets.horizontalSlider_speaker_volume],
                                   self.audio_info_dict, 100, True)
 
-        self.set_qobjects_by_dict([widgets.lineEdit_phrase_timeout, widgets.horizontalSlider_phrase_timeout,
+        self.set_qobjects_by_dict([widgets.lineEdit_main_phrase_timeout, widgets.horizontalSlider_main_phrase_timeout,
+                                   widgets.lineEdit_sub_phrase_timeout, widgets.horizontalSlider_sub_phrase_timeout,
                                    widgets.lineEdit_voice_speed, widgets.horizontalSlider_voice_speed,
                                    widgets.lineEdit_intonation_scale, widgets.horizontalSlider_intonation_scale,
                                    widgets.lineEdit_pre_phoneme_length, widgets.horizontalSlider_pre_phoneme_length,
@@ -2160,7 +2166,7 @@ class THREADMANAGER(QThread):
                     # Remove current thraed
                     self.tts_play_done_signal.emit()
 
-            # MIC RECORDER & ADM
+            # region MIC RECORDER & ADM
             if self.mic_thread.adm:
                 if self.mic_thread.adm.selected_mic:
                     if self.mic_thread.adm.selected_mic.name:
@@ -2169,7 +2175,7 @@ class THREADMANAGER(QThread):
                             self.mic_thread.device_name = self.mic_thread.adm.selected_mic.name
 
                         if not self.mic_thread.isRunning():
-                            print_log("red", "Start Mic thread")
+                            # print_log("red", "Start Mic thread")
                             self.mic_thread.start()
 
             if self.sub_mic_thread.adm:
@@ -2180,8 +2186,9 @@ class THREADMANAGER(QThread):
                             self.sub_mic_thread.device_name = self.sub_mic_thread.adm.selected_sub_mic.name
 
                         if not self.sub_mic_thread.isRunning():
-                            print_log("red", "Start Sub Mic thread")
+                            # print_log("red", "Start Sub Mic thread")
                             self.sub_mic_thread.start()
+            # endregion MIC RECORDER & ADM
 
             time.sleep(0.3)
 

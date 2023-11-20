@@ -3318,7 +3318,7 @@ QPushButton:pressed{
                               <number>6</number>
                              </property>
                              <item>
-                              <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="6,16,2,16,6">
+                              <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="4,16,2,16,4">
                                <property name="spacing">
                                 <number>0</number>
                                </property>
@@ -3672,7 +3672,7 @@ QPushButton:pressed{
                               </spacer>
                              </item>
                              <item>
-                              <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="6,16,2,16,6">
+                              <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="4,16,2,16,4">
                                <property name="spacing">
                                 <number>0</number>
                                </property>
@@ -3972,7 +3972,7 @@ QPushButton:pressed{
                               </layout>
                              </item>
                              <item>
-                              <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="6,16,2,0,6">
+                              <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="4,16,2,16,4">
                                <property name="spacing">
                                 <number>0</number>
                                </property>
@@ -4352,7 +4352,7 @@ QPushButton:pressed{
                               </layout>
                              </item>
                              <item>
-                              <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="6,33,6">
+                              <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="4,16,2,16,4">
                                <property name="spacing">
                                 <number>0</number>
                                </property>
@@ -4394,7 +4394,7 @@ QPushButton:pressed{
                                    <item>
                                     <widget class="QLabel" name="label_21">
                                      <property name="text">
-                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Phrase TimeOut&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Mic Phrase TimeOut&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                      </property>
                                      <property name="alignment">
                                       <set>Qt::AlignCenter</set>
@@ -4418,7 +4418,7 @@ QPushButton:pressed{
                                     </spacer>
                                    </item>
                                    <item>
-                                    <widget class="QLineEdit" name="lineEdit_phrase_timeout">
+                                    <widget class="QLineEdit" name="lineEdit_main_phrase_timeout">
                                      <property name="sizePolicy">
                                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                                        <horstretch>0</horstretch>
@@ -4449,22 +4449,6 @@ QPushButton:pressed{
                                     </widget>
                                    </item>
                                    <item>
-                                    <spacer name="horizontalSpacer_37">
-                                     <property name="orientation">
-                                      <enum>Qt::Horizontal</enum>
-                                     </property>
-                                     <property name="sizeType">
-                                      <enum>QSizePolicy::Fixed</enum>
-                                     </property>
-                                     <property name="sizeHint" stdset="0">
-                                      <size>
-                                       <width>5</width>
-                                       <height>20</height>
-                                      </size>
-                                     </property>
-                                    </spacer>
-                                   </item>
-                                   <item>
                                     <widget class="QLabel" name="label_23">
                                      <property name="text">
                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;seconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -4491,7 +4475,7 @@ QPushButton:pressed{
                                     </spacer>
                                    </item>
                                    <item>
-                                    <widget class="QPushButton" name="pushButton_phrase_timeout_default">
+                                    <widget class="QPushButton" name="pushButton_main_phrase_timeout_default">
                                      <property name="sizePolicy">
                                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                        <horstretch>0</horstretch>
@@ -4515,7 +4499,192 @@ QPushButton:pressed{
                                   </layout>
                                  </item>
                                  <item>
-                                  <widget class="QSlider" name="horizontalSlider_phrase_timeout">
+                                  <widget class="QSlider" name="horizontalSlider_main_phrase_timeout">
+                                   <property name="sizePolicy">
+                                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                                     <horstretch>0</horstretch>
+                                     <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                   </property>
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>0</width>
+                                     <height>0</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">QSlider::groove {
+	background-color: rgb(55, 62, 76);
+}
+
+QSlider::handle:horizontal {
+    background-color: rgb(85, 170, 255);
+    border: none;
+    height: 40px;
+    width: 10px;
+    margin: -20px 0;
+    border-radius: 20px;
+    padding: -20px 0px;
+}
+QSlider::handle:horizontal:hover {
+    background-color: rgb(155, 180, 255);
+}
+
+QSlider::handle:horizontal:pressed {
+    background-color: rgb(65, 255, 195);
+}</string>
+                                   </property>
+                                   <property name="maximum">
+                                    <number>3000</number>
+                                   </property>
+                                   <property name="singleStep">
+                                    <number>10</number>
+                                   </property>
+                                   <property name="value">
+                                    <number>200</number>
+                                   </property>
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </item>
+                               <item>
+                                <spacer name="horizontalSpacer_46">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeType">
+                                  <enum>QSizePolicy::Expanding</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>20</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item>
+                                <layout class="QVBoxLayout" name="verticalLayout_44">
+                                 <property name="rightMargin">
+                                  <number>10</number>
+                                 </property>
+                                 <property name="bottomMargin">
+                                  <number>10</number>
+                                 </property>
+                                 <item>
+                                  <layout class="QHBoxLayout" name="horizontalLayout_30">
+                                   <item>
+                                    <widget class="QLabel" name="label_28">
+                                     <property name="text">
+                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Sub Mic Phrase TimeOut&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <spacer name="horizontalSpacer_43">
+                                     <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                     </property>
+                                     <property name="sizeType">
+                                      <enum>QSizePolicy::Fixed</enum>
+                                     </property>
+                                     <property name="sizeHint" stdset="0">
+                                      <size>
+                                       <width>10</width>
+                                       <height>20</height>
+                                      </size>
+                                     </property>
+                                    </spacer>
+                                   </item>
+                                   <item>
+                                    <widget class="QLineEdit" name="lineEdit_sub_phrase_timeout">
+                                     <property name="sizePolicy">
+                                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                       <horstretch>0</horstretch>
+                                       <verstretch>0</verstretch>
+                                      </sizepolicy>
+                                     </property>
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>0</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>60</width>
+                                       <height>16777215</height>
+                                      </size>
+                                     </property>
+                                     <property name="acceptDrops">
+                                      <bool>true</bool>
+                                     </property>
+                                     <property name="text">
+                                      <string>2</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <widget class="QLabel" name="label_29">
+                                     <property name="text">
+                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;seconds&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item>
+                                    <spacer name="horizontalSpacer_45">
+                                     <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                     </property>
+                                     <property name="sizeType">
+                                      <enum>QSizePolicy::Expanding</enum>
+                                     </property>
+                                     <property name="sizeHint" stdset="0">
+                                      <size>
+                                       <width>20</width>
+                                       <height>20</height>
+                                      </size>
+                                     </property>
+                                    </spacer>
+                                   </item>
+                                   <item>
+                                    <widget class="QPushButton" name="pushButton_sub_phrase_timeout_default">
+                                     <property name="sizePolicy">
+                                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                       <horstretch>0</horstretch>
+                                       <verstretch>0</verstretch>
+                                      </sizepolicy>
+                                     </property>
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>130</width>
+                                       <height>30</height>
+                                      </size>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true"/>
+                                     </property>
+                                     <property name="text">
+                                      <string>Default</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </item>
+                                 <item>
+                                  <widget class="QSlider" name="horizontalSlider_sub_phrase_timeout">
                                    <property name="sizePolicy">
                                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                                      <horstretch>0</horstretch>

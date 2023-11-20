@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainarfVUP.ui'
+## Form generated from reading UI file 'mainTrtocj.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1912,11 +1912,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_13.addItem(self.horizontalSpacer_3)
 
-        self.horizontalLayout_13.setStretch(0, 6)
+        self.horizontalLayout_13.setStretch(0, 4)
         self.horizontalLayout_13.setStretch(1, 16)
         self.horizontalLayout_13.setStretch(2, 2)
         self.horizontalLayout_13.setStretch(3, 16)
-        self.horizontalLayout_13.setStretch(4, 6)
+        self.horizontalLayout_13.setStretch(4, 4)
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_13)
 
@@ -2040,11 +2040,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_15.addItem(self.horizontalSpacer_14)
 
-        self.horizontalLayout_15.setStretch(0, 6)
+        self.horizontalLayout_15.setStretch(0, 4)
         self.horizontalLayout_15.setStretch(1, 16)
         self.horizontalLayout_15.setStretch(2, 2)
         self.horizontalLayout_15.setStretch(3, 16)
-        self.horizontalLayout_15.setStretch(4, 6)
+        self.horizontalLayout_15.setStretch(4, 4)
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_15)
 
@@ -2196,10 +2196,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_10.addItem(self.horizontalSpacer_7)
 
-        self.horizontalLayout_10.setStretch(0, 6)
+        self.horizontalLayout_10.setStretch(0, 4)
         self.horizontalLayout_10.setStretch(1, 16)
         self.horizontalLayout_10.setStretch(2, 2)
-        self.horizontalLayout_10.setStretch(4, 6)
+        self.horizontalLayout_10.setStretch(3, 16)
+        self.horizontalLayout_10.setStretch(4, 4)
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_10)
 
@@ -2226,20 +2227,16 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_21.addItem(self.horizontalSpacer_23)
 
-        self.lineEdit_phrase_timeout = QLineEdit(self.scrollAreaWidgetContents_2)
-        self.lineEdit_phrase_timeout.setObjectName(u"lineEdit_phrase_timeout")
-        sizePolicy11.setHeightForWidth(self.lineEdit_phrase_timeout.sizePolicy().hasHeightForWidth())
-        self.lineEdit_phrase_timeout.setSizePolicy(sizePolicy11)
-        self.lineEdit_phrase_timeout.setMinimumSize(QSize(60, 0))
-        self.lineEdit_phrase_timeout.setMaximumSize(QSize(60, 16777215))
-        self.lineEdit_phrase_timeout.setAcceptDrops(True)
-        self.lineEdit_phrase_timeout.setAlignment(Qt.AlignCenter)
+        self.lineEdit_main_phrase_timeout = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_main_phrase_timeout.setObjectName(u"lineEdit_main_phrase_timeout")
+        sizePolicy11.setHeightForWidth(self.lineEdit_main_phrase_timeout.sizePolicy().hasHeightForWidth())
+        self.lineEdit_main_phrase_timeout.setSizePolicy(sizePolicy11)
+        self.lineEdit_main_phrase_timeout.setMinimumSize(QSize(60, 0))
+        self.lineEdit_main_phrase_timeout.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_main_phrase_timeout.setAcceptDrops(True)
+        self.lineEdit_main_phrase_timeout.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_21.addWidget(self.lineEdit_phrase_timeout)
-
-        self.horizontalSpacer_37 = QSpacerItem(5, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
-
-        self.horizontalLayout_21.addItem(self.horizontalSpacer_37)
+        self.horizontalLayout_21.addWidget(self.lineEdit_main_phrase_timeout)
 
         self.label_23 = QLabel(self.scrollAreaWidgetContents_2)
         self.label_23.setObjectName(u"label_23")
@@ -2251,24 +2248,24 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_21.addItem(self.horizontalSpacer_13)
 
-        self.pushButton_phrase_timeout_default = QPushButton(self.scrollAreaWidgetContents_2)
-        self.pushButton_phrase_timeout_default.setObjectName(u"pushButton_phrase_timeout_default")
-        sizePolicy4.setHeightForWidth(self.pushButton_phrase_timeout_default.sizePolicy().hasHeightForWidth())
-        self.pushButton_phrase_timeout_default.setSizePolicy(sizePolicy4)
-        self.pushButton_phrase_timeout_default.setMinimumSize(QSize(130, 30))
-        self.pushButton_phrase_timeout_default.setStyleSheet(u"")
+        self.pushButton_main_phrase_timeout_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_main_phrase_timeout_default.setObjectName(u"pushButton_main_phrase_timeout_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_main_phrase_timeout_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_main_phrase_timeout_default.setSizePolicy(sizePolicy4)
+        self.pushButton_main_phrase_timeout_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_main_phrase_timeout_default.setStyleSheet(u"")
 
-        self.horizontalLayout_21.addWidget(self.pushButton_phrase_timeout_default)
+        self.horizontalLayout_21.addWidget(self.pushButton_main_phrase_timeout_default)
 
 
         self.verticalLayout_27.addLayout(self.horizontalLayout_21)
 
-        self.horizontalSlider_phrase_timeout = QSlider(self.scrollAreaWidgetContents_2)
-        self.horizontalSlider_phrase_timeout.setObjectName(u"horizontalSlider_phrase_timeout")
-        sizePolicy1.setHeightForWidth(self.horizontalSlider_phrase_timeout.sizePolicy().hasHeightForWidth())
-        self.horizontalSlider_phrase_timeout.setSizePolicy(sizePolicy1)
-        self.horizontalSlider_phrase_timeout.setMinimumSize(QSize(0, 0))
-        self.horizontalSlider_phrase_timeout.setStyleSheet(u"QSlider::groove {\n"
+        self.horizontalSlider_main_phrase_timeout = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalSlider_main_phrase_timeout.setObjectName(u"horizontalSlider_main_phrase_timeout")
+        sizePolicy1.setHeightForWidth(self.horizontalSlider_main_phrase_timeout.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider_main_phrase_timeout.setSizePolicy(sizePolicy1)
+        self.horizontalSlider_main_phrase_timeout.setMinimumSize(QSize(0, 0))
+        self.horizontalSlider_main_phrase_timeout.setStyleSheet(u"QSlider::groove {\n"
 "	background-color: rgb(55, 62, 76);\n"
 "}\n"
 "\n"
@@ -2288,23 +2285,112 @@ class Ui_MainWindow(object):
 "QSlider::handle:horizontal:pressed {\n"
 "    background-color: rgb(65, 255, 195);\n"
 "}")
-        self.horizontalSlider_phrase_timeout.setMaximum(3000)
-        self.horizontalSlider_phrase_timeout.setSingleStep(10)
-        self.horizontalSlider_phrase_timeout.setValue(200)
-        self.horizontalSlider_phrase_timeout.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_main_phrase_timeout.setMaximum(3000)
+        self.horizontalSlider_main_phrase_timeout.setSingleStep(10)
+        self.horizontalSlider_main_phrase_timeout.setValue(200)
+        self.horizontalSlider_main_phrase_timeout.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout_27.addWidget(self.horizontalSlider_phrase_timeout)
+        self.verticalLayout_27.addWidget(self.horizontalSlider_main_phrase_timeout)
 
 
         self.horizontalLayout_14.addLayout(self.verticalLayout_27)
+
+        self.horizontalSpacer_46 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_46)
+
+        self.verticalLayout_44 = QVBoxLayout()
+        self.verticalLayout_44.setObjectName(u"verticalLayout_44")
+        self.verticalLayout_44.setContentsMargins(-1, -1, 10, 10)
+        self.horizontalLayout_30 = QHBoxLayout()
+        self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
+        self.label_28 = QLabel(self.scrollAreaWidgetContents_2)
+        self.label_28.setObjectName(u"label_28")
+        self.label_28.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_30.addWidget(self.label_28)
+
+        self.horizontalSpacer_43 = QSpacerItem(10, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_30.addItem(self.horizontalSpacer_43)
+
+        self.lineEdit_sub_phrase_timeout = QLineEdit(self.scrollAreaWidgetContents_2)
+        self.lineEdit_sub_phrase_timeout.setObjectName(u"lineEdit_sub_phrase_timeout")
+        sizePolicy11.setHeightForWidth(self.lineEdit_sub_phrase_timeout.sizePolicy().hasHeightForWidth())
+        self.lineEdit_sub_phrase_timeout.setSizePolicy(sizePolicy11)
+        self.lineEdit_sub_phrase_timeout.setMinimumSize(QSize(60, 0))
+        self.lineEdit_sub_phrase_timeout.setMaximumSize(QSize(60, 16777215))
+        self.lineEdit_sub_phrase_timeout.setAcceptDrops(True)
+        self.lineEdit_sub_phrase_timeout.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_30.addWidget(self.lineEdit_sub_phrase_timeout)
+
+        self.label_29 = QLabel(self.scrollAreaWidgetContents_2)
+        self.label_29.setObjectName(u"label_29")
+        self.label_29.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_30.addWidget(self.label_29)
+
+        self.horizontalSpacer_45 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_30.addItem(self.horizontalSpacer_45)
+
+        self.pushButton_sub_phrase_timeout_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_sub_phrase_timeout_default.setObjectName(u"pushButton_sub_phrase_timeout_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_sub_phrase_timeout_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_sub_phrase_timeout_default.setSizePolicy(sizePolicy4)
+        self.pushButton_sub_phrase_timeout_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_sub_phrase_timeout_default.setStyleSheet(u"")
+
+        self.horizontalLayout_30.addWidget(self.pushButton_sub_phrase_timeout_default)
+
+
+        self.verticalLayout_44.addLayout(self.horizontalLayout_30)
+
+        self.horizontalSlider_sub_phrase_timeout = QSlider(self.scrollAreaWidgetContents_2)
+        self.horizontalSlider_sub_phrase_timeout.setObjectName(u"horizontalSlider_sub_phrase_timeout")
+        sizePolicy1.setHeightForWidth(self.horizontalSlider_sub_phrase_timeout.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider_sub_phrase_timeout.setSizePolicy(sizePolicy1)
+        self.horizontalSlider_sub_phrase_timeout.setMinimumSize(QSize(0, 0))
+        self.horizontalSlider_sub_phrase_timeout.setStyleSheet(u"QSlider::groove {\n"
+"	background-color: rgb(55, 62, 76);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal {\n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border: none;\n"
+"    height: 40px;\n"
+"    width: 10px;\n"
+"    margin: -20px 0;\n"
+"    border-radius: 20px;\n"
+"    padding: -20px 0px;\n"
+"}\n"
+"QSlider::handle:horizontal:hover {\n"
+"    background-color: rgb(155, 180, 255);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:pressed {\n"
+"    background-color: rgb(65, 255, 195);\n"
+"}")
+        self.horizontalSlider_sub_phrase_timeout.setMaximum(3000)
+        self.horizontalSlider_sub_phrase_timeout.setSingleStep(10)
+        self.horizontalSlider_sub_phrase_timeout.setValue(200)
+        self.horizontalSlider_sub_phrase_timeout.setOrientation(Qt.Horizontal)
+
+        self.verticalLayout_44.addWidget(self.horizontalSlider_sub_phrase_timeout)
+
+
+        self.horizontalLayout_14.addLayout(self.verticalLayout_44)
 
         self.horizontalSpacer_12 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_14.addItem(self.horizontalSpacer_12)
 
-        self.horizontalLayout_14.setStretch(0, 6)
-        self.horizontalLayout_14.setStretch(1, 33)
-        self.horizontalLayout_14.setStretch(2, 6)
+        self.horizontalLayout_14.setStretch(0, 4)
+        self.horizontalLayout_14.setStretch(1, 16)
+        self.horizontalLayout_14.setStretch(2, 2)
+        self.horizontalLayout_14.setStretch(3, 16)
+        self.horizontalLayout_14.setStretch(4, 4)
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_14)
 
@@ -4904,10 +4990,14 @@ class Ui_MainWindow(object):
         self.label_22.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Sub Mic Threshold</span></p></body></html>", None))
         self.lineEdit_sub_mic_threshold.setText(QCoreApplication.translate("MainWindow", u"30 %", None))
         self.pushButton_sub_mic_threshold_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
-        self.label_21.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Phrase TimeOut</span></p></body></html>", None))
-        self.lineEdit_phrase_timeout.setText(QCoreApplication.translate("MainWindow", u"2", None))
+        self.label_21.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Phrase TimeOut</span></p></body></html>", None))
+        self.lineEdit_main_phrase_timeout.setText(QCoreApplication.translate("MainWindow", u"2", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>seconds</p></body></html>", None))
-        self.pushButton_phrase_timeout_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
+        self.pushButton_main_phrase_timeout_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
+        self.label_28.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Sub Mic Phrase TimeOut</span></p></body></html>", None))
+        self.lineEdit_sub_phrase_timeout.setText(QCoreApplication.translate("MainWindow", u"2", None))
+        self.label_29.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>seconds</p></body></html>", None))
+        self.pushButton_sub_phrase_timeout_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.horizontalGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"TTS Settings", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Character </span><span style=\" font-size:9pt;\">(VITS Model)</span></p></body></html>", None))
         self.comboBox_tts_character.setItemText(0, QCoreApplication.translate("MainWindow", u"Character 1", None))
