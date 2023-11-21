@@ -99,6 +99,7 @@ t_val_col_c = 20
 class MainWindow(QMainWindow):
     update_table_signal = Signal()
     update_threshold_gui_signal = Signal(float, QObject)
+    update_phrase_timeout_gui_signal = Signal(float, QObject)
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -146,7 +147,8 @@ class MainWindow(QMainWindow):
         self.chat = None
 
 
-        self.default_slider_stylesheet = self.ui.horizontalSlider_mic_threshold.styleSheet()
+        self.default_threshold_slider_stylesheet = self.ui.horizontalSlider_mic_threshold.styleSheet()
+        self.default_timeout_slider_stylesheet = self.ui.horizontalSlider_main_phrase_timeout.styleSheet()
 
         # QTHREADS LIST
         self.tts_thread_list = []
@@ -163,6 +165,7 @@ class MainWindow(QMainWindow):
         self.update_table_signal.connect(self.update_thread_table)      # updating table
 
         self.update_threshold_gui_signal.connect(self.update_threshold_gui)
+        self.update_phrase_timeout_gui_signal.connect(self.update_phrase_timeout_gui)
         # TODO: [Fix Bug] when cmd_thread is playing audio,
         #   Also trying to add mode tts_thread, table update and threadmanager stops working..
         #   User name is not visible when generating RVC cover
@@ -2093,8 +2096,23 @@ class MainWindow(QMainWindow):
     def update_threshold_gui(self, value, component:QObject):
         stop_x = value * 0.01
 
-        lines = self.default_slider_stylesheet.splitlines()
+        lines = self.default_threshold_slider_stylesheet.splitlines()
         lines[1] = f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:{stop_x} rgb(11, 211, 0), stop:{stop_x+0.001} rgb(55, 62, 76));'
+        # result_string = 'QSlider::groove {'+f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:.5 rgb(11, 211, 0), stop:0.501 rgb(55, 62, 76));'+'}'
+        result_string = '\n'.join(lines)
+
+        component.setStyleSheet(result_string)
+
+    # Update Phrase Timeout GUI
+    def update_phrase_timeout_gui(self, remain_time, component:QObject):
+        timeout_value = component.value() / 100.0
+        stop_x =  remain_time / timeout_value
+
+        # print(f'{round(remain_time,2)} / %: {round(stop_x,2)}')
+
+        lines = self.default_timeout_slider_stylesheet.splitlines()
+        lines[
+            1] = f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:{stop_x} rgb(11, 211, 0), stop:{stop_x + 0.001} rgb(55, 62, 76));'
         # result_string = 'QSlider::groove {'+f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:.5 rgb(11, 211, 0), stop:0.501 rgb(55, 62, 76));'+'}'
         result_string = '\n'.join(lines)
 
@@ -2114,12 +2132,16 @@ class THREADMANAGER(QThread):
         self.parent = parent
 
         # Mic
-        self.mic_thread = MicRecorder(parent.ui.horizontalSlider_mic_threshold, is_sub=False)
+        self.mic_thread = MicRecorder(parent.ui.horizontalSlider_mic_threshold,
+                                      parent.ui.horizontalSlider_main_phrase_timeout,
+                                      is_sub=False)
         self.mic_thread.rec_duration = -1.0
         self.mic_thread.main_program = parent
 
         # Sub Mic
-        self.sub_mic_thread = MicRecorder(parent.ui.horizontalSlider_sub_mic_threshold, is_sub=True)
+        self.sub_mic_thread = MicRecorder(parent.ui.horizontalSlider_sub_mic_threshold,
+                                          parent.ui.horizontalSlider_sub_phrase_timeout,
+                                          is_sub=True)
         self.sub_mic_thread.rec_duration = -1.0
         self.sub_mic_thread.main_program = parent
     def run(self):

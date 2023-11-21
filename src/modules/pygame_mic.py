@@ -117,7 +117,7 @@ class MicRecorder(QThread):
                 cur_threshold = self.target_gui.value()
 
             if self.timeout_gui:
-                cur_timeout = self.timeout_gui.value()
+                cur_timeout = self.timeout_gui.value() / 100.0
 
             if duration != -1:  # Loop if duration -1
                 max_i = int(self.sample_rate / chunk * duration)
@@ -160,9 +160,11 @@ class MicRecorder(QThread):
                     print_log("white", f"{log_str}Mic exceed Threshold! Recording Started!")
                     self.is_recording = True
                     start_time = time.time()
+                self.draw_phrase_timeout(0)  # reset timeout GUI
             else:
                 # Recording...
                 cur_time = time.time()
+                remain_time = cur_timeout
 
                 if cur_threshold <= self.cur_db:
                     self.is_phrase_time = False
@@ -181,27 +183,25 @@ class MicRecorder(QThread):
                         # print_log("white", f"{log_str}Mic is lower than threshold! Phrase timer Start")
                 # In phrase time
                 else:
-                    delta_timeout = abs(cur_time - phrase_start_time)
-                    if delta_timeout > cur_timeout:
+                    delta_time = abs(cur_time - phrase_start_time)
+                    remain_time = cur_timeout - delta_time
+                    if 0 >= remain_time:
                         self.save_audio_file(round(cur_time - start_time, 1))
                         self.frames.clear()
                         self.is_phrase_time = False
                         self.is_recording = False
+                        remain_time = 0.0
                     else:
                         # print(f'phrase time {cur_time - phrase_start_time:.2f}', " secs")
                         pass
-                # recording stop condition
-                # if abs(cur_time - start_time) > 15:
-                #     # self.save_audio_file()
-                #     self.frames.clear()
-                #     self.is_recording = False
 
-                # print(f"{self.cur_db} | {log_str}Mic recording! [Realtime]")
+                self.draw_phrase_timeout(remain_time)
 
             time.sleep(0.01)
         self.done = False
         self.cur_db = 0
         self.draw_mic_threshold()  # clear threshold drawn to 0 level
+        self.draw_phrase_timeout(0)
         self.is_recording = False
         self.is_phrase_time = False
 
@@ -288,10 +288,21 @@ class MicRecorder(QThread):
                 print_log("warning", "no main program! maybe program ended", e)
                 del self.main_program
                 self.done = True
+                self.is_recording = False
+                self.is_phrase_time = False
 
-    def draw_phrase_time(self):
+    def draw_phrase_timeout(self, remain_time):
         # [Phrase time GUI] Call Signal from main program
-        return
+        # [Mic Threshold GUI] Call Signal from main program
+        if self.main_program:
+            try:
+                self.main_program.update_phrase_timeout_gui_signal.emit(remain_time, self.timeout_gui)
+            except RuntimeError as e:
+                print_log("warning", "no main program! maybe program ended", e)
+                del self.main_program
+                self.done = True
+                self.is_recording = False
+                self.is_phrase_time = False
 
     def new_audio_path(self):
         import glob
