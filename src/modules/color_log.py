@@ -1,18 +1,20 @@
 import inspect
 import os
 
+# Global Logging Condition
 logging = True
 
 
-def print_log(log_type="log", text="", detail_text="", print_func_name=True):
+def print_log(log_type="log", text="", detail_text="", print_func_name=True, custom_logging=True):
     """print logs by types ['log', 'error', 'warning']
       Args:
         log_type: ['log', 'error', 'warning']   (:py:class:`str`)
         text: first message to print    (:py:class:`str`)
         detail_text: second message to print    (:py:class:`str`)
         print_func_name: print name of  function  at front?  (:py:class:`boolean`)
+        custom_logging: False -> no print
     """
-    if not logging:
+    if not logging or not custom_logging:
         return
 
     prefix = ""
