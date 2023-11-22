@@ -11,6 +11,8 @@ from color_log import print_log
 
 from aud_device_manager import AudioDevice
 
+from voice_detect import is_human_voice, is_wav_human_voice
+
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 
@@ -35,6 +37,13 @@ class MicRecorder(QThread):
         self.timeout_gui = timeout_gui  # ex) Slider_main_phrase_timeout or Slider_sub_phrase_timeout
         self.main_program = None
         self.is_sub = is_sub
+
+        # human voice detection
+        self.ignore_silence = True  # prevent to save, if not human voice detected
+        self.energy_threshold = 150  # minimum audio energy to consider for recording [default: 300]
+
+        # Log
+        self.log = True
 
     def init_meters(self):
         self.device_name = None
@@ -72,7 +81,7 @@ class MicRecorder(QThread):
         if self.is_sub:
             log_str = 'Sub '
 
-        print_log("red", f"{log_str}Mic Recorder start..")
+        print_log("red", f"{log_str}Mic Recorder start..", custom_logging=self.log)
 
         if _adm is None:
             raise RuntimeError("ADM is None")
@@ -105,10 +114,13 @@ class MicRecorder(QThread):
 
         if not self.target_gui:
             print_log("error", "No target gui(threshold) found!",
-                      "Check Error, if this code called from other python file")
+                      "Check Error, if this code called from other python file",
+                      custom_logging=self.log)
             cur_threshold = 50
         if not self.timeout_gui:
-            print_log("error", "No timeout gui found!", "Check Error, if this code called from other python file")
+            print_log("error", "No timeout gui found!",
+                      "Check Error, if this code called from other python file",
+                      custom_logging=self.log)
             cur_timeout = 3.0
 
         while not self.done:
@@ -157,7 +169,7 @@ class MicRecorder(QThread):
             # Compare with threshold
             if not self.is_recording:
                 if cur_threshold <= self.cur_db:
-                    print_log("white", f"{log_str}Mic exceed Threshold! Recording Started!")
+                    print_log("white", f"{log_str}Mic exceed Threshold! Recording Started!", custom_logging=self.log)
                     self.is_recording = True
                     start_time = time.time()
                 self.draw_phrase_timeout(0)  # reset timeout GUI
@@ -206,7 +218,7 @@ class MicRecorder(QThread):
         self.is_phrase_time = False
 
         self.close_stream()
-        print_log("red", f"{log_str}Mic Recorder Stop")
+        print_log("red", f"{log_str}Mic Recorder Stop", custom_logging=self.log)
 
     def close_stream(self):
         # Terminate Stream
@@ -228,12 +240,19 @@ class MicRecorder(QThread):
             l_info = ''
 
         s_file = wave.open(file_path, "wb")
-        print_log("log", f"{prefix} Mic Recorded your Voice", f'{file_path}{l_info}')
         s_file.setnchannels(CHANNELS)
         s_file.setsampwidth(self.p.get_sample_size(pyaudio.paInt16))
         s_file.setframerate(self.sample_rate)
         s_file.writeframes(b''.join(self.frames))
         s_file.close()
+
+        detect_result = is_wav_human_voice(file_path, self.energy_threshold)
+
+        if not detect_result:
+            os.remove(file_path)
+            print_log("warning", f'this is not human voice: {file_path}', custom_logging=self.log)
+        else:
+            print_log("log", f"{prefix} Mic Recorded your Voice", f'{file_path}{l_info}', custom_logging=self.log)
 
     def ag_samples(self, sample):
         """ collect samples and average if needed. """
@@ -275,7 +294,7 @@ class MicRecorder(QThread):
             adm_mic = self.adm.selected_mic
         if adm_mic:
             if adm_mic.name != self.device_name:
-                print_log('warning', "mic device got changed")
+                print_log('warning', "mic device got changed", custom_logging=self.log)
                 self.device_name = adm_mic.name
                 self.done = True
 
@@ -330,7 +349,8 @@ class MicRecorder(QThread):
 if __name__ == "__main__":
     adm = AudioDevice()
     # print(adm)
-    adm.set_selected_mic("VoiceMeeter Aux Output")
+    # adm.set_selected_mic("VoiceMeeter Aux Output")
+    adm.set_selected_mic("라인")
     print(adm.selected_mic)
 
     mic_rec = MicRecorder(None, None, False)
