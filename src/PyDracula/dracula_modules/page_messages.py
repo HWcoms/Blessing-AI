@@ -298,7 +298,7 @@ class Chat(QWidget):
         # prompt_info_dict = self.mWindow.prompt_info_dict
         # chat_info_dict = self.mWindow.chat_info_dict
 
-        self.mWindow.gen_prompt_thread(text)
+        self.mWindow.gen_prompt_thread_as_text(text)
         # self.mWindow.gen_voice_thread(text)
 
     def buttonClick(self):

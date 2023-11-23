@@ -7,7 +7,11 @@ import json
 
 from pathlib import Path
 
-# Speak MoeGoe
+# Speech To Text (Whisper)
+import requests
+from modules.asr import speech_to_text
+
+# Speak TTS (MoeGoe)
 from modules.translator import DoTranslate, detect_language
 from modules.convert_roma_ja import english_to_katakana
 from MoeGoe.Main import speech_text
@@ -158,6 +162,37 @@ class Generator:
         command, value = bot_cmd.check_command(text)
         print(command, value)
         return command, value
+
+
+class GeneratorSTT:
+    def __init__(self):
+        super().__init__()
+        self.logging = True
+
+    def speech_to_text(self, audio_file):
+        """
+            audio file as input, transcribe to text
+            Args:
+                audio_file: audio file path
+            Returns:
+                tuple:
+                    - result_text: transcribed result
+                    - speech_lang: language code of result
+        """
+        log_str = ""
+
+        try:
+            result_text, speech_lang = speech_to_text(audio_file, 'transcribe', 'any')
+        except requests.exceptions.JSONDecodeError:
+            print('Too many requests to process at once')
+            return None
+
+        log_str = f'transcribed: {result_text} [{speech_lang}]'
+
+        if self.logging:
+            print("\033[34m" + log_str + "\033[0m")
+
+        return result_text, speech_lang
 
 
 class GeneratorTTS:

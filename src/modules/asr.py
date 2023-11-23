@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 # import whisper
 from faster_whisper import WhisperModel
 
-load_dotenv()
-
 # BASE_URL = getenv('WHISPER_BASE_URL')
 # REQUEST_TIMEOUT = int(getenv('REQUEST_TIMEOUT'))
 SAMPLE_JP_FILEPATH = Path(__file__).resolve().parent.parent / r'audio\samples\japanese_speech_sample.wav'
@@ -31,13 +29,12 @@ def whisper_process(audio_data, tsk, lang):
     temp_path = r"{}".format(audio_data)
     # print("음성인식 시작")
     if tsk == 'transcribe':
-        #       audio_data.save(TRANSCRIBE_FILENAME)
-        if (lang == 'any'):
-            print("SubTitle Mode: any language")
+        # audio_data.save(TRANSCRIBE_FILENAME)
+        print(f"Transcribe Language: {lang}")
+        if lang == 'any':
             # result = model.transcribe(temp_path, task=tsk, fp16=False)
             result, info = model.transcribe(temp_path)
         else:
-            print("Voice Mode: ", lang)
             # result = model.transcribe(temp_path, language=lang, task=tsk, fp16=False)
             result, info = model.transcribe(temp_path, language=lang)
 

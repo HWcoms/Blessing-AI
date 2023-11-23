@@ -69,7 +69,7 @@ import glob # find moegoe config file
 from modules.color_log import print_log
 
 # GENERATOR FOR PROMPT, TTS
-from generate import Generator, GeneratorTTS
+from generate import Generator, GeneratorSTT, GeneratorTTS
 # BOT COMMAND
 from modules.sing_command import BotCommand
 
@@ -2046,8 +2046,14 @@ class MainWindow(QMainWindow):
         self.tts_thread_list.append(tts_thread)
 
     # Generate Prompt Using QThread
-    def gen_prompt_thread(self, text):
-        prompt_thread = PROMPTTHREAD(self, text, logging=False)
+    def gen_prompt_thread_as_text(self, text):
+        prompt_thread = PROMPTTHREAD(self, text=text, logging=False)
+        self.prompt_thread_list.append(prompt_thread)
+
+        prompt_thread.PromptDone.connect(self.command_handler)
+
+    def gen_prompt_thread_as_audio(self, audio_file, audio_length):
+        prompt_thread = PROMPTTHREAD(self, audio_file=audio_file, audio_length=audio_length, logging=False)
         self.prompt_thread_list.append(prompt_thread)
 
         prompt_thread.PromptDone.connect(self.command_handler)
@@ -2084,7 +2090,7 @@ class MainWindow(QMainWindow):
                     _msg = f'{_type} ' + thread.text
 
                     pass
-                else:
+                else:   # PROMPTTHREAD
                     _msg = thread.text
 
                 table.setItem(thread_index, 0, QTableWidgetItem(thread.character))
@@ -2127,6 +2133,9 @@ class THREADMANAGER(QThread):
     prompt_done_signal = Signal()
     tts_gen_done_signal = Signal()
     tts_play_done_signal = Signal()
+
+    max_stt_worker = 3  # [speech to text] max workers
+
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
@@ -2154,11 +2163,29 @@ class THREADMANAGER(QThread):
             prompt_thread_list = main_program.prompt_thread_list
             tts_thread_list = main_program.tts_thread_list
 
-            if len(prompt_thread_list) >= 1:
-                # Start first thread if not running
-                if not prompt_thread_list[0].isRunning() and prompt_thread_list[0].reply_text == "":
-                    prompt_thread_list[0].start()
-                    print(f"start prompt thread: [{prompt_thread_list[0].text}]")
+            if len(prompt_thread_list) >= 1: # if text or audio file entered
+                avbl_stt_worker_count = max(self.max_stt_worker, len(prompt_thread_list))   # get max worker avbl
+
+                # if first thread has text & ready -> Send Prompt Request
+                if prompt_thread_list[0].text != '' and prompt_thread_list[0].state[0] == 'wait':
+                    change_state(prompt_thread_list[0], "gen")
+                    print(f"Start prompt thread: [{prompt_thread_list[0].text}]")
+                    pass
+
+                stt_worker_count = 0
+
+                # Start all STT thread if not running
+                for i in range(len(prompt_thread_list)):
+                    if stt_worker_count >= avbl_stt_worker_count:
+                        print_log(f"STT_worker count over {stt_worker_count}/{avbl_stt_worker_count}")
+                        break
+
+                    # if audio input
+                    if prompt_thread_list[i].text == '':
+                        if not prompt_thread_list[i].isRunning():
+                            prompt_thread_list[i].start()
+                            print(f"Start STT Thread[{i}]: [{prompt_thread_list[i].audio_length}] sec audio")
+                        stt_worker_count += 1
 
                 # Check reply text
                 first_index_reply = prompt_thread_list[0].reply_text
@@ -2166,11 +2193,28 @@ class THREADMANAGER(QThread):
                 # print(first_index_reply)
 
                 if first_index_reply != "":
-                    # print(self.parent.ui.textEdit_your_name.toPlainText())
-                    # self.parent.gen_voice_thread(first_index_reply)
-
-                    # thread_list[0].remove_from_thread_list()
                     self.prompt_done_signal.emit()
+
+            # # region OLDMETHOD
+            # if len(prompt_thread_list) >= 1:
+            #     # Start first thread if not running
+            #     if not prompt_thread_list[0].isRunning() and prompt_thread_list[0].reply_text == "":
+            #         prompt_thread_list[0].start()
+            #         print(f"start prompt thread: [{prompt_thread_list[0].text}]")
+            #
+            #     # Check reply text
+            #     first_index_reply = prompt_thread_list[0].reply_text
+            #     prompt_thread_list[0].print_thread_list()
+            #     # print(first_index_reply)
+            #
+            #     if first_index_reply != "":
+            #         # print(self.parent.ui.textEdit_your_name.toPlainText())
+            #         # self.parent.gen_voice_thread(first_index_reply)
+            #
+            #         # thread_list[0].remove_from_thread_list()
+            #         self.prompt_done_signal.emit()
+            #
+            # # endregion OLDMETHOD
 
             if len(tts_thread_list) >= 1:
                 # Start first thread if not running
@@ -2214,12 +2258,21 @@ class THREADMANAGER(QThread):
 
             time.sleep(0.3)
 
-class PROMPTTHREAD(QThread):
+class PROMPTTHREAD(QThread):    # add whisper
     PromptDone = Signal(str, str)
-    def __init__(self, parent, text="", logging=True):
+    def __init__(self, parent, audio_file="", audio_length="", text="", logging=True):
         super().__init__(parent)
         self.parent = parent
+        # Audio Input
+        self.audio_file = audio_file
+        self.audio_length = audio_length
+        # STT generator
+        self.stt = None
+
+        # Text Input
         self.text = text
+
+        # prompt generator
         self.gen = None
         self.character = self.parent.char_info_dict["character_name"]
         self.reply_text = ""
@@ -2229,9 +2282,25 @@ class PROMPTTHREAD(QThread):
         self.logging = logging
 
     def run(self):
+        if self.audio_file != '':
+            # Speech To Text Generator
+            self.stt = GeneratorSTT()
+            change_state(self, "STT", "Transcribing")
+            self.text, _ = self.stt.speech_to_text(self.audio_file)
+            if self.text == "":
+                raise RuntimeError('STT result text is empty')
+            else:
+                # print(f'STT result: {self.text}')
+                pass
+
+        change_state(self, 'wait','Waiting send prompt')
+        # Wait until this thread is top from list
+        while self.state[0] == 'wait':
+            print_log("warning", self.state[1])
+            time.sleep(0.3)
         self.gen = Generator()
         in_text = self.text
-        change_state(self, "gen")
+        # change_state(self, "gen")
 
         tts_only = self.parent.chat_info_dict['tts_only']
         if not tts_only:

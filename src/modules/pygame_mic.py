@@ -29,6 +29,7 @@ if not os.path.exists(cache_dir):
 class MicRecorder(QThread):
     def __init__(self, target_gui: QObject, timeout_gui: QObject, is_sub: bool):
         super().__init__()
+        self.toggle_on = True   # Toggle to Save Audio file and create prompt_thread
 
         # for meter settings
         self.adm = None
@@ -227,6 +228,9 @@ class MicRecorder(QThread):
         self.p.terminate()
 
     def save_audio_file(self, audio_length_info=-1.0):
+        if not self.toggle_on:
+            return
+
         file_path = self.new_audio_path()
 
         if self.is_sub:
@@ -253,6 +257,20 @@ class MicRecorder(QThread):
             print_log("warning", f'this is not human voice: {file_path}', custom_logging=self.log)
         else:
             print_log("log", f"{prefix} Mic Recorded your Voice", f'{file_path}{l_info}', custom_logging=self.log)
+
+            # Send Signal to run Speech to text
+            self.stt_request(file_path, audio_length_info)
+
+    def stt_request(self, audio_file, audio_length):
+        if self.main_program:
+            try:
+                self.main_program.gen_prompt_thread_as_audio(audio_file, audio_length)
+            except RuntimeError as e:
+                print_log("warning", "no main program! maybe program ended", e)
+                del self.main_program
+                self.done = True
+                self.is_recording = False
+                self.is_phrase_time = False
 
     def ag_samples(self, sample):
         """ collect samples and average if needed. """
