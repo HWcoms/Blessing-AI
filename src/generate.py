@@ -253,6 +253,9 @@ class GeneratorTTS:
             if not quite_mode:
                 print("Using Audio Device (Speaker): ", f"[{device_name}]")
 
+        if pygame.mixer.get_init():
+            pygame.mixer.quit()
+
         pygame.mixer.init(devicename=device_name)
         self.sounda = pygame.mixer.Sound(self.final_result_path)
         self.sounda.set_volume(volume * 0.5)  # [0.0 ~ 2.0] to [0.0 ~ 1.0]
