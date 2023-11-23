@@ -2163,13 +2163,14 @@ class THREADMANAGER(QThread):
             prompt_thread_list = main_program.prompt_thread_list
             tts_thread_list = main_program.tts_thread_list
 
+            # PROMPT THREAD (STT + SEND PROMPT + CHECK CMD)
             if len(prompt_thread_list) >= 1: # if text or audio file entered
                 avbl_stt_worker_count = max(self.max_stt_worker, len(prompt_thread_list))   # get max worker avbl
 
                 # if first thread has text & ready -> Send Prompt Request
                 if prompt_thread_list[0].text != '' and prompt_thread_list[0].state[0] == 'wait':
                     change_state(prompt_thread_list[0], "gen")
-                    print(f"Start prompt thread: [{prompt_thread_list[0].text}]")
+                    print(f"Start Send Prompt Request : [{prompt_thread_list[0].text}]")
                     pass
 
                 stt_worker_count = 0
@@ -2180,12 +2181,17 @@ class THREADMANAGER(QThread):
                         print_log(f"STT_worker count over {stt_worker_count}/{avbl_stt_worker_count}")
                         break
 
+                    # if Thread is not Running & in init state
+                    if not prompt_thread_list[i].isRunning() and prompt_thread_list[i].state[0] == 'init':
+                        prompt_thread_list[i].start()
+                        # if audio input
+                        if prompt_thread_list[i].text == '':
+                            print(f"Start STT Thread[{i}]: [{prompt_thread_list[i].audio_length}] sec audio")
+
                     # if audio input
                     if prompt_thread_list[i].text == '':
-                        if not prompt_thread_list[i].isRunning():
-                            prompt_thread_list[i].start()
-                            print(f"Start STT Thread[{i}]: [{prompt_thread_list[i].audio_length}] sec audio")
                         stt_worker_count += 1
+
 
                 # Check reply text
                 first_index_reply = prompt_thread_list[0].reply_text
@@ -2195,27 +2201,7 @@ class THREADMANAGER(QThread):
                 if first_index_reply != "":
                     self.prompt_done_signal.emit()
 
-            # # region OLDMETHOD
-            # if len(prompt_thread_list) >= 1:
-            #     # Start first thread if not running
-            #     if not prompt_thread_list[0].isRunning() and prompt_thread_list[0].reply_text == "":
-            #         prompt_thread_list[0].start()
-            #         print(f"start prompt thread: [{prompt_thread_list[0].text}]")
-            #
-            #     # Check reply text
-            #     first_index_reply = prompt_thread_list[0].reply_text
-            #     prompt_thread_list[0].print_thread_list()
-            #     # print(first_index_reply)
-            #
-            #     if first_index_reply != "":
-            #         # print(self.parent.ui.textEdit_your_name.toPlainText())
-            #         # self.parent.gen_voice_thread(first_index_reply)
-            #
-            #         # thread_list[0].remove_from_thread_list()
-            #         self.prompt_done_signal.emit()
-            #
-            # # endregion OLDMETHOD
-
+            # TTS THREAD
             if len(tts_thread_list) >= 1:
                 # Start first thread if not running
                 # for tts_thread in tts_thread_list:
@@ -2295,12 +2281,18 @@ class PROMPTTHREAD(QThread):    # add whisper
 
         change_state(self, 'wait','Waiting send prompt')
         # Wait until this thread is top from list
-        while self.state[0] == 'wait':
-            print_log("warning", self.state[1])
+        while True:
+            if len(self.parent.prompt_thread_list) < 1:
+                break
+            if self != self.parent.prompt_thread_list[0]:
+                return
+            if self.state[0] != 'wait':
+                break
+            print_log("warning", self.state[0], self.state[1])
             time.sleep(0.3)
         self.gen = Generator()
         in_text = self.text
-        # change_state(self, "gen")
+        change_state(self, "gen")
 
         tts_only = self.parent.chat_info_dict['tts_only']
         if not tts_only:

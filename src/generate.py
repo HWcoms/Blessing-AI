@@ -160,7 +160,7 @@ class Generator:
         bot_cmd = BotCommand()
 
         command, value = bot_cmd.check_command(text)
-        print(command, value)
+        print(f'cmd: {command} value: {value}')
         return command, value
 
 
