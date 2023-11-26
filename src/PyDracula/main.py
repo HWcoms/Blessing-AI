@@ -2306,6 +2306,8 @@ class PROMPTTHREAD(QThread):    # add whisper
         change_state(self, "gen")
 
         tts_only = self.parent.chat_info_dict['tts_only']
+
+        self.parent.load_other_info()  # Reload other settings, because it's not updating after changes
         self.reply_text = self.gen.generate(in_text,
                                             [self.parent.audio_info_dict, self.parent.char_info_dict,
                                              self.parent.prompt_info_dict, self.parent.chat_info_dict] ,

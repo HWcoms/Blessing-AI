@@ -43,7 +43,6 @@ def ModifyDiscordWebhook(webhook_url, username=None, avatar=None):
 
     if avatar and avatar != "":
         mod_webhook_data['avatar'] = avatar
-        mod_webhook_data['avatar_url'] = avatar
 
     try:
         result = requests.patch(webhook_url, json=mod_webhook_data)
@@ -80,10 +79,18 @@ def ExcuteDiscordWebhook(message, webhook_url, username, avatar=None):
 
         if url_type == 'unknown':
             print_error("ExcuteDiscordWebhook", f"Could not get type of url: {avatar}")
-        else:
-            ModifyDiscordWebhook(webhook_url, username, _final_url)
+        elif not url_type == 'internet_url':
+            webhook_data['avatar_url'] = None
+            ret = ModifyDiscordWebhook(webhook_url, username, _final_url)
 
-        print("avatar url: ", _final_url[:70])
+            _mod_avatar = ret.json()['avatar']
+            if _mod_avatar:
+                print("Modifying Discord webhook:", _mod_avatar)
+            else:
+                print_error("ModifyDiscordWebhook", 'moded avatar is None')
+
+        if _final_url:
+            print("avatar url: ", _final_url[:70])
         print("avatar url type: ", url_type)
 
     # ////////////////////////////////////////////////////////
