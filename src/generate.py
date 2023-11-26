@@ -35,7 +35,7 @@ class Generator:
         super().__init__()
         self.logging = True
 
-    def generate(self, text, settings_list: list = None):
+    def generate(self, text, settings_list: list = None, tts_only=False):
         log_str = ""
         # Load Program Settings
         audio_settings, character_settings, prompt_settings, other_settings = None, None, None, None
@@ -76,23 +76,27 @@ class Generator:
             token_id = prompt_settings["translator_api_id"]
             token_secret = prompt_settings["translator_api_secret"]
 
-            speech_lang = detect_language(text, token_id, token_secret)
-            translated_speech = DoTranslate(text, speech_lang, ai_model_language, token_id, token_secret)
+            if not tts_only:
+                speech_lang = detect_language(text, token_id, token_secret)
+                translated_speech = DoTranslate(text, speech_lang, ai_model_language, token_id, token_secret)
 
-            self.send_discord(translated_speech, ai_model_language, [token_id, token_secret], your_json, other_settings,
-                              by_user=True)
+                self.send_discord(translated_speech, ai_model_language, [token_id, token_secret], your_json, other_settings,
+                                  by_user=True)
 
-            if self.logging:
-                # source_lang_name = languages.get(alpha2=speech_lang).name
-                # print(f'{source_lang_name}: {eng_speech}')
-                print(f'User: {translated_speech}')
+                if self.logging:
+                    # source_lang_name = languages.get(alpha2=speech_lang).name
+                    # print(f'{source_lang_name}: {eng_speech}')
+                    print(f'User: {translated_speech}')
 
-            bot_reply = generate_reply(translated_speech, character_settings["character_name"],
-                                       prompt_settings["max_prompt_token"], prompt_settings["max_reply_token"])
-            # bot_trans_speech = DoTranslate(bot_reply,'en',target_lang=tts_language)
+                bot_reply = generate_reply(translated_speech, character_settings["character_name"],
+                                           prompt_settings["max_prompt_token"], prompt_settings["max_reply_token"])
+                # bot_trans_speech = DoTranslate(bot_reply,'en',target_lang=tts_language)
 
-            if self.logging:
-                print(f'Bot: {bot_reply}')
+                if self.logging:
+                    print(f'Bot: {bot_reply}')
+            else:
+                bot_reply = text
+                ai_model_language = detect_language(text, token_id, token_secret)
 
         else:
             print("\031[31m" + '[Generator.Generate] Error: text variable is None' + "\033[0m")
@@ -148,7 +152,7 @@ class Generator:
                     webhook_avatar = profile_settings["character_image"]
 
                 print("webhook_username: ", webhook_username)
-                print("webhook_avatar: ", webhook_avatar)
+                print("webhook_avatar: ", webhook_avatar[:70])
 
                 ExcuteDiscordWebhook(discord_sentence, webhook_url, webhook_username, webhook_avatar)  # Using Webhook
 

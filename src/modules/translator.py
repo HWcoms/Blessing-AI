@@ -62,6 +62,9 @@ def papago_translate(request, data):
         return None
         # return "I just said dumb things that my mic can't understand."
         # return "パパゴの APIが翻訳に失敗しました"
+    except TimeoutError as e:
+        print("Papago Timeout Error: ", e)
+        return None
 
     rescode = response.getcode()
 

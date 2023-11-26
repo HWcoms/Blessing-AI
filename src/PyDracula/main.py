@@ -1313,6 +1313,10 @@ class MainWindow(QMainWindow):
         widgets.lineEdit_max_reply_token.setText( str(max_reply_token) )
         widgets.horizontalSlider_max_reply_token.setValue(max_reply_token)
 
+        widgets.comboBox_ai_model_language.clear()
+        for _lang in ['en', 'ja', 'ko']:
+            widgets.comboBox_ai_model_language.addItem(self.convert_language_code(_lang))
+
         widgets.comboBox_ai_model_language.setCurrentText(ai_model_language)
 
     def refresh_api_url(self, hide_url:bool=True):
@@ -1470,6 +1474,9 @@ class MainWindow(QMainWindow):
 
             # DISCORD SHARED SETTING WIDGETS
             ############################################################################################
+            widgets.comboBox_discord_print_language.clear()
+            for _lang in ['en', 'ja', 'ko', 'zh']:
+                widgets.comboBox_discord_print_language.addItem(self.convert_language_code(_lang))
             widgets.comboBox_discord_print_language.setCurrentText(discord_print_language)
 
             # DISCORD BOT SETTING WIDGETS
@@ -2093,6 +2100,10 @@ class MainWindow(QMainWindow):
                 else:   # PROMPTTHREAD
                     _msg = thread.text
 
+                _is_running = '⏸️'
+                if thread.isRunning():
+                    _is_running = '▶️'
+
                 table.setItem(thread_index, 0, QTableWidgetItem(thread.character))
                 table.setItem(thread_index, 1, QTableWidgetItem(_msg))
                 table.setItem(thread_index, 2, QTableWidgetItem(thread.state[1]))
@@ -2284,21 +2295,19 @@ class PROMPTTHREAD(QThread):    # add whisper
         while True:
             if len(self.parent.prompt_thread_list) < 1:
                 break
-            if self != self.parent.prompt_thread_list[0]:
-                return
             if self.state[0] != 'wait':
                 break
-            print_log("warning", self.state[0], self.state[1])
+            # print_log("warning", self.state[0], self.state[1])
             time.sleep(0.3)
         self.gen = Generator()
         in_text = self.text
         change_state(self, "gen")
 
         tts_only = self.parent.chat_info_dict['tts_only']
-        if not tts_only:
-            self.reply_text = self.gen.generate(in_text)
-        else:
-            self.reply_text = in_text
+        self.reply_text = self.gen.generate(in_text,
+                                            [self.parent.audio_info_dict, self.parent.char_info_dict,
+                                             self.parent.prompt_info_dict, self.parent.chat_info_dict] ,
+                                            tts_only=tts_only)
 
         change_state(self, "check", "Check Command")
         # print("PromptThread created reply: ", self.reply_text, f"| text: {self.text}")
