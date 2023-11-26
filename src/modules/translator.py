@@ -21,7 +21,7 @@ def DoTranslate(string, source_lang='ko', target_lang='ja', token_id="", token_s
     # traget_lang_name = languages.get(alpha2=target_lang).name
 
     # Papago Translate
-    encText = urllib.parse.quote(string)
+    encText = urllib.parse.quote(str(string))
     # print("인식언어: ",source_lang_name, "목표언어: ", traget_lang_name)
 
     request = urllib.request.Request(trannslate_url)
