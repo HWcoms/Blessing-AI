@@ -116,6 +116,9 @@ class Generator:
         if self.logging:
             print("\033[34m" + log_str + "\033[32m")
 
+        if not message:
+            message = 'No reply text is Generated!\nPlease Make sure Language Model API URL is Valid!'
+
         discord_print_language = other_settings["discord_print_language"]
         discord_bot = other_settings["discord_bot"]
         discord_webhook = other_settings["discord_webhook"]

@@ -2285,6 +2285,8 @@ class PROMPTTHREAD(QThread):    # add whisper
             change_state(self, "STT", "Transcribing")
             self.text, _ = self.stt.speech_to_text(self.audio_file)
             if self.text == "":
+                change_state(self, "close")
+                self.remove_from_thread_list()
                 raise RuntimeError('STT result text is empty')
             else:
                 # print(f'STT result: {self.text}')
@@ -2308,6 +2310,11 @@ class PROMPTTHREAD(QThread):    # add whisper
                                             [self.parent.audio_info_dict, self.parent.char_info_dict,
                                              self.parent.prompt_info_dict, self.parent.chat_info_dict] ,
                                             tts_only=tts_only)
+
+        if not self.reply_text:
+            print_log('error','No reply text is Generated!', 'Make sure Language Model API URL is Valid')
+            self.reply_text = 'No reply text is Generated! Make sure Language Model API URL is Valid'
+            raise RuntimeError('Make sure Language Model API URL is Valid')
 
         change_state(self, "check", "Check Command")
         # print("PromptThread created reply: ", self.reply_text, f"| text: {self.text}")
