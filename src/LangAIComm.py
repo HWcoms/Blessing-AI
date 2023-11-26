@@ -26,9 +26,9 @@ load_dotenv()
 # token_request_url = f'{HOST}/api/v1/token-count'
 
 # Global endpoint vars
-gen_url_endpoint = 'v1/generate'
+gen_url_endpoint = 'v1/completions'
 view_url_endpoint = 'v1/view'
-token_url_endpoint = 'v1/token-count'
+token_url_endpoint = 'v1/internal/token-count'
 token_request_url = None
 
 trim_string = '\n'
@@ -79,8 +79,7 @@ def save_text_file(file_path, content):
 
 def count_tokens(text):
     request = {
-        'prompt': text,
-        'tokens': -1
+        'text': text,
     }
     global token_request_url
     if token_request_url is None:
@@ -89,9 +88,10 @@ def count_tokens(text):
 
     try:
         response = requests.post(token_request_url, json=request)
+        print(token_request_url)
 
         if response.status_code == 200:
-            result_tokens = response.json()['results'][0]['tokens']
+            result_tokens = response.json()['length']
             # print(request['prompt'])
             # print(result)
             return result_tokens
@@ -182,7 +182,7 @@ def run(prompt, yourname):
     max_prompt_token = settings_json["max_prompt_token"]
     max_reply_token = settings_json["max_reply_token"]
 
-    request = {
+    request_old = {
         'your_name': yourname,
         'prompt': prompt,
         'max_new_tokens': max_reply_token,
@@ -205,15 +205,50 @@ def run(prompt, yourname):
         'skip_special_tokens': True,
         'stopping_strings': [f"{yourname}:"]
     }
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    # history=[]
+    # history.append({"role": "user", "content": 'test'})
+    # data_chat = {
+    #     "mode": "chat",
+    #     "character": "Example",
+    #     "messages": history
+    # }
+    request = {
+        'your_name': yourname,
+        'prompt': prompt,
+        'max_tokens': max_reply_token,
+        'do_sample': True,
+        'temperature': 0.72,
+        'top_p': 0.73,
+        'typical_p': 1,
+        'repetition_penalty': 1.17,
+        'top_k': 0,
+        'min_length': 0,
+        'no_repeat_ngram_size': 0,
+        'num_beams': 1,
+        'penalty_alpha': 0,
+        'length_penalty': 1,
+        'early_stopping': False,
+        'seed': -1,
+        'add_bos_token': True,
+        'truncation_length': max_prompt_token,
+        'ban_eos_token': False,
+        'skip_special_tokens': True,
+        'stopping_strings': [f"{yourname}:"],
+        'stream': False
+    }
     # request['prompt'] = request['prompt'].encode('utf-8').decode('utf-8') #making sure to en/decode as utf-8 - sometimes prompt get changed to symbols
-    request['prompt'] = request['prompt'].strip()
+    # request['context'] = request['context'].strip()
 
     try:
-        response = requests.post(gen_request_url, json=request)
+        response = requests.post(gen_request_url, headers=headers, json=request, verify=False, stream=False)
 
-        if response.status_code == 200:
-            result_prompt = response.json()['results'][0]['text']
-            # print(result)
+        if response:    # Todo: check response code instead of checking response obj
+            result_prompt = response.json()['choices'][0]['text']
             trimmed_string = trim_until_newline(result_prompt, yourname)
             return trimmed_string
         else:
@@ -250,13 +285,13 @@ def clean_lines(string):
 
 def check_url(base_url, endpoint):
     if base_url.endswith('/api'):
-        merged_url = base_url + '/' + endpoint
+        merged_url = base_url.replace('/api', '') + '/' + endpoint
     elif base_url.endswith('/api/'):
-        merged_url = base_url + endpoint
+        merged_url = base_url.replace('/api/', '/') + endpoint
     elif base_url.endswith('/'):
-        merged_url = base_url + 'api/' + endpoint
+        merged_url = base_url + endpoint
     else:
-        merged_url = base_url + '/api/' + endpoint
+        merged_url = base_url + '/' + endpoint
 
     return merged_url
 
@@ -467,8 +502,9 @@ def optimize_tokens(context, dialogs, token_limit):
 
 # Example usage
 if __name__ == '__main__':
-    print(generate_reply("I'm HWcoms", "Kato Megumi"))
-
+    # print(generate_reply("I'm HWcoms", "Kato Megumi"))
+    # print(run('what is your name??','coms'))
+    print(count_tokens('testetestet asa'))
     # settings_json = SettingInfo.load_prompt_settings()
     # print(settings_json)
     # gen_request_url = check_url(settings_json["api_url"], gen_url_endpoint)
