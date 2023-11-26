@@ -1,23 +1,15 @@
 import base64
-import json
-import os
-import urllib.parse
 
 from setting_info import *
 
 # Load ChatLog
 from datetime import datetime
-from os import getenv
-from pathlib import Path
 
 import requests
 # Load Json from Png
 from PIL import Image
-from dateutil.parser import parse
 import re
-from dotenv import load_dotenv
-
-load_dotenv()
+import glob
 
 # For local streaming, the websockets are hosted without ssl - http://
 # HOST = getenv('TEXTGENERATION_URL')
@@ -88,7 +80,7 @@ def count_tokens(text):
 
     try:
         response = requests.post(token_request_url, json=request)
-        print(token_request_url)
+        # print(token_request_url)
 
         if response.status_code == 200:
             result_tokens = response.json()['length']
@@ -246,7 +238,7 @@ def run(prompt, yourname):
 
     try:
         response = requests.post(gen_request_url, headers=headers, json=request, verify=False, stream=False)
-
+        print(response.json())
         if response:    # Todo: check response code instead of checking response obj
             result_prompt = response.json()['choices'][0]['text']
             trimmed_string = trim_until_newline(result_prompt, yourname)
@@ -299,20 +291,22 @@ def check_url(base_url, endpoint):
 ## Get character json for GUI
 def get_character_info(character_name):
     # Load Character
-    character_json_name = character_name + '.json'
-    character_image_name = character_name + '.png'
-    json_filepath = get_character_file(character_json_name)
-    image_filepath = get_character_file(character_image_name)
-
-    char_dict = load_character(json_filepath)
+    json_filepath, image_filepath = get_character_file(character_name)
 
     character_image = None
-    if os.path.exists(image_filepath):
+    if image_filepath:
         print("\033[34m" + "Bot profile Image exists." + "\033[0m")
         character_image = image_filepath
     else:
         print(
             "\033[31m" + "Warning [LangAIComm.get_character_info]: " + "\033[33m" + "Bot profile Image does not exist." + "\033[0m")
+
+    if json_filepath:
+        char_dict = load_character(json_filepath)
+    elif image_filepath:
+        char_dict = load_character(image_filepath)
+    else:
+        raise ValueError('No Character Json Or Image Found')
 
     # Add image path to char_dict
     char_dict["character_image"] = character_image
@@ -331,14 +325,17 @@ def get_chatlog_info(character_name):
 def generate_reply(string, character_name, max_prompt_token=2048, max_reply_token=200):
     # Define file name that contains prompt
 
-    character_file_path = character_name + '.json'
-
     # Load voice_settings
     char_settings_json = SettingInfo.load_character_settings()
 
     # Load Character
-    filename = get_character_file(character_file_path)
-    char_dict = load_character(filename)
+    json_filepath, image_filepath = get_character_file(character_name)
+    if json_filepath:
+        char_dict = load_character(json_filepath)
+    elif image_filepath:
+        char_dict = load_character(image_filepath)
+    else:
+        raise ValueError('No Character Json Or Image Found')
 
     # Load ChatLog
     chatlog_file_path = check_chatlog(character_name)
@@ -399,10 +396,23 @@ def get_character_file(character_name):
     # Load Character
     this_dir = os.path.dirname(os.path.abspath(__file__))
     char_path = os.path.join(this_dir, "Models", "Characters")
-    char_file_path = os.path.join(char_path, character_name)
+    file_name = f'{character_name}.*'
+    char_file_path = os.path.join(char_path, file_name)
 
-    return char_file_path
+    char_json_path, char_image_path = None, None
+    allowed_json_extensions = ['.json']
+    allowed_image_extensions = ['.png', '.jpg', '.jpeg', '.bmp']
+    for path in glob.glob(char_file_path):
+        filename = os.path.basename(os.path.splitext(path)[0])
+        file_extension = os.path.splitext(path)[1]
 
+        if filename == character_name:
+            if file_extension in allowed_json_extensions:
+                char_json_path = path
+            elif file_extension in allowed_image_extensions:
+                char_image_path = path
+
+    return char_json_path, char_image_path
 
 def add_prefix_lines(string, prefix):
     lines = string.splitlines()
@@ -504,7 +514,7 @@ def optimize_tokens(context, dialogs, token_limit):
 if __name__ == '__main__':
     # print(generate_reply("I'm HWcoms", "Kato Megumi"))
     # print(run('what is your name??','coms'))
-    print(count_tokens('testetestet asa'))
+    # print(count_tokens('testetestet asa'))
     # settings_json = SettingInfo.load_prompt_settings()
     # print(settings_json)
     # gen_request_url = check_url(settings_json["api_url"], gen_url_endpoint)
@@ -512,6 +522,7 @@ if __name__ == '__main__':
 
     # print(run("hello", "coms"))
 
+    print(get_character_info("Zhongli"))
     # print(get_character_name())
     # print(count_tokens(context))
     # print(get_chatlog_info("Kato Megumi"))
