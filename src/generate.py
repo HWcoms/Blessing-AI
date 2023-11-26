@@ -78,10 +78,13 @@ class Generator:
 
             if not tts_only:
                 speech_lang = detect_language(text, token_id, token_secret)
+
+                self.send_discord(text, speech_lang, [token_id, token_secret], your_json,
+                                  other_settings,
+                                  by_user=True)
+
                 translated_speech = DoTranslate(text, speech_lang, ai_model_language, token_id, token_secret)
 
-                self.send_discord(translated_speech, ai_model_language, [token_id, token_secret], your_json, other_settings,
-                                  by_user=True)
 
                 if self.logging:
                     # source_lang_name = languages.get(alpha2=speech_lang).name
