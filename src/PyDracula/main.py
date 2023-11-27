@@ -120,6 +120,7 @@ class MainWindow(QMainWindow):
                                             # discord_print_language, chat_display_language
 
         self.audio_info_dict: dict = None   # [mic_index, mic_threshold, sub_mic_index, sub_mic_threshold, main/sub_phrase_timeout,
+                                            # max_stt_worker,
 
                                             # spk_index, speaker_volume,
                                             # tts_character, tts_language, voice_id,
@@ -2145,7 +2146,7 @@ class THREADMANAGER(QThread):
     tts_gen_done_signal = Signal()
     tts_play_done_signal = Signal()
 
-    max_stt_worker = 3  # [speech to text] max workers
+    max_stt_worker = 0  # [speech to text] max workers
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -2176,6 +2177,8 @@ class THREADMANAGER(QThread):
 
             # PROMPT THREAD (STT + SEND PROMPT + CHECK CMD)
             if len(prompt_thread_list) >= 1: # if text or audio file entered
+                self.max_stt_worker = self.parent.audio_info_dict['max_stt_worker']
+                # print(self.max_stt_worker)
                 avbl_stt_worker_count = max(self.max_stt_worker, len(prompt_thread_list))   # get max worker avbl
 
                 # if first thread has text & ready -> Send Prompt Request
@@ -2185,8 +2188,14 @@ class THREADMANAGER(QThread):
                     pass
 
                 stt_worker_count = 0
+                waiting_thread_count = 0
+                first_waiting_thread = None
+
+                wait_threads_delete_after = []    # List of Waiting Threads should be delete after merging
 
                 # Start all STT thread if not running
+                # TODO: if waiting_thread > 1, merge all of threads text
+                # Todo: prompt_thread needs username
                 for i in range(len(prompt_thread_list)):
                     if stt_worker_count >= avbl_stt_worker_count:
                         print_log(f"STT_worker count over {stt_worker_count}/{avbl_stt_worker_count}")
@@ -2199,9 +2208,30 @@ class THREADMANAGER(QThread):
                         if prompt_thread_list[i].text == '':
                             print(f"Start STT Thread[{i}]: [{prompt_thread_list[i].audio_length}] sec audio")
 
+                    if prompt_thread_list[i].state[0] == 'wait':
+                        if waiting_thread_count == 0:
+                            first_waiting_thread = prompt_thread_list[i]
+                        else:
+                            wait_threads_delete_after.append(prompt_thread_list[i])
+
+                        waiting_thread_count += 1
+
                     # if audio input
                     if prompt_thread_list[i].text == '':
                         stt_worker_count += 1
+
+                # Merge and Delete Waiting Threads
+                for wait_thread in wait_threads_delete_after:
+                    if first_waiting_thread:
+                        first_waiting_thread.text += '\n' + wait_thread.text
+                        change_state(wait_thread, "close")
+                    else:
+                        # if first_waiting_thread removed, change target
+                        first_waiting_thread = wait_thread
+
+                if first_waiting_thread and len(wait_threads_delete_after) > 0:
+                    # IF there's waiting thread & waiting threads(should be delete) > 0
+                    print_log('log', 'waiting thread merged', f'\n{first_waiting_thread.text}')
 
 
                 # Check reply text
@@ -2285,8 +2315,7 @@ class PROMPTTHREAD(QThread):    # add whisper
             change_state(self, "STT", "Transcribing")
             self.text, _ = self.stt.speech_to_text(self.audio_file)
             if self.text == "":
-                change_state(self, "close")
-                self.remove_from_thread_list()
+                self.stop_thread()
                 raise RuntimeError('STT result text is empty')
             else:
                 # print(f'STT result: {self.text}')
@@ -2298,6 +2327,10 @@ class PROMPTTHREAD(QThread):    # add whisper
             if len(self.parent.prompt_thread_list) < 1:
                 break
             if self.state[0] != 'wait':
+                if self.state[0] == 'close':
+                    print_log('warning', 'this thread is terminated', f'{self.text}')
+                    self.stop_thread()
+                    return
                 break
             # print_log("warning", self.state[0], self.state[1])
             time.sleep(0.3)
@@ -2327,6 +2360,10 @@ class PROMPTTHREAD(QThread):    # add whisper
 
     def remove_from_thread_list(self):
         self.parent.prompt_thread_list.remove(self)
+
+    def stop_thread(self):
+        change_state(self, "close")
+        self.remove_from_thread_list()
 
     def print_thread_list(self):
         if self.logging:
