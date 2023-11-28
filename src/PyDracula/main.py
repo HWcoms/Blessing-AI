@@ -2317,7 +2317,7 @@ class PROMPTTHREAD(QThread):    # add whisper
             # print_log('red', 'stt_lang:', self.parent.audio_info_dict['stt_language'])
             self.text, _ = self.stt.speech_to_text(self.audio_file, self.parent.audio_info_dict['stt_language'])
             if self.text == "":
-                self.stop_thread()
+                self.stop()
                 raise RuntimeError('STT result text is empty')
             else:
                 # print(f'STT result: {self.text}')
@@ -2331,7 +2331,7 @@ class PROMPTTHREAD(QThread):    # add whisper
             if self.state[0] != 'wait':
                 if self.state[0] == 'close':
                     print_log('warning', 'this thread is terminated', f'{self.text}')
-                    self.stop_thread()
+                    self.stop()
                     return
                 break
             # print_log("warning", self.state[0], self.state[1])
@@ -2351,6 +2351,7 @@ class PROMPTTHREAD(QThread):    # add whisper
         if not self.reply_text:
             print_log('error','No reply text is Generated!', 'Make sure Language Model API URL is Valid')
             self.reply_text = 'No reply text is Generated! Make sure Language Model API URL is Valid'
+            self.stop()
             raise RuntimeError('Make sure Language Model API URL is Valid')
 
         change_state(self, "check", "Check Command")
@@ -2363,9 +2364,12 @@ class PROMPTTHREAD(QThread):    # add whisper
     def remove_from_thread_list(self):
         self.parent.prompt_thread_list.remove(self)
 
-    def stop_thread(self):
+    def stop(self):
         change_state(self, "close")
         self.remove_from_thread_list()
+
+        self.quit()
+        self.wait(5000)  # 5000ms = 5s
 
     def print_thread_list(self):
         if self.logging:

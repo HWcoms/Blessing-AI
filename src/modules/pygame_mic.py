@@ -77,6 +77,12 @@ class MicRecorder(QThread):
     def run(self):
         self.record_mic(_adm=self.adm, duration=self.rec_duration)
 
+    def stop(self):
+        self.close_stream()
+        self.init_meters()
+        self.quit()
+        self.wait(5000)
+
     def record_mic(self, _adm: AudioDevice, chunk=1024, duration=-1):
         log_str = ''
         if self.is_sub:
@@ -223,9 +229,11 @@ class MicRecorder(QThread):
 
     def close_stream(self):
         # Terminate Stream
-        self.stream.stop_stream()
-        self.stream.close()
-        self.p.terminate()
+        if self.stream:
+            self.stream.stop_stream()
+            self.stream.close()
+        if self.p:
+            self.p.terminate()
 
     def save_audio_file(self, audio_length_info=-1.0):
         if not self.toggle_on:
@@ -267,10 +275,8 @@ class MicRecorder(QThread):
                 self.main_program.gen_prompt_thread_as_audio(audio_file, audio_length)
             except RuntimeError as e:
                 print_log("warning", "no main program! maybe program ended", e)
-                del self.main_program
-                self.done = True
-                self.is_recording = False
-                self.is_phrase_time = False
+                self.stop()
+
 
     def ag_samples(self, sample):
         """ collect samples and average if needed. """
@@ -323,10 +329,7 @@ class MicRecorder(QThread):
                 self.main_program.update_threshold_gui_signal.emit(self.cur_db, self.target_gui)
             except RuntimeError as e:
                 print_log("warning", "no main program! maybe program ended", e)
-                del self.main_program
-                self.done = True
-                self.is_recording = False
-                self.is_phrase_time = False
+                self.stop()
 
     def draw_phrase_timeout(self, remain_time):
         # [Phrase time GUI] Call Signal from main program
@@ -336,10 +339,7 @@ class MicRecorder(QThread):
                 self.main_program.update_phrase_timeout_gui_signal.emit(remain_time, self.timeout_gui)
             except RuntimeError as e:
                 print_log("warning", "no main program! maybe program ended", e)
-                del self.main_program
-                self.done = True
-                self.is_recording = False
-                self.is_phrase_time = False
+                self.stop()
 
     def new_audio_path(self):
         import glob
