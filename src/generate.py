@@ -179,7 +179,7 @@ class GeneratorSTT:
         super().__init__()
         self.logging = True
 
-    def speech_to_text(self, audio_file):
+    def speech_to_text(self, audio_file, stt_lang='any'):
         """
             audio file as input, transcribe to text
             Args:
@@ -192,7 +192,7 @@ class GeneratorSTT:
         log_str = ""
 
         try:
-            result_text, speech_lang = speech_to_text(audio_file, 'transcribe', 'any')
+            result_text, speech_lang = speech_to_text(audio_file, 'transcribe', stt_lang)
         except requests.exceptions.JSONDecodeError:
             print('Too many requests to process at once')
             return None

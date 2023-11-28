@@ -239,7 +239,8 @@ def run(prompt, yourname):
     try:
         response = requests.post(gen_request_url, headers=headers, json=request, verify=False, stream=False)
         print(response.json())
-        if response:    # Todo: check response code instead of checking response obj
+
+        if response.status_code == 200:    # Todo: check response code instead of checking response obj
             result_prompt = response.json()['choices'][0]['text']
             trimmed_string = trim_until_newline(result_prompt, yourname)
             return trimmed_string
@@ -513,7 +514,7 @@ def optimize_tokens(context, dialogs, token_limit):
 # Example usage
 if __name__ == '__main__':
     # print(generate_reply("I'm HWcoms", "Kato Megumi"))
-    # print(run('what is your name??','coms'))
+    print(run('what is your name??', 'coms'))
     # print(count_tokens('testetestet asa'))
     # settings_json = SettingInfo.load_prompt_settings()
     # print(settings_json)
@@ -522,7 +523,7 @@ if __name__ == '__main__':
 
     # print(run("hello", "coms"))
 
-    print(get_character_info("Zhongli"))
+    # print(get_character_info("Zhongli"))
     # print(get_character_name())
     # print(count_tokens(context))
     # print(get_chatlog_info("Kato Megumi"))

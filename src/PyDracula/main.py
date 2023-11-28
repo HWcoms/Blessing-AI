@@ -2313,7 +2313,9 @@ class PROMPTTHREAD(QThread):    # add whisper
             # Speech To Text Generator
             self.stt = GeneratorSTT()
             change_state(self, "STT", "Transcribing")
-            self.text, _ = self.stt.speech_to_text(self.audio_file)
+            self.parent.load_audio_info()
+            # print_log('red', 'stt_lang:', self.parent.audio_info_dict['stt_language'])
+            self.text, _ = self.stt.speech_to_text(self.audio_file, self.parent.audio_info_dict['stt_language'])
             if self.text == "":
                 self.stop_thread()
                 raise RuntimeError('STT result text is empty')
