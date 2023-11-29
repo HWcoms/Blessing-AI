@@ -274,6 +274,11 @@ class MainWindow(QMainWindow):
             widgets.horizontalSlider_sub_phrase_timeout,
             widgets.pushButton_sub_phrase_timeout_default,
 
+            widgets.comboBox_stt_language,
+            widgets.pushButton_stt_language_default,
+            widgets.spinBox_max_stt_worker,
+            widgets.pushButton_max_stt_worker_default,
+
             widgets.comboBox_tts_character,
             widgets.comboBox_tts_language,
             widgets.comboBox_tts_voice_id,
@@ -408,6 +413,8 @@ class MainWindow(QMainWindow):
                 obj.released.connect(self.released_component)
                 # widgets.pushButton_view_translator_secret
             elif component_type == "horizontalSlider":
+                obj.valueChanged.connect(self.update_content_by_component)
+            elif component_type == "spinBox":
                 obj.valueChanged.connect(self.update_content_by_component)
             else:
                 print(
@@ -550,28 +557,31 @@ class MainWindow(QMainWindow):
         if isinstance(called_component, QCheckBox):
             component_property = called_component.isChecked()
 
-        if isinstance(called_component, QComboBox):
+        elif isinstance(called_component, QComboBox):
             if "language" in component_key:
                 component_property = self.convert_language_code(called_component.currentText())
             else:
                 component_property = called_component.currentText()
 
-        if isinstance(called_component, QLineEdit):
+        elif isinstance(called_component, QLineEdit):
             comp_text = str(called_component.text())
             if not comp_text or comp_text == "":
                 comp_text = ""
             component_property = comp_text
 
-        if isinstance(called_component, QTextEdit):
+        elif isinstance(called_component, QTextEdit):
             comp_text = str(called_component.toPlainText())
             if not comp_text or comp_text == "":
                 comp_text = ""
             component_property = comp_text
 
-        if isinstance(called_component, QGroupBox):
+        elif isinstance(called_component, QGroupBox):
             component_property = called_component.isChecked()
 
-        if isinstance(called_component, QRadioButton):
+        elif isinstance(called_component, QSpinBox):
+            component_property = self.ui.spinBox_max_stt_worker.value()
+
+        elif isinstance(called_component, QRadioButton):
             gender_radio, component_key = self.get_radio_object_by_name(component_key)
             component_property = self.get_radio_check(gender_radio).lower()  # female or male in radio button
         #####################################################################################
@@ -690,6 +700,36 @@ class MainWindow(QMainWindow):
                     print_log("error", "no slider found to reset", componentName)
         #####################################################################################
         ## endregion Synced or Only [lineEdit, Slider, PushButton] Handler
+
+        ## STT (Speach To Text Settings)
+        # stt language
+        if 'stt_language' in component_key:
+            setting_name = "audio_settings"
+            if component_type == "pushButton":
+                reset_value = 'any'
+                component_key = component_key.replace("_default", "")
+                component_property = reset_value
+
+                synced_slider = self.find_qobject_by(component_key, QComboBox, get_only_one=True)
+                if synced_slider:
+                    synced_slider.setCurrentText(self.convert_language_code(reset_value))
+                else:
+                    print_log("error", "no slider found to reset", componentName)
+
+        # stt max stt worker
+        if 'max_stt_worker' in component_key:
+            setting_name = "audio_settings"
+            if component_type == "pushButton":
+                reset_value = 1
+                component_key = component_key.replace("_default", "")
+                component_property = reset_value
+
+                synced_slider = self.find_qobject_by(component_key, QSpinBox, get_only_one=True)
+                if synced_slider:
+                    synced_slider.setValue(reset_value)
+                else:
+                    print_log("error", "no slider found to reset", componentName)
+
 
         if component_key == "speaker_volume":
             if len (self.tts_thread_list) > 0:
@@ -1005,6 +1045,20 @@ class MainWindow(QMainWindow):
 
         ################################################################################################
         # endregion [LINEEDIT & SLIDERS]
+
+        # ComboBox
+        widgets.comboBox_stt_language.clear()
+        for _lang in ['any', 'en', 'ja', 'ko', 'zh']:
+            widgets.comboBox_stt_language.addItem(self.convert_language_code(_lang))
+
+        widgets.comboBox_stt_language.setCurrentText(
+            self.convert_language_code(
+                self.audio_info_dict["stt_language"]
+            )
+        )
+
+        # SpinBox
+        widgets.spinBox_max_stt_worker.setValue(self.audio_info_dict["max_stt_worker"])
 
     def refresh_audio_device(self, update_by_combo = False, def_mic=False, def_sub_mic=False, def_spk=False):
         global widgets
@@ -1943,6 +1997,7 @@ class MainWindow(QMainWindow):
         """
         language_mapping = {
             # Add more language mappings as needed
+            "Auto": "any",
             "English": "en",
             "Korean": "ko",
             "Japanese": "ja",
@@ -2177,7 +2232,7 @@ class THREADMANAGER(QThread):
 
             # PROMPT THREAD (STT + SEND PROMPT + CHECK CMD)
             if len(prompt_thread_list) >= 1: # if text or audio file entered
-                self.max_stt_worker = self.parent.audio_info_dict['max_stt_worker']
+                self.max_stt_worker = self.parent.ui.spinBox_max_stt_worker.value()
                 # print(self.max_stt_worker)
                 avbl_stt_worker_count = max(self.max_stt_worker, len(prompt_thread_list))   # get max worker avbl
 

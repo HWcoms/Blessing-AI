@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainGWnyCf.ui'
+## Form generated from reading UI file 'mainOtnZKR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1093,7 +1093,7 @@ class Ui_MainWindow(object):
         self.scrollArea_home_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1172, 583))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1138, 583))
         self.verticalLayout_14 = QVBoxLayout(self.scrollAreaWidgetContents_4)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.a_verticalLayout_top = QVBoxLayout()
@@ -1844,7 +1844,7 @@ class Ui_MainWindow(object):
         self.scrollArea_audio_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1182, 866))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -300, 1182, 952))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -2493,16 +2493,80 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_80.addItem(self.horizontalSpacer_48)
 
-        self.verticalLayout_69 = QVBoxLayout()
-        self.verticalLayout_69.setSpacing(0)
-        self.verticalLayout_69.setObjectName(u"verticalLayout_69")
-        self.verticalLayout_69.setSizeConstraint(QLayout.SetFixedSize)
-        self.verticalLayout_69.setContentsMargins(2, 2, 2, 2)
+        self.verticalGroupBox_speech_to_text = QGroupBox(self.scrollAreaWidgetContents_2)
+        self.verticalGroupBox_speech_to_text.setObjectName(u"verticalGroupBox_speech_to_text")
+        self.verticalGroupBox_speech_to_text.setStyleSheet(u"QGroupBox\n"
+"{\n"
+"    font-size: 20px;\n"
+"    font-weight: bold;\n"
+"}")
+        self.verticalGroupBox_speech_to_text.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        self.verticalLayout_54 = QVBoxLayout(self.verticalGroupBox_speech_to_text)
+        self.verticalLayout_54.setSpacing(5)
+        self.verticalLayout_54.setObjectName(u"verticalLayout_54")
+        self.verticalLayout_54.setContentsMargins(10, 5, 10, 5)
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.horizontalLayout_10.setContentsMargins(0, 0, -1, 0)
+        self.verticalLayout_70 = QVBoxLayout()
+        self.verticalLayout_70.setObjectName(u"verticalLayout_70")
+        self.verticalLayout_70.setSizeConstraint(QLayout.SetFixedSize)
+        self.verticalLayout_70.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_82 = QHBoxLayout()
+        self.horizontalLayout_82.setSpacing(10)
+        self.horizontalLayout_82.setObjectName(u"horizontalLayout_82")
+        self.horizontalLayout_82.setContentsMargins(-1, 0, -1, 0)
+        self.label_21 = QLabel(self.verticalGroupBox_speech_to_text)
+        self.label_21.setObjectName(u"label_21")
+
+        self.horizontalLayout_82.addWidget(self.label_21)
+
+        self.horizontalSpacer_44 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_82.addItem(self.horizontalSpacer_44)
+
+        self.pushButton_stt_language_default = QPushButton(self.verticalGroupBox_speech_to_text)
+        self.pushButton_stt_language_default.setObjectName(u"pushButton_stt_language_default")
+        sizePolicy4.setHeightForWidth(self.pushButton_stt_language_default.sizePolicy().hasHeightForWidth())
+        self.pushButton_stt_language_default.setSizePolicy(sizePolicy4)
+        self.pushButton_stt_language_default.setMinimumSize(QSize(130, 30))
+        self.pushButton_stt_language_default.setStyleSheet(u"")
+
+        self.horizontalLayout_82.addWidget(self.pushButton_stt_language_default)
+
+
+        self.verticalLayout_70.addLayout(self.horizontalLayout_82)
+
+        self.horizontalLayout_83 = QHBoxLayout()
+        self.horizontalLayout_83.setObjectName(u"horizontalLayout_83")
+        self.horizontalLayout_83.setContentsMargins(-1, 0, -1, 0)
+        self.comboBox_stt_language = QComboBox(self.verticalGroupBox_speech_to_text)
+        self.comboBox_stt_language.addItem("")
+        self.comboBox_stt_language.addItem("")
+        self.comboBox_stt_language.addItem("")
+        self.comboBox_stt_language.setObjectName(u"comboBox_stt_language")
+        sizePolicy1.setHeightForWidth(self.comboBox_stt_language.sizePolicy().hasHeightForWidth())
+        self.comboBox_stt_language.setSizePolicy(sizePolicy1)
+        self.comboBox_stt_language.setMinimumSize(QSize(0, 0))
+        self.comboBox_stt_language.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+
+        self.horizontalLayout_83.addWidget(self.comboBox_stt_language)
+
+
+        self.verticalLayout_70.addLayout(self.horizontalLayout_83)
+
+
+        self.horizontalLayout_10.addLayout(self.verticalLayout_70)
+
+        self.horizontalSpacer_52 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_10.addItem(self.horizontalSpacer_52)
+
         self.horizontalLayout_81 = QHBoxLayout()
         self.horizontalLayout_81.setSpacing(10)
         self.horizontalLayout_81.setObjectName(u"horizontalLayout_81")
         self.horizontalLayout_81.setContentsMargins(-1, 0, -1, 0)
-        self.label_32 = QLabel(self.scrollAreaWidgetContents_2)
+        self.label_32 = QLabel(self.verticalGroupBox_speech_to_text)
         self.label_32.setObjectName(u"label_32")
 
         self.horizontalLayout_81.addWidget(self.label_32)
@@ -2511,7 +2575,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_81.addItem(self.horizontalSpacer_51)
 
-        self.spinBox_max_stt_worker = QSpinBox(self.scrollAreaWidgetContents_2)
+        self.spinBox_max_stt_worker = QSpinBox(self.verticalGroupBox_speech_to_text)
         self.spinBox_max_stt_worker.setObjectName(u"spinBox_max_stt_worker")
         self.spinBox_max_stt_worker.setStyleSheet(u"QSpinBox {\n"
 "    color: #FFF;\n"
@@ -2530,7 +2594,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_81.addWidget(self.spinBox_max_stt_worker)
 
-        self.pushButton_max_stt_worker_default = QPushButton(self.scrollAreaWidgetContents_2)
+        self.pushButton_max_stt_worker_default = QPushButton(self.verticalGroupBox_speech_to_text)
         self.pushButton_max_stt_worker_default.setObjectName(u"pushButton_max_stt_worker_default")
         sizePolicy4.setHeightForWidth(self.pushButton_max_stt_worker_default.sizePolicy().hasHeightForWidth())
         self.pushButton_max_stt_worker_default.setSizePolicy(sizePolicy4)
@@ -2540,18 +2604,24 @@ class Ui_MainWindow(object):
         self.horizontalLayout_81.addWidget(self.pushButton_max_stt_worker_default)
 
 
-        self.verticalLayout_69.addLayout(self.horizontalLayout_81)
+        self.horizontalLayout_10.addLayout(self.horizontalLayout_81)
+
+        self.horizontalLayout_10.setStretch(0, 10)
+        self.horizontalLayout_10.setStretch(1, 2)
+        self.horizontalLayout_10.setStretch(2, 10)
+
+        self.verticalLayout_54.addLayout(self.horizontalLayout_10)
 
 
-        self.horizontalLayout_80.addLayout(self.verticalLayout_69)
+        self.horizontalLayout_80.addWidget(self.verticalGroupBox_speech_to_text)
 
         self.horizontalSpacer_50 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_80.addItem(self.horizontalSpacer_50)
 
         self.horizontalLayout_80.setStretch(0, 4)
-        self.horizontalLayout_80.setStretch(1, 16)
-        self.horizontalLayout_80.setStretch(2, 22)
+        self.horizontalLayout_80.setStretch(1, 35)
+        self.horizontalLayout_80.setStretch(2, 4)
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_80)
 
@@ -3065,7 +3135,7 @@ class Ui_MainWindow(object):
         self.scrollArea_command_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1172, 1153))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1089, 1153))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()
@@ -4430,7 +4500,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 360, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -5173,7 +5243,14 @@ class Ui_MainWindow(object):
         self.lineEdit_sub_phrase_timeout.setText(QCoreApplication.translate("MainWindow", u"2", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>seconds</p></body></html>", None))
         self.pushButton_sub_phrase_timeout_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
-        self.label_32.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Max Speech To Text Worker </span><span style=\" font-size:8pt; font-weight:700;\">(Whisper Thread)</span></p></body></html>", None))
+        self.verticalGroupBox_speech_to_text.setTitle(QCoreApplication.translate("MainWindow", u"Speech To Text Settings (Whisper AI)", None))
+        self.label_21.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">STT Langauge</span></p></body></html>", None))
+        self.pushButton_stt_language_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
+        self.comboBox_stt_language.setItemText(0, QCoreApplication.translate("MainWindow", u"lang 1", None))
+        self.comboBox_stt_language.setItemText(1, QCoreApplication.translate("MainWindow", u"lang 2", None))
+        self.comboBox_stt_language.setItemText(2, QCoreApplication.translate("MainWindow", u"lang 3", None))
+
+        self.label_32.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Max STT Worker </span><span style=\" font-size:8pt; font-weight:700;\">(Thread Limit)</span></p></body></html>", None))
         self.pushButton_max_stt_worker_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.horizontalGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"TTS Settings", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">TTS Character </span><span style=\" font-size:9pt;\">(VITS Model)</span></p></body></html>", None))
