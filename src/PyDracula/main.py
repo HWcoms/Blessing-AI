@@ -249,6 +249,12 @@ class MainWindow(QMainWindow):
             widgets.textEdit_your_name,
 
             ## audio settings components
+            widgets.pushButton_main_mic_toggle,
+            widgets.pushButton_main_mic_toggle_home,
+            widgets.pushButton_sub_mic_toggle,
+            widgets.pushButton_sub_mic_toggle_home,
+            widgets.pushButton_spk_toggle,
+
             widgets.comboBox_mic_device,
             widgets.comboBox_sub_mic_device,
             widgets.comboBox_spk_device,
@@ -579,11 +585,15 @@ class MainWindow(QMainWindow):
             component_property = called_component.isChecked()
 
         elif isinstance(called_component, QSpinBox):
-            component_property = self.ui.spinBox_max_stt_worker.value()
+            component_property = called_component.value()
 
         elif isinstance(called_component, QRadioButton):
             gender_radio, component_key = self.get_radio_object_by_name(component_key)
             component_property = self.get_radio_check(gender_radio).lower()  # female or male in radio button
+
+        elif isinstance(called_component, QPushButton):
+            if 'toggle' in component_key:
+                component_property = called_component.isChecked()
         #####################################################################################
         # endregion [PROPERTY HANDLER]
 
@@ -701,6 +711,12 @@ class MainWindow(QMainWindow):
         #####################################################################################
         ## endregion Synced or Only [lineEdit, Slider, PushButton] Handler
 
+        ## ToggleButtons
+        if component_key in ['main_mic_toggle', 'main_mic_toggle_home',
+                             'sub_mic_toggle', 'sub_mic_toggle_home',
+                             'spk_toggle']:
+            return
+
         ## STT (Speach To Text Settings)
         # stt language
         if 'stt_language' in component_key:
@@ -730,7 +746,7 @@ class MainWindow(QMainWindow):
                 else:
                     print_log("error", "no slider found to reset", componentName)
 
-
+        # speaker volume
         if component_key == "speaker_volume":
             if len (self.tts_thread_list) > 0:
                 if self.tts_thread_list[0].gen:
@@ -855,6 +871,19 @@ class MainWindow(QMainWindow):
         if componentName is not None:
             component_type, component_key = self.component_info_by_name(componentName)
 
+        # region AUDIO SETTINGS
+        #####################################################################################
+        ## ToggleButtons
+        if component_key in ['main_mic_toggle', 'main_mic_toggle_home',
+                             'sub_mic_toggle', 'sub_mic_toggle_home',
+                             'spk_toggle']:
+            component_property = called_component.isChecked()
+            component_key = component_key.replace("_home", "")
+            self.set_toggle_button(called_component, component_property, 'Now Listening...', 'Mic OFF')
+            setting_name = 'audio_settings'
+        #####################################################################################
+        # region AUDIO SETTINGS
+
         # region PROMPT SETTINGS
         #####################################################################################
         if component_type == "pushButton" and "view" in component_key:
@@ -875,6 +904,42 @@ class MainWindow(QMainWindow):
             return
         #####################################################################################
         # endregion PROMPT SETTINGS
+
+        # region Error Handler
+        #####################################################################################
+        err_log = "\033[31m" + "Error [main GUI.released_component]:"
+
+        # IF ANY INFORMATION IS NONE
+        if componentName is None:
+            print(f"{err_log} this component has no componentName: \033[33m{componentName}" + "\033[0m")
+            return
+
+        err_log = err_log + f" this \033[33m{componentName}\033[31m has no"
+        if component_key is None:
+            print(f"{err_log} component_key: \033[33m{component_key}" + "\033[0m")
+            return
+        if component_property is None and component_property != "":  # ignore string as Error
+            print(f"{err_log} component_property: \033[33m{component_property}" + "\033[0m")
+            return
+        if setting_name is None:
+            print(f"{err_log} setting_name: \033[33m{setting_name}" + "\033[0m")
+            return
+        #####################################################################################
+        # endregion Error Handler
+
+        print(
+            "\033[34m" + "called component: " +
+            "\033[32m" + f"{componentName}" +
+            "\033[34m" + " | Type: " +
+            "\033[32m" + f"{type(called_component).__name__}" +
+            "\033[34m" + " | Property: " +
+            "\033[32m" + f"{component_property}" +
+            "\033[0m"
+        )
+
+        # print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}" + "\033[0m")
+
+        update_json(component_key, component_property, setting_name)
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -1022,6 +1087,37 @@ class MainWindow(QMainWindow):
 
         self.refresh_audio_device()
         self.refresh_tts_info()
+
+        # region [PushButton]
+        ################################################################################################
+        # Toggle Spk & Main Mic / Sub Mic
+        main_mic_toggle_value = self.audio_info_dict["main_mic_toggle"]
+        sub_mic_toggle_value = self.audio_info_dict["sub_mic_toggle"]
+        spk_toggle_value = self.audio_info_dict["spk_toggle"]
+
+        main_mic_toggle_widgets = [widgets.pushButton_main_mic_toggle_home,
+                                   widgets.pushButton_main_mic_toggle]
+        sub_mic_toggle_widgets = [widgets.pushButton_sub_mic_toggle_home,
+                                  widgets.pushButton_sub_mic_toggle]
+        spk_toggle_widgets = [widgets.pushButton_spk_toggle]
+
+        for widget in main_mic_toggle_widgets:
+            self.set_toggle_button(widget, main_mic_toggle_value, 'Now Listening...', 'Mic OFF')
+
+        for widget in sub_mic_toggle_widgets:
+            self.set_toggle_button(widget, sub_mic_toggle_value, 'Now Listening...', 'Mic OFF')
+
+        for widget in spk_toggle_widgets:
+            self.set_toggle_button(widget, spk_toggle_value, 'Speaker ON', 'Speaker OFF')
+
+        # Grey Out GROUPS When Toggle is OFF
+        main_mic_group = widgets.verticalGroupBox_main_mic
+        sub_mic_group = widgets.verticalGroupBox_sub_mic
+        self.set_groupbox_by_bool(main_mic_group, main_mic_toggle_value)
+        self.set_groupbox_by_bool(sub_mic_group, sub_mic_toggle_value)
+
+        ################################################################################################
+        # endregion [PushButton]
 
         # region [LINEEDIT & SLIDERS]
         ################################################################################################
@@ -1444,6 +1540,10 @@ class MainWindow(QMainWindow):
         self.mirror_groupbox(GB_rvc_auto_pitch, GB_rvc_manaul_pitch)
 
         # endregion
+
+    def set_groupbox_by_bool(self, grp_box:QGroupBox, bool_value:bool):
+        grp_box.setEnabled(bool_value)
+
     def mirror_groupbox(self, checkbox_grp:QGroupBox, non_checkbox_grp:QGroupBox):
         checkbox_grp_enabled = checkbox_grp.isChecked() and checkbox_grp.isEnabled()
         # print(f"{checkbox_grp.isChecked()}, {non_checkbox_grp.isEnabled()}: ", checkbox_grp_enabled)
@@ -1686,8 +1786,8 @@ class MainWindow(QMainWindow):
         else:
             print("Not enough messages in the chat log.")
 
-        widgets.textEdit_user_message.setText(last_user_message)
-        widgets.textEdit_bot_reply.setText(last_bot_reply)
+        # widgets.textEdit_user_message.setText(last_user_message)
+        # widgets.textEdit_bot_reply.setText(last_bot_reply)
 
         # get chatlog filename
         self.chat_info_dict["chatlog_filename"] = SettingInfo.get_chatlog_filename(character_name)
@@ -1844,6 +1944,13 @@ class MainWindow(QMainWindow):
 
     # region [UTILS]
     #################################################################################################
+    def set_toggle_button(self, button:QPushButton, bool_value:bool, on_text:str, off_text:str):
+        if bool_value:
+            button.setText(on_text)
+        else:
+            button.setText(off_text)
+        button.setChecked(bool_value)
+
     def init_combobox_text(self, combo_list:list[QObject]):   # clear all QComboboxes in list
         for obj in combo_list:
             component_name = obj.objectName()

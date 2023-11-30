@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainOtnZKR.ui'
+## Form generated from reading UI file 'mainQgtyiA.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1093,7 +1093,7 @@ class Ui_MainWindow(object):
         self.scrollArea_home_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1138, 583))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1180, 531))
         self.verticalLayout_14 = QVBoxLayout(self.scrollAreaWidgetContents_4)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.a_verticalLayout_top = QVBoxLayout()
@@ -1273,6 +1273,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(189, 147, 249);\n"
 "}")
         self.tableWidget_prompt_list.setFrameShape(QFrame.NoFrame)
+        self.tableWidget_prompt_list.setLineWidth(0)
         self.tableWidget_prompt_list.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.tableWidget_prompt_list.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         self.tableWidget_prompt_list.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -1282,9 +1283,11 @@ class Ui_MainWindow(object):
         self.tableWidget_prompt_list.horizontalHeader().setCascadingSectionResizes(True)
         self.tableWidget_prompt_list.horizontalHeader().setDefaultSectionSize(100)
         self.tableWidget_prompt_list.horizontalHeader().setHighlightSections(True)
+        self.tableWidget_prompt_list.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_prompt_list.verticalHeader().setVisible(False)
         self.tableWidget_prompt_list.verticalHeader().setCascadingSectionResizes(False)
         self.tableWidget_prompt_list.verticalHeader().setHighlightSections(False)
+        self.tableWidget_prompt_list.verticalHeader().setStretchLastSection(False)
 
         self.horizontalLayout_18.addWidget(self.tableWidget_prompt_list)
 
@@ -1318,6 +1321,7 @@ class Ui_MainWindow(object):
         self.tableWidget_tts_list.setObjectName(u"tableWidget_tts_list")
         self.tableWidget_tts_list.setMinimumSize(QSize(550, 120))
         self.tableWidget_tts_list.setMaximumSize(QSize(16777215, 16777215))
+        self.tableWidget_tts_list.setFont(font)
         self.tableWidget_tts_list.setStyleSheet(u"QTableWidget::item{\n"
 "	border-color: rgb(44, 49, 60);\n"
 "	padding-left: 5px;\n"
@@ -1330,6 +1334,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(189, 147, 249);\n"
 "}")
         self.tableWidget_tts_list.setFrameShape(QFrame.NoFrame)
+        self.tableWidget_tts_list.setLineWidth(0)
         self.tableWidget_tts_list.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.tableWidget_tts_list.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         self.tableWidget_tts_list.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -1339,109 +1344,18 @@ class Ui_MainWindow(object):
         self.tableWidget_tts_list.horizontalHeader().setCascadingSectionResizes(True)
         self.tableWidget_tts_list.horizontalHeader().setDefaultSectionSize(100)
         self.tableWidget_tts_list.horizontalHeader().setHighlightSections(True)
+        self.tableWidget_tts_list.horizontalHeader().setProperty("showSortIndicator", False)
+        self.tableWidget_tts_list.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_tts_list.verticalHeader().setVisible(False)
-        self.tableWidget_tts_list.verticalHeader().setCascadingSectionResizes(False)
+        self.tableWidget_tts_list.verticalHeader().setCascadingSectionResizes(True)
         self.tableWidget_tts_list.verticalHeader().setHighlightSections(False)
+        self.tableWidget_tts_list.verticalHeader().setProperty("showSortIndicator", False)
+        self.tableWidget_tts_list.verticalHeader().setStretchLastSection(False)
 
         self.horizontalLayout_18.addWidget(self.tableWidget_tts_list)
 
 
         self.c_verticalLayout_lower.addLayout(self.horizontalLayout_18)
-
-        self.b_gridLayout_mid = QGridLayout()
-        self.b_gridLayout_mid.setObjectName(u"b_gridLayout_mid")
-        self.b_gridLayout_mid.setContentsMargins(6, -1, 6, -1)
-        self.textEdit_user_message = QTextEdit(self.scrollAreaWidgetContents_4)
-        self.textEdit_user_message.setObjectName(u"textEdit_user_message")
-        self.textEdit_user_message.setEnabled(True)
-        sizePolicy1.setHeightForWidth(self.textEdit_user_message.sizePolicy().hasHeightForWidth())
-        self.textEdit_user_message.setSizePolicy(sizePolicy1)
-        self.textEdit_user_message.setMinimumSize(QSize(0, 0))
-        self.textEdit_user_message.setMaximumSize(QSize(16777215, 30))
-        self.textEdit_user_message.setStyleSheet(u"QTextEdit {\n"
-"	border: 2px solid rgb(48, 50, 62);\n"
-"	border-radius: 10px;\n"
-"	color: #FFF;\n"
-"	padding-left: 10px;\n"
-"	padding-right: 10px;\n"
-"	background-color:rgb(34,36,44)\n"
-"}\n"
-"QTextEdit:hover {\n"
-"	border: 2px solid rgb(66, 70, 86);\n"
-"}")
-        self.textEdit_user_message.setReadOnly(True)
-
-        self.b_gridLayout_mid.addWidget(self.textEdit_user_message, 0, 1, 1, 1)
-
-        self.verticalLayout_23 = QVBoxLayout()
-        self.verticalLayout_23.setSpacing(0)
-        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
-        self.verticalLayout_23.setContentsMargins(0, -1, -1, -1)
-        self.label_last_user_message = QLabel(self.scrollAreaWidgetContents_4)
-        self.label_last_user_message.setObjectName(u"label_last_user_message")
-        self.label_last_user_message.setEnabled(True)
-        sizePolicy4.setHeightForWidth(self.label_last_user_message.sizePolicy().hasHeightForWidth())
-        self.label_last_user_message.setSizePolicy(sizePolicy4)
-        self.label_last_user_message.setMaximumSize(QSize(200, 30))
-        self.label_last_user_message.setStyleSheet(u"")
-        self.label_last_user_message.setMargin(0)
-
-        self.verticalLayout_23.addWidget(self.label_last_user_message)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_23.addItem(self.verticalSpacer_2)
-
-
-        self.b_gridLayout_mid.addLayout(self.verticalLayout_23, 0, 0, 1, 1)
-
-        self.textEdit_bot_reply = QTextEdit(self.scrollAreaWidgetContents_4)
-        self.textEdit_bot_reply.setObjectName(u"textEdit_bot_reply")
-        self.textEdit_bot_reply.setEnabled(True)
-        sizePolicy1.setHeightForWidth(self.textEdit_bot_reply.sizePolicy().hasHeightForWidth())
-        self.textEdit_bot_reply.setSizePolicy(sizePolicy1)
-        self.textEdit_bot_reply.setMinimumSize(QSize(0, 0))
-        self.textEdit_bot_reply.setMaximumSize(QSize(16777215, 30))
-        self.textEdit_bot_reply.setBaseSize(QSize(0, 0))
-        self.textEdit_bot_reply.setStyleSheet(u"QTextEdit {\n"
-"	border: 2px solid rgb(48, 50, 62);\n"
-"	border-radius: 10px;\n"
-"	color: #FFF;\n"
-"	padding-left: 10px;\n"
-"	padding-right: 10px;\n"
-"	background-color:rgb(34,36,44)\n"
-"}\n"
-"QTextEdit:hover {\n"
-"	border: 2px solid rgb(66, 70, 86);\n"
-"}")
-        self.textEdit_bot_reply.setReadOnly(True)
-
-        self.b_gridLayout_mid.addWidget(self.textEdit_bot_reply, 1, 1, 1, 1)
-
-        self.verticalLayout_21 = QVBoxLayout()
-        self.verticalLayout_21.setSpacing(0)
-        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
-        self.verticalLayout_21.setContentsMargins(0, -1, -1, -1)
-        self.label_last_bot_reply = QLabel(self.scrollAreaWidgetContents_4)
-        self.label_last_bot_reply.setObjectName(u"label_last_bot_reply")
-        self.label_last_bot_reply.setEnabled(True)
-        sizePolicy4.setHeightForWidth(self.label_last_bot_reply.sizePolicy().hasHeightForWidth())
-        self.label_last_bot_reply.setSizePolicy(sizePolicy4)
-        self.label_last_bot_reply.setMaximumSize(QSize(200, 30))
-        self.label_last_bot_reply.setStyleSheet(u"")
-        self.label_last_bot_reply.setMargin(0)
-
-        self.verticalLayout_21.addWidget(self.label_last_bot_reply)
-
-        self.verticalSpacer_3 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_21.addItem(self.verticalSpacer_3)
-
-
-        self.b_gridLayout_mid.addLayout(self.verticalLayout_21, 1, 0, 1, 1)
-
-
-        self.c_verticalLayout_lower.addLayout(self.b_gridLayout_mid)
 
 
         self.verticalLayout_14.addLayout(self.c_verticalLayout_lower)
@@ -1454,91 +1368,164 @@ class Ui_MainWindow(object):
         self.horizontalLayout_command_button.setSpacing(70)
         self.horizontalLayout_command_button.setObjectName(u"horizontalLayout_command_button")
         self.horizontalLayout_command_button.setContentsMargins(170, 0, 170, 0)
-        self.pushButton_mute_tts = QPushButton(self.Home_Page)
-        self.pushButton_mute_tts.setObjectName(u"pushButton_mute_tts")
+        self.pushButton_spk_toggle = QPushButton(self.Home_Page)
+        self.pushButton_spk_toggle.setObjectName(u"pushButton_spk_toggle")
         sizePolicy6 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
         sizePolicy6.setHorizontalStretch(0)
         sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.pushButton_mute_tts.sizePolicy().hasHeightForWidth())
-        self.pushButton_mute_tts.setSizePolicy(sizePolicy6)
-        self.pushButton_mute_tts.setMinimumSize(QSize(0, 50))
-        self.pushButton_mute_tts.setMaximumSize(QSize(300, 80))
-        self.pushButton_mute_tts.setStyleSheet(u"QPushButton{\n"
-"	font: 14pt \"Segoe UI\";\n"
+        sizePolicy6.setHeightForWidth(self.pushButton_spk_toggle.sizePolicy().hasHeightForWidth())
+        self.pushButton_spk_toggle.setSizePolicy(sizePolicy6)
+        self.pushButton_spk_toggle.setMinimumSize(QSize(0, 50))
+        self.pushButton_spk_toggle.setMaximumSize(QSize(300, 80))
+        self.pushButton_spk_toggle.setStyleSheet(u"QPushButton{\n"
+"	font: 14pt \"Segoe UI\" bold;\n"
 "	color: white;\n"
-"	background-color: rgb(131, 56, 236);\n"
 "	border-radius: 5px;\n"
-"}")
-
-        self.horizontalLayout_command_button.addWidget(self.pushButton_mute_tts)
-
-        self.pushButton_mute_mic = QPushButton(self.Home_Page)
-        self.pushButton_mute_mic.setObjectName(u"pushButton_mute_mic")
-        sizePolicy6.setHeightForWidth(self.pushButton_mute_mic.sizePolicy().hasHeightForWidth())
-        self.pushButton_mute_mic.setSizePolicy(sizePolicy6)
-        self.pushButton_mute_mic.setMinimumSize(QSize(0, 50))
-        self.pushButton_mute_mic.setMaximumSize(QSize(300, 80))
-        self.pushButton_mute_mic.setStyleSheet(u"QPushButton{\n"
-"	font: 14pt \"Segoe UI\";\n"
-"	color: white;\n"
-"	background-color: rgb(131, 56, 236);\n"
-"	border-radius: 5px;\n"
-"}")
-
-        self.horizontalLayout_command_button.addWidget(self.pushButton_mute_mic)
-
-        self.pushButton_pause_reply = QPushButton(self.Home_Page)
-        self.pushButton_pause_reply.setObjectName(u"pushButton_pause_reply")
-        self.pushButton_pause_reply.setEnabled(True)
-        sizePolicy6.setHeightForWidth(self.pushButton_pause_reply.sizePolicy().hasHeightForWidth())
-        self.pushButton_pause_reply.setSizePolicy(sizePolicy6)
-        self.pushButton_pause_reply.setMinimumSize(QSize(0, 50))
-        self.pushButton_pause_reply.setMaximumSize(QSize(300, 80))
-        self.pushButton_pause_reply.setStyleSheet(u"QPushButton{\n"
-"	font: 14pt \"Segoe UI\";\n"
-"	color: white;\n"
-"	background-color: rgb(251, 86, 7);\n"
-"	border-radius: 5px;\n"
+"	background-color: rgb(230, 0, 0);\n"
 "}\n"
 "\n"
+"\n"
 "QPushButton:hover{\n"
-"	background-color: rgb(251, 149, 7);\n"
+"	background-color: rgb(210, 0, 4);\n"
 "}\n"
+"\n"
 "QPushButton:pressed{\n"
-"	background-color: rgb(197, 66, 5);\n"
-"}")
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/images/icons/cil-media-skip-forward.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton_pause_reply.setIcon(icon4)
+"	background-color: rgb(150, 0, 3);\n"
+"}\n"
+"\n"
+"QPushButton:checked{\n"
+"	background-color: rgb(0, 220,0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:hover{\n"
+"	background-color: rgb(0, 180, 0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:pressed{\n"
+"	background-color: rgb(0, 130, 0);\n"
+"}\n"
+"")
 
-        self.horizontalLayout_command_button.addWidget(self.pushButton_pause_reply)
+        self.horizontalLayout_command_button.addWidget(self.pushButton_spk_toggle)
 
-        self.pushButton_stop_reply = QPushButton(self.Home_Page)
-        self.pushButton_stop_reply.setObjectName(u"pushButton_stop_reply")
+        self.pushButton_main_mic_toggle_home = QPushButton(self.Home_Page)
+        self.pushButton_main_mic_toggle_home.setObjectName(u"pushButton_main_mic_toggle_home")
+        sizePolicy6.setHeightForWidth(self.pushButton_main_mic_toggle_home.sizePolicy().hasHeightForWidth())
+        self.pushButton_main_mic_toggle_home.setSizePolicy(sizePolicy6)
+        self.pushButton_main_mic_toggle_home.setMinimumSize(QSize(0, 50))
+        self.pushButton_main_mic_toggle_home.setMaximumSize(QSize(300, 80))
+        self.pushButton_main_mic_toggle_home.setStyleSheet(u"QPushButton{\n"
+"	font: 14pt \"Segoe UI\" bold;\n"
+"	color: white;\n"
+"	border-radius: 5px;\n"
+"	background-color: rgb(230, 0, 0);\n"
+"}\n"
+"\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(210, 0, 4);\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(150, 0, 3);\n"
+"}\n"
+"\n"
+"QPushButton:checked{\n"
+"	background-color: rgb(0, 220,0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:hover{\n"
+"	background-color: rgb(0, 180, 0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:pressed{\n"
+"	background-color: rgb(0, 130, 0);\n"
+"}\n"
+"")
+        self.pushButton_main_mic_toggle_home.setCheckable(True)
+
+        self.horizontalLayout_command_button.addWidget(self.pushButton_main_mic_toggle_home)
+
+        self.pushButton_sub_mic_toggle_home = QPushButton(self.Home_Page)
+        self.pushButton_sub_mic_toggle_home.setObjectName(u"pushButton_sub_mic_toggle_home")
+        self.pushButton_sub_mic_toggle_home.setEnabled(True)
+        sizePolicy6.setHeightForWidth(self.pushButton_sub_mic_toggle_home.sizePolicy().hasHeightForWidth())
+        self.pushButton_sub_mic_toggle_home.setSizePolicy(sizePolicy6)
+        self.pushButton_sub_mic_toggle_home.setMinimumSize(QSize(0, 50))
+        self.pushButton_sub_mic_toggle_home.setMaximumSize(QSize(300, 80))
+        self.pushButton_sub_mic_toggle_home.setStyleSheet(u"QPushButton{\n"
+"	font: 14pt \"Segoe UI\" bold;\n"
+"	color: white;\n"
+"	border-radius: 5px;\n"
+"	background-color: rgb(230, 0, 0);\n"
+"}\n"
+"\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(210, 0, 4);\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(150, 0, 3);\n"
+"}\n"
+"\n"
+"QPushButton:checked{\n"
+"	background-color: rgb(0, 220,0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:hover{\n"
+"	background-color: rgb(0, 180, 0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:pressed{\n"
+"	background-color: rgb(0, 130, 0);\n"
+"}\n"
+"")
+        self.pushButton_sub_mic_toggle_home.setCheckable(True)
+
+        self.horizontalLayout_command_button.addWidget(self.pushButton_sub_mic_toggle_home)
+
+        self.pushButton_pause_queue = QPushButton(self.Home_Page)
+        self.pushButton_pause_queue.setObjectName(u"pushButton_pause_queue")
         sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
         sizePolicy7.setHorizontalStretch(0)
         sizePolicy7.setVerticalStretch(0)
-        sizePolicy7.setHeightForWidth(self.pushButton_stop_reply.sizePolicy().hasHeightForWidth())
-        self.pushButton_stop_reply.setSizePolicy(sizePolicy7)
-        self.pushButton_stop_reply.setMinimumSize(QSize(0, 50))
-        self.pushButton_stop_reply.setMaximumSize(QSize(300, 80))
-        self.pushButton_stop_reply.setStyleSheet(u"QPushButton{\n"
-"	font: 14pt \"Segoe UI\";\n"
+        sizePolicy7.setHeightForWidth(self.pushButton_pause_queue.sizePolicy().hasHeightForWidth())
+        self.pushButton_pause_queue.setSizePolicy(sizePolicy7)
+        self.pushButton_pause_queue.setMinimumSize(QSize(0, 50))
+        self.pushButton_pause_queue.setMaximumSize(QSize(300, 80))
+        self.pushButton_pause_queue.setStyleSheet(u"QPushButton{\n"
+"	font: 14pt \"Segoe UI\" bold;\n"
 "	color: white;\n"
-"	background-color: rgb(255, 0, 110);\n"
 "	border-radius: 5px;\n"
+"	background-color: rgb(230, 0, 0);\n"
 "}\n"
+"\n"
+"\n"
 "QPushButton:hover{\n"
-"	background-color: rgb(255, 0, 166);\n"
+"	background-color: rgb(210, 0, 4);\n"
 "}\n"
+"\n"
 "QPushButton:pressed{\n"
-"	background-color: rgb(200, 0, 87);\n"
-"}")
-        icon5 = QIcon()
-        icon5.addFile(u":/icons/images/icons/cil-media-stop.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton_stop_reply.setIcon(icon5)
+"	background-color: rgb(150, 0, 3);\n"
+"}\n"
+"\n"
+"QPushButton:checked{\n"
+"	background-color: rgb(0, 220,0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:hover{\n"
+"	background-color: rgb(0, 180, 0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:pressed{\n"
+"	background-color: rgb(0, 130, 0);\n"
+"}\n"
+"")
+        self.pushButton_pause_queue.setCheckable(True)
+        self.pushButton_pause_queue.setChecked(False)
 
-        self.horizontalLayout_command_button.addWidget(self.pushButton_stop_reply)
+        self.horizontalLayout_command_button.addWidget(self.pushButton_pause_queue)
 
 
         self.verticalLayout_24.addLayout(self.horizontalLayout_command_button)
@@ -1844,7 +1831,7 @@ class Ui_MainWindow(object):
         self.scrollArea_audio_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, -300, 1182, 952))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(-10, 0, 1182, 998))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -1990,9 +1977,43 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_13)
 
-        self.verticalSpacer_spk_device = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.verticalSpacer_spk_device = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout_22.addItem(self.verticalSpacer_spk_device)
+
+        self.horizontalLayout_14 = QHBoxLayout()
+        self.horizontalLayout_14.setSpacing(0)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.horizontalLayout_14.setContentsMargins(0, -1, 0, 0)
+        self.horizontalSpacer_6 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_6)
+
+        self.verticalLayout_69 = QVBoxLayout()
+        self.verticalLayout_69.setObjectName(u"verticalLayout_69")
+        self.verticalLayout_69.setContentsMargins(5, 5, 5, 5)
+
+        self.horizontalLayout_14.addLayout(self.verticalLayout_69)
+
+        self.horizontalSpacer_7 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_7)
+
+        self.verticalLayout_56 = QVBoxLayout()
+        self.verticalLayout_56.setObjectName(u"verticalLayout_56")
+        self.verticalLayout_56.setContentsMargins(5, 5, 5, 5)
+
+        self.horizontalLayout_14.addLayout(self.verticalLayout_56)
+
+        self.horizontalSpacer_8 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_8)
+
+        self.horizontalLayout_14.setStretch(1, 16)
+        self.horizontalLayout_14.setStretch(2, 2)
+        self.horizontalLayout_14.setStretch(3, 16)
+
+        self.verticalLayout_22.addLayout(self.horizontalLayout_14)
 
         self.horizontalLayout_16 = QHBoxLayout()
         self.horizontalLayout_16.setSpacing(0)
@@ -2002,7 +2023,64 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_16.addItem(self.horizontalSpacer_37)
 
-        self.verticalGroupBox_main_mic = QGroupBox(self.scrollAreaWidgetContents_2)
+        self.verticalGroupBox_main_mic_holder = QGroupBox(self.scrollAreaWidgetContents_2)
+        self.verticalGroupBox_main_mic_holder.setObjectName(u"verticalGroupBox_main_mic_holder")
+        self.verticalGroupBox_main_mic_holder.setStyleSheet(u"QGroupBox\n"
+"{\n"
+"    font-size: 20px;\n"
+"    font-weight: bold;\n"
+"}")
+        self.verticalGroupBox_main_mic_holder.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        self.verticalLayout_45 = QVBoxLayout(self.verticalGroupBox_main_mic_holder)
+        self.verticalLayout_45.setSpacing(5)
+        self.verticalLayout_45.setObjectName(u"verticalLayout_45")
+        self.verticalLayout_45.setContentsMargins(10, 5, 10, 5)
+        self.pushButton_main_mic_toggle = QPushButton(self.verticalGroupBox_main_mic_holder)
+        self.pushButton_main_mic_toggle.setObjectName(u"pushButton_main_mic_toggle")
+        self.pushButton_main_mic_toggle.setMinimumSize(QSize(150, 50))
+        self.pushButton_main_mic_toggle.setMaximumSize(QSize(16777215, 16777215))
+        font5 = QFont()
+        font5.setFamilies([u"Segoe UI 13"])
+        font5.setPointSize(14)
+        font5.setBold(False)
+        font5.setItalic(False)
+        font5.setStrikeOut(False)
+        font5.setKerning(True)
+        self.pushButton_main_mic_toggle.setFont(font5)
+        self.pushButton_main_mic_toggle.setStyleSheet(u"QPushButton{\n"
+"	font: 14pt \"Segoe UI\" bold;\n"
+"	color: white;\n"
+"	border-radius: 5px;\n"
+"	background-color: rgb(230, 0, 0);\n"
+"}\n"
+"\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(210, 0, 4);\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(150, 0, 3);\n"
+"}\n"
+"\n"
+"QPushButton:checked{\n"
+"	background-color: rgb(0, 220,0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:hover{\n"
+"	background-color: rgb(0, 180, 0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:pressed{\n"
+"	background-color: rgb(0, 130, 0);\n"
+"}\n"
+"")
+        self.pushButton_main_mic_toggle.setCheckable(True)
+        self.pushButton_main_mic_toggle.setChecked(False)
+
+        self.verticalLayout_45.addWidget(self.pushButton_main_mic_toggle)
+
+        self.verticalGroupBox_main_mic = QGroupBox(self.verticalGroupBox_main_mic_holder)
         self.verticalGroupBox_main_mic.setObjectName(u"verticalGroupBox_main_mic")
         self.verticalGroupBox_main_mic.setStyleSheet(u"QGroupBox\n"
 "{\n"
@@ -2010,30 +2088,11 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "}")
         self.verticalGroupBox_main_mic.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
-        self.verticalLayout_45 = QVBoxLayout(self.verticalGroupBox_main_mic)
-        self.verticalLayout_45.setSpacing(5)
-        self.verticalLayout_45.setObjectName(u"verticalLayout_45")
-        self.verticalLayout_45.setContentsMargins(10, 5, 10, 5)
-        self.pushButton_2 = QPushButton(self.verticalGroupBox_main_mic)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setMinimumSize(QSize(150, 50))
-        self.pushButton_2.setMaximumSize(QSize(100, 16777215))
-        self.pushButton_2.setStyleSheet(u"QPushButton{\n"
-"	font: 14pt \"Segoe UI\";\n"
-"	color: white;\n"
-"	background-color: rgb(251, 86, 7);\n"
-"	border-radius: 5px;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"	background-color: rgb(251, 149, 7);\n"
-"}\n"
-"QPushButton:pressed{\n"
-"	background-color: rgb(197, 66, 5);\n"
-"}")
-
-        self.verticalLayout_45.addWidget(self.pushButton_2, 0, Qt.AlignHCenter)
-
+        self.verticalGroupBox_main_mic.setFlat(True)
+        self.verticalLayout_71 = QVBoxLayout(self.verticalGroupBox_main_mic)
+        self.verticalLayout_71.setSpacing(6)
+        self.verticalLayout_71.setObjectName(u"verticalLayout_71")
+        self.verticalLayout_71.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_62 = QVBoxLayout()
         self.verticalLayout_62.setObjectName(u"verticalLayout_62")
         self.verticalLayout_62.setSizeConstraint(QLayout.SetFixedSize)
@@ -2082,7 +2141,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_62.addLayout(self.horizontalLayout_66)
 
 
-        self.verticalLayout_45.addLayout(self.verticalLayout_62)
+        self.verticalLayout_71.addLayout(self.verticalLayout_62)
 
         self.verticalLayout_63 = QVBoxLayout()
         self.verticalLayout_63.setObjectName(u"verticalLayout_63")
@@ -2148,7 +2207,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_63.addLayout(self.horizontalLayout_68)
 
 
-        self.verticalLayout_45.addLayout(self.verticalLayout_63)
+        self.verticalLayout_71.addLayout(self.verticalLayout_63)
 
         self.verticalLayout_27 = QVBoxLayout()
         self.verticalLayout_27.setObjectName(u"verticalLayout_27")
@@ -2231,16 +2290,66 @@ class Ui_MainWindow(object):
         self.verticalLayout_27.addWidget(self.horizontalSlider_main_phrase_timeout)
 
 
-        self.verticalLayout_45.addLayout(self.verticalLayout_27)
+        self.verticalLayout_71.addLayout(self.verticalLayout_27)
 
 
-        self.horizontalLayout_16.addWidget(self.verticalGroupBox_main_mic)
+        self.verticalLayout_45.addWidget(self.verticalGroupBox_main_mic)
+
+
+        self.horizontalLayout_16.addWidget(self.verticalGroupBox_main_mic_holder)
 
         self.horizontalSpacer_47 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_16.addItem(self.horizontalSpacer_47)
 
-        self.verticalGroupBox_sub_mic = QGroupBox(self.scrollAreaWidgetContents_2)
+        self.verticalGroupBox_sub_mic_holder = QGroupBox(self.scrollAreaWidgetContents_2)
+        self.verticalGroupBox_sub_mic_holder.setObjectName(u"verticalGroupBox_sub_mic_holder")
+        self.verticalGroupBox_sub_mic_holder.setStyleSheet(u"QGroupBox\n"
+"{\n"
+"    font-size: 20px;\n"
+"    font-weight: bold;\n"
+"}")
+        self.verticalGroupBox_sub_mic_holder.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        self.verticalLayout_47 = QVBoxLayout(self.verticalGroupBox_sub_mic_holder)
+        self.verticalLayout_47.setSpacing(5)
+        self.verticalLayout_47.setObjectName(u"verticalLayout_47")
+        self.verticalLayout_47.setContentsMargins(10, 5, 10, 5)
+        self.pushButton_sub_mic_toggle = QPushButton(self.verticalGroupBox_sub_mic_holder)
+        self.pushButton_sub_mic_toggle.setObjectName(u"pushButton_sub_mic_toggle")
+        self.pushButton_sub_mic_toggle.setMinimumSize(QSize(150, 50))
+        self.pushButton_sub_mic_toggle.setStyleSheet(u"QPushButton{\n"
+"	font: 14pt \"Segoe UI\" bold;\n"
+"	color: white;\n"
+"	border-radius: 5px;\n"
+"	background-color: rgb(230, 0, 0);\n"
+"}\n"
+"\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(210, 0, 4);\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(150, 0, 3);\n"
+"}\n"
+"\n"
+"QPushButton:checked{\n"
+"	background-color: rgb(0, 220,0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:hover{\n"
+"	background-color: rgb(0, 180, 0);\n"
+"}\n"
+"\n"
+"QPushButton:checked:pressed{\n"
+"	background-color: rgb(0, 130, 0);\n"
+"}\n"
+"")
+        self.pushButton_sub_mic_toggle.setCheckable(True)
+
+        self.verticalLayout_47.addWidget(self.pushButton_sub_mic_toggle)
+
+        self.verticalGroupBox_sub_mic = QGroupBox(self.verticalGroupBox_sub_mic_holder)
         self.verticalGroupBox_sub_mic.setObjectName(u"verticalGroupBox_sub_mic")
         self.verticalGroupBox_sub_mic.setStyleSheet(u"QGroupBox\n"
 "{\n"
@@ -2248,29 +2357,12 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "}")
         self.verticalGroupBox_sub_mic.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
-        self.verticalLayout_47 = QVBoxLayout(self.verticalGroupBox_sub_mic)
-        self.verticalLayout_47.setSpacing(5)
-        self.verticalLayout_47.setObjectName(u"verticalLayout_47")
-        self.verticalLayout_47.setContentsMargins(5, 5, 5, 5)
-        self.pushButton_3 = QPushButton(self.verticalGroupBox_sub_mic)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setMinimumSize(QSize(150, 50))
-        self.pushButton_3.setStyleSheet(u"QPushButton{\n"
-"	font: 14pt \"Segoe UI\";\n"
-"	color: white;\n"
-"	background-color: rgb(251, 86, 7);\n"
-"	border-radius: 5px;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"	background-color: rgb(251, 149, 7);\n"
-"}\n"
-"QPushButton:pressed{\n"
-"	background-color: rgb(197, 66, 5);\n"
-"}")
-
-        self.verticalLayout_47.addWidget(self.pushButton_3, 0, Qt.AlignHCenter)
-
+        self.verticalGroupBox_sub_mic.setFlat(True)
+        self.verticalGroupBox_sub_mic.setCheckable(False)
+        self.verticalLayout_72 = QVBoxLayout(self.verticalGroupBox_sub_mic)
+        self.verticalLayout_72.setSpacing(6)
+        self.verticalLayout_72.setObjectName(u"verticalLayout_72")
+        self.verticalLayout_72.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_64 = QVBoxLayout()
         self.verticalLayout_64.setObjectName(u"verticalLayout_64")
         self.verticalLayout_64.setSizeConstraint(QLayout.SetFixedSize)
@@ -2319,7 +2411,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_64.addLayout(self.horizontalLayout_70)
 
 
-        self.verticalLayout_47.addLayout(self.verticalLayout_64)
+        self.verticalLayout_72.addLayout(self.verticalLayout_64)
 
         self.verticalLayout_68 = QVBoxLayout()
         self.verticalLayout_68.setObjectName(u"verticalLayout_68")
@@ -2385,7 +2477,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_68.addLayout(self.horizontalLayout_79)
 
 
-        self.verticalLayout_47.addLayout(self.verticalLayout_68)
+        self.verticalLayout_72.addLayout(self.verticalLayout_68)
 
         self.verticalLayout_44 = QVBoxLayout()
         self.verticalLayout_44.setObjectName(u"verticalLayout_44")
@@ -2468,20 +2560,21 @@ class Ui_MainWindow(object):
         self.verticalLayout_44.addWidget(self.horizontalSlider_sub_phrase_timeout)
 
 
-        self.verticalLayout_47.addLayout(self.verticalLayout_44)
+        self.verticalLayout_72.addLayout(self.verticalLayout_44)
 
 
-        self.horizontalLayout_16.addWidget(self.verticalGroupBox_sub_mic)
+        self.verticalLayout_47.addWidget(self.verticalGroupBox_sub_mic)
+
+
+        self.horizontalLayout_16.addWidget(self.verticalGroupBox_sub_mic_holder)
 
         self.horizontalSpacer_49 = QSpacerItem(120, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_16.addItem(self.horizontalSpacer_49)
 
-        self.horizontalLayout_16.setStretch(0, 4)
         self.horizontalLayout_16.setStretch(1, 16)
         self.horizontalLayout_16.setStretch(2, 2)
         self.horizontalLayout_16.setStretch(3, 16)
-        self.horizontalLayout_16.setStretch(4, 4)
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_16)
 
@@ -3135,7 +3228,7 @@ class Ui_MainWindow(object):
         self.scrollArea_command_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1089, 1153))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1172, 1153))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()
@@ -4419,9 +4512,9 @@ class Ui_MainWindow(object):
         self.pushButton.setFont(font)
         self.pushButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.pushButton.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-        icon6 = QIcon()
-        icon6.addFile(u":/icons/images/icons/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton.setIcon(icon6)
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/images/icons/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton.setIcon(icon4)
 
         self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
 
@@ -4480,9 +4573,9 @@ class Ui_MainWindow(object):
         self.commandLinkButton.setObjectName(u"commandLinkButton")
         self.commandLinkButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.commandLinkButton.setStyleSheet(u"")
-        icon7 = QIcon()
-        icon7.addFile(u":/icons/images/icons/cil-link.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton.setIcon(icon7)
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/images/icons/cil-link.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton.setIcon(icon5)
 
         self.gridLayout_2.addWidget(self.commandLinkButton, 1, 6, 1, 1)
 
@@ -4500,7 +4593,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 360, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -4585,10 +4678,10 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(3, __qtablewidgetitem25)
         if (self.tableWidget.rowCount() < 16):
             self.tableWidget.setRowCount(16)
-        font5 = QFont()
-        font5.setFamilies([u"Segoe UI"])
+        font6 = QFont()
+        font6.setFamilies([u"Segoe UI"])
         __qtablewidgetitem26 = QTableWidgetItem()
-        __qtablewidgetitem26.setFont(font5);
+        __qtablewidgetitem26.setFont(font6);
         self.tableWidget.setVerticalHeaderItem(0, __qtablewidgetitem26)
         __qtablewidgetitem27 = QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(1, __qtablewidgetitem27)
@@ -4980,11 +5073,11 @@ class Ui_MainWindow(object):
         self.creditsLabel = QLabel(self.bottomBar)
         self.creditsLabel.setObjectName(u"creditsLabel")
         self.creditsLabel.setMaximumSize(QSize(16777215, 16))
-        font6 = QFont()
-        font6.setFamilies([u"Segoe UI"])
-        font6.setBold(False)
-        font6.setItalic(False)
-        self.creditsLabel.setFont(font6)
+        font7 = QFont()
+        font7.setFamilies([u"Segoe UI"])
+        font7.setBold(False)
+        font7.setItalic(False)
+        self.creditsLabel.setFont(font7)
         self.creditsLabel.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.horizontalLayout_5.addWidget(self.creditsLabel)
@@ -5129,39 +5222,15 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem19 = self.tableWidget_tts_list.item(1, 0)
         ___qtablewidgetitem19.setText(QCoreApplication.translate("MainWindow", u"test2safdasdfadsf", None));
         ___qtablewidgetitem20 = self.tableWidget_tts_list.item(1, 1)
-        ___qtablewidgetitem20.setText(QCoreApplication.translate("MainWindow", u"good", None));
+        ___qtablewidgetitem20.setText(QCoreApplication.translate("MainWindow", u"good \\n job", None));
         ___qtablewidgetitem21 = self.tableWidget_tts_list.item(1, 2)
         ___qtablewidgetitem21.setText(QCoreApplication.translate("MainWindow", u"waiting", None));
         self.tableWidget_tts_list.setSortingEnabled(__sortingEnabled1)
 
-        self.textEdit_user_message.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Hello My name is Coms</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">nice to meet you</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">how are you today.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0p"
-                        "x; -qt-block-indent:0; text-indent:0px;\">I'm good</p></body></html>", None))
-        self.label_last_user_message.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Last User Message</span></p></body></html>", None))
-        self.textEdit_bot_reply.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Hello, coms!</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">nice to meet you too!</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">I'm good today.</p></body></html>", None))
-        self.label_last_bot_reply.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Last Bot Reply</span></p></body></html>", None))
-        self.pushButton_mute_tts.setText(QCoreApplication.translate("MainWindow", u"Toggle Spk", None))
-        self.pushButton_mute_mic.setText(QCoreApplication.translate("MainWindow", u"Toggle Mic", None))
-        self.pushButton_pause_reply.setText(QCoreApplication.translate("MainWindow", u"  Skip", None))
-        self.pushButton_stop_reply.setText(QCoreApplication.translate("MainWindow", u" Generate", None))
+        self.pushButton_spk_toggle.setText(QCoreApplication.translate("MainWindow", u"Toggle Speaker", None))
+        self.pushButton_main_mic_toggle_home.setText(QCoreApplication.translate("MainWindow", u"Toggle Main Mic", None))
+        self.pushButton_sub_mic_toggle_home.setText(QCoreApplication.translate("MainWindow", u"Toggle Sub Mic", None))
+        self.pushButton_pause_queue.setText(QCoreApplication.translate("MainWindow", u" Pause Queues", None))
         self.label_your_name.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Your Name</span></p></body></html>", None))
         self.textEdit_your_name.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
@@ -5213,8 +5282,9 @@ class Ui_MainWindow(object):
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Speaker Volume</span></p></body></html>", None))
         self.lineEdit_speaker_volume.setText(QCoreApplication.translate("MainWindow", u"100 %", None))
         self.pushButton_speaker_volume_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
-        self.verticalGroupBox_main_mic.setTitle(QCoreApplication.translate("MainWindow", u"Main Mic", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Toggle", None))
+        self.verticalGroupBox_main_mic_holder.setTitle(QCoreApplication.translate("MainWindow", u"Main Mic", None))
+        self.pushButton_main_mic_toggle.setText(QCoreApplication.translate("MainWindow", u"Toggle", None))
+        self.verticalGroupBox_main_mic.setTitle("")
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Device</span></p></body></html>", None))
         self.pushButton_mic_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
         self.comboBox_mic_device.setItemText(0, QCoreApplication.translate("MainWindow", u"Mic device 1", None))
@@ -5228,8 +5298,9 @@ class Ui_MainWindow(object):
         self.lineEdit_main_phrase_timeout.setText(QCoreApplication.translate("MainWindow", u"2", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>seconds</p></body></html>", None))
         self.pushButton_main_phrase_timeout_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
-        self.verticalGroupBox_sub_mic.setTitle(QCoreApplication.translate("MainWindow", u"Sub Mic (For Other User)", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Toggle", None))
+        self.verticalGroupBox_sub_mic_holder.setTitle(QCoreApplication.translate("MainWindow", u"Sub Mic (For Other User)", None))
+        self.pushButton_sub_mic_toggle.setText(QCoreApplication.translate("MainWindow", u"Toggle", None))
+        self.verticalGroupBox_sub_mic.setTitle("")
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Sub Mic Device</span></p></body></html>", None))
         self.pushButton_sub_mic_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
         self.comboBox_sub_mic_device.setItemText(0, QCoreApplication.translate("MainWindow", u"Sub Mic device 1", None))

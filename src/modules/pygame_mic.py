@@ -138,6 +138,8 @@ class MicRecorder(QThread):
             if self.timeout_gui:
                 cur_timeout = self.timeout_gui.value() / 100.0
 
+            toggle = self.check_toggle()
+
             if duration != -1:  # Loop if duration -1
                 max_i = int(self.sample_rate / chunk * duration)
                 if cur_i > max_i:
@@ -174,47 +176,53 @@ class MicRecorder(QThread):
             # delta_time = [-1.0, -1.0]
 
             # Compare with threshold
-            if not self.is_recording:
-                if cur_threshold <= self.cur_db:
-                    print_log("white", f"{log_str}Mic exceed Threshold! Recording Started!", custom_logging=self.log)
-                    self.is_recording = True
-                    start_time = time.time()
-                self.draw_phrase_timeout(0)  # reset timeout GUI
-            else:
-                # Recording...
-                cur_time = time.time()
-                remain_time = cur_timeout
-
-                if cur_threshold <= self.cur_db:
-                    self.is_phrase_time = False
-                    self.frames.append(data)
+            if toggle:
+                if not self.is_recording:
+                    if cur_threshold <= self.cur_db:
+                        print_log("white", f"{log_str}Mic exceed Threshold! Recording Started!", custom_logging=self.log)
+                        self.is_recording = True
+                        start_time = time.time()
+                    self.draw_phrase_timeout(0)  # reset timeout GUI
                 else:
-                    # append blank frames
-                    silence_frame = b'\x00' * len(data)
-                    self.frames.append(silence_frame)
-                    # self.frames.append(bytes(0))
+                    # Recording...
+                    cur_time = time.time()
+                    remain_time = cur_timeout
 
-                # IF pharse_time has no activated & cur_db is below than threshold
-                if not self.is_phrase_time:
-                    if cur_threshold > self.cur_db:
-                        self.is_phrase_time = True
-                        phrase_start_time = time.time()
-                        # print_log("white", f"{log_str}Mic is lower than threshold! Phrase timer Start")
-                # In phrase time
-                else:
-                    delta_time = abs(cur_time - phrase_start_time)
-                    remain_time = cur_timeout - delta_time
-                    if 0 >= remain_time:
-                        self.save_audio_file(round(cur_time - start_time, 1))
-                        self.frames.clear()
+                    if cur_threshold <= self.cur_db:
                         self.is_phrase_time = False
-                        self.is_recording = False
-                        remain_time = 0.0
+                        self.frames.append(data)
                     else:
-                        # print(f'phrase time {cur_time - phrase_start_time:.2f}', " secs")
-                        pass
+                        # append blank frames
+                        silence_frame = b'\x00' * len(data)
+                        self.frames.append(silence_frame)
+                        # self.frames.append(bytes(0))
 
-                self.draw_phrase_timeout(remain_time)
+                    # IF pharse_time has no activated & cur_db is below than threshold
+                    if not self.is_phrase_time:
+                        if cur_threshold > self.cur_db:
+                            self.is_phrase_time = True
+                            phrase_start_time = time.time()
+                            # print_log("white", f"{log_str}Mic is lower than threshold! Phrase timer Start")
+                    # In phrase time
+                    else:
+                        delta_time = abs(cur_time - phrase_start_time)
+                        remain_time = cur_timeout - delta_time
+                        if 0 >= remain_time:
+                            self.save_audio_file(round(cur_time - start_time, 1))
+                            self.frames.clear()
+                            self.is_phrase_time = False
+                            self.is_recording = False
+                            remain_time = 0.0
+                        else:
+                            # print(f'phrase time {cur_time - phrase_start_time:.2f}', " secs")
+                            pass
+
+                    self.draw_phrase_timeout(remain_time)
+            else:
+                self.draw_phrase_timeout(0)
+                self.frames.clear()
+                self.is_phrase_time = False
+                self.is_recording = False
 
             time.sleep(0.01)
         self.done = False
@@ -236,7 +244,7 @@ class MicRecorder(QThread):
             self.p.terminate()
 
     def save_audio_file(self, audio_length_info=-1.0):
-        if not self.toggle_on:
+        if not self.toggle_on or not self.check_toggle():
             return
 
         file_path = self.new_audio_path()
@@ -362,6 +370,22 @@ class MicRecorder(QThread):
             # if not os.path.exists(file_path):
             #     return file_path
             num += 1
+
+    def check_toggle(self):
+        toggle_widget = None
+        result = False
+
+        if self.main_program:
+            if not self.is_sub:
+                if self.main_program.ui.pushButton_main_mic_toggle:
+                    toggle_widget = self.main_program.ui.pushButton_main_mic_toggle
+            else:
+                if self.main_program.ui.pushButton_sub_mic_toggle:
+                    toggle_widget = self.main_program.ui.pushButton_sub_mic_toggle
+        if toggle_widget:
+            result = toggle_widget.isChecked()
+            # print(toggle_widget.objectName(), f': {result}')
+        return result
 
 
 if __name__ == "__main__":
