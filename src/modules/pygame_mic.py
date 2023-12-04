@@ -170,7 +170,7 @@ class MicRecorder(QThread):
                 color_type = "white"
 
             self.cur_db = round(float(db), 2)
-            self.draw_mic_threshold()
+            self.draw_mic_threshold(toggle)
             # print_log(color_type, f'[{self.cur_db}] db, max: {self.max_db}', print_func_name=False)
 
             # delta_time = [-1.0, -1.0]
@@ -227,7 +227,7 @@ class MicRecorder(QThread):
             time.sleep(0.01)
         self.done = False
         self.cur_db = 0
-        self.draw_mic_threshold()  # clear threshold drawn to 0 level
+        self.draw_mic_threshold(toggle)  # clear threshold drawn to 0 level
         self.draw_phrase_timeout(0)
         self.is_recording = False
         self.is_phrase_time = False
@@ -330,11 +330,11 @@ class MicRecorder(QThread):
                 self.device_name = adm_mic.name
                 self.done = True
 
-    def draw_mic_threshold(self):
+    def draw_mic_threshold(self, toggle:bool):  # toggle: pushButton is checked or not
         # [Mic Threshold GUI] Call Signal from main program
         if self.main_program:
             try:
-                self.main_program.update_threshold_gui_signal.emit(self.cur_db, self.target_gui)
+                self.main_program.update_threshold_gui_signal.emit(self.cur_db, self.target_gui, toggle)
             except RuntimeError as e:
                 print_log("warning", "no main program! maybe program ended", e)
                 self.stop()

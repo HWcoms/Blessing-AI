@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainQgtyiA.ui'
+## Form generated from reading UI file 'maingZKUVr.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1831,7 +1831,7 @@ class Ui_MainWindow(object):
         self.scrollArea_audio_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(-10, 0, 1182, 998))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1182, 996))
         self.verticalLayout_31 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_31.setObjectName(u"verticalLayout_31")
         self.verticalLayout_31.setContentsMargins(0, 0, 0, 0)
@@ -2025,7 +2025,8 @@ class Ui_MainWindow(object):
 
         self.verticalGroupBox_main_mic_holder = QGroupBox(self.scrollAreaWidgetContents_2)
         self.verticalGroupBox_main_mic_holder.setObjectName(u"verticalGroupBox_main_mic_holder")
-        self.verticalGroupBox_main_mic_holder.setStyleSheet(u"QGroupBox\n"
+        self.verticalGroupBox_main_mic_holder.setStyleSheet(u"/*			QGroupBox				*/\n"
+"QGroupBox\n"
 "{\n"
 "    font-size: 20px;\n"
 "    font-weight: bold;\n"
@@ -2054,7 +2055,6 @@ class Ui_MainWindow(object):
 "	background-color: rgb(230, 0, 0);\n"
 "}\n"
 "\n"
-"\n"
 "QPushButton:hover{\n"
 "	background-color: rgb(210, 0, 4);\n"
 "}\n"
@@ -2082,11 +2082,95 @@ class Ui_MainWindow(object):
 
         self.verticalGroupBox_main_mic = QGroupBox(self.verticalGroupBox_main_mic_holder)
         self.verticalGroupBox_main_mic.setObjectName(u"verticalGroupBox_main_mic")
-        self.verticalGroupBox_main_mic.setStyleSheet(u"QGroupBox\n"
-"{\n"
-"    font-size: 20px;\n"
-"    font-weight: bold;\n"
-"}")
+        self.verticalGroupBox_main_mic.setStyleSheet(u"QLabel { \n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"QLineEdit {\n"
+"	border: 2px solid rgb(48, 50, 62);\n"
+"	border-radius: 10px;\n"
+"	color: rgb(255,255,255);\n"
+"	padding-left: 10px;\n"
+"	padding-right: 10px;\n"
+"	background-color:rgb(34,36,44)\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(66, 70, 86);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(85, 170, 255);\n"
+"	background-color: rgb(43, 45, 56);\n"
+"}\n"
+"\n"
+"QSlider::groove {\n"
+"	background-color: rgb(55, 62, 76);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal {\n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border: none;\n"
+"    height: 40px;\n"
+"    width: 10px;\n"
+"    margin: -20px 0;\n"
+"    border-radius: 20px;\n"
+"    padding: -20px 0px;\n"
+"}\n"
+"QSlider::handle:horizontal:hover {\n"
+"    background-color: rgb(155, 180, 255);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:pressed {\n"
+"    background-color: rgb(65, 255, 195);\n"
+"}\n"
+"\n"
+"QPushButton{\n"
+"	font: bold 12pt \"Segoe UI\";\n"
+"	color: rgb(255,255,255);\n"
+"	backg"
+                        "round-color: rgb(122, 137, 168);\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(163, 184, 225);\n"
+"}\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(75, 84, 103);\n"
+"}\n"
+"\n"
+"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
+"ComboBox */\n"
+"QComboBox{\n"
+"	color: rgb(255,255,255);\n"
+"	background-color: rgb(33, 37, 43);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(33, 37, 43);\n"
+"	padding: 5px;\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QComboBox:hover{\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QComboBox::drop-down {\n"
+"	subcontrol-origin: padding;\n"
+"	subcontrol-position: top right;\n"
+"	width: 25px; \n"
+"	border-left-width: 3px;\n"
+"	border-left-color: rgba(39, 44, 54, 150);\n"
+"	border-left-style: solid;\n"
+"	border-top-right-radius: 3px;\n"
+"	border-bottom-right-radius: 3px;	\n"
+"	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);\n"
+"	background-position: center;\n"
+"	background-r"
+                        "epeat: no-reperat;\n"
+" }\n"
+"QComboBox QAbstractItemView {\n"
+"	color: rgb(255, 121, 198);	\n"
+"	background-color: rgb(33, 37, 43);\n"
+"	padding: 10px;\n"
+"	selection-background-color: rgb(39, 44, 54);\n"
+"}\n"
+"")
         self.verticalGroupBox_main_mic.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
         self.verticalGroupBox_main_mic.setFlat(True)
         self.verticalLayout_71 = QVBoxLayout(self.verticalGroupBox_main_mic)
@@ -2103,6 +2187,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_65.setContentsMargins(-1, 0, -1, 0)
         self.label_18 = QLabel(self.verticalGroupBox_main_mic)
         self.label_18.setObjectName(u"label_18")
+        self.label_18.setStyleSheet(u"QWidget{\n"
+"	rgb: yellow;\n"
+"}")
 
         self.horizontalLayout_65.addWidget(self.label_18)
 
@@ -2133,7 +2220,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.comboBox_mic_device.sizePolicy().hasHeightForWidth())
         self.comboBox_mic_device.setSizePolicy(sizePolicy1)
         self.comboBox_mic_device.setMinimumSize(QSize(0, 0))
-        self.comboBox_mic_device.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.comboBox_mic_device.setStyleSheet(u"")
 
         self.horizontalLayout_66.addWidget(self.comboBox_mic_device)
 
@@ -2194,7 +2281,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.horizontalSlider_mic_threshold.sizePolicy().hasHeightForWidth())
         self.horizontalSlider_mic_threshold.setSizePolicy(sizePolicy1)
         self.horizontalSlider_mic_threshold.setMinimumSize(QSize(0, 0))
-        self.horizontalSlider_mic_threshold.setStyleSheet(u"QSlider::groove {\n"
+        self.horizontalSlider_mic_threshold.setStyleSheet(u"QSlider:groove {\n"
 "	background-color: rgb(55, 62, 76);\n"
 "}")
         self.horizontalSlider_mic_threshold.setMaximum(100)
@@ -2262,25 +2349,8 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.horizontalSlider_main_phrase_timeout.sizePolicy().hasHeightForWidth())
         self.horizontalSlider_main_phrase_timeout.setSizePolicy(sizePolicy1)
         self.horizontalSlider_main_phrase_timeout.setMinimumSize(QSize(0, 0))
-        self.horizontalSlider_main_phrase_timeout.setStyleSheet(u"QSlider::groove {\n"
+        self.horizontalSlider_main_phrase_timeout.setStyleSheet(u"QSlider:groove {\n"
 "	background-color: rgb(55, 62, 76);\n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal {\n"
-"    background-color: rgb(85, 170, 255);\n"
-"    border: none;\n"
-"    height: 40px;\n"
-"    width: 10px;\n"
-"    margin: -20px 0;\n"
-"    border-radius: 20px;\n"
-"    padding: -20px 0px;\n"
-"}\n"
-"QSlider::handle:horizontal:hover {\n"
-"    background-color: rgb(155, 180, 255);\n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal:pressed {\n"
-"    background-color: rgb(65, 255, 195);\n"
 "}")
         self.horizontalSlider_main_phrase_timeout.setMaximum(3000)
         self.horizontalSlider_main_phrase_timeout.setSingleStep(10)
@@ -2304,11 +2374,13 @@ class Ui_MainWindow(object):
 
         self.verticalGroupBox_sub_mic_holder = QGroupBox(self.scrollAreaWidgetContents_2)
         self.verticalGroupBox_sub_mic_holder.setObjectName(u"verticalGroupBox_sub_mic_holder")
-        self.verticalGroupBox_sub_mic_holder.setStyleSheet(u"QGroupBox\n"
+        self.verticalGroupBox_sub_mic_holder.setStyleSheet(u"/*			QGroupBox				*/\n"
+"QGroupBox\n"
 "{\n"
 "    font-size: 20px;\n"
 "    font-weight: bold;\n"
-"}")
+"}\n"
+"")
         self.verticalGroupBox_sub_mic_holder.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
         self.verticalLayout_47 = QVBoxLayout(self.verticalGroupBox_sub_mic_holder)
         self.verticalLayout_47.setSpacing(5)
@@ -2323,7 +2395,6 @@ class Ui_MainWindow(object):
 "	border-radius: 5px;\n"
 "	background-color: rgb(230, 0, 0);\n"
 "}\n"
-"\n"
 "\n"
 "QPushButton:hover{\n"
 "	background-color: rgb(210, 0, 4);\n"
@@ -2351,11 +2422,95 @@ class Ui_MainWindow(object):
 
         self.verticalGroupBox_sub_mic = QGroupBox(self.verticalGroupBox_sub_mic_holder)
         self.verticalGroupBox_sub_mic.setObjectName(u"verticalGroupBox_sub_mic")
-        self.verticalGroupBox_sub_mic.setStyleSheet(u"QGroupBox\n"
-"{\n"
-"    font-size: 20px;\n"
-"    font-weight: bold;\n"
-"}")
+        self.verticalGroupBox_sub_mic.setStyleSheet(u"QLabel { \n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"QLineEdit {\n"
+"	border: 2px solid rgb(48, 50, 62);\n"
+"	border-radius: 10px;\n"
+"	color: rgb(255,255,255);\n"
+"	padding-left: 10px;\n"
+"	padding-right: 10px;\n"
+"	background-color:rgb(34,36,44)\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(66, 70, 86);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(85, 170, 255);\n"
+"	background-color: rgb(43, 45, 56);\n"
+"}\n"
+"\n"
+"QSlider::groove {\n"
+"	background-color: rgb(55, 62, 76);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal {\n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border: none;\n"
+"    height: 40px;\n"
+"    width: 10px;\n"
+"    margin: -20px 0;\n"
+"    border-radius: 20px;\n"
+"    padding: -20px 0px;\n"
+"}\n"
+"QSlider::handle:horizontal:hover {\n"
+"    background-color: rgb(155, 180, 255);\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:pressed {\n"
+"    background-color: rgb(65, 255, 195);\n"
+"}\n"
+"\n"
+"QPushButton{\n"
+"	font: bold 12pt \"Segoe UI\";\n"
+"	color: rgb(255,255,255);\n"
+"	backg"
+                        "round-color: rgb(122, 137, 168);\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"	background-color: rgb(163, 184, 225);\n"
+"}\n"
+"QPushButton:pressed{\n"
+"	background-color: rgb(75, 84, 103);\n"
+"}\n"
+"\n"
+"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
+"ComboBox */\n"
+"QComboBox{\n"
+"	color: rgb(255,255,255);\n"
+"	background-color: rgb(33, 37, 43);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(33, 37, 43);\n"
+"	padding: 5px;\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QComboBox:hover{\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QComboBox::drop-down {\n"
+"	subcontrol-origin: padding;\n"
+"	subcontrol-position: top right;\n"
+"	width: 25px; \n"
+"	border-left-width: 3px;\n"
+"	border-left-color: rgba(39, 44, 54, 150);\n"
+"	border-left-style: solid;\n"
+"	border-top-right-radius: 3px;\n"
+"	border-bottom-right-radius: 3px;	\n"
+"	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);\n"
+"	background-position: center;\n"
+"	background-r"
+                        "epeat: no-reperat;\n"
+" }\n"
+"QComboBox QAbstractItemView {\n"
+"	color: rgb(255, 121, 198);	\n"
+"	background-color: rgb(33, 37, 43);\n"
+"	padding: 10px;\n"
+"	selection-background-color: rgb(39, 44, 54);\n"
+"}\n"
+"")
         self.verticalGroupBox_sub_mic.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
         self.verticalGroupBox_sub_mic.setFlat(True)
         self.verticalGroupBox_sub_mic.setCheckable(False)
@@ -2403,7 +2558,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.comboBox_sub_mic_device.sizePolicy().hasHeightForWidth())
         self.comboBox_sub_mic_device.setSizePolicy(sizePolicy1)
         self.comboBox_sub_mic_device.setMinimumSize(QSize(0, 0))
-        self.comboBox_sub_mic_device.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.comboBox_sub_mic_device.setStyleSheet(u"")
 
         self.horizontalLayout_70.addWidget(self.comboBox_sub_mic_device)
 
@@ -2464,7 +2619,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.horizontalSlider_sub_mic_threshold.sizePolicy().hasHeightForWidth())
         self.horizontalSlider_sub_mic_threshold.setSizePolicy(sizePolicy1)
         self.horizontalSlider_sub_mic_threshold.setMinimumSize(QSize(0, 0))
-        self.horizontalSlider_sub_mic_threshold.setStyleSheet(u"QSlider::groove {\n"
+        self.horizontalSlider_sub_mic_threshold.setStyleSheet(u"QSlider:groove {\n"
 "	background-color: rgb(55, 62, 76);\n"
 "}")
         self.horizontalSlider_sub_mic_threshold.setMaximum(100)
@@ -2532,25 +2687,8 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.horizontalSlider_sub_phrase_timeout.sizePolicy().hasHeightForWidth())
         self.horizontalSlider_sub_phrase_timeout.setSizePolicy(sizePolicy1)
         self.horizontalSlider_sub_phrase_timeout.setMinimumSize(QSize(0, 0))
-        self.horizontalSlider_sub_phrase_timeout.setStyleSheet(u"QSlider::groove {\n"
+        self.horizontalSlider_sub_phrase_timeout.setStyleSheet(u"QSlider:groove {\n"
 "	background-color: rgb(55, 62, 76);\n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal {\n"
-"    background-color: rgb(85, 170, 255);\n"
-"    border: none;\n"
-"    height: 40px;\n"
-"    width: 10px;\n"
-"    margin: -20px 0;\n"
-"    border-radius: 20px;\n"
-"    padding: -20px 0px;\n"
-"}\n"
-"QSlider::handle:horizontal:hover {\n"
-"    background-color: rgb(155, 180, 255);\n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal:pressed {\n"
-"    background-color: rgb(65, 255, 195);\n"
 "}")
         self.horizontalSlider_sub_phrase_timeout.setMaximum(3000)
         self.horizontalSlider_sub_phrase_timeout.setSingleStep(10)
@@ -4593,7 +4731,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 360, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -5284,6 +5422,7 @@ class Ui_MainWindow(object):
         self.pushButton_speaker_volume_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.verticalGroupBox_main_mic_holder.setTitle(QCoreApplication.translate("MainWindow", u"Main Mic", None))
         self.pushButton_main_mic_toggle.setText(QCoreApplication.translate("MainWindow", u"Toggle", None))
+        self.pushButton_main_mic_toggle.setProperty("class", QCoreApplication.translate("MainWindow", u"PushToggle", None))
         self.verticalGroupBox_main_mic.setTitle("")
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Mic Device</span></p></body></html>", None))
         self.pushButton_mic_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))
@@ -5300,6 +5439,7 @@ class Ui_MainWindow(object):
         self.pushButton_main_phrase_timeout_default.setText(QCoreApplication.translate("MainWindow", u"Default", None))
         self.verticalGroupBox_sub_mic_holder.setTitle(QCoreApplication.translate("MainWindow", u"Sub Mic (For Other User)", None))
         self.pushButton_sub_mic_toggle.setText(QCoreApplication.translate("MainWindow", u"Toggle", None))
+        self.pushButton_sub_mic_toggle.setProperty("class", QCoreApplication.translate("MainWindow", u"PushToggle", None))
         self.verticalGroupBox_sub_mic.setTitle("")
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Sub Mic Device</span></p></body></html>", None))
         self.pushButton_sub_mic_device_default.setText(QCoreApplication.translate("MainWindow", u"Set to Default", None))

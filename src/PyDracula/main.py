@@ -98,7 +98,7 @@ t_val_col_c = 20
 
 class MainWindow(QMainWindow):
     update_table_signal = Signal()
-    update_threshold_gui_signal = Signal(float, QObject)
+    update_threshold_gui_signal = Signal(float, QObject, bool)
     update_phrase_timeout_gui_signal = Signal(float, QObject)
 
     def __init__(self):
@@ -147,9 +147,12 @@ class MainWindow(QMainWindow):
         widgets.textBrowser_papago_token_link.setOpenExternalLinks(True)
         self.chat = None
 
-
+        # STORE STYLESHEET
+        self.default_stylesheet: dict = {}
         self.default_threshold_slider_stylesheet = self.ui.horizontalSlider_mic_threshold.styleSheet()
         self.default_timeout_slider_stylesheet = self.ui.horizontalSlider_main_phrase_timeout.styleSheet()
+
+        self.disabled_gui_opacity = 0.5
 
         # QTHREADS LIST
         self.tts_thread_list = []
@@ -387,6 +390,60 @@ class MainWindow(QMainWindow):
 
         # print(self.convert_language_code("Japanese"))
 
+    def get_stylesheet_from_dict(self, comp: QObject, mod_function, args):
+        '''
+        search stylesheet from self.default_stylesheet (dict)
+
+        if found -> return [stylesheet (str), modded_stylesheet (str)]
+        else -> add info to dict and return [stylesheet, modded_stylesheet]
+        '''
+        key_str = comp.objectName()
+
+        # Get Value from dict, if no key found value is None
+        value = self.default_stylesheet.get(key_str)
+
+        if value:
+            # print(f'[{key_str}] key found in dict')
+            result = value
+        else:
+            # print(f'[{key_str}] has not found, add to dict')
+            style_sheet = comp.styleSheet()
+
+            value = [style_sheet, mod_function(style_sheet, args)]
+            self.default_stylesheet[key_str] = value
+
+        # print(self.default_stylesheet)
+        return value
+
+    def change_stylesheet_opacity(self, stylesheet:str, factor:float):    # saturation 0.0~1.0
+        import re
+        def rgb_to_rgba(match):
+            import colorsys
+            r, g, b = map(int, match.groups())
+            a = int(factor * 255.0)
+            return f'rgba({r},{g},{b},{a})'
+
+        pattern = re.compile(r'rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)')
+        adjusted_str = pattern.sub(rgb_to_rgba, stylesheet)
+        return adjusted_str
+
+    def change_stylesheet_color(self, stylesheet:str, r:int, g:int, b:int, alpha:bool):
+        if alpha:
+            a = int(self.disabled_gui_opacity * 255.0)
+        else:
+            a = 255
+
+        import re
+        def rgb_to_rgba(match):
+            import colorsys
+            _r, _g, _b = map(int, match.groups())
+            return f'rgba({r},{g},{b},{a})'
+
+        pattern = re.compile(r'rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)')
+        adjusted_str = pattern.sub(rgb_to_rgba, stylesheet)
+        print(adjusted_str)
+        return adjusted_str
+
     def resize_thread_table(self, per_a, per_b, per_c):
         global widgets
         for table in [widgets.tableWidget_prompt_list, widgets.tableWidget_tts_list]:
@@ -560,40 +617,7 @@ class MainWindow(QMainWindow):
 
         # region [PROPERTY HANDLER BY COMPONENT TYPE]
         #####################################################################################
-        if isinstance(called_component, QCheckBox):
-            component_property = called_component.isChecked()
-
-        elif isinstance(called_component, QComboBox):
-            if "language" in component_key:
-                component_property = self.convert_language_code(called_component.currentText())
-            else:
-                component_property = called_component.currentText()
-
-        elif isinstance(called_component, QLineEdit):
-            comp_text = str(called_component.text())
-            if not comp_text or comp_text == "":
-                comp_text = ""
-            component_property = comp_text
-
-        elif isinstance(called_component, QTextEdit):
-            comp_text = str(called_component.toPlainText())
-            if not comp_text or comp_text == "":
-                comp_text = ""
-            component_property = comp_text
-
-        elif isinstance(called_component, QGroupBox):
-            component_property = called_component.isChecked()
-
-        elif isinstance(called_component, QSpinBox):
-            component_property = called_component.value()
-
-        elif isinstance(called_component, QRadioButton):
-            gender_radio, component_key = self.get_radio_object_by_name(component_key)
-            component_property = self.get_radio_check(gender_radio).lower()  # female or male in radio button
-
-        elif isinstance(called_component, QPushButton):
-            if 'toggle' in component_key:
-                component_property = called_component.isChecked()
+        component_key, component_property = self.get_property_by_qobj_type(called_component, component_key)
         #####################################################################################
         # endregion [PROPERTY HANDLER]
 
@@ -871,6 +895,8 @@ class MainWindow(QMainWindow):
         if componentName is not None:
             component_type, component_key = self.component_info_by_name(componentName)
 
+        component_key, component_property = self.get_property_by_qobj_type(called_component, component_key)
+
         # region AUDIO SETTINGS
         #####################################################################################
         ## ToggleButtons
@@ -879,8 +905,26 @@ class MainWindow(QMainWindow):
                              'spk_toggle']:
             component_property = called_component.isChecked()
             component_key = component_key.replace("_home", "")
-            self.set_toggle_button(called_component, component_property, 'Now Listening...', 'Mic OFF')
+
+            # Change Button Text, Style by Bool
+            if 'mic' in component_key:
+                if 'main' in component_key:
+                    pre_str = 'Main'
+                    grp_box = self.ui.verticalGroupBox_main_mic
+                else:
+                    pre_str = 'Sub'
+                    grp_box = self.ui.verticalGroupBox_sub_mic
+                checked_str, unchecked_str = f'{pre_str} Mic [ON]', f'{pre_str} Mic [OFF]'
+                self.set_groupbox_by_bool(grp_box, component_property, only_change_style=True)
+            if 'spk' in component_key:
+                checked_str, unchecked_str = 'Speaker [ON]', 'Speaker [OFF]'
+
+            self.set_toggle_button(called_component, component_property, checked_str, unchecked_str)
             setting_name = 'audio_settings'
+
+        if '_default' in component_key:
+            # No Property Save property from other
+            return
         #####################################################################################
         # region AUDIO SETTINGS
 
@@ -940,6 +984,48 @@ class MainWindow(QMainWindow):
         # print("\033[34m" + f"{component_key}: " + "\033[32m" + f"{component_property}" + "\033[0m")
 
         update_json(component_key, component_property, setting_name)
+
+    # Property Handler (Get Property by QObject Types)
+    def get_property_by_qobj_type(self, qobj:QObject, component_key:str):
+        result_key = component_key
+        result_property = None
+        if isinstance(qobj, QCheckBox):
+            result_property = qobj.isChecked()
+
+        elif isinstance(qobj, QComboBox):
+            if "language" in component_key:
+                result_property = self.convert_language_code(qobj.currentText())
+            else:
+                result_property = qobj.currentText()
+
+        elif isinstance(qobj, QLineEdit):
+            comp_text = str(qobj.text())
+            if not comp_text or comp_text == "":
+                comp_text = ""
+            result_property = comp_text
+
+        elif isinstance(qobj, QTextEdit):
+            comp_text = str(qobj.toPlainText())
+            if not comp_text or comp_text == "":
+                comp_text = ""
+            result_property = comp_text
+
+        elif isinstance(qobj, QGroupBox):
+            result_property = qobj.isChecked()
+
+        elif isinstance(qobj, QSpinBox):
+            result_property = qobj.value()
+
+        elif isinstance(qobj, QRadioButton):
+            gender_radio, result_key = self.get_radio_object_by_name(component_key)
+            result_property = self.get_radio_check(gender_radio).lower()  # female or male in radio button
+
+        elif isinstance(qobj, QPushButton):
+            if 'toggle' in component_key:
+                result_property = qobj.isChecked()
+
+        return result_key, result_property
+
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -1113,8 +1199,8 @@ class MainWindow(QMainWindow):
         # Grey Out GROUPS When Toggle is OFF
         main_mic_group = widgets.verticalGroupBox_main_mic
         sub_mic_group = widgets.verticalGroupBox_sub_mic
-        self.set_groupbox_by_bool(main_mic_group, main_mic_toggle_value)
-        self.set_groupbox_by_bool(sub_mic_group, sub_mic_toggle_value)
+        self.set_groupbox_by_bool(main_mic_group, main_mic_toggle_value, only_change_style=True)
+        self.set_groupbox_by_bool(sub_mic_group, sub_mic_toggle_value, only_change_style=True)
 
         ################################################################################################
         # endregion [PushButton]
@@ -1541,8 +1627,19 @@ class MainWindow(QMainWindow):
 
         # endregion
 
-    def set_groupbox_by_bool(self, grp_box:QGroupBox, bool_value:bool):
-        grp_box.setEnabled(bool_value)
+    def set_groupbox_by_bool(self, grp_box:QGroupBox, bool_value:bool, only_change_style=False):
+        if not only_change_style:
+            grp_box.setEnabled(bool_value)
+        else:
+            # only change StyleSheets
+            if bool_value:
+                style_i = 0
+            else:
+                style_i = 1
+            og_stylesheet = self.get_stylesheet_from_dict(grp_box, self.change_stylesheet_opacity,
+                                                          self.disabled_gui_opacity)
+            # Select Original or Disabled(opacity) StyleSheet by bool
+            grp_box.setStyleSheet(og_stylesheet[style_i])
 
     def mirror_groupbox(self, checkbox_grp:QGroupBox, non_checkbox_grp:QGroupBox):
         checkbox_grp_enabled = checkbox_grp.isChecked() and checkbox_grp.isEnabled()
@@ -1962,14 +2059,15 @@ class MainWindow(QMainWindow):
                 obj.clear()
 
     def change_color_combobox(self, combo_box:QComboBox, color:str):
+        if color == 'red':
+            _c = '255,0,0'
+        elif color == 'white':
+            _c = '255,255,255'
         combo_style = "QComboBox {" \
-                      "color: %s;" \
-                      "background-color: rgb(27, 29, 35);" \
-                      "border-radius: 5px;border: 2px;" \
-                      " solid rgb(33, 37, 43);" \
-                      "padding: 5px;padding-left: 10px;}"
+                      f"color: rgb({_c});" \
+                      "}"
 
-        combo_box.setStyleSheet(combo_style % (color))
+        combo_box.setStyleSheet(combo_style)
 
     def add_none_item_combobox(self, combo_box:QComboBox, text:str= "[None]", color:str= "red"):
         model = combo_box.model()
@@ -2273,11 +2371,16 @@ class MainWindow(QMainWindow):
                 thread_index += 1
 
     # Update Mic Threshold GUI
-    def update_threshold_gui(self, value, component:QObject):
+    def update_threshold_gui(self, value, component:QObject, toggle:bool):  # toggle -> false: grey colored bar
         stop_x = value * 0.01
 
+        if toggle:
+            opacity = 255
+        else:
+            opacity = int(self.disabled_gui_opacity * 255.0)
+
         lines = self.default_threshold_slider_stylesheet.splitlines()
-        lines[1] = f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:{stop_x} rgb(11, 211, 0), stop:{stop_x+0.001} rgb(55, 62, 76));'
+        lines[1] = f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:{stop_x} rgba(11, 211, 0, {opacity}), stop:{stop_x+0.001} rgba(55, 62, 76, {opacity}));'
         # result_string = 'QSlider::groove {'+f'\tbackground-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:.5 rgb(11, 211, 0), stop:0.501 rgb(55, 62, 76));'+'}'
         result_string = '\n'.join(lines)
 

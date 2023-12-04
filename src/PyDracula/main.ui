@@ -3313,10 +3313,10 @@ QPushButton:pressed{
                          <widget class="QWidget" name="scrollAreaWidgetContents_2">
                           <property name="geometry">
                            <rect>
-                            <x>-10</x>
-                            <y>-297</y>
+                            <x>0</x>
+                            <y>0</y>
                             <width>1182</width>
-                            <height>998</height>
+                            <height>996</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -3832,7 +3832,8 @@ QPushButton:pressed{
                                <item>
                                 <widget class="QGroupBox" name="verticalGroupBox_main_mic_holder">
                                  <property name="styleSheet">
-                                  <string notr="true">QGroupBox
+                                  <string notr="true">/*			QGroupBox				*/
+QGroupBox
 {
     font-size: 20px;
     font-weight: bold;
@@ -3892,7 +3893,6 @@ QPushButton:pressed{
 	background-color: rgb(230, 0, 0);
 }
 
-
 QPushButton:hover{
 	background-color: rgb(210, 0, 4);
 }
@@ -3923,16 +3923,101 @@ QPushButton:checked:pressed{
                                     <property name="checked">
                                      <bool>false</bool>
                                     </property>
+                                    <property name="class" stdset="0">
+                                     <string>PushToggle</string>
+                                    </property>
                                    </widget>
                                   </item>
                                   <item>
                                    <widget class="QGroupBox" name="verticalGroupBox_main_mic">
                                     <property name="styleSheet">
-                                     <string notr="true">QGroupBox
-{
-    font-size: 20px;
-    font-weight: bold;
-}</string>
+                                     <string notr="true">QLabel { 
+	color: rgb(255, 255, 255);
+}
+QLineEdit {
+	border: 2px solid rgb(48, 50, 62);
+	border-radius: 10px;
+	color: rgb(255,255,255);
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color:rgb(34,36,44)
+}
+QLineEdit:hover {
+	border: 2px solid rgb(66, 70, 86);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(85, 170, 255);
+	background-color: rgb(43, 45, 56);
+}
+
+QSlider::groove {
+	background-color: rgb(55, 62, 76);
+}
+
+QSlider::handle:horizontal {
+    background-color: rgb(85, 170, 255);
+    border: none;
+    height: 40px;
+    width: 10px;
+    margin: -20px 0;
+    border-radius: 20px;
+    padding: -20px 0px;
+}
+QSlider::handle:horizontal:hover {
+    background-color: rgb(155, 180, 255);
+}
+
+QSlider::handle:horizontal:pressed {
+    background-color: rgb(65, 255, 195);
+}
+
+QPushButton{
+	font: bold 12pt &quot;Segoe UI&quot;;
+	color: rgb(255,255,255);
+	background-color: rgb(122, 137, 168);
+	border-radius: 5px;
+}
+
+QPushButton:hover{
+	background-color: rgb(163, 184, 225);
+}
+QPushButton:pressed{
+	background-color: rgb(75, 84, 103);
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////
+ComboBox */
+QComboBox{
+	color: rgb(255,255,255);
+	background-color: rgb(33, 37, 43);
+	border-radius: 5px;
+	border: 2px solid rgb(33, 37, 43);
+	padding: 5px;
+	padding-left: 10px;
+}
+QComboBox:hover{
+	border: 2px solid rgb(64, 71, 88);
+}
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 25px; 
+	border-left-width: 3px;
+	border-left-color: rgba(39, 44, 54, 150);
+	border-left-style: solid;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;	
+	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);
+	background-position: center;
+	background-repeat: no-reperat;
+ }
+QComboBox QAbstractItemView {
+	color: rgb(255, 121, 198);	
+	background-color: rgb(33, 37, 43);
+	padding: 10px;
+	selection-background-color: rgb(39, 44, 54);
+}
+</string>
                                     </property>
                                     <property name="title">
                                      <string/>
@@ -3989,6 +4074,11 @@ QPushButton:checked:pressed{
                                          </property>
                                          <item>
                                           <widget class="QLabel" name="label_18">
+                                           <property name="styleSheet">
+                                            <string notr="true">QWidget{
+	rgb: yellow;
+}</string>
+                                           </property>
                                            <property name="text">
                                             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Mic Device&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                            </property>
@@ -4054,7 +4144,7 @@ QPushButton:checked:pressed{
                                             </size>
                                            </property>
                                            <property name="styleSheet">
-                                            <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                            <string notr="true"/>
                                            </property>
                                            <item>
                                             <property name="text">
@@ -4216,7 +4306,7 @@ QPushButton:checked:pressed{
                                             </size>
                                            </property>
                                            <property name="styleSheet">
-                                            <string notr="true">QSlider::groove {
+                                            <string notr="true">QSlider:groove {
 	background-color: rgb(55, 62, 76);
 }</string>
                                            </property>
@@ -4367,25 +4457,8 @@ QPushButton:checked:pressed{
                                           </size>
                                          </property>
                                          <property name="styleSheet">
-                                          <string notr="true">QSlider::groove {
+                                          <string notr="true">QSlider:groove {
 	background-color: rgb(55, 62, 76);
-}
-
-QSlider::handle:horizontal {
-    background-color: rgb(85, 170, 255);
-    border: none;
-    height: 40px;
-    width: 10px;
-    margin: -20px 0;
-    border-radius: 20px;
-    padding: -20px 0px;
-}
-QSlider::handle:horizontal:hover {
-    background-color: rgb(155, 180, 255);
-}
-
-QSlider::handle:horizontal:pressed {
-    background-color: rgb(65, 255, 195);
 }</string>
                                          </property>
                                          <property name="maximum">
@@ -4429,11 +4502,13 @@ QSlider::handle:horizontal:pressed {
                                <item>
                                 <widget class="QGroupBox" name="verticalGroupBox_sub_mic_holder">
                                  <property name="styleSheet">
-                                  <string notr="true">QGroupBox
+                                  <string notr="true">/*			QGroupBox				*/
+QGroupBox
 {
     font-size: 20px;
     font-weight: bold;
-}</string>
+}
+</string>
                                  </property>
                                  <property name="title">
                                   <string>Sub Mic (For Other User)</string>
@@ -4473,7 +4548,6 @@ QSlider::handle:horizontal:pressed {
 	background-color: rgb(230, 0, 0);
 }
 
-
 QPushButton:hover{
 	background-color: rgb(210, 0, 4);
 }
@@ -4501,16 +4575,101 @@ QPushButton:checked:pressed{
                                     <property name="checkable">
                                      <bool>true</bool>
                                     </property>
+                                    <property name="class" stdset="0">
+                                     <string>PushToggle</string>
+                                    </property>
                                    </widget>
                                   </item>
                                   <item>
                                    <widget class="QGroupBox" name="verticalGroupBox_sub_mic">
                                     <property name="styleSheet">
-                                     <string notr="true">QGroupBox
-{
-    font-size: 20px;
-    font-weight: bold;
-}</string>
+                                     <string notr="true">QLabel { 
+	color: rgb(255, 255, 255);
+}
+QLineEdit {
+	border: 2px solid rgb(48, 50, 62);
+	border-radius: 10px;
+	color: rgb(255,255,255);
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color:rgb(34,36,44)
+}
+QLineEdit:hover {
+	border: 2px solid rgb(66, 70, 86);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(85, 170, 255);
+	background-color: rgb(43, 45, 56);
+}
+
+QSlider::groove {
+	background-color: rgb(55, 62, 76);
+}
+
+QSlider::handle:horizontal {
+    background-color: rgb(85, 170, 255);
+    border: none;
+    height: 40px;
+    width: 10px;
+    margin: -20px 0;
+    border-radius: 20px;
+    padding: -20px 0px;
+}
+QSlider::handle:horizontal:hover {
+    background-color: rgb(155, 180, 255);
+}
+
+QSlider::handle:horizontal:pressed {
+    background-color: rgb(65, 255, 195);
+}
+
+QPushButton{
+	font: bold 12pt &quot;Segoe UI&quot;;
+	color: rgb(255,255,255);
+	background-color: rgb(122, 137, 168);
+	border-radius: 5px;
+}
+
+QPushButton:hover{
+	background-color: rgb(163, 184, 225);
+}
+QPushButton:pressed{
+	background-color: rgb(75, 84, 103);
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////
+ComboBox */
+QComboBox{
+	color: rgb(255,255,255);
+	background-color: rgb(33, 37, 43);
+	border-radius: 5px;
+	border: 2px solid rgb(33, 37, 43);
+	padding: 5px;
+	padding-left: 10px;
+}
+QComboBox:hover{
+	border: 2px solid rgb(64, 71, 88);
+}
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 25px; 
+	border-left-width: 3px;
+	border-left-color: rgba(39, 44, 54, 150);
+	border-left-style: solid;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;	
+	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);
+	background-position: center;
+	background-repeat: no-reperat;
+ }
+QComboBox QAbstractItemView {
+	color: rgb(255, 121, 198);	
+	background-color: rgb(33, 37, 43);
+	padding: 10px;
+	selection-background-color: rgb(39, 44, 54);
+}
+</string>
                                     </property>
                                     <property name="title">
                                      <string/>
@@ -4635,7 +4794,7 @@ QPushButton:checked:pressed{
                                             </size>
                                            </property>
                                            <property name="styleSheet">
-                                            <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                            <string notr="true"/>
                                            </property>
                                            <item>
                                             <property name="text">
@@ -4797,7 +4956,7 @@ QPushButton:checked:pressed{
                                             </size>
                                            </property>
                                            <property name="styleSheet">
-                                            <string notr="true">QSlider::groove {
+                                            <string notr="true">QSlider:groove {
 	background-color: rgb(55, 62, 76);
 }</string>
                                            </property>
@@ -4948,25 +5107,8 @@ QPushButton:checked:pressed{
                                           </size>
                                          </property>
                                          <property name="styleSheet">
-                                          <string notr="true">QSlider::groove {
+                                          <string notr="true">QSlider:groove {
 	background-color: rgb(55, 62, 76);
-}
-
-QSlider::handle:horizontal {
-    background-color: rgb(85, 170, 255);
-    border: none;
-    height: 40px;
-    width: 10px;
-    margin: -20px 0;
-    border-radius: 20px;
-    padding: -20px 0px;
-}
-QSlider::handle:horizontal:hover {
-    background-color: rgb(155, 180, 255);
-}
-
-QSlider::handle:horizontal:pressed {
-    background-color: rgb(65, 255, 195);
 }</string>
                                          </property>
                                          <property name="maximum">
@@ -9309,7 +9451,7 @@ QPushButton:pressed{
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>360</width>
+                                 <width>218</width>
                                  <height>218</height>
                                 </rect>
                                </property>
