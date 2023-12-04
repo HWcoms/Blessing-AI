@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'maingZKUVr.ui'
+## Form generated from reading UI file 'mainzORaEi.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1093,7 +1093,7 @@ class Ui_MainWindow(object):
         self.scrollArea_home_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1180, 531))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 1138, 509))
         self.verticalLayout_14 = QVBoxLayout(self.scrollAreaWidgetContents_4)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.a_verticalLayout_top = QVBoxLayout()
@@ -1817,6 +1817,40 @@ class Ui_MainWindow(object):
 "}\n"
 "QPushButton:pressed{\n"
 "	background-color: rgb(75, 84, 103);\n"
+"}\n"
+"\n"
+"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
+"ComboBox */\n"
+"QComboBox{\n"
+"	color: rgb(255,255,255);\n"
+"	background-color: rgb(33, 37, 43);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(33, 37, 43);\n"
+"	padding: 5px;\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QComboBox:hover{\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QComboBox::drop-down {\n"
+"	subcontrol-origin: padding;\n"
+"	subcontrol-position: top right;\n"
+"	width: 25px; \n"
+"	border-left-width: 3px;\n"
+"	border-left-color: rgba(39, 44, 54, 150);\n"
+"	border-left-style: solid;\n"
+"	border-top-right-radius: 3px;\n"
+"	border-bottom-right-radius: 3px;	\n"
+"	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);\n"
+"	background-position: center;\n"
+"	background-repeat: no-reperat;\n"
+" }\n"
+"QComboBox QAbstractItemView {\n"
+"	color: rgb"
+                        "(255, 121, 198);	\n"
+"	background-color: rgb(33, 37, 43);\n"
+"	padding: 10px;\n"
+"	selection-background-color: rgb(39, 44, 54);\n"
 "}")
         self.verticalLayout_30 = QVBoxLayout(self.Audio_Page)
         self.verticalLayout_30.setObjectName(u"verticalLayout_30")
@@ -1886,7 +1920,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.comboBox_spk_device.sizePolicy().hasHeightForWidth())
         self.comboBox_spk_device.setSizePolicy(sizePolicy1)
         self.comboBox_spk_device.setMinimumSize(QSize(0, 0))
-        self.comboBox_spk_device.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.comboBox_spk_device.setStyleSheet(u"")
 
         self.horizontalLayout_55.addWidget(self.comboBox_spk_device)
 
@@ -2779,7 +2813,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.comboBox_stt_language.sizePolicy().hasHeightForWidth())
         self.comboBox_stt_language.setSizePolicy(sizePolicy1)
         self.comboBox_stt_language.setMinimumSize(QSize(0, 0))
-        self.comboBox_stt_language.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.comboBox_stt_language.setStyleSheet(u"")
 
         self.horizontalLayout_83.addWidget(self.comboBox_stt_language)
 
@@ -2918,7 +2952,7 @@ class Ui_MainWindow(object):
         self.comboBox_tts_character.setObjectName(u"comboBox_tts_character")
         sizePolicy1.setHeightForWidth(self.comboBox_tts_character.sizePolicy().hasHeightForWidth())
         self.comboBox_tts_character.setSizePolicy(sizePolicy1)
-        self.comboBox_tts_character.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.comboBox_tts_character.setStyleSheet(u"")
 
         self.horizontalLayout_60.addWidget(self.comboBox_tts_character)
 
@@ -2957,7 +2991,7 @@ class Ui_MainWindow(object):
         self.comboBox_tts_language.setObjectName(u"comboBox_tts_language")
         sizePolicy1.setHeightForWidth(self.comboBox_tts_language.sizePolicy().hasHeightForWidth())
         self.comboBox_tts_language.setSizePolicy(sizePolicy1)
-        self.comboBox_tts_language.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.comboBox_tts_language.setStyleSheet(u"")
 
         self.horizontalLayout_62.addWidget(self.comboBox_tts_language)
 
@@ -2994,7 +3028,7 @@ class Ui_MainWindow(object):
         self.comboBox_tts_voice_id.setObjectName(u"comboBox_tts_voice_id")
         sizePolicy1.setHeightForWidth(self.comboBox_tts_voice_id.sizePolicy().hasHeightForWidth())
         self.comboBox_tts_voice_id.setSizePolicy(sizePolicy1)
-        self.comboBox_tts_voice_id.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.comboBox_tts_voice_id.setStyleSheet(u"")
 
         self.horizontalLayout_64.addWidget(self.comboBox_tts_voice_id)
 
@@ -3366,7 +3400,7 @@ class Ui_MainWindow(object):
         self.scrollArea_command_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1172, 1153))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1089, 1153))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()

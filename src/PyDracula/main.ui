@@ -1918,8 +1918,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1180</width>
-                            <height>531</height>
+                            <width>1138</width>
+                            <height>509</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -3280,6 +3280,39 @@ QPushButton:hover{
 }
 QPushButton:pressed{
 	background-color: rgb(75, 84, 103);
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////
+ComboBox */
+QComboBox{
+	color: rgb(255,255,255);
+	background-color: rgb(33, 37, 43);
+	border-radius: 5px;
+	border: 2px solid rgb(33, 37, 43);
+	padding: 5px;
+	padding-left: 10px;
+}
+QComboBox:hover{
+	border: 2px solid rgb(64, 71, 88);
+}
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 25px; 
+	border-left-width: 3px;
+	border-left-color: rgba(39, 44, 54, 150);
+	border-left-style: solid;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;	
+	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);
+	background-position: center;
+	background-repeat: no-reperat;
+ }
+QComboBox QAbstractItemView {
+	color: rgb(255, 121, 198);	
+	background-color: rgb(33, 37, 43);
+	padding: 10px;
+	selection-background-color: rgb(39, 44, 54);
 }</string>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_30">
@@ -3471,7 +3504,7 @@ QPushButton:pressed{
                                       </size>
                                      </property>
                                      <property name="styleSheet">
-                                      <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                      <string notr="true"/>
                                      </property>
                                      <item>
                                       <property name="text">
@@ -5315,7 +5348,7 @@ QComboBox QAbstractItemView {
                                            </size>
                                           </property>
                                           <property name="styleSheet">
-                                           <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                           <string notr="true"/>
                                           </property>
                                           <item>
                                            <property name="text">
@@ -5608,7 +5641,7 @@ QSpinBox:hover {
                                              </sizepolicy>
                                             </property>
                                             <property name="styleSheet">
-                                             <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                             <string notr="true"/>
                                             </property>
                                             <item>
                                              <property name="text">
@@ -5695,7 +5728,7 @@ QSpinBox:hover {
                                              </sizepolicy>
                                             </property>
                                             <property name="styleSheet">
-                                             <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                             <string notr="true"/>
                                             </property>
                                             <property name="currentText">
                                              <string>English</string>
@@ -5785,7 +5818,7 @@ QSpinBox:hover {
                                              </sizepolicy>
                                             </property>
                                             <property name="styleSheet">
-                                             <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                             <string notr="true"/>
                                             </property>
                                             <item>
                                              <property name="text">
@@ -6546,7 +6579,7 @@ QPushButton:pressed{
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1172</width>
+                            <width>1089</width>
                             <height>1153</height>
                            </rect>
                           </property>

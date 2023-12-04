@@ -904,7 +904,6 @@ class MainWindow(QMainWindow):
                              'sub_mic_toggle', 'sub_mic_toggle_home',
                              'spk_toggle']:
             component_property = called_component.isChecked()
-            component_key = component_key.replace("_home", "")
 
             # Change Button Text, Style by Bool
             if 'mic' in component_key:
@@ -914,10 +913,16 @@ class MainWindow(QMainWindow):
                 else:
                     pre_str = 'Sub'
                     grp_box = self.ui.verticalGroupBox_sub_mic
-                checked_str, unchecked_str = f'{pre_str} Mic [ON]', f'{pre_str} Mic [OFF]'
+                if 'home' in component_key:
+                    checked_str, unchecked_str = f'{pre_str} Mic [ON]', f'{pre_str} Mic [OFF]'
+                else:
+                    checked_str, unchecked_str = 'Now Listening...', '[OFF]'
+
                 self.set_groupbox_by_bool(grp_box, component_property, only_change_style=True)
             if 'spk' in component_key:
                 checked_str, unchecked_str = 'Speaker [ON]', 'Speaker [OFF]'
+
+            component_key = component_key.replace("_home", "")
 
             self.set_toggle_button(called_component, component_property, checked_str, unchecked_str)
             setting_name = 'audio_settings'
@@ -1161,6 +1166,26 @@ class MainWindow(QMainWindow):
             #   END
             ###########################################################################
 
+        # region [Refresh Home PushButtons]
+        ####################################################################
+        self.load_audio_info()
+        main_mic_toggle_value = self.audio_info_dict["main_mic_toggle"]
+        sub_mic_toggle_value = self.audio_info_dict["sub_mic_toggle"]
+        spk_toggle_value = self.audio_info_dict["spk_toggle"]
+
+        checked_str, unchecked_str = 'Mic [ON]', 'Mic [OFF]'
+        pre_str = 'Main'
+        self.set_toggle_button(widgets.pushButton_main_mic_toggle_home, main_mic_toggle_value,
+                               f'{pre_str} {checked_str}', f'{pre_str} {unchecked_str}')
+        pre_str = 'Sub'
+        self.set_toggle_button(widgets.pushButton_sub_mic_toggle_home, sub_mic_toggle_value,
+                               f'{pre_str} {checked_str}', f'{pre_str} {unchecked_str}')
+
+        self.set_toggle_button(widgets.pushButton_spk_toggle, spk_toggle_value, 'Speaker ON', 'Speaker OFF')
+        ####################################################################
+        # endregion [Refresh Home PushButtons]
+
+        # update_thread_table
         self.update_thread_table()
 
     #####################################################################################
@@ -1181,20 +1206,9 @@ class MainWindow(QMainWindow):
         sub_mic_toggle_value = self.audio_info_dict["sub_mic_toggle"]
         spk_toggle_value = self.audio_info_dict["spk_toggle"]
 
-        main_mic_toggle_widgets = [widgets.pushButton_main_mic_toggle_home,
-                                   widgets.pushButton_main_mic_toggle]
-        sub_mic_toggle_widgets = [widgets.pushButton_sub_mic_toggle_home,
-                                  widgets.pushButton_sub_mic_toggle]
-        spk_toggle_widgets = [widgets.pushButton_spk_toggle]
-
-        for widget in main_mic_toggle_widgets:
-            self.set_toggle_button(widget, main_mic_toggle_value, 'Now Listening...', 'Mic OFF')
-
-        for widget in sub_mic_toggle_widgets:
-            self.set_toggle_button(widget, sub_mic_toggle_value, 'Now Listening...', 'Mic OFF')
-
-        for widget in spk_toggle_widgets:
-            self.set_toggle_button(widget, spk_toggle_value, 'Speaker ON', 'Speaker OFF')
+        checked_str, unchecked_str = 'Now Listening...', '[OFF]'
+        self.set_toggle_button(widgets.pushButton_main_mic_toggle, main_mic_toggle_value, checked_str, unchecked_str)
+        self.set_toggle_button(widgets.pushButton_sub_mic_toggle, sub_mic_toggle_value, checked_str, unchecked_str)
 
         # Grey Out GROUPS When Toggle is OFF
         main_mic_group = widgets.verticalGroupBox_main_mic
