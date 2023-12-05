@@ -311,6 +311,14 @@ class MainWindow(QMainWindow):
             widgets.pushButton_view_translator_id,
             widgets.pushButton_view_translator_secret,
 
+            widgets.lineEdit_max_reply_token,
+            widgets.horizontalSlider_max_reply_token,
+            widgets.pushButton_max_reply_token_default,
+
+            widgets.lineEdit_max_prompt_token,
+            widgets.horizontalSlider_max_prompt_token,
+            widgets.pushButton_max_prompt_token_default,
+
             widgets.comboBox_ai_model_language,
 
             ## command settings components
@@ -669,7 +677,7 @@ class MainWindow(QMainWindow):
             decimal_obj = True
             setting_name = "audio_settings"
 
-        if self.check_name(component_key,
+        elif self.check_name(component_key,
                            ["rvc_index_rate", "rvc_pitch", "rvc_main_vocal", "rvc_backup_vocal", "rvc_music", "rvc_master_gain"]):
             decimal_obj = True
             setting_name = "command_settings"
@@ -743,7 +751,7 @@ class MainWindow(QMainWindow):
 
         ## STT (Speach To Text Settings)
         # stt language
-        if 'stt_language' in component_key:
+        elif 'stt_language' in component_key:
             setting_name = "audio_settings"
             if component_type == "pushButton":
                 reset_value = 'any'
@@ -757,7 +765,7 @@ class MainWindow(QMainWindow):
                     print_log("error", "no slider found to reset", componentName)
 
         # stt max stt worker
-        if 'max_stt_worker' in component_key:
+        elif 'max_stt_worker' in component_key:
             setting_name = "audio_settings"
             if component_type == "pushButton":
                 reset_value = 1
@@ -771,14 +779,14 @@ class MainWindow(QMainWindow):
                     print_log("error", "no slider found to reset", componentName)
 
         # speaker volume
-        if component_key == "speaker_volume":
+        elif component_key == "speaker_volume":
             if len (self.tts_thread_list) > 0:
                 if self.tts_thread_list[0].gen:
                     self.tts_thread_list[0].gen.change_volume(component_property)
 
         ## Affect others by tts_character
         # [tts_character, tts_language, tts_voice_id]
-        if component_key in ["tts_character", "tts_language", "tts_voice_id"]:
+        elif component_key in ["tts_character", "tts_language", "tts_voice_id"]:
             self.refresh_tts_info(update_by_combo=True)
 
             return
@@ -788,6 +796,48 @@ class MainWindow(QMainWindow):
 
         # region PROMPT SETTINGS
         #####################################################################################
+        if component_key in ["max_prompt_token", "max_reply_token",
+                             "max_prompt_token_default", "max_reply_token_default"]:
+            setting_name = "prompt_settings"
+            if component_type == "lineEdit":
+                value_str = float(called_component.text())
+                conv_int = int(value_str)  # 80.3-> 80
+                called_component.setText(str(conv_int))
+
+                synced_slider = self.find_qobject_by(component_key, QSlider, get_only_one=True)
+                if synced_slider:
+                    synced_slider.setValue(conv_int)
+                else:
+                    print_log("error", "no slider found to reset", componentName)
+                component_property = conv_int
+
+            elif component_type == "horizontalSlider":
+                value_int = int(called_component.value())  # 2048
+                conv_str = str(value_int)
+
+                # Find QLineEdit & Sync Value
+                synced_lineEdit = self.find_qobject_by(component_key, QLineEdit, get_only_one=True)
+                if synced_lineEdit:
+                    synced_lineEdit.setText(conv_str)
+                component_property = value_int
+
+            elif component_type == "pushButton":
+                reset_value = 0.0
+                component_key = component_key.replace("_default", "")  # remove '_default' to find/update synced object
+
+                if self.check_name(component_key, ["max_prompt_token"]):
+                    reset_value = 2048
+                elif self.check_name(component_key, ["max_reply_token"]):
+                    reset_value = 100
+
+                component_property = reset_value
+
+                synced_slider = self.find_qobject_by(component_key, QSlider, get_only_one=True)
+                if synced_slider:
+                    synced_slider.setValue(reset_value)
+                else:
+                    print_log("error", "no slider found to reset", componentName)
+
         if "ai_model_language" in componentName:
             setting_name = "prompt_settings"
 
