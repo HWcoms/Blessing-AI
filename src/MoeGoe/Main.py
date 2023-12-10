@@ -7,18 +7,23 @@ import glob
 from scipy.io.wavfile import write
 from torch import no_grad, LongTensor
 
+import sys
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'modules'))
+
 if __name__ != "__main__":
     from . import commons
     from . import utils
     from .mel_processing import spectrogram_torch
     from .models import SynthesizerTrn
     from .text import text_to_sequence, _clean_text
+    from manage_folder import tts_char_dir
 else:
     import commons
     import utils
     from mel_processing import spectrogram_torch
     # from models import SynthesizerTrn
     # from text import text_to_sequence, _clean_text
+    from manage_folder import tts_char_dir
 
 # import logging
 # logging.getLogger('numba').setLevel(logging.WARNING)
@@ -140,7 +145,7 @@ def voice_conversion():
 """
 
 
-def speech_text(character_name, msg, lang, spk_id, audio_volume, voice_speed, out_path = out_file_path):
+def speech_text(character_name, msg, lang, spk_id, audio_volume, voice_speed, out_path=out_file_path):
     # Load model path
     hps_ms, n_speakers, n_symbols, speakers, use_f0, emotion_embedding, net_g_ms = load_model(character_name)
     # print(hps_ms['data']['text_cleaners'][0])
@@ -196,8 +201,7 @@ def speech_text(character_name, msg, lang, spk_id, audio_volume, voice_speed, ou
 
 
 def load_model(character_name):
-    current_folder = os.path.dirname(os.path.abspath(__file__))  # Blessing-AI\src\MoeGoe
-    model_folder = os.path.join(os.path.dirname(current_folder), "Models", "Voice")
+    model_folder = tts_char_dir
 
     voice_folder = None
     model_file = None

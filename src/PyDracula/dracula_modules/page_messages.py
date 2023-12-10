@@ -17,7 +17,6 @@
 # DEFAULT PACKAGES
 # ///////////////////////////////////////////////////////////////
 import os
-import random
 
 from PySide6.QtCore import QTimer, QEasingCurve
 # IMPORT / GUI, SETTINGS AND WIDGETS
@@ -29,11 +28,17 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
+import sys
+module_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'modules')
+sys.path.append(module_folder)
+
 if __name__ == "__main__":
     from ui_page_messages import Ui_chat_page  # MainWindow
     from message import Message  # MainWindow
+    from manage_folder import gui_cache_dir
 else:
     # GUI
+    from manage_folder import gui_cache_dir
     from dracula_modules.ui_page_messages import Ui_chat_page  # MainWindow
     from dracula_modules.message import Message  # MainWindow
     # from main import MainWindow
@@ -76,9 +81,7 @@ class Chat(QWidget):
                 # Load original profile image & set output path
                 original_image = QImage(os.path.normpath(bot_image))
                 image_directory = os.path.dirname(os.path.normpath(bot_image))
-                output_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
-                                           'cache',
-                                           'gui')
+                output_path = gui_cache_dir
                 output_image_path = os.path.join(output_path, "profile_image_squared.png")
                 # print(os.path.normpath(user_image))
                 # print(output_image_path)

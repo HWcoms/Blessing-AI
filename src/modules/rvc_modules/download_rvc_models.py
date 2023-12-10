@@ -1,12 +1,15 @@
 from pathlib import Path
 import requests
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from manage_folder import rvc_required_dir
 
 MDX_DOWNLOAD_LINK = 'https://github.com/TRvlvr/model_repo/releases/download/all_public_uvr_models/'
 RVC_DOWNLOAD_LINK = 'https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/'
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-BASE_DIR = os.path.join(BASE_DIR, 'Models', 'rvc_model')
+BASE_DIR = rvc_required_dir
 
 logging = True
 

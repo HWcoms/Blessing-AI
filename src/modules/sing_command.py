@@ -37,15 +37,16 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"  # hide pygame print
 import pygame  # noqa: E402
 
 ############################## Packages Import ##############################
+from manage_folder import rvc_required_dir  # MDX, RVC Pretrained models
+from manage_folder import rvc_voice_dir     # Voice Models (pth, index)
+from manage_folder import rvc_cache_dir
+from manage_folder import process_dir
 
-
-root_folder = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-
-rvc_required_dir = os.path.join(root_folder, 'src', 'Models', 'rvc_model')  # MDX, RVC Pretrained models
-rvc_voice_dir = os.path.join(root_folder, 'src', 'Models', 'rvc_voice')  # Voice Models (pth, index)
-
-rvc_cache_dir = os.path.join(root_folder, 'cache', 'rvc')
-process_dir = os.path.join(rvc_cache_dir, "song_process")
+# root_folder = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+# rvc_required_dir = os.path.join(root_folder, 'src', 'Models', 'rvc_model')
+# rvc_voice_dir = os.path.join(root_folder, 'src', 'Models', 'rvc_voice')  # Voice Models (pth, index)
+# rvc_cache_dir = os.path.join(root_folder, 'cache', 'rvc')
+# process_dir = os.path.join(rvc_cache_dir, "song_process")
 
 # CHECK AUDIO CACHE FOLDER
 if not os.path.exists(rvc_cache_dir):
@@ -475,7 +476,8 @@ class BotCommand:
                 if final_exist:
                     return result_dict
                 else:
-                    self.print_log("warning", "Using [Fast Search]", "Final Result is Not Found! Searching Remain Processes by pitch info...")
+                    self.print_log("warning", "Using [Fast Search]",
+                                   "Final Result is Not Found! Searching Remain Processes by pitch info...")
 
         if pitch[1]:  # if Auto_pitch -> True
             from rvc_modules.gender_detect import get_pitch_with_audio

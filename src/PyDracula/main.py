@@ -76,6 +76,8 @@ from modules.sing_command import BotCommand
 # MIC RECORD & THRESHOLD
 from modules.pygame_mic import MicRecorder
 
+from modules.manage_folder import audio_cache_dir, char_json_dir, tts_char_dir, rvc_voice_dir, init_folders
+
 #####################################################################################
 #                                                                                   #
 #                    Remove [import resources_rc] in ui_main.py!!                   #
@@ -88,7 +90,6 @@ os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100
 # ///////////////////////////////////////////////////////////////
 widgets = None
 
-tts_wav_dir = os.path.join(os.path.dirname(root_path), 'cache', 'audio')
 # tts_wav_path = Path(__file__).resolve().parent.parent / r'audio\tts.wav'
 
 # Table column width size percentage values
@@ -104,10 +105,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
 
-        # CHECK AUDIO CACHE FOLDER
-        if not os.path.exists(tts_wav_dir):
-            os.makedirs(tts_wav_dir)
-            print("\033[34m" + f"[MainWindow.__init__]: Created audio cache folder! \033[33m[{tts_wav_dir}]" + "\033[0m")
+        # CHECK NESSECARY FOLDERS
+        init_folders()
 
         # SET CUSTOM VARIABLES
         self.char_info_dict : dict = None   # [your_name, character_name,
@@ -1436,7 +1435,6 @@ class MainWindow(QMainWindow):
         tts_comboBox.clear()
 
         tts_char_list = []
-        tts_char_dir = os.path.join(root_path, 'Models', 'Voice')
 
         for _folder in os.scandir(tts_char_dir):
             if _folder.is_dir():
@@ -2031,7 +2029,7 @@ class MainWindow(QMainWindow):
             rvc_model_comboBox.clear()
 
             rvc_char_list = []
-            rvc_char_dir = os.path.join(root_path, 'Models', 'rvc_voice')
+            rvc_char_dir = rvc_voice_dir
 
             # check rvc_voice folder name, same as tts model
             for _folder in os.scandir(rvc_char_dir):
@@ -2717,8 +2715,7 @@ class TTSTHREAD(QThread):
         change_state(self, "init")
         self.logging = logging
     def run(self):
-        global tts_wav_dir
-        self.gen.audio_dir = tts_wav_dir
+        self.gen.audio_dir = audio_cache_dir
 
         change_state(self, "gen", "Generating TTS")
         self.gen.speak_tts(text=self.text)

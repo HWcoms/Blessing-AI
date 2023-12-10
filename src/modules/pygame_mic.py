@@ -12,12 +12,13 @@ from color_log import print_log
 from aud_device_manager import AudioDevice
 
 from voice_detect import is_human_voice, is_wav_human_voice
+from manage_folder import user_mic_cache_dir
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 
 root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-cache_dir = os.path.join(root_dir, 'cache', 'user_mic')
+cache_dir = user_mic_cache_dir
 dest_file_path = os.path.join(cache_dir, 'test.wav')
 
 # CHECK VOICE CACHE FOLDER

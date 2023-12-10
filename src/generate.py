@@ -85,7 +85,6 @@ class Generator:
 
                 translated_speech = DoTranslate(text, speech_lang, ai_model_language, token_id, token_secret)
 
-
                 if self.logging:
                     # source_lang_name = languages.get(alpha2=speech_lang).name
                     # print(f'{source_lang_name}: {eng_speech}')

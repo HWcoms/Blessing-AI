@@ -11,11 +11,7 @@ from PIL import Image
 import re
 import glob
 
-# For local streaming, the websockets are hosted without ssl - http://
-# HOST = getenv('TEXTGENERATION_URL')
-# gen_request_url = f'{HOST}/api/v1/generate'
-# view_request_url = f'{HOST}/api/v1/view'
-# token_request_url = f'{HOST}/api/v1/token-count'
+from modules.manage_folder import char_json_dir, character_chatlog_dir
 
 # Global endpoint vars
 gen_url_endpoint = 'v1/completions'
@@ -24,6 +20,7 @@ token_url_endpoint = 'v1/internal/token-count'
 token_request_url = None
 
 trim_string = '\n'
+
 
 # character_name = None  # 'Kato Megumi'
 
@@ -240,7 +237,7 @@ def run(prompt, yourname):
         response = requests.post(gen_request_url, headers=headers, json=request, verify=False, stream=False)
         print(response.json())
 
-        if response.status_code == 200:    # Todo: check response code instead of checking response obj
+        if response.status_code == 200:  # Todo: check response code instead of checking response obj
             result_prompt = response.json()['choices'][0]['text']
             trimmed_string = trim_until_newline(result_prompt, yourname)
             return trimmed_string
@@ -395,9 +392,8 @@ def generate_reply(string, character_name, max_prompt_token=2048, max_reply_toke
 
 def get_character_file(character_name):
     # Load Character
-    this_dir = os.path.dirname(os.path.abspath(__file__))
-    char_path = os.path.join(this_dir, "Models", "Characters")
-    file_name = f'{character_name}.*'
+    char_path = os.path.join(char_json_dir, f"{character_name}")
+    file_name = f'*.*'
     char_file_path = os.path.join(char_path, file_name)
 
     char_json_path, char_image_path = None, None
@@ -414,6 +410,7 @@ def get_character_file(character_name):
                 char_image_path = path
 
     return char_json_path, char_image_path
+
 
 def add_prefix_lines(string, prefix):
     lines = string.splitlines()
@@ -439,21 +436,18 @@ def extract_date(string):
 
 def check_chatlog(character_name, full_path=True):
     # Check Character's chat file exist
-    this_dir = os.path.dirname(os.path.abspath(__file__))
-    folder_path = os.path.join(this_dir, "Models", "ChatLog")
-
     latest_file_path = None
     latest_date = None
 
     # date_string = datetime.now().strftime("%Y%m%d")
     # print(date_string)
-    for file in os.listdir(folder_path):
+    for file in os.listdir(character_chatlog_dir):
         is_date = extract_date(file)
         if is_date is not None and character_name.lower() in file.lower():
             file_date = datetime.strptime(is_date, "%Y%m%d")
             if latest_date is None or file_date > latest_date:
                 latest_date = file_date
-                latest_file_path = os.path.join(folder_path, file)
+                latest_file_path = os.path.join(character_chatlog_dir, file)
 
     if latest_file_path is not None:
         if not full_path:
@@ -469,7 +463,7 @@ def check_chatlog(character_name, full_path=True):
     # if file doesn't exist.
     date_string = datetime.now().strftime("%Y%m%d")
     new_file_name = f'{character_name} {date_string}.txt'
-    new_file_path = os.path.join(folder_path, new_file_name)
+    new_file_path = os.path.join(character_chatlog_dir, new_file_name)
 
     try:
         with open(new_file_path, 'w') as f:
