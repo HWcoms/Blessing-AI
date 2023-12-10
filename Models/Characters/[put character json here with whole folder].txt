@@ -1,0 +1,9 @@
+put character json here with whole folder
+
+example)
+Characters/
+├── Kato Megumi/
+│	├──*.json
+│	└──*.png (profile image [optional])
+├── Ajitani Hifumi/
+│	└──*.json
