@@ -288,6 +288,10 @@ def check_url(base_url, endpoint):
 
 ## Get character json for GUI
 def get_character_info(character_name):
+    if character_name == '[None]':
+        print_log("warning", "no character selected")
+        return None
+
     # Load Character
     json_filepath, image_filepath = get_character_file(character_name)
 
@@ -304,7 +308,9 @@ def get_character_info(character_name):
     elif image_filepath:
         char_dict = load_character(image_filepath)
     else:
-        raise ValueError('No Character Json Or Image Found')
+        print_log("error", "No Character Json Or Image Found")
+        return None
+        # raise ValueError('No Character Json Or Image Found')
 
     # Add image path to char_dict
     char_dict["character_image"] = character_image
@@ -508,7 +514,7 @@ def optimize_tokens(context, dialogs, token_limit):
 # Example usage
 if __name__ == '__main__':
     # print(generate_reply("I'm HWcoms", "Kato Megumi"))
-    print(run('what is your name??', 'coms'))
+    # print(run('what is your name??', 'coms'))
     # print(count_tokens('testetestet asa'))
     # settings_json = SettingInfo.load_prompt_settings()
     # print(settings_json)
@@ -518,6 +524,7 @@ if __name__ == '__main__':
     # print(run("hello", "coms"))
 
     # print(get_character_info("Zhongli"))
+    print(get_character_file("Zhongli"))
     # print(get_character_name())
     # print(count_tokens(context))
     # print(get_chatlog_info("Kato Megumi"))

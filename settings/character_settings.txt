@@ -1,5 +1,6 @@
 {
-    "character_name": "Kato Megumi",
-    "character_description": "AI-Bot",
-    "your_name": "coms"
+	"character_name": "Kato Megumi",
+	"character_description": "AI-Bot",
+	"your_name": "coms",
+	"sub_user_name": "Minsu"
 }

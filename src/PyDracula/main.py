@@ -144,6 +144,8 @@ class MainWindow(QMainWindow):
         widgets.textBrowser.setOpenExternalLinks(True)
         widgets.textBrowser_google_colab_link.setOpenExternalLinks(True)
         widgets.textBrowser_papago_token_link.setOpenExternalLinks(True)
+        widgets.textBrowser_edit_character_link.setOpenExternalLinks(True)
+
         self.chat = None
 
         # STORE STYLESHEET
@@ -249,6 +251,8 @@ class MainWindow(QMainWindow):
 
             ## character settings components
             widgets.textEdit_your_name,
+            widgets.textEdit_sub_user_name,
+            widgets.comboBox_character_name,
 
             ## audio settings components
             widgets.pushButton_main_mic_toggle,
@@ -631,8 +635,13 @@ class MainWindow(QMainWindow):
 
         # region CHARACTER SETTINGS
         #####################################################################################
-        if componentName == "textEdit_your_name":
+        if componentName == "textEdit_your_name" or componentName == "textEdit_sub_user_name":
             setting_name = 'character_settings'
+
+        if component_key in ["character_name"] and component_type == "comboBox":
+            self.character_page_update(update_by_combo=True)
+
+            return
         #####################################################################################
         # endregion CHARACTER SETTINGS
 
@@ -1107,7 +1116,7 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
 
-            self.load_character_info()
+            self.character_page_update()
 
         # SHOW MIC PAGE
         if btnName == "btn_prompt_setting":
@@ -1158,31 +1167,47 @@ class MainWindow(QMainWindow):
         global widgets
         last_scroll_value = -1
 
-        ###########################################################################
-        #   CHECK DIFFERENCE BETWEEN OLD / NOW CHATLOG
-        ###########################################################################
         from LangAIComm import get_chatlog_info  # noqa
         if self.char_info_dict is None:
-            print("[GUI] : Chat info dict is None, now loading character info...")
-            self.load_character_info()
-        new_chatlog_str = get_chatlog_info(self.char_info_dict["character_name"])
-
-        refresh_chat = False
-
-        if not self.chat_info_dict:
-            refresh_chat = True
+            print("[GUI.chat_layout_update] : Chat info dict is None, now loading character info...")
+            self.character_page_update()
         else:
-            if self.chat_info_dict['chatlog'] == new_chatlog_str:
-                print("\033[34m" + f"[main GUI.chat_layout_update]: Prev / Current Content of Chatlog are same! No need to update" + "\033[0m" )
-            else:
-                refresh_chat = True
+            self.load_character_info()  # Refresh Character Info [need character_name]
 
-        if refresh_chat:
-            print("\033[34m" + f"[main GUI.chat_layout_update]: Loading ChatLog info!" + "\033[0m")
-            self.load_chatlog_info()  # Load chatlog information
-        ###########################################################################
-        #   END
-        ###########################################################################
+        # If Character JSON is not exist
+        if self.char_info_dict["rescode"] == False:
+            # REMOVE CHAT
+            for chat in reversed(range(self.ui.chat_layout.count())):
+                widgets.chat_layout.itemAt(chat).widget().deleteLater()
+            self.chat = None
+            refresh_chat = False
+            self.chat_info_dict = None  # refresh chat next time
+        else:
+            new_chatlog_str = get_chatlog_info(self.char_info_dict["character_name"])
+
+            refresh_chat = False
+
+            ###########################################################################
+            #   CHECK DIFFERENCE BETWEEN OLD / NOW CHATLOG
+            ###########################################################################
+            if not self.chat_info_dict:
+                refresh_chat = True
+            else:
+                # check chat_info_dict has "chatlog" key
+                if "chatlog" in self.chat_info_dict:
+                    if self.chat_info_dict["chatlog"] == new_chatlog_str:
+                        print("\033[34m" + f"[main GUI.chat_layout_update]: Prev / Current Content of Chatlog are same! No need to update" + "\033[0m" )
+                    else:
+                        refresh_chat = True
+                else:
+                    refresh_chat = True
+
+            if refresh_chat:
+                print("\033[34m" + f"[main GUI.chat_layout_update]: Loading ChatLog info!" + "\033[0m")
+                self.load_chatlog_info()  # Load chatlog information
+            ###########################################################################
+            #   END
+            ###########################################################################
 
         if self.chat:
             last_scroll_value = self.chat.get_scroll_value()
@@ -1239,6 +1264,42 @@ class MainWindow(QMainWindow):
 
     #####################################################################################
     # endregion [DRAW CHAT PAGE]
+
+    # region [DRAW CHARACTER PAGE]
+    #####################################################################################
+    def character_page_update(self, update_by_combo=False):
+        self.refresh_character_json(update_by_combo)
+
+        global widgets
+        character_name = self.char_info_dict["character_name"]
+        user_name = self.char_info_dict["your_name"]
+        sub_user_name = self.char_info_dict["sub_user_name"]
+
+        if self.char_info_dict["rescode"] == False: # Failed to get JSON Info
+            print_log("error", "char_dict load failed")
+            widgets.textEdit_greeting.setText("")
+            widgets.textEdit_context.setText("")
+            widgets.textEdit_your_name.setText(user_name)
+            widgets.textEdit_sub_user_name.setText(sub_user_name)
+            return None
+
+        bot_image = self.char_info_dict["character_image"]
+
+        if bot_image is not None:
+            # bot_pixmap = QPixmap.fromImage(bot_image)
+            widgets.label_char_img.setPixmap(QPixmap(bot_image))
+        else:
+            widgets.label_char_img.clear()
+
+        widgets.textEdit_greeting.setText(self.char_info_dict["greeting"])
+        widgets.textEdit_context.setText(self.char_info_dict["context"])
+
+        widgets.textEdit_your_name.setText(user_name)
+        widgets.textEdit_sub_user_name.setText(sub_user_name)
+
+        # print(self.char_info_dict)
+    #####################################################################################
+    # endregion [DRAW CHARACTER PAGE]
 
     # region [DRAW AUDIO PAGE]
     #####################################################################################
@@ -1885,7 +1946,7 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def load_all_info(self):
         self.chat_layout_update()    # Load Home Page
-        self.load_character_info()  # Load Character page
+        self.character_page_update()  # Load Character page
         self.audio_page_update()    # Load Audio page
         self.prompt_page_update() # Load prompt information
         self.command_page_update()  # Load Command Page
@@ -1898,13 +1959,16 @@ class MainWindow(QMainWindow):
         global widgets
 
         if self.char_info_dict is None:
-            print("[GUI] : Chat info dict is None, now loading character info...")
-            self.load_character_info()
+            print("[GUI.load_chatlog_info] : Chat info dict is None, now loading character info...")
+            self.character_page_update()
+        else:
+            # already calling load_character_info() in chat_layout_update()
+            # self.load_character_info()  # Refresh Character Info [need character_name]
+            pass
 
         if self.chat_info_dict is None:
             self.chat_info_dict = {}
 
-        char_settings_json = SettingInfo.load_character_settings()
         character_name = self.char_info_dict["character_name"]
         user_name = self.char_info_dict["your_name"]
         # print(f"charname: {character_name}")
@@ -1961,33 +2025,78 @@ class MainWindow(QMainWindow):
     ################################################################################################
     def load_character_info(self):
         global widgets
-        char_settings_json = SettingInfo.load_character_settings()
-        character_name = char_settings_json["character_name"]
-        user_name = char_settings_json["your_name"]
 
-        from LangAIComm import get_character_info   # noqa
-        char_dict = get_character_info(character_name)  # Dict [your_name, character_name, greeting, context, character_image]
+        if self.char_info_dict is None:
+            self.char_info_dict = {}
+
+        self.char_info_dict.update(SettingInfo.load_character_settings())
+
+        # override char_name / your_name in setting over json
+        char_name_char_setting = self.char_info_dict["character_name"]
+        your_name_char_setting = self.char_info_dict["your_name"]
+
+        # region Load JSON / Profile Image
+        from LangAIComm import get_character_info  # noqa
+        char_dict = get_character_info(
+            self.char_info_dict["character_name"])  # Dict [your_name, character_name, greeting, context, character_image]
         # print(char_dict)
 
-        bot_image = char_dict["character_image"] # TODO: check None, if there's no image
+        if not char_dict:
+            print_log("error", "char_dict load failed")
+            self.char_info_dict["rescode"] = False
+            return False
 
-        if bot_image is not None:
-            # bot_pixmap = QPixmap.fromImage(bot_image)
-            widgets.label_char_img.setPixmap(QPixmap(bot_image))
+        # bot_image = char_dict["character_image"]
 
-        widgets.textEdit_greeting.setText(char_dict["greeting"])
-        widgets.textEdit_context.setText(char_dict["context"])
+        self.char_info_dict.update(char_dict)
+        self.char_info_dict["character_name"] = char_name_char_setting  # override character_name as settings.txt
+        self.char_info_dict["your_name"] = your_name_char_setting  # override your_name as settings.txt
+        self.char_info_dict["rescode"] = True
+        return True
+        # endregion Load Profile Image
 
-        self.char_info_dict = char_dict
+    def refresh_character_json(self, update_by_combo=False):
+        character_comboBox = self.ui.comboBox_character_name
 
-        # Force set 'char_name' and 'your_name' from 'Character_Settings.txt'
-        self.char_info_dict.update(char_settings_json)
-        # TODO: if your_name or character_name is changed in settings_txt, program don't know who is the user in chatlog_txt
+        if not update_by_combo:
+            self.load_character_info()
+            _character_name = self.char_info_dict["character_name"]
 
-        widgets.textEdit_your_name.setText(user_name)
-        widgets.label_character_name.setText(character_name)
+            # region [CHARACTER LIST]
+            ################################################################################################
+            character_comboBox.clear()
 
-        # print(self.char_info_dict)
+            char_json_list = []
+
+            # check character folder name
+            for _folder in os.scandir(char_json_dir):
+                if _folder.is_dir():
+                    char_json_list.append(_folder.name)
+
+            if len(char_json_list) == 0:
+                print_log("error", "Could not find any Character (JSON) folders in", f"{char_json_dir}")
+                raise RuntimeError("No Character JSON file found! please Add Character Folder and put JSON File in it!")
+                exit(0)
+
+            for char_name in char_json_list:
+                character_comboBox.addItem(char_name)
+
+            if _character_name in char_json_list:
+                print("test:" , f"found character {_character_name}")
+                character_comboBox.setCurrentText(_character_name)
+            else:
+                print("test2:", f"Could not found character {_character_name}")
+                character_comboBox.setCurrentIndex(0)
+
+        char_name = character_comboBox.currentText()
+        self.char_info_dict["character_name"] = char_name
+        update_json("character_name", char_name, 'character_settings')
+
+        self.load_character_info()  # refresh char info 1 more time
+
+        return char_name
+        ################################################################################################
+        # endregion [CHARACTER LIST]
 
     ################################################################################################
     # endregion [LOAD CHARACTER INFOS]
