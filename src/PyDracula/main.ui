@@ -1879,7 +1879,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>1</number>
+                      <number>0</number>
                      </property>
                      <widget class="QWidget" name="Home_Page">
                       <property name="styleSheet">
@@ -2564,6 +2564,9 @@ QPushButton:checked:pressed{
                            <property name="text">
                             <string>Toggle Speaker</string>
                            </property>
+                           <property name="checkable">
+                            <bool>true</bool>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -2742,7 +2745,7 @@ QPushButton:checked:pressed{
                             <bool>true</bool>
                            </property>
                            <property name="checked">
-                            <bool>false</bool>
+                            <bool>true</bool>
                            </property>
                           </widget>
                          </item>

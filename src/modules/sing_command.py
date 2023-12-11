@@ -71,6 +71,8 @@ class BotCommand:
         self.char_model_name = char_model_name
         self.fast_search = True
 
+        self.spk_toggle = True
+
         # region [Sing Command]
         #####################################################################################
         self.device_name = ""  # Speaker name
@@ -539,6 +541,9 @@ class BotCommand:
             self.print_log("log", "pygame mixer already exist!", f"Starting music at {_st_sec} seconds")
             pygame.mixer.quit()
 
+        if not self.spk_toggle:
+            volume = 0
+
         pygame.mixer.init(devicename=device_name)
         m_info = pygame.mixer.Sound(in_audio)
         self.sounda = pygame.mixer.music
@@ -557,8 +562,11 @@ class BotCommand:
 
     def change_volume(self, volume):
         if self.sounda:
-            # print("changing pygame volume!", volume, self.sounda)
-            self.sounda.set_volume(volume * 0.5)
+            if self.spk_toggle:
+                # print("changing pygame volume!", volume, self.sounda)
+                self.sounda.set_volume(volume * 0.5)
+            else:
+                self.sounda.set_volume(0)
 
     def __repr__(self):
         front_msg_list = ["RVC Model", "Gender Type", "Auto Pitch", "Pitch (manual)", "FastSearch", "Speaker"]

@@ -978,7 +978,19 @@ class MainWindow(QMainWindow):
 
                 self.set_groupbox_by_bool(grp_box, component_property, only_change_style=True)
             if 'spk' in component_key:
-                checked_str, unchecked_str = 'Speaker [ON]', 'Speaker [OFF]'
+                checked_str, unchecked_str = 'Speaker ON', 'Speaker OFF'
+
+                # Toggle tts_gen
+                if len(self.tts_thread_list) > 0:
+                    if self.tts_thread_list[0].gen:
+                        self.tts_thread_list[0].gen.spk_toggle = component_property
+
+                        cur_volume = str(self.ui.horizontalSlider_speaker_volume.value())
+                        conv_str = self.force_add_percent(cur_volume)  # 30 -> 30 %
+                        cur_volume = self.convert_percent_str(conv_str, decimal=True)  # 30 -> 0.3
+
+                        self.tts_thread_list[0].gen.change_volume(cur_volume)
+
 
             component_key = component_key.replace("_home", "")
 
@@ -2834,6 +2846,9 @@ class TTSTHREAD(QThread):
         spk_device = self.parent.newAudDevice.selected_speaker
         spk_volume = self.parent.audio_info_dict['speaker_volume']
 
+        # Init Spk Toggle
+        self.gen.spk_toggle = self.parent.audio_info_dict['spk_toggle']
+
         change_state(self, "play", "Playing TTS")
         self.gen.play_by_bot(spk_device.name, spk_volume, quite_mode=False)
         change_state(self, "close")
@@ -2885,6 +2900,9 @@ class COMMANDTHREAD(QThread):
               f"Path[{self.gen.final_result_path}]")
         spk_device = self.parent.newAudDevice.selected_speaker
         spk_volume = self.parent.audio_info_dict['speaker_volume']
+
+        # Init Spk Toggle
+        self.gen.spk_toggle = self.parent.audio_info_dict['spk_toggle']
 
         change_state(self, "play", f"Doing [{self.cmd_type}]")
         self.gen.play_by_bot(spk_device.name, spk_volume, quite_mode=False)

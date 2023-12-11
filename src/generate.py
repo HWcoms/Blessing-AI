@@ -211,6 +211,7 @@ class GeneratorTTS:
         self.final_result_path = ""
         self.audio_dir = ""
         self.sounda = None
+        self.spk_toggle = True
 
     def speak_tts(self, text, settings_list: list = None):
         # Load Program Settings
@@ -300,6 +301,9 @@ class GeneratorTTS:
         if pygame.mixer.get_init():
             pygame.mixer.quit()
 
+        if not self.spk_toggle:
+            volume = 0
+
         pygame.mixer.init(devicename=device_name)
         self.sounda = pygame.mixer.Sound(self.final_result_path)
         self.sounda.set_volume(volume * 0.5)  # [0.0 ~ 2.0] to [0.0 ~ 1.0]
@@ -313,8 +317,11 @@ class GeneratorTTS:
     def change_volume(self, volume):
         mixer = pygame.mixer.get_init()
         if mixer and self.sounda:
-            # print("changing pygame volume!", volume, self.sounda)
-            self.sounda.set_volume(volume * 0.5)
+            if self.spk_toggle:
+                # print("changing pygame volume!", volume, self.sounda)
+                self.sounda.set_volume(volume * 0.5)
+            else:
+                self.sounda.set_volume(0)
 
     def new_audio_path(self):
         import os

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainaUFOlk.ui'
+## Form generated from reading UI file 'mainbRUpeL.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -1405,6 +1405,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(0, 130, 0);\n"
 "}\n"
 "")
+        self.pushButton_spk_toggle.setCheckable(True)
 
         self.horizontalLayout_command_button.addWidget(self.pushButton_spk_toggle)
 
@@ -1523,7 +1524,7 @@ class Ui_MainWindow(object):
 "}\n"
 "")
         self.pushButton_pause_queue.setCheckable(True)
-        self.pushButton_pause_queue.setChecked(False)
+        self.pushButton_pause_queue.setChecked(True)
 
         self.horizontalLayout_command_button.addWidget(self.pushButton_pause_queue)
 
@@ -5293,7 +5294,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
