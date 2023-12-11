@@ -15,9 +15,10 @@ import traceback
 from scipy import signal
 from torch import Tensor
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-now_dir = os.path.join(BASE_DIR, 'src')
-sys.path.append(now_dir)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
+from modules.manage_folder import rvc_required_dir
 
 bh, ah = signal.butter(N=5, Wn=48, btype="high", fs=16000)
 
@@ -322,9 +323,8 @@ class VC(object):
         elif f0_method == "rmvpe":
             if hasattr(self, "model_rmvpe") == False:
                 from rmvpe import RMVPE
-                fixed_path = os.path.join(os.path.dirname(BASE_DIR), 'Models')
                 self.model_rmvpe = RMVPE(
-                    os.path.join(fixed_path, 'rvc_model', 'rmvpe.pt'), is_half=self.is_half, device=self.device
+                    os.path.join(rvc_required_dir, 'rmvpe.pt'), is_half=self.is_half, device=self.device
                 )
             f0 = self.model_rmvpe.infer_from_audio(x, thred=0.03)
 
