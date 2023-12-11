@@ -260,6 +260,7 @@ class MainWindow(QMainWindow):
             widgets.pushButton_sub_mic_toggle,
             widgets.pushButton_sub_mic_toggle_home,
             widgets.pushButton_spk_toggle,
+            widgets.pushButton_pause_queue,
 
             widgets.comboBox_mic_device,
             widgets.comboBox_sub_mic_device,
@@ -754,7 +755,7 @@ class MainWindow(QMainWindow):
         ## ToggleButtons
         if component_key in ['main_mic_toggle', 'main_mic_toggle_home',
                              'sub_mic_toggle', 'sub_mic_toggle_home',
-                             'spk_toggle']:
+                             'spk_toggle', 'pause_queue']:
             return
 
         ## STT (Speach To Text Settings)
@@ -996,6 +997,14 @@ class MainWindow(QMainWindow):
 
             self.set_toggle_button(called_component, component_property, checked_str, unchecked_str)
             setting_name = 'audio_settings'
+
+        ## Toggle Pause/Resume Queue
+        if component_key in ['pause_queue']:
+            component_property = called_component.isChecked()
+
+            self.set_toggle_button(widgets.pushButton_pause_queue, component_property,
+                                   'Pause Queues', 'Resume Queues')
+            return
 
         if '_default' in component_key:
             # No Property Save property from other
@@ -1268,6 +1277,9 @@ class MainWindow(QMainWindow):
                                f'{pre_str} {checked_str}', f'{pre_str} {unchecked_str}')
 
         self.set_toggle_button(widgets.pushButton_spk_toggle, spk_toggle_value, 'Speaker ON', 'Speaker OFF')
+
+        self.set_toggle_button(widgets.pushButton_pause_queue, widgets.pushButton_pause_queue.isChecked(),
+                               'Pause Queues', 'Resume Queues')
         ####################################################################
         # endregion [Refresh Home PushButtons]
 
@@ -2812,6 +2824,13 @@ class PROMPTTHREAD(QThread):    # add whisper
     def remove_from_thread_list(self):
         self.parent.prompt_thread_list.remove(self)
 
+    def check_pause(self):
+        self.is_pause = not self.parent.ui.pushButton_pause_queue.isChecked()
+
+        while(self.is_pause):
+            time.sleep(0.3)
+            self.is_pause = not self.parent.ui.pushButton_pause_queue.isChecked()
+
     def stop(self):
         change_state(self, "close")
         self.remove_from_thread_list()
@@ -2855,6 +2874,20 @@ class TTSTHREAD(QThread):
 
     def remove_from_thread_list(self):
         self.parent.tts_thread_list.remove(self)
+
+    def check_pause(self):
+        self.is_pause = not self.parent.ui.pushButton_pause_queue.isChecked()
+
+        while (self.is_pause):
+            time.sleep(0.3)
+            self.is_pause = not self.parent.ui.pushButton_pause_queue.isChecked()
+
+    def stop(self):
+        change_state(self, "close")
+        self.remove_from_thread_list()
+
+        self.quit()
+        self.wait(5000)  # 5000ms = 5s
 
     def print_thread_list(self):
         if self.logging:
@@ -2911,6 +2944,20 @@ class COMMANDTHREAD(QThread):
     def remove_from_thread_list(self):
         self.parent.tts_thread_list.remove(self)
 
+    def check_pause(self):
+        self.is_pause = not self.parent.ui.pushButton_pause_queue.isChecked()
+
+        while (self.is_pause):
+            time.sleep(0.3)
+            self.is_pause = not self.parent.ui.pushButton_pause_queue.isChecked()
+
+    def stop(self):
+        change_state(self, "close")
+        self.remove_from_thread_list()
+
+        self.quit()
+        self.wait(5000)  # 5000ms = 5s
+
     def print_thread_list(self):
         if self.logging:
             print_thread_list("TTS/COMMAND", self.parent.tts_thread_list)
@@ -2940,6 +2987,9 @@ def change_state(thread_self, state_code, custom_state=""):
 
     thread_self.state = final_state
     thread_self.parent.update_table_signal.emit()
+
+    if state_code != 'init':
+        thread_self.check_pause()  # Check Paused
 
 def print_thread_list(list_type_name, list):
     thread_logging_str = f"==================== {list_type_name} Thread List ===================="
