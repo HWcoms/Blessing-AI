@@ -72,6 +72,7 @@ class BotCommand:
         self.fast_search = True
 
         self.spk_toggle = True
+        self.alive = True
 
         # region [Sing Command]
         #####################################################################################
@@ -550,8 +551,18 @@ class BotCommand:
         self.sounda.load(in_audio)
         self.sounda.play(start=_st_sec)
         self.sounda.set_volume(volume * 0.5)
-        pygame.time.wait(int((m_info.get_length() * 1000) - _st_sec))
-        print(f"m_info: {m_info}, length: {m_info.get_length()}")
+
+        # pygame.time.wait(int((m_info.get_length() * 1000) - _st_sec))
+        clock = pygame.time.Clock()
+        clock.tick(10)
+        while pygame.mixer.music.get_busy():
+            clock.tick(10)
+            if not self.alive:
+                break
+        # print(f"m_info: {m_info}, length: {m_info.get_length()}")
+
+        self.sounda.stop()
+        pygame.mixer.quit()
 
     def update_ad_and_play(self, device_name=None):
         if device_name or device_name != "":

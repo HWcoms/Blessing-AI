@@ -34,6 +34,7 @@ class Generator:
     def __init__(self):
         super().__init__()
         self.logging = True
+        self.alive = True
 
     def generate(self, text, settings_list: list = None, tts_only=False):
         log_str = ""
@@ -212,6 +213,7 @@ class GeneratorTTS:
         self.audio_dir = ""
         self.sounda = None
         self.spk_toggle = True
+        self.alive = True
 
     def speak_tts(self, text, settings_list: list = None):
         # Load Program Settings
@@ -308,11 +310,20 @@ class GeneratorTTS:
         self.sounda = pygame.mixer.Sound(self.final_result_path)
         self.sounda.set_volume(volume * 0.5)  # [0.0 ~ 2.0] to [0.0 ~ 1.0]
         self.sounda.play()
-        pygame.time.wait(int(self.sounda.get_length() * 1000))
+
+        # pygame.time.wait(int(self.sounda.get_length() * 1000))
+        clock = pygame.time.Clock()
+        clock.tick(10)
+        while pygame.mixer.get_busy():
+            clock.tick(10)
+            if not self.alive:
+                break
+        # print(f"m_info: {m_info}, length: {m_info.get_length()}")
 
         if not quite_mode:
             print("speech done!")
         self.sounda.stop()
+        pygame.mixer.quit()
 
     def change_volume(self, volume):
         mixer = pygame.mixer.get_init()

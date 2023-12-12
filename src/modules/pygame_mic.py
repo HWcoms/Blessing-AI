@@ -82,7 +82,7 @@ class MicRecorder(QThread):
         self.close_stream()
         self.init_meters()
         self.quit()
-        self.wait(5000)
+        self.wait(3000)
 
     def record_mic(self, _adm: AudioDevice, chunk=1024, duration=-1):
         log_str = ''

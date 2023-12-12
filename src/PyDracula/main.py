@@ -78,6 +78,9 @@ from modules.pygame_mic import MicRecorder
 
 from modules.manage_folder import audio_cache_dir, char_json_dir, tts_char_dir, rvc_voice_dir, init_folders
 
+# Table Widget
+from modules.qt_text_with_button import TextWButtonWidget
+
 #####################################################################################
 #                                                                                   #
 #                    Remove [import resources_rc] in ui_main.py!!                   #
@@ -2106,10 +2109,8 @@ class MainWindow(QMainWindow):
                 character_comboBox.addItem(char_name)
 
             if _character_name in char_json_list:
-                print("test:" , f"found character {_character_name}")
                 character_comboBox.setCurrentText(_character_name)
             else:
-                print("test2:", f"Could not found character {_character_name}")
                 character_comboBox.setCurrentIndex(0)
 
         char_name = character_comboBox.currentText()
@@ -2560,9 +2561,12 @@ class MainWindow(QMainWindow):
                 if thread.isRunning():
                     _is_running = '▶️'
 
+                text_with_button_widget = TextWButtonWidget(label_text=thread.state[1], button_text='test')
+                text_with_button_widget.button_widget.clicked.connect(thread.stop)
                 table.setItem(thread_index, 0, QTableWidgetItem(thread.character))
                 table.setItem(thread_index, 1, QTableWidgetItem(_msg))
-                table.setItem(thread_index, 2, QTableWidgetItem(thread.state[1]))
+                # table.setItem(thread_index, 2, QTableWidgetItem(thread.state[1]))
+                table.setCellWidget(thread_index, 2, text_with_button_widget)
                 thread_index += 1
 
     # Update Mic Threshold GUI
@@ -2832,11 +2836,14 @@ class PROMPTTHREAD(QThread):    # add whisper
             self.is_pause = not self.parent.ui.pushButton_pause_queue.isChecked()
 
     def stop(self):
-        change_state(self, "close")
+        # change_state(self, "close")
         self.remove_from_thread_list()
+        self.parent.update_thread_table()
+
+        self.gen.alive = False
 
         self.quit()
-        self.wait(5000)  # 5000ms = 5s
+        self.wait(1000)  # wait
 
     def print_thread_list(self):
         if self.logging:
@@ -2883,11 +2890,14 @@ class TTSTHREAD(QThread):
             self.is_pause = not self.parent.ui.pushButton_pause_queue.isChecked()
 
     def stop(self):
-        change_state(self, "close")
+        # change_state(self, "close")
         self.remove_from_thread_list()
+        self.parent.update_thread_table()
+
+        self.gen.alive = False
 
         self.quit()
-        self.wait(5000)  # 5000ms = 5s
+        self.wait(1000)  # wait until pygame breaks loop
 
     def print_thread_list(self):
         if self.logging:
@@ -2952,11 +2962,17 @@ class COMMANDTHREAD(QThread):
             self.is_pause = not self.parent.ui.pushButton_pause_queue.isChecked()
 
     def stop(self):
-        change_state(self, "close")
+        # change_state(self, "close")
         self.remove_from_thread_list()
+        self.parent.update_thread_table()
+
+        self.gen.alive = False
 
         self.quit()
-        self.wait(5000)  # 5000ms = 5s
+        self.wait(1000)  # wait until pygame breaks loop
+        self.terminate()    # terminate process
+        self.wait()
+
 
     def print_thread_list(self):
         if self.logging:
