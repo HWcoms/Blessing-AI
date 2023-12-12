@@ -6606,7 +6606,7 @@ QPushButton:pressed{
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1172</width>
+                            <width>1089</width>
                             <height>1153</height>
                            </rect>
                           </property>
@@ -9511,7 +9511,7 @@ QPushButton:pressed{
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>360</width>
+                                 <width>218</width>
                                  <height>218</height>
                                 </rect>
                                </property>
@@ -10200,12 +10200,84 @@ QComboBox {
                            <x>0</x>
                            <y>0</y>
                            <width>200</width>
-                           <height>620</height>
+                           <height>711</height>
                           </rect>
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_28">
                           <item>
                            <layout class="QVBoxLayout" name="verticalLayout_46">
+                            <item>
+                             <widget class="QGroupBox" name="verticalGroupBox_subtitle_settings">
+                              <property name="title">
+                               <string>Display Subtitle</string>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_73">
+                               <property name="spacing">
+                                <number>3</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>6</number>
+                               </property>
+                               <item>
+                                <widget class="QCheckBox" name="checkBox_display_subtitle_toggle">
+                                 <property name="text">
+                                  <string>Display Bot Subtitle</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QComboBox" name="comboBox_display_subtitle_language">
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>30</height>
+                                  </size>
+                                 </property>
+                                 <item>
+                                  <property name="text">
+                                   <string>English</string>
+                                  </property>
+                                 </item>
+                                 <item>
+                                  <property name="text">
+                                   <string>Japanese</string>
+                                  </property>
+                                 </item>
+                                 <item>
+                                  <property name="text">
+                                   <string>Korean</string>
+                                  </property>
+                                 </item>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="verticalSpacer_11">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeType">
+                               <enum>QSizePolicy::Fixed</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>20</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
                             <item>
                              <widget class="QLabel" name="label_6">
                               <property name="text">
@@ -10237,22 +10309,6 @@ QComboBox {
                                </property>
                               </item>
                              </widget>
-                            </item>
-                            <item>
-                             <spacer name="verticalSpacer_8">
-                              <property name="orientation">
-                               <enum>Qt::Vertical</enum>
-                              </property>
-                              <property name="sizeType">
-                               <enum>QSizePolicy::Fixed</enum>
-                              </property>
-                              <property name="sizeHint" stdset="0">
-                               <size>
-                                <width>20</width>
-                                <height>20</height>
-                               </size>
-                              </property>
-                             </spacer>
                             </item>
                             <item>
                              <layout class="QHBoxLayout" name="horizontalLayout_7"/>

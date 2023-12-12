@@ -119,7 +119,7 @@ class MainWindow(QMainWindow):
         self.chat_info_dict : dict = None   # <- Contains Chatlog + other_settings.txt
                                             # [chatlog, chatlog_filename,
                                             # discord_bot, discord_webhook,
-                                            # discord_print_language, chat_display_language
+                                            # discord_print_language, display_subtitle_toggle, display_subtitle_language
 
         self.audio_info_dict: dict = None   # [mic_index, mic_threshold, sub_mic_index, sub_mic_threshold, main/sub_phrase_timeout,
                                             # max_stt_worker,
@@ -241,6 +241,9 @@ class MainWindow(QMainWindow):
         ################################################################################################
         connect_comp_list = [
             ## other settings components
+            widgets.checkBox_display_subtitle_toggle,
+            widgets.comboBox_display_subtitle_language,
+
             widgets.checkBox_discord_bot,
             widgets.checkBox_discord_webhook,
             widgets.checkBox_tts_only,
@@ -905,7 +908,7 @@ class MainWindow(QMainWindow):
 
         # region OTHER SETTINGS
         #####################################################################################
-        if "discord_" in component_key or "tts_only" in component_key:
+        if "discord_" in component_key or component_key in ["tts_only", "display_subtitle_toggle", "display_subtitle_language"]:
             setting_name = 'other_settings'
             if component_type == "checkBox":
                 self.extra_right_menu_update(True)
@@ -1855,39 +1858,43 @@ class MainWindow(QMainWindow):
 
     # region [DRAW EXTRA RIGHT MENU]
     #####################################################################################
-    def extra_right_menu_update(self, only_color = False):
+    def extra_right_menu_update(self, only_color = False):  # only_color -> changes color only by checkBox
         self.load_other_info()
         global widgets
 
         # INFO VARIABLES (PARENT CHECKBOX)
         ############################################################################################
         if not only_color:
+            tts_only = self.chat_info_dict["tts_only"]
+            display_subtitle_toggle = self.chat_info_dict["display_subtitle_toggle"]
+
             discord_bot = self.chat_info_dict["discord_bot"]
             discord_webhook = self.chat_info_dict["discord_webhook"]
-            tts_only = self.chat_info_dict["tts_only"]
 
             # INFO VARIABLES
             ############################################################################################
             # Convert 'en' -> 'English'
+            display_subtitle_language = self.convert_language_code(self.chat_info_dict["display_subtitle_language"])
             discord_print_language = self.convert_language_code( self.chat_info_dict["discord_print_language"] )
-
-            # Unuse for now
-            # chat_display_language = self.chat_info_dict["chat_display_language"]
 
             # DISCORD SHARED SETTING WIDGETS
             ############################################################################################
+            widgets.comboBox_display_subtitle_language.clear()
             widgets.comboBox_discord_print_language.clear()
             for _lang in ['en', 'ja', 'ko', 'zh']:
+                widgets.comboBox_display_subtitle_language.addItem(self.convert_language_code(_lang))
                 widgets.comboBox_discord_print_language.addItem(self.convert_language_code(_lang))
+
+            widgets.comboBox_display_subtitle_language.setCurrentText(display_subtitle_language)
             widgets.comboBox_discord_print_language.setCurrentText(discord_print_language)
 
             # DISCORD BOT SETTING WIDGETS
             ############################################################################################
+            widgets.checkBox_display_subtitle_toggle.setChecked(display_subtitle_toggle)
             widgets.checkBox_discord_bot.setChecked(discord_bot)
         else:
             discord_bot = widgets.checkBox_discord_bot.isChecked()
             discord_webhook = widgets.checkBox_discord_webhook.isChecked()
-            tts_only = widgets.checkBox_tts_only.isChecked()
 
         bot_id_widget = widgets.lineEdit_discord_bot_id
         bot_channel_id_widget = widgets.lineEdit_discord_bot_channel_id

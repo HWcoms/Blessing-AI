@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainbRUpeL.ui'
+## Form generated from reading UI file 'maindMazlz.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -3409,7 +3409,7 @@ class Ui_MainWindow(object):
         self.scrollArea_command_page.setWidgetResizable(True)
         self.scrollAreaWidgetContents_5 = QWidget()
         self.scrollAreaWidgetContents_5.setObjectName(u"scrollAreaWidgetContents_5")
-        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1172, 1153))
+        self.scrollAreaWidgetContents_5.setGeometry(QRect(0, 0, 1089, 1153))
         self.verticalLayout_34 = QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.verticalLayout_28 = QVBoxLayout()
@@ -4774,7 +4774,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 360, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -5054,11 +5054,38 @@ class Ui_MainWindow(object):
         self.scrollArea_right_extra.setWidgetResizable(True)
         self.scrollAreaWidgetContents_3 = QWidget()
         self.scrollAreaWidgetContents_3.setObjectName(u"scrollAreaWidgetContents_3")
-        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 200, 620))
+        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 200, 711))
         self.horizontalLayout_28 = QHBoxLayout(self.scrollAreaWidgetContents_3)
         self.horizontalLayout_28.setObjectName(u"horizontalLayout_28")
         self.verticalLayout_46 = QVBoxLayout()
         self.verticalLayout_46.setObjectName(u"verticalLayout_46")
+        self.verticalGroupBox_subtitle_settings = QGroupBox(self.scrollAreaWidgetContents_3)
+        self.verticalGroupBox_subtitle_settings.setObjectName(u"verticalGroupBox_subtitle_settings")
+        self.verticalLayout_73 = QVBoxLayout(self.verticalGroupBox_subtitle_settings)
+        self.verticalLayout_73.setSpacing(3)
+        self.verticalLayout_73.setObjectName(u"verticalLayout_73")
+        self.verticalLayout_73.setContentsMargins(6, 6, 6, 6)
+        self.checkBox_display_subtitle_toggle = QCheckBox(self.verticalGroupBox_subtitle_settings)
+        self.checkBox_display_subtitle_toggle.setObjectName(u"checkBox_display_subtitle_toggle")
+
+        self.verticalLayout_73.addWidget(self.checkBox_display_subtitle_toggle)
+
+        self.comboBox_display_subtitle_language = QComboBox(self.verticalGroupBox_subtitle_settings)
+        self.comboBox_display_subtitle_language.addItem("")
+        self.comboBox_display_subtitle_language.addItem("")
+        self.comboBox_display_subtitle_language.addItem("")
+        self.comboBox_display_subtitle_language.setObjectName(u"comboBox_display_subtitle_language")
+        self.comboBox_display_subtitle_language.setMaximumSize(QSize(16777215, 30))
+
+        self.verticalLayout_73.addWidget(self.comboBox_display_subtitle_language)
+
+
+        self.verticalLayout_46.addWidget(self.verticalGroupBox_subtitle_settings)
+
+        self.verticalSpacer_11 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_46.addItem(self.verticalSpacer_11)
+
         self.label_6 = QLabel(self.scrollAreaWidgetContents_3)
         self.label_6.setObjectName(u"label_6")
 
@@ -5072,10 +5099,6 @@ class Ui_MainWindow(object):
         self.comboBox_discord_print_language.setMaximumSize(QSize(16777215, 30))
 
         self.verticalLayout_46.addWidget(self.comboBox_discord_print_language)
-
-        self.verticalSpacer_8 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_46.addItem(self.verticalSpacer_8)
 
         self.horizontalLayout_7 = QHBoxLayout()
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
@@ -5693,6 +5716,12 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem45 = self.tableWidget.item(0, 3)
         ___qtablewidgetitem45.setText(QCoreApplication.translate("MainWindow", u"Line", None));
         self.tableWidget.setSortingEnabled(__sortingEnabled2)
+
+        self.verticalGroupBox_subtitle_settings.setTitle(QCoreApplication.translate("MainWindow", u"Display Subtitle", None))
+        self.checkBox_display_subtitle_toggle.setText(QCoreApplication.translate("MainWindow", u"Display Bot Subtitle", None))
+        self.comboBox_display_subtitle_language.setItemText(0, QCoreApplication.translate("MainWindow", u"English", None))
+        self.comboBox_display_subtitle_language.setItemText(1, QCoreApplication.translate("MainWindow", u"Japanese", None))
+        self.comboBox_display_subtitle_language.setItemText(2, QCoreApplication.translate("MainWindow", u"Korean", None))
 
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700;\">Send Discord Bot Message As</span></p></body></html>", None))
         self.comboBox_discord_print_language.setItemText(0, QCoreApplication.translate("MainWindow", u"English", None))
