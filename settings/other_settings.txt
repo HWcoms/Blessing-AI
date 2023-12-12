@@ -1,4 +1,6 @@
 {
+	"display_subtitle_toggle": true,
+	"display_subtitle_language": "ko",
     "discord_your_name": "",
     "discord_your_avatar": "",
     "discord_bot": false,
