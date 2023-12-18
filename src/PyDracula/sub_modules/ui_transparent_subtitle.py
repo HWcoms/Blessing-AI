@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'transparent_subtitleUgiYhn.ui'
+## Form generated from reading UI file 'transparent_subtitlenMQeqI.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -35,20 +35,21 @@ class Ui_SubtitleWindow(object):
         self.sub_frame.setObjectName(u"sub_frame")
         self.sub_frame.setFrameShape(QFrame.StyledPanel)
         self.sub_frame.setFrameShadow(QFrame.Raised)
-        self.frame_bg = QFrame(self.sub_frame)
-        self.frame_bg.setObjectName(u"frame_bg")
-        self.frame_bg.setGeometry(QRect(170, 90, 641, 161))
-        self.frame_bg.setStyleSheet(u"background-color: yellow")
-        self.frame_bg.setFrameShape(QFrame.StyledPanel)
-        self.frame_bg.setFrameShadow(QFrame.Raised)
         self.label_text = QLabel(self.sub_frame)
         self.label_text.setObjectName(u"label_text")
-        self.label_text.setGeometry(QRect(130, 10, 941, 361))
+        self.label_text.setGeometry(QRect(140, 50, 891, 301))
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_text.sizePolicy().hasHeightForWidth())
+        self.label_text.setSizePolicy(sizePolicy)
+        self.label_text.setMinimumSize(QSize(0, 0))
+        self.label_text.setMaximumSize(QSize(16777215, 16777215))
         font = QFont()
         font.setPointSize(35)
         self.label_text.setFont(font)
         self.label_text.setStyleSheet(u"background-color: transparent")
-        self.label_text.setAlignment(Qt.AlignCenter)
+        self.label_text.setAlignment(Qt.AlignBottom|Qt.AlignHCenter)
         self.label_text.setWordWrap(True)
 
         self.verticalLayout.addWidget(self.sub_frame)

@@ -1,11 +1,11 @@
 import sys
 import time
 
-from PySide6 import QtWidgets  # must need # noqa
-from PySide6.QtWidgets import QApplication, QMainWindow, QSizePolicy
-from PySide6.QtGui import QFontMetrics
+from PySide6 import QtWidgets, QtCore  # must need # noqa
+from PySide6.QtWidgets import QApplication, QMainWindow, QSizePolicy, QLabel
+from PySide6.QtGui import QFontMetrics, QTextOption, QFont, QResizeEvent
 
-from PySide6.QtCore import Qt, QSize, QThread, QTimer, Signal
+from PySide6.QtCore import Qt, QSize, QThread, QTimer, Signal, QEvent
 
 # # Loading Methods
 # module_folder = os.path.join(os.path.dirname(__file__), 'dracula_modules')
@@ -13,18 +13,27 @@ from PySide6.QtCore import Qt, QSize, QThread, QTimer, Signal
 # sys.path.append(module_folder)
 from sub_modules.ui_transparent_subtitle import Ui_SubtitleWindow
 
-offset_size_x = 30
-offset_size_y = 10
+# offset_size_x = 30  # padding
+# offset_size_y = 10
 
 offset_pos_y = 0.1  # percent from bottom
-maximum_width_percent = 0.8
+maximum_width_percent = .8  # maximum width (percent of screen width)
+maximum_height_percent = .5
+
+window_alpha = 0.7
+text_color = "255, 255, 255, 255"
+bg_color = "0, 0, 0, 200"
+
+text = 'this isessage\n yes hello good! \nmy name is good this is test testetest test tertse'
+duration = 1
+wait_duration = 2
 
 
 # Subtitle Window
 class Subtitle_Window(QMainWindow):
-    resize_signal = Signal(str)
+    resize_signal = Signal(str, bool)
 
-    def __init__(self):
+    def __init__(self, subtitle_text, duration, wait_duration):
         QMainWindow.__init__(self)
         screen = app.primaryScreen()
         self.screen_size = screen.size()
@@ -33,31 +42,45 @@ class Subtitle_Window(QMainWindow):
         self.ui = Ui_SubtitleWindow()
         self.ui.setupUi(self)
 
-        self.bg_color = "255, 255, 255"
-        self.bg_alpha = 1.0
-        self.text_color = "255, 0, 0"
-        # init_loading_GUI(self.ui)  # Initialize values and images from GUI components
-
         ## UI Settings
         ######################################################################################
-        #
-        # self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
 
-        self.change_alpha(1.0)
+        self.setAttribute(Qt.WA_TranslucentBackground)  # Transparent Window
+        self.setAttribute(Qt.WA_TransparentForMouseEvents)  # Mouse Event Through
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)   # Frameless Window & AlwaysOnTop
+
+        self.change_alpha(window_alpha)
         self.resize_signal.connect(self.resize_window_by_text)
 
         self.ui.label_text.clear()
-        self.ui.label_text.setSizePolicy(QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum))
-        self.ui.label_text.setMaximumWidth(10)
-        self.resize_window_by_text(
-            'this is test message, this is test message, this is test message, this is test message, this is test message')
 
-        # dsp_text = DisplayText(self, 'this is just test', 1)
-        # dsp_text.start()
+        # self.ui.label_text = WrappedLabel('test', self)
+
+        # Create WrappedLabel (to get label size after WordWrap)
+        self.maximumWidth = self.get_maximum_width()
+        self.maximumHeight = self.get_maximum_height()
+
+        self.richtext_html_base = '''
+                <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+                <html><head><meta name="qrichtext" content="1" /><meta charset="utf-8" /><style type="text/css">
+                p, li { white-space: pre-wrap; }
+                hr { height: 1px; border-width: 0; }
+                li.unchecked::marker { content: "\2610"; }
+                li.checked::marker { content: "\2612"; }
+                </style></head><body style=" font-family:'Verdana'; font-size:9pt; font-weight:400; font-style:normal;">
+                '''
+        self.current_richtext = ''
+
+        # self.resize_window_by_text(
+        #     'this isessage yes hello good my name is good this is test testetest test tertse')
+        dsp_text = DisplayText(self, subtitle_text, duration)
+        dsp_text.start()
+
         ## Show
         #######################################################################################
         self.show()
+
+        self.destroy_subtitle()
 
     def change_alpha(self, value: float):
         if value > 1.0:
@@ -66,34 +89,32 @@ class Subtitle_Window(QMainWindow):
             value = 0
 
         self.setWindowOpacity(value)
-        self.ui.sub_frame.setStyleSheet("QFrame {"
-                                        f"background-color: rgba({self.bg_color},{self.bg_alpha});"
-                                        f"color: rgba(f{self.text_color},{255})"
-                                        "}")
 
-    def resize_window_by_text(self, char):
-        font = self.ui.label_text.font()
-        font_metrics = QFontMetrics(font)
+    def resize_window_by_text(self, char, is_new_line:bool=False):
+        if not is_new_line:
+            self.current_richtext += char
 
-        next_str = self.ui.label_text.text() + char
-        self.ui.label_text.setText(next_str)
+        line_html = '''\n<p align="center" style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:34pt; 
+        color:rgba(%s);
+        background-color:rgba(%s);">%s</span></p></body></html>'''
+        modified_line_html = line_html % (text_color, bg_color, self.current_richtext) # fgcolor, bgcolor, text
 
-        text_size = font_metrics.size(0, self.ui.label_text.text())
+        new_richtext_html = self.richtext_html_base + modified_line_html
 
-        # if maximum size over adjust todo:
-        self.ui.label_text.setFixedSize(QSize(800, self.size().height()))
+        if is_new_line:
+            self.richtext_html_base += modified_line_html
+            self.current_richtext = ''
+            # print(self.richtext_html_base)
+            return
 
+        self.ui.label_text.setText(new_richtext_html)
 
-        print(self.ui.label_text.size())
-        text_size = text_size + QSize(offset_size_x, offset_size_y)
-        # print(text_size)
+        self.ui.label_text.setFixedSize(QSize(self.maximumWidth, self.maximumHeight))
 
-        # resize to font_metrics & move 0, 0
-        self.resize(text_size)
-        for comp in [self.ui.frame_bg, self.ui.label_text]:
-            comp.setFixedSize(text_size)
-            comp.move((self.size().width() / 2) - (text_size.width() / 2),
-                      (self.size().height() / 2) - (text_size.height() / 2))
+        self.resize(self.ui.label_text.size())
+
+        for comp in [self.ui.label_text]:
+            comp.move(0, 0)
 
         self.center_on_screen()
 
@@ -108,29 +129,16 @@ class Subtitle_Window(QMainWindow):
 
         self.move(center_x, center_y)
 
-    def check_maximum(self, str):
-        font = self.ui.label_text.font()
-        font_metrics = QFontMetrics(font)
-        screen_size = self.screen_size
+    def get_maximum_width(self):
+        screen_size_width = self.screen_size.width()
+        return screen_size_width * maximum_width_percent
 
-        modified_string = str
+    def get_maximum_height(self):
+        screen_size_height = self.screen_size.height()
+        return screen_size_height * maximum_height_percent
 
-        while True:
-            text_size = font_metrics.size(0, modified_string)
-            text_size += QSize(offset_size_x, offset_size_y)
-            if text_size.width() < screen_size.width():
-                break
-            # Split the string into words
-
-            # Add a newline between the last and second-to-last words
-            words = modified_string.split()
-            modified_text = ' '.join(words[:-1]) + '\n' + words[-1]
-            print(words[:-1], words[-1])
-            time.sleep(0.5)
-
-            # print(text_size)
-
-        return modified_string
+    def destroy_subtitle(self):
+        QtCore.QTimer.singleShot((duration + wait_duration) * 1000, QtCore.QCoreApplication.quit)
 
 
 class DisplayText(QThread):
@@ -146,7 +154,10 @@ class DisplayText(QThread):
         self.parent.ui.label_text.clear()
 
         for char in self.text:
-            self.parent.resize_signal.emit(char)
+            new_line = False
+            if char == '\n':
+                new_line = True
+            self.parent.resize_signal.emit(char, new_line)
             self.msleep(int(interval * 1000))  # sleep in milliseconds
             QApplication.processEvents()
 
@@ -154,5 +165,5 @@ class DisplayText(QThread):
 if __name__ == "__main__":
     # create the application and the main window
     app = QApplication(sys.argv)
-    window = Subtitle_Window()
+    window = Subtitle_Window(text, duration, wait_duration)
     sys.exit(app.exec())
