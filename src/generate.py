@@ -209,6 +209,11 @@ class GeneratorTTS:
     def __init__(self):
         super().__init__()
         self.logging = True
+
+        self.sub_text = None
+        self.display_dur = 0
+        self.wait_dur = 2
+
         self.final_result_path = ""
         self.audio_dir = ""
         self.sounda = None
@@ -235,8 +240,13 @@ class GeneratorTTS:
         tts_only = other_settings["tts_only"]
         text_lang = None
 
+        # Translator
         token_id = prompt_settings["translator_api_id"]
         token_secret = prompt_settings["translator_api_secret"]
+
+        # SUBTITLE
+        display_subtitle_toggle = other_settings["display_subtitle_toggle"]
+        display_subtitle_language = other_settings["display_subtitle_language"]
 
         if tts_only:
             text_lang = detect_language(text, token_id, token_secret)
@@ -245,12 +255,13 @@ class GeneratorTTS:
                 "ai_model_language"]  # language_code that AI Model using ("pygmalion should communicate with  english")
         print("tts lang: ", text, text_lang)
         if text:
-            self.speak_moegoe(text, text_lang, [token_id, token_secret], audio_settings)
+            self.speak_moegoe(text, text_lang, [token_id, token_secret], audio_settings,
+                              [display_subtitle_toggle, display_subtitle_language])
         else:
             print("\031[31m" + '[GeneratorTTS.Generate] Error: text variable is None' + "\033[0m")
             return None  # failed
 
-    def speak_moegoe(self, sentence, sentence_lang, trans_token_list: list, audio_settings):
+    def speak_moegoe(self, sentence, sentence_lang, trans_token_list: list, audio_settings, subinfo_list: list):
         log_str = "[GeneratorTTS.speak_moegoe]: "
         if self.logging:
             print("\033[34m" + log_str + "\033[32m")
@@ -268,13 +279,25 @@ class GeneratorTTS:
         token_id = trans_token_list[0]
         token_secret = trans_token_list[1]
 
+        is_sub = subinfo_list[0]
+        sub_lang = subinfo_list[1]
+
         bot_trans_speech = DoTranslate(sentence, sentence_lang, language_code, token_id,
                                        token_secret)  # Translate reply
+
         if language_code == 'ja':
             bot_trans_speech = english_to_katakana(bot_trans_speech)  # romaji to japanese
         elif language_code == 'ko':
             bot_trans_speech = bot_trans_speech  # TODO: eng to korean
             voice_volume = voice_volume * 0.5
+
+        # CREATE SUBTITLE
+        if is_sub:
+            if sub_lang == language_code:
+                self.sub_text = bot_trans_speech
+            else:
+                self.sub_text = DoTranslate(sentence, sentence_lang, sub_lang, token_id,
+                                            token_secret)  # Translate for subtitle
 
         if self.logging:
             print("\033[0m")
@@ -290,7 +313,7 @@ class GeneratorTTS:
         print(
             "\033[34m" + f"[GeneratorTTS.speak_moegoe]: Created TTS as Wav File! [\033[32m{sentence}\033[34m] [{self.final_result_path}]" + "\033[0m")
 
-    def play_by_bot(self, device_name, volume, quite_mode=False):
+    def play_by_bot(self, parent, device_name, volume, quite_mode=False):
         if not quite_mode:
             print("\033[34m" + f"Playing TTS Audio From Speaker: \033[32m{device_name}\033[0m")
 
@@ -311,6 +334,9 @@ class GeneratorTTS:
         self.sounda.set_volume(volume * 0.5)  # [0.0 ~ 2.0] to [0.0 ~ 1.0]
         self.sounda.play()
 
+        self.display_dur = self.sounda.get_length()
+        self.display_subtitle(parent)
+
         # pygame.time.wait(int(self.sounda.get_length() * 1000))
         clock = pygame.time.Clock()
         clock.tick(10)
@@ -324,6 +350,13 @@ class GeneratorTTS:
             print("speech done!")
         self.sounda.stop()
         pygame.mixer.quit()
+
+    def display_subtitle(self, main_window):
+        if not self.sub_text or self.sub_text == '':
+            print("[TTSGen]: no subtitle text to display")
+            return
+        # Emit Subtitle Signal
+        main_window.display_tts_subtitle_signal.emit(self.sub_text, self.display_dur, self.wait_dur)
 
     def change_volume(self, volume):
         mixer = pygame.mixer.get_init()

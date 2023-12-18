@@ -2,10 +2,9 @@ import sys
 import time
 
 from PySide6 import QtWidgets, QtCore  # must need # noqa
-from PySide6.QtWidgets import QApplication, QMainWindow, QSizePolicy, QLabel
-from PySide6.QtGui import QFontMetrics, QTextOption, QFont, QResizeEvent
+from PySide6.QtWidgets import QApplication, QMainWindow
 
-from PySide6.QtCore import Qt, QSize, QThread, QTimer, Signal, QEvent
+from PySide6.QtCore import Qt, QSize, QThread, Signal
 
 # # Loading Methods
 # module_folder = os.path.join(os.path.dirname(__file__), 'dracula_modules')
@@ -25,7 +24,7 @@ text_color = "255, 255, 255, 255"
 bg_color = "0, 0, 0, 200"
 
 text = 'this isessage\n yes hello good! \nmy name is good this is test testetest test tertse'
-duration = 1
+type_duration = 1
 wait_duration = 2
 
 
@@ -33,9 +32,10 @@ wait_duration = 2
 class Subtitle_Window(QMainWindow):
     resize_signal = Signal(str, bool)
 
-    def __init__(self, subtitle_text, duration, wait_duration):
+    def __init__(self, subtitle_text, type_duration, wait_duration):
         QMainWindow.__init__(self)
-        screen = app.primaryScreen()
+        screen = QApplication.primaryScreen()
+
         self.screen_size = screen.size()
 
         self.main = None
@@ -47,7 +47,7 @@ class Subtitle_Window(QMainWindow):
 
         self.setAttribute(Qt.WA_TranslucentBackground)  # Transparent Window
         self.setAttribute(Qt.WA_TransparentForMouseEvents)  # Mouse Event Through
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)   # Frameless Window & AlwaysOnTop
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)  # Frameless Window & AlwaysOnTop
 
         self.change_alpha(window_alpha)
         self.resize_signal.connect(self.resize_window_by_text)
@@ -70,17 +70,17 @@ class Subtitle_Window(QMainWindow):
                 </style></head><body style=" font-family:'Verdana'; font-size:9pt; font-weight:400; font-style:normal;">
                 '''
         self.current_richtext = ''
-
         # self.resize_window_by_text(
         #     'this isessage yes hello good my name is good this is test testetest test tertse')
-        dsp_text = DisplayText(self, subtitle_text, duration)
-        dsp_text.start()
 
         ## Show
         #######################################################################################
         self.show()
+        # self.display_text(subtitle_text, type_duration)
+        dsp_text = DisplayText(self, subtitle_text, type_duration)
+        dsp_text.start()
 
-        self.destroy_subtitle()
+        self.destroy_subtitle(type_duration, wait_duration)
 
     def change_alpha(self, value: float):
         if value > 1.0:
@@ -90,14 +90,14 @@ class Subtitle_Window(QMainWindow):
 
         self.setWindowOpacity(value)
 
-    def resize_window_by_text(self, char, is_new_line:bool=False):
+    def resize_window_by_text(self, char, is_new_line: bool = False):
         if not is_new_line:
             self.current_richtext += char
 
         line_html = '''\n<p align="center" style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:34pt; 
         color:rgba(%s);
         background-color:rgba(%s);">%s</span></p></body></html>'''
-        modified_line_html = line_html % (text_color, bg_color, self.current_richtext) # fgcolor, bgcolor, text
+        modified_line_html = line_html % (text_color, bg_color, self.current_richtext)  # fgcolor, bgcolor, text
 
         new_richtext_html = self.richtext_html_base + modified_line_html
 
@@ -137,8 +137,24 @@ class Subtitle_Window(QMainWindow):
         screen_size_height = self.screen_size.height()
         return screen_size_height * maximum_height_percent
 
-    def destroy_subtitle(self):
-        QtCore.QTimer.singleShot((duration + wait_duration) * 1000, QtCore.QCoreApplication.quit)
+    def destroy_subtitle(self, type_anim_dur, wait_dur):  # Destroy after [type_anim_dur + wait_dur]
+        QtCore.QTimer.singleShot((type_anim_dur + wait_dur) * 1000, self.close)
+        # QtCore.QTimer.singleShot((type_anim_dur + wait_dur) * 1000, lambda :print("destroyed"))
+
+    def display_text(self, sub_text, duration):
+        interval = duration / len(sub_text)
+
+        self.ui.label_text.clear()
+        for char in sub_text:
+            new_line = False
+            if char == '\n':
+                new_line = True
+            # self.resize_signal.emit(char, new_line)
+            self.resize_window_by_text(char, new_line)
+            QThread.msleep(int(interval * 1000))  # sleep in milliseconds
+
+            # time.sleep(0.01)
+            # print("1")
 
 
 class DisplayText(QThread):
@@ -152,18 +168,18 @@ class DisplayText(QThread):
         interval = self.duration / len(self.text)
 
         self.parent.ui.label_text.clear()
-
         for char in self.text:
             new_line = False
             if char == '\n':
                 new_line = True
             self.parent.resize_signal.emit(char, new_line)
             self.msleep(int(interval * 1000))  # sleep in milliseconds
-            QApplication.processEvents()
+            # QApplication.processEvents()
+            # time.sleep(int(interval) * 0.001)
 
 
 if __name__ == "__main__":
     # create the application and the main window
     app = QApplication(sys.argv)
-    window = Subtitle_Window(text, duration, wait_duration)
+    window = Subtitle_Window(text, type_duration, wait_duration)
     sys.exit(app.exec())

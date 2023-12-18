@@ -81,6 +81,9 @@ from modules.manage_folder import audio_cache_dir, char_json_dir, tts_char_dir, 
 # Table Widget
 from modules.qt_text_with_button import TextWButtonWidget
 
+# Subtitle
+from transparent_subtitle import Subtitle_Window
+
 #####################################################################################
 #                                                                                   #
 #                    Remove [import resources_rc] in ui_main.py!!                   #
@@ -104,6 +107,8 @@ class MainWindow(QMainWindow):
     update_table_signal = Signal()
     update_threshold_gui_signal = Signal(float, QObject, bool)
     update_phrase_timeout_gui_signal = Signal(float, QObject)
+
+    display_tts_subtitle_signal = Signal(str, float, float)
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -174,6 +179,9 @@ class MainWindow(QMainWindow):
 
         self.update_threshold_gui_signal.connect(self.update_threshold_gui)
         self.update_phrase_timeout_gui_signal.connect(self.update_phrase_timeout_gui)
+
+        self.display_tts_subtitle_signal.connect(self.display_tts_subtitle)
+        self.sub_window = None
         # TODO: [Fix Bug] when cmd_thread is playing audio,
         #   Also trying to add mode tts_thread, table update and threadmanager stops working..
         #   User name is not visible when generating RVC cover
@@ -2529,6 +2537,18 @@ class MainWindow(QMainWindow):
 
         prompt_thread.PromptDone.connect(self.command_handler)
 
+    # Display Subtitle
+    def display_tts_subtitle(self, sub_text:str, display_dur:float, wait_dur:float):
+        print_log("log", f"{sub_text}, {display_dur}, {wait_dur}")
+        # [eventho, tts-thread is removed, subtitle is not destroyed until duration]
+        self.destroy_subtitle_window()
+
+        self.sub_window = Subtitle_Window(sub_text, display_dur, wait_dur)
+
+    def destroy_subtitle_window(self):
+        if self.sub_window:
+            self.sub_window.destroy_subtitle(0, 0)  # Quit Immediately
+
     # Update QTable [Qthreads table]
     def update_thread_table(self):
         global widgets
@@ -2607,7 +2627,7 @@ class MainWindow(QMainWindow):
 
         component.setStyleSheet(result_string)
     #################################################################################################
-    # region [Thread Control Methods]
+    # endregion [Thread Control Methods]
 
 
 # region [Thread Classes & Static Methods]
@@ -2883,7 +2903,7 @@ class TTSTHREAD(QThread):
         self.gen.spk_toggle = self.parent.audio_info_dict['spk_toggle']
 
         change_state(self, "play", "Playing TTS")
-        self.gen.play_by_bot(spk_device.name, spk_volume, quite_mode=False)
+        self.gen.play_by_bot(self.parent, spk_device.name, spk_volume, quite_mode=False)
         change_state(self, "close")
 
     def remove_from_thread_list(self):
@@ -2902,6 +2922,7 @@ class TTSTHREAD(QThread):
         self.parent.update_thread_table()
 
         self.gen.alive = False
+        self.parent.destroy_subtitle_window()
 
         self.quit()
         self.wait(1000)  # wait until pygame breaks loop
