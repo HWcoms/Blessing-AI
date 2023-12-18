@@ -86,11 +86,11 @@ I'm using Python 3.10.6
   - You can use other model if you want other voice (need 2files - `*.pth`, `*.json`) (optional)  
   - You can change file name of `G_latest.pth`, `moegoe_config.json` to anything -> `*.pth`, `*.json`  
   
-  Locate to [src/Models/models/Voice/](src/Models/Voice/) folder, Create a folder that same name as your character.json file name  
+  Locate to [Models/models/Voice/](Models/Voice/) folder, Create a folder that same name as your character.json file name  
   and put vits model files in the folder.  
   
-  for example, if you have a `Kato Megumi.json` character file in  [src/Models/models/Characters/](src/Models/Characters/) folder,
-  then create a folder as `Kato Megumi` in [src/Models/models/Voice/](src/Models/Voice/) folder and paste `*.pth`, `*.json` files.  
+  for example, if you have a `Kato Megumi.json` character file in  [Models/models/Characters/](Models/Characters/) folder,
+  then create a folder as `Kato Megumi` in [Models/models/Voice/](Models/Voice/) folder and paste `*.pth`, `*.json` files.  
 
   ![](docs/screenshots/MoeGoeModels.png?raw=true)
 
@@ -201,8 +201,8 @@ pip install -r extra_requirement_rvc.txt
 ```
 ### Download RVC trained pth files  
 Download kato megumi pth file from Google drive [![Google Drive](https://img.shields.io/badge/Google%20Drive-4285F4?style=Flat-square&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1mEnR3GXUFGVurQTNauVrJzWC0kEcTmsN/view?usp=sharing)  
-extract `kato megumi.zip` copy `kato megumi` folder to [Blessing-AI/src/Models/rvc_voice](src/Models/rvc_voice)  
-If you want to use other voice models as infer, please make a folder inside [Blessing-AI/src/Models/rvc_voice](src/Models/rvc_voice)  
+extract `kato megumi.zip` copy `kato megumi` folder to [Blessing-AI/Models/rvc_voice](Models/rvc_voice)  
+If you want to use other voice models as infer, please make a folder inside [Blessing-AI/Models/rvc_voice](Models/rvc_voice)  
 and put `*.pth`, `*.index` in.  
 
 ## Credits
