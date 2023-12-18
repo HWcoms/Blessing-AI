@@ -518,7 +518,7 @@ class BotCommand:
         for _process in process_list:
             self.find_one_filename(file_dir, _dict, _process[0], _process[1], _process[2])
 
-    def play_by_bot(self, parent, device_name, volume=1.0, start_sec=0, quite_mode=False):  # parent is Useless For now
+    def play_by_bot(self, device_name, volume=1.0, start_sec=0, quite_mode=False):  # parent is Useless For now
         in_audio = self.final_result_path
         if in_audio is None or in_audio == "":
             self.print_log("error", "No Audio path to play!")
