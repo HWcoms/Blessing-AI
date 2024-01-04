@@ -12,6 +12,11 @@ Also able to use [MoeGoe TTS](https://github.com/CjangCjengh/MoeGoe), voice reco
 
 ![](docs/screenshots/Blessing_AI_Preview.png?raw=true)
 
+Testing Video:
+<div align="center">
+<video src="https://github.com/HWcoms/Blessing-AI/assets/88720310/4f79e970-600c-40d7-ae01-f078fd9a4311" width="400" />
+</div>
+
 <div align="left">
 <b>Note: This project is a work in progress.</b><br>
 Please note that this project is currently under development and may not be feature-complete or stable.<br>
