@@ -2080,7 +2080,7 @@ class MainWindow(QMainWindow):
         # region Load JSON / Profile Image
         from LangAIComm import get_character_info  # noqa
         char_dict = get_character_info(
-            self.char_info_dict["character_name"])  # Dict [your_name, character_name, greeting, context, character_image]
+            char_name_char_setting, your_name_char_setting)  # Dict [your_name, character_name, greeting, context, character_image]
         # print(char_dict)
 
         if not char_dict:
@@ -2588,7 +2588,7 @@ class MainWindow(QMainWindow):
                 if thread.isRunning():
                     _is_running = '▶️'
 
-                text_with_button_widget = TextWButtonWidget(label_text=thread.state[1], button_text='test')
+                text_with_button_widget = TextWButtonWidget(label_text=thread.state[1], button_text='')
                 text_with_button_widget.button_widget.clicked.connect(thread.stop)
                 table.setItem(thread_index, 0, QTableWidgetItem(thread.character))
                 table.setItem(thread_index, 1, QTableWidgetItem(_msg))
@@ -2660,7 +2660,6 @@ class THREADMANAGER(QThread):
         main_program = self.parent
 
         self.mic_thread.adm = main_program.newAudDevice
-        self.sub_mic_thread.adm = main_program.newAudDevice
 
         while True:
             prompt_thread_list = main_program.prompt_thread_list
@@ -2867,7 +2866,8 @@ class PROMPTTHREAD(QThread):    # add whisper
         self.remove_from_thread_list()
         self.parent.update_thread_table()
 
-        self.gen.alive = False
+        if self.gen:
+            self.gen.alive = False
 
         self.quit()
         self.wait(1000)  # wait

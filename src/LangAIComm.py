@@ -89,7 +89,7 @@ def count_tokens(text):
         return None
 
 
-def load_character(filepath):
+def load_character(filepath, yourname=''):
     # shared.character = character
     context = greeting = turn_template = ""
     greeting_field = 'greeting'
@@ -107,7 +107,11 @@ def load_character(filepath):
     data = json.loads(file_contents)
 
     name2 = data['name'] if 'name' in data else data['char_name']
-    if 'your_name' in data and data['your_name'] != '':
+
+    # overwrite your name from textedit gui
+    if yourname:
+        name1 = yourname
+    elif 'your_name' in data and data['your_name'] != '':
         name1 = data['your_name']
     else:
         name1 = "You"
@@ -287,7 +291,7 @@ def check_url(base_url, endpoint):
 
 
 ## Get character json for GUI
-def get_character_info(character_name):
+def get_character_info(character_name, your_name):
     if character_name == '[None]':
         print_log("warning", "no character selected")
         return None
@@ -304,9 +308,9 @@ def get_character_info(character_name):
             "\033[31m" + "Warning [LangAIComm.get_character_info]: " + "\033[33m" + "Bot profile Image does not exist." + "\033[0m")
 
     if json_filepath:
-        char_dict = load_character(json_filepath)
+        char_dict = load_character(json_filepath, your_name)
     elif image_filepath:
-        char_dict = load_character(image_filepath)
+        char_dict = load_character(image_filepath, your_name)
     else:
         print_log("error", "No Character Json Or Image Found")
         return None
@@ -326,7 +330,11 @@ def get_chatlog_info(character_name):
 
 
 ## Generate
-def generate_reply(string, character_name, max_prompt_token=2048, max_reply_token=200):
+def generate_reply(string, char_name_settings, max_prompt_token=2048, max_reply_token=200):
+    # char setting
+    character_name = char_name_settings[0]
+    your_name = char_name_settings[1]
+
     # Define file name that contains prompt
 
     # Load voice_settings
@@ -335,9 +343,9 @@ def generate_reply(string, character_name, max_prompt_token=2048, max_reply_toke
     # Load Character
     json_filepath, image_filepath = get_character_file(character_name)
     if json_filepath:
-        char_dict = load_character(json_filepath)
+        char_dict = load_character(json_filepath, your_name)
     elif image_filepath:
-        char_dict = load_character(image_filepath)
+        char_dict = load_character(image_filepath, your_name)
     else:
         raise ValueError('No Character Json Or Image Found')
 
